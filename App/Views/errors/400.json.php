@@ -1,0 +1,1 @@
+<?php echo json_encode(array('api' => array('status'    =>  'error', 'error' => array('code'    =>  400, 'message'  =>  'Bad Request')))); ?>
