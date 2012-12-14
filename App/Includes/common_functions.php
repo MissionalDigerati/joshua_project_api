@@ -20,18 +20,3 @@ function arrayToXML($data, $parentWrap = "items", $individualWrap = "item") {
     }
     return $xml->asXML();
 }
-/**
- * Takes a MySQLi Results Object and converts it to an array of data.
- *
- * @param object $mysqliResults a MySQLi Results Object
- * @return array
- * @access public
- * @author Johnathan Pulos
- */
-function resultsToDataArray($mysqliResults) {
-    $data = array();
-    while ($row = $mysqliResults->fetch_assoc()) {
-        array_push($data, $row);
-    }
-    return $data;
-}
