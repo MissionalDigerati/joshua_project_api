@@ -18,7 +18,7 @@ $app->get("/people_groups/daily_unreached.:format", function($format) use($app, 
     }else {
         $month = Date('n');
     }
-    if((1 > $month) && ($month > 12)) {
+    if((1 > $month) || ($month > 12)) {
         /**
          * They did not supply a valid month
          *
@@ -32,7 +32,7 @@ $app->get("/people_groups/daily_unreached.:format", function($format) use($app, 
     }else{
         $day = Date('j');
     }
-    if((1 > $day) && ($day > 31)) {
+    if((1 > $day) || ($day > 31)) {
         /**
          * They did not supply a valid day
          *
@@ -41,10 +41,14 @@ $app->get("/people_groups/daily_unreached.:format", function($format) use($app, 
         $app->render("/errors/400.xml.php");
         exit;
     }
-    $query = "SELECT * FROM jppeoples WHERE LRofTheDayMonth = ? AND LRofTheDayDay = ? LIMIT 1";
+    $query = "SELECT * FROM jppeoples WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
     $statement = $db->prepare($query);
-    $statement->execute(array($month, $day));
+    $statement->execute(array('month' => $month, 'day' => $day));
     $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+    if(empty($data)) {
+        $app->render("/errors/404.xml.php");
+        exit;
+    }
     /**
      * Render the final data
      *
