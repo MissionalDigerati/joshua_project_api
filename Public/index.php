@@ -1,5 +1,10 @@
 <?php
 /**
+ * This requires PDO MySQL Support.
+ *
+ * @author Johnathan Pulos
+ */
+/**
  * Get the Slim Framework, and instantiate the class
  *
  * @author Johnathan Pulos
@@ -12,9 +17,9 @@ $app = new \Slim\Slim(array('templates.path' => "../App/Views/"));
  *
  * @author Johnathan Pulos
  */
-require("../App/Includes/mysqli_database.php");
-$mysqliDb = MysqliDatabase::getInstance();
-$db = $mysqliDb->getDatabaseInstance();
+require("../App/Includes/pdo_database.php");
+$pdoDb = PDODatabase::getInstance();
+$db = $pdoDb->getDatabaseInstance();
 /**
  * Include common functions
  *
@@ -26,8 +31,8 @@ require("../App/Includes/common_functions.php");
  *
  * @author Johnathan Pulos
  */
-$request = $app->request();
-$requestedUrl = $request->getResourceUri();
+$appRequest = $app->request();
+$requestedUrl = $appRequest->getResourceUri();
 /**
  * Make sure they only supply supported formats
  *
