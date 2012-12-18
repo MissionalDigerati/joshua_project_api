@@ -38,7 +38,8 @@ $requestedUrl = $appRequest->getResourceUri();
  *
  * @author Johnathan Pulos
  */
-$ext = end(explode('.', $requestedUrl));
+$extArray = explode('.', $requestedUrl);
+$ext = end($extArray);
 if(!in_array($ext, array('json', 'xml'))) {
     $app->render("/errors/400.xml.php");
     exit;

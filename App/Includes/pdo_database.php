@@ -51,7 +51,7 @@ class PDODatabase {
      * @access public
      * @author Johnathan Pulos
      */
-    public function getInstance() {
+    public static function getInstance() {
         if(!self::$PDODatabaseInstance) { 
             self::$PDODatabaseInstance = new PDODatabase(); 
         } 
