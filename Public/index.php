@@ -50,7 +50,7 @@ if(!in_array($ext, array('json', 'xml'))) {
  * @author Johnathan Pulos
  */
 if (strpos($requestedUrl,'people_groups/') !== false) {
-    require("../App/people_groups.php");
+    require("../App/PeopleGroups.php");
 }
 /**
  * Now run the Slim Framework rendering
