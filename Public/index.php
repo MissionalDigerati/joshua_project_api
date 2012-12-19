@@ -25,7 +25,7 @@ $db = $pdoDb->getDatabaseInstance();
  *
  * @author Johnathan Pulos
  */
-require("../App/Includes/common_functions.php");
+require("../App/Includes/CommonFunctions.php");
 /**
  * Get the current request to determine which PHP file to load.  Do not load all files, because it can take longer to load.
  *

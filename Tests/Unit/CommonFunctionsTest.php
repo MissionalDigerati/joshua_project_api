@@ -4,7 +4,7 @@
  *
  * @author Johnathan Pulos
  */
-require_once 'App/Includes/common_functions.php';
+require_once 'App/Includes/CommonFunctions.php';
 class CommonFunctionsTest extends PHPUnit_Framework_TestCase {
     
     /**
