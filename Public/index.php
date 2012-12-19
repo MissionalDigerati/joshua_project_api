@@ -17,7 +17,7 @@ $app = new \Slim\Slim(array('templates.path' => "../App/Views/"));
  *
  * @author Johnathan Pulos
  */
-require("../App/Includes/pdo_database.php");
+require("../App/Includes/PDODatabase.php");
 $pdoDb = PDODatabase::getInstance();
 $db = $pdoDb->getDatabaseInstance();
 /**
