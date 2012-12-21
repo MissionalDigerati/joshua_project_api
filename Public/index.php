@@ -9,7 +9,7 @@
  *
  * @author Johnathan Pulos
  */
-require('../Slim/Slim.php');
+require(__DIR__."/../Slim/Slim.php");
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim(array('templates.path' => "../App/Views/"));
 /**
@@ -17,7 +17,7 @@ $app = new \Slim\Slim(array('templates.path' => "../App/Views/"));
  *
  * @author Johnathan Pulos
  */
-require("../App/Includes/PDODatabase.php");
+require(__DIR__."/../App/Includes/PDODatabase.php");
 $pdoDb = PDODatabase::getInstance();
 $db = $pdoDb->getDatabaseInstance();
 /**
@@ -25,7 +25,7 @@ $db = $pdoDb->getDatabaseInstance();
  *
  * @author Johnathan Pulos
  */
-require("../App/Includes/CommonFunctions.php");
+require(__DIR__."/../App/Includes/CommonFunctions.php");
 /**
  * Get the current request to determine which PHP file to load.  Do not load all files, because it can take longer to load.
  *
@@ -50,7 +50,7 @@ if(!in_array($ext, array('json', 'xml'))) {
  * @author Johnathan Pulos
  */
 if (strpos($requestedUrl,'people_groups/') !== false) {
-    require("../App/PeopleGroups.php");
+    require(__DIR__."/../App/PeopleGroups.php");
 }
 /**
  * Now run the Slim Framework rendering
