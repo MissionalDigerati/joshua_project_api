@@ -26,6 +26,18 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->cachedRequest = new CachedRequest();
 	}
+	
+	/**
+	 * tearDown the testing class
+	 *
+	 * @return void
+	 * @access public
+	 * @author Johnathan Pulos
+	 */
+	public function tearDown() {
+		$this->cachedRequest->clearCache();
+	}
+	
 	/**
 	 * Tests to make sure the class can be initialized, and sets up the class correctly
 	 * 
