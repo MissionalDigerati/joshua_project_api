@@ -1,6 +1,6 @@
 <?php
 require_once(__DIR__."/../CachedRequest.php");
-require_once(__DIR__."/../curlUtility.php");
+require_once(__DIR__."/../CurlUtility.php");
 /**
  * A test for the CachedRequestt class
  *
@@ -115,7 +115,7 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	/**
-	 * Test that makeRequest() calls the curlUtility class if the cache file is not created
+	 * Test that makeRequest() calls the CurlUtility class if the cache file is not created
 	 *
 	 * @return void
 	 * @access public
@@ -127,11 +127,11 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 		$cachedFile = $this->cachedRequest->getCacheFilename($reference);
 		$this->removeIfFileExists($cachedFile);
 		/**
-		 * Setup a Mock for the curlUtility
+		 * Setup a Mock for the CurlUtility
 		 *
 		 * @author Johnathan Pulos
 		 */
-		$curlUtilityMock = $this->getMock('curlUtility', array('makeRequest'));
+		$curlUtilityMock = $this->getMock('CurlUtility', array('makeRequest'));
 		$curlUtilityMock->expects($this->once())
 										->method('makeRequest')
 										->with('http://feeds.feedburner.com/GiantRobotsSmashingIntoOtherGiantRobots', 'GET', array())
@@ -146,7 +146,7 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	/**
-	 * Test that makeRequest() does not call the curlUtility class if the cache file exists
+	 * Test that makeRequest() does not call the CurlUtility class if the cache file exists
 	 *
 	 * @return void
 	 * @access public
@@ -157,11 +157,11 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 		$cachedFile = $this->cachedRequest->getCacheFilename($reference);
 		$this->createIfNotExistantFile($cachedFile);
 		/**
-		 * Setup a Mock for the curlUtility
+		 * Setup a Mock for the CurlUtility
 		 *
 		 * @author Johnathan Pulos
 		 */
-		$curlUtilityMock = $this->getMock('curlUtility', array('makeRequest'));
+		$curlUtilityMock = $this->getMock('CurlUtility', array('makeRequest'));
 		$curlUtilityMock->expects($this->never())
 										->method('makeRequest');
 		$method = new ReflectionMethod('CachedRequest', 'setCurlUtilityObject');

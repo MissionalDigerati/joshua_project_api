@@ -1,13 +1,13 @@
 <?php
 /**
- * This file is part of curl Utility.
+ * This file is part of Cached Request.
  * 
- * curl Utility is free software: you can redistribute it and/or modify
+ * Cached Request is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
- * curl Utility is distributed in the hope that it will be useful,
+ * Cached Request is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -20,7 +20,7 @@
  * @copyright Copyright 2012 Missional Digerati
  * 
  */
-require_once(__DIR__."/curlUtility.php");
+require_once(__DIR__."/CurlUtility.php");
 /**
  * A class for requesting a website, and caching the result for later use.  Speeds up testing for API services.
  *
@@ -62,8 +62,36 @@ class CachedRequest {
 	 * @author Johnathan Pulos
 	 */
 	public function __construct() {
-		$this->setCurlUtilityObject(new curlUtility());
+		$this->setCurlUtilityObject(new CurlUtility());
 		$this->cacheDirectory = __DIR__ . "/cache/";
+	}
+	
+	/**
+	 * A public interface for a GET request
+	 *
+	 * @param string $url the url to retrieve
+	 * @param array $fields the fields to pass in
+	 * @param string $reference the reference used in the request 
+	 * @return string
+	 * @access public
+	 * @author Johnathan Pulos
+	 */
+	public function get($url, $fields, $reference) {
+		return $this->makeRequest('GET', $url, $fields, $reference);
+	}
+	
+	/**
+	 * A public interface for a POST request
+	 *
+	 * @param string $url the url to retrieve
+	 * @param array $fields the fields to pass in
+	 * @param string $reference the reference used in the request 
+	 * @return string
+	 * @access public
+	 * @author Johnathan Pulos
+	 */
+	public function post($url, $fields, $reference) {
+		return $this->makeRequest('POST', $url, $fields, $reference);
 	}
 
 	/**
@@ -106,6 +134,18 @@ class CachedRequest {
 		return $this->cacheDirectory . $this->safeFilename($reference) . '.cache';
 	}
 	
+	/**
+	 * Make the server request.  It will either run the curlUtility and create a new cached file, or it will feed back the contents
+	 * of the cache file
+	 *
+	 * @param string $method GET or POST
+	 * @param string $url the url to request
+	 * @param array $fields an array of fields to send
+	 * @param string $reference the reference used in the request
+	 * @return string
+	 * @access private
+	 * @author Johnathan Pulos
+	 */
 	private function makeRequest($method, $url, $fields, $reference) {
 		$contents = '';
 		if($this->isCached($reference)) {
