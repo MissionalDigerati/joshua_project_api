@@ -62,7 +62,7 @@ class CachedRequest {
 	 * @author Johnathan Pulos
 	 */
 	public function __construct() {
-		$this->curl = new curlUtility();
+		$this->setCurlUtilityObject(new curlUtility());
 		$this->cacheDirectory = __DIR__ . "/cache/";
 	}
 
@@ -104,6 +104,57 @@ class CachedRequest {
 	 */
 	public function getCacheFilename($reference) {
 		return $this->cacheDirectory . $reference . '.cache';
+	}
+	
+	private function makeRequest($method, $url, $fields, $reference) {
+		$contents = '';
+		if($this->isCached($reference)) {
+			$this->writeCacheFile($contents, $reference);
+		} else{
+			$contents = $this->curl->makeRequest($url, $method, $fields);
+			$this->writeCacheFile($contents, $reference);
+		}
+	}
+	
+	/**
+	 * Write the contents to the cached file
+	 *
+	 * @param string $contents the contents to write to the file
+	 * @param string $reference the reference used in the request
+	 * @return void
+	 * @access public
+	 * @author Johnathan Pulos
+	 */
+	private function writeCacheFile($contents, $reference) {
+		$fh = fopen($this->getCacheFilename($reference), 'w');
+		fwrite($fh, $contents);
+		fclose($fh);
+	}
+	
+	/**
+	 * Create a method for setting up the curlUtility, that way we can override it with a mock in testing
+	 *
+	 * @param object $curlUtility the curlUtility object
+	 * @return void
+	 * @access public
+	 * @author Johnathan Pulos
+	 */
+	private function setCurlUtilityObject($curlUtility) {
+		$this->curl = $curlUtility;
+	}
+	
+	/**
+	 * Checks if the file is cached
+	 *
+	 * @param string $reference the reference used in the request
+	 * @return boolean
+	 * @access private
+	 * @author Johnathan Pulos
+	 */
+	private function isCached($reference) {
+		$filename = $this->getCacheFilename($reference);
+		if(file_exists($filename) && (filemtime($filename) + $this->cacheTime >= time())) return true;
+		return false;
 	}
 	
 }

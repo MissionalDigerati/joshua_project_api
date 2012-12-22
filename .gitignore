@@ -1,2 +1,3 @@
 Config/database_settings.php
 .DS_Store
+Vendor/CachedRequest/cache/
