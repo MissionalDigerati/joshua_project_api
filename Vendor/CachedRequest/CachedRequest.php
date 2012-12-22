@@ -109,7 +109,7 @@ class CachedRequest {
 	private function makeRequest($method, $url, $fields, $reference) {
 		$contents = '';
 		if($this->isCached($reference)) {
-			$this->writeCacheFile($contents, $reference);
+			
 		} else{
 			$contents = $this->curl->makeRequest($url, $method, $fields);
 			$this->writeCacheFile($contents, $reference);
