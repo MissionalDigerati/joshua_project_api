@@ -46,7 +46,8 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 	 * @author Johnathan Pulos
 	 */
 	public function testClearCacheShouldEmptyCacheDirectory() {
-		$cachedFile = $this->cachedRequest->cacheDirectory . "newFile.cache";
+		$reference = "new_file";
+		$cachedFile = $this->cachedRequest->getCacheFilename($reference);
 		$this->createIfNotExistantFile($cachedFile);
 		$this->cachedRequest->clearCache();
 		$this->assertFalse(file_exists($cachedFile));
@@ -61,8 +62,8 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 	 * @author Johnathan Pulos
 	 */
 	public function testClearCacheFileByReferenceShouldRemoveTheCachedFile() {
-		$reference = 'unreachedPeople';
-		$cachedFile = $this->cachedRequest->cacheDirectory . $reference . ".cache";
+		$reference = 'unreached_people';
+		$cachedFile = $this->cachedRequest->getCacheFilename($reference);
 		$this->createIfNotExistantFile($cachedFile);
 		$this->cachedRequest->clearCachedFileByReference($reference);
 		$this->assertFalse(file_exists($cachedFile));
@@ -77,7 +78,7 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 	 * @author Johnathan Pulos
 	 */
 	public function testGetCacheFilenameShouldReturnNameWithReference() {
-		$reference = 'unreachedPeople';
+		$reference = 'unreached_people';
 		$filename = $this->cachedRequest->getCacheFilename($reference);
 		$present = strpos($filename, $reference);
 		$this->assertTrue($present !== false);
@@ -92,8 +93,8 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 	 * @author Johnathan Pulos
 	 */
 	public function testMakeRequestShouldCreateACacheFile() {
-		$reference = 'giantSmashingRobots';
-		$cachedFile = $this->cachedRequest->cacheDirectory . $reference . ".cache";
+		$reference = 'giant_smashing_robots';
+		$cachedFile = $this->cachedRequest->getCacheFilename($reference);
 		$this->removeIfFileExists($cachedFile);
 		$method = new ReflectionMethod('CachedRequest', 'makeRequest');
 		$method->setAccessible(TRUE);
@@ -109,8 +110,9 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 	 * @author Johnathan Pulos
 	 */
 	public function testMakeRequestShouldGrabTheWebsiteContentIfNoCache() {
-		$reference = 'giantSmashingRobotsWithMock';
-		$cachedFile = $this->cachedRequest->cacheDirectory . $reference . ".cache";
+		$reference = 'giant_smashing_robots_with_mock';
+		$expected = '<html><body><p>I AM A FAKE!</p></body></html>';
+		$cachedFile = $this->cachedRequest->getCacheFilename($reference);
 		$this->removeIfFileExists($cachedFile);
 		/**
 		 * Setup a Mock for the curlUtility
@@ -121,13 +123,14 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 		$curlUtilityMock->expects($this->once())
 										->method('makeRequest')
 										->with('http://feeds.feedburner.com/GiantRobotsSmashingIntoOtherGiantRobots', 'GET', array())
-										->will($this->returnValue('<html><body><p>I AM A FAKE!</p></body></html>'));
+										->will($this->returnValue($expected));
 		$method = new ReflectionMethod('CachedRequest', 'setCurlUtilityObject');
 		$method->setAccessible(TRUE);
 		$method->invoke($this->cachedRequest, $curlUtilityMock);
 		$method = new ReflectionMethod('CachedRequest', 'makeRequest');
 		$method->setAccessible(TRUE);
-		$method->invoke($this->cachedRequest, 'GET', 'http://feeds.feedburner.com/GiantRobotsSmashingIntoOtherGiantRobots', array(), $reference);
+		$results = $method->invoke($this->cachedRequest, 'GET', 'http://feeds.feedburner.com/GiantRobotsSmashingIntoOtherGiantRobots', array(), $reference);
+		$this->assertEquals($expected, $results);
 	}
 	
 	/**
@@ -138,8 +141,8 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 	 * @author Johnathan Pulos
 	 */
 	public function testMakeRequestShouldNotGrabTheWebsiteContentIfCached() {
-		$reference = 'giantSmashingRobotsWithMockCached';
-		$cachedFile = $this->cachedRequest->cacheDirectory . $reference . ".cache";
+		$reference = 'giant_smashing_robots_with_mock_cached';
+		$cachedFile = $this->cachedRequest->getCacheFilename($reference);
 		$this->createIfNotExistantFile($cachedFile);
 		/**
 		 * Setup a Mock for the curlUtility
@@ -166,8 +169,8 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 	 * @author Johnathan Pulos
 	 */
 	public function testWriteCacheFileShouldCreateAndWriteTheCachedFile() {
-		$reference = 'giantSmashingRobotsAgain';
-		$cachedFile = $this->cachedRequest->cacheDirectory . $reference . ".cache";
+		$reference = 'giant_smashing_robots_again';
+		$cachedFile = $this->cachedRequest->getCacheFilename($reference);
 		$this->removeIfFileExists($cachedFile);
 		$method = new ReflectionMethod('CachedRequest', 'writeCacheFile');
 		$method->setAccessible(TRUE);
@@ -185,8 +188,8 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 	 * @author Johnathan Pulos
 	 */
 	public function testIsCachedShouldReturnTrueIfFileExists() {
-		$reference = 'IAmACachedFile';
-		$cachedFile = $this->cachedRequest->cacheDirectory . $reference . ".cache";
+		$reference = 'i_am_a_cached_file';
+		$cachedFile = $this->cachedRequest->getCacheFilename($reference);
 		$this->createIfNotExistantFile($cachedFile);
 		$method = new ReflectionMethod('CachedRequest', 'isCached');
 		$method->setAccessible(TRUE);
@@ -203,8 +206,8 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 	 * @author Johnathan Pulos
 	 */
 	public function testIsCachedShouldReturnFalseIfNoFileExists() {
-		$reference = 'IAmAUnCachedFile';
-		$cachedFile = $this->cachedRequest->cacheDirectory . $reference . ".cache";
+		$reference = 'i_am_an_uncached_file';
+		$cachedFile = $this->cachedRequest->getCacheFilename($reference);
 		$this->removeIfFileExists($cachedFile);
 		$method = new ReflectionMethod('CachedRequest', 'isCached');
 		$method->setAccessible(TRUE);
@@ -221,15 +224,32 @@ class CachedRequestTest extends PHPUnit_Framework_TestCase {
 	 * @author Johnathan Pulos
 	 */
 	public function testIsCachedShouldReturnFalseIfExpired() {
-		$reference = 'IAmAOutdatedCachedFile';
+		$reference = 'i_am_an_outdated_cache_file';
 		$this->cachedRequest->cacheTime = 0;
-		$cachedFile = $this->cachedRequest->cacheDirectory . $reference . ".cache";
+		$cachedFile = $this->cachedRequest->getCacheFilename($reference);
 		$this->createIfNotExistantFile($cachedFile);
 		sleep(1);
 		$method = new ReflectionMethod('CachedRequest', 'isCached');
 		$method->setAccessible(TRUE);
 		$exists = $method->invoke($this->cachedRequest, $reference);
 		$this->assertFalse($exists);
+	}
+	
+	/**
+	 * Test that safeFilename() produces a safe filename for storage
+	 *
+	 * @covers CachedRequest::safeFilename
+	 * @return void
+	 * @access public
+	 * @author Johnathan Pulos
+	 */
+	public function testSafeFilenameMakesItSafe() {
+		$reference = '#$i am ^&a bad ()@##name';
+		$expected = 'iamabadname';
+		$method = new ReflectionMethod('CachedRequest', 'safeFilename');
+		$method->setAccessible(TRUE);
+		$actual = $method->invoke($this->cachedRequest, $reference);
+		$this->assertEquals($expected, $actual);
 	}
 	
 	/**

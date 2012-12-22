@@ -103,17 +103,18 @@ class CachedRequest {
 	 * @author Johnathan Pulos
 	 */
 	public function getCacheFilename($reference) {
-		return $this->cacheDirectory . $reference . '.cache';
+		return $this->cacheDirectory . $this->safeFilename($reference) . '.cache';
 	}
 	
 	private function makeRequest($method, $url, $fields, $reference) {
 		$contents = '';
 		if($this->isCached($reference)) {
-			
+			$contents = file_get_contents($this->getCacheFilename($reference));
 		} else{
 			$contents = $this->curl->makeRequest($url, $method, $fields);
 			$this->writeCacheFile($contents, $reference);
 		}
+		return $contents;
 	}
 	
 	/**
@@ -155,6 +156,18 @@ class CachedRequest {
 		$filename = $this->getCacheFilename($reference);
 		if(file_exists($filename) && (filemtime($filename) + $this->cacheTime >= time())) return true;
 		return false;
+	}
+	
+	/**
+	 * Helper function to validate filenames
+	 *
+	 * @param string $filename the filename to check
+	 * @return string
+	 * @access private
+	 * @author Johnathan Pulos
+	 */
+	private function safeFilename($filename) {
+		return preg_replace('/[^0-9a-z\.\_\-]/i','', strtolower($filename));
 	}
 	
 }
