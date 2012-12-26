@@ -2,7 +2,7 @@
 require_once(__DIR__."/../CachedRequest.php");
 require_once(__DIR__."/../CurlUtility.php");
 /**
- * A test for the CachedRequestt class
+ * A test for the CachedRequest class
  *
  * @package default
  * @author Johnathan Pulos

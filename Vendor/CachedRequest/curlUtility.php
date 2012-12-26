@@ -27,7 +27,13 @@
  * @author Johnathan Pulos
  */
 class CurlUtility {
-	
+	/**
+	 * The status code of the request
+	 *
+	 * @var integer
+	 * @access public
+	 */
+	public $responseCode = 0;
 	/**
 	 * Make a cURL Request
 	 *
@@ -71,6 +77,7 @@ class CurlUtility {
 		 * @author Johnathan Pulos
 		 */
 		$result = curl_exec($ch) or die(curl_error($ch));
+		$this->responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		/**
 		 * close connection
 		 *

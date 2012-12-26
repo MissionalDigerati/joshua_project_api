@@ -150,9 +150,11 @@ class CachedRequest {
 		$contents = '';
 		if($this->isCached($reference)) {
 			$contents = file_get_contents($this->getCacheFilename($reference));
+			$this->responseCode = 200;
 		} else{
 			$contents = $this->curl->makeRequest($url, $method, $fields);
 			$this->writeCacheFile($contents, $reference);
+			$this->responseCode = $this->curl->responseCode;
 		}
 		return $contents;
 	}
