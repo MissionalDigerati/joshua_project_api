@@ -1,0 +1,3 @@
+[submodule "Vendor/PHPToolbox"]
+	path = Vendor/PHPToolbox
+	url = git://github.com/codemis/php_toolbox.git
