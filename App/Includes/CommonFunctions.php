@@ -18,5 +18,18 @@ function arrayToXML($data, $parentWrap = "items", $individualWrap = "item") {
             $individualTag->addChild($key, $val);
         }
     }
-    return $xml->asXML();
+    return stripReturns($xml->asXML());
+}
+/**
+ * Strips the string of carriage returns
+ *
+ * @param string $str the string to clean 
+ * @return string
+ * @access public
+ * @author Johnathan Pulos
+ */
+function stripReturns($str) {
+	$str = str_replace("\n", '', $str);
+	$str = str_replace("\r", '', $str);
+	return $str;
 }

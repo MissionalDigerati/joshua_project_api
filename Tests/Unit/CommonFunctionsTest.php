@@ -15,9 +15,9 @@ class CommonFunctionsTest extends PHPUnit_Framework_TestCase {
      * @author Johnathan Pulos
      */
     public function testArrayToXMLShouldCreateCorrectXML() {
-        $expected = new SimpleXMLElement("<api><tests><test><name>test arrayToXML</name></test></tests></api>");
+        $expected = "<?xml version=\"1.0\"?><api><tests><test><name>test arrayToXML</name></test></tests></api>";
         $actual = arrayToXML(array("data" => array("name" => "test arrayToXML")), "tests", "test");
-        $this->assertEquals($expected->asXML(), $actual);
+        $this->assertEquals($expected, $actual);
     }
     
     /**
@@ -28,9 +28,9 @@ class CommonFunctionsTest extends PHPUnit_Framework_TestCase {
      * @author Johnathan Pulos
      */
     public function testArrayToXMLShouldDefaultWrappers() {
-        $expected = new SimpleXMLElement("<api><items><item><name>test arrayToXML</name></item></items></api>");
+        $expected = "<?xml version=\"1.0\"?><api><items><item><name>test arrayToXML</name></item></items></api>";
         $actual = arrayToXML(array("data" => array("name" => "test arrayToXML")));
-        $this->assertEquals($expected->asXML(), $actual);
+        $this->assertEquals($expected, $actual);
     }
 
 }

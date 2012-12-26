@@ -49,6 +49,15 @@ $app->get("/people_groups/daily_unreached.:format", function($format) use($app, 
         $app->render("/errors/404.xml.php");
         exit;
     }
+	/**
+	 * Rename the 10_40Window to a XML friendly tagname
+	 *
+	 * @author Johnathan Pulos
+	 */
+	foreach($data as $key => $val) {
+		$data[$key]['Window10_40'] = $val['10_40Window'];
+		unset($data[$key]['10_40Window']);
+	}
     /**
      * Render the final data
      *
