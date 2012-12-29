@@ -28,8 +28,7 @@ function arrayToXML($data, $parentWrap = "items", $individualWrap = "item") {
  * @access public
  * @author Johnathan Pulos
  */
-function stripReturns($str)
-{
+function stripReturns($str) {
     $str = str_replace("\n", '', $str);
     $str = str_replace("\r", '', $str);
     return $str;
