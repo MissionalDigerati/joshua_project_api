@@ -9,8 +9,7 @@
  * @access public
  * @author Johnathan Pulos
  */
-function arrayToXML($data, $parentWrap = "items", $individualWrap = "item")
-{
+function arrayToXML($data, $parentWrap = "items", $individualWrap = "item") {
     $xml = new SimpleXMLElement('<api/>');
     $parentTag = $xml->addChild($parentWrap);
     foreach ($data as $item) {
