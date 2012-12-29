@@ -9,12 +9,13 @@
  * @access public
  * @author Johnathan Pulos
  */
-function arrayToXML($data, $parentWrap = "items", $individualWrap = "item") {
+function arrayToXML($data, $parentWrap = "items", $individualWrap = "item")
+{
     $xml = new SimpleXMLElement('<api/>');
     $parentTag = $xml->addChild($parentWrap);
-    foreach($data as $item) {
+    foreach ($data as $item) {
         $individualTag = $parentTag->addChild($individualWrap);
-        foreach($item as $key => $val) {
+        foreach ($item as $key => $val) {
             $individualTag->addChild($key, $val);
         }
     }
@@ -28,8 +29,9 @@ function arrayToXML($data, $parentWrap = "items", $individualWrap = "item") {
  * @access public
  * @author Johnathan Pulos
  */
-function stripReturns($str) {
-	$str = str_replace("\n", '', $str);
-	$str = str_replace("\r", '', $str);
-	return $str;
+function stripReturns($str)
+{
+    $str = str_replace("\n", '', $str);
+    $str = str_replace("\r", '', $str);
+    return $str;
 }
