@@ -1,17 +1,21 @@
 <?php
 /**
- * Require the Database settings
+ * Declare the namespace
  *
  * @author Johnathan Pulos
  */
-require(dirname(dirname(dirname(__FILE__))) . '/Config/database_settings.php');
+namespace PHPToolbox;
+
+use PDO;
+
 /**
  * A Singleton class for handling the database connections
  *
  * @package default
  * @author Johnathan Pulos
  */
-class PDODatabase {
+class PDODatabase
+{
     /**
      * The PDO database instance of the class
      *
@@ -34,14 +38,25 @@ class PDODatabase {
      */
     private $PDO;
     /**
-     * Construct the class,  this is set private to create a Singleton Class.  Please use getInstance to create the class
+     * Construct the class,  this is set private to create a Singleton Class.  Please use getInstance to create the
+     * class.
      *
-     * @return void
      * @access private
      * @author Johnathan Pulos
      */
-    private function __construct() {
-        $databaseSettings = new DatabaseSettings;
+    private function __construct()
+    {
+    }
+    /**
+     * Set the database settings to use. The database class object should declare a public class variable named 
+     * 'default'.  This should be an array with the appropriate settings.
+     *
+     * @param object $databaseSettings the database settings class object
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function setDatabaseSettings($databaseSettings)
+    {
         $this->databaseSettings = $databaseSettings->default;
     }
     /**
@@ -51,10 +66,11 @@ class PDODatabase {
      * @access public
      * @author Johnathan Pulos
      */
-    public static function getInstance() {
-        if(!self::$PDODatabaseInstance) { 
-            self::$PDODatabaseInstance = new PDODatabase(); 
-        } 
+    public static function getInstance()
+    {
+        if (!self::$PDODatabaseInstance) {
+            self::$PDODatabaseInstance = new PDODatabase();
+        }
         return self::$PDODatabaseInstance;
     }
     /**
@@ -64,28 +80,30 @@ class PDODatabase {
      * @access public
      * @author Johnathan Pulos
      */
-    public function getDatabaseInstance() {
-        if(!$this->PDO) { 
+    public function getDatabaseInstance()
+    {
+        if (!$this->PDO) {
             $this->PDO = $this->getConnection();
-        } 
+        }
         return $this->PDO;
     }
     /**
      * Make a connection to the database
      *
-     * @return database object
+     * @return object
      * @access private
      * @author Johnathan Pulos
      */
-    private function getConnection() {
+    private function getConnection()
+    {
         $dbhost = $this->databaseSettings['host'];
         $dbuser = $this->databaseSettings['username'];
         $dbpass = $this->databaseSettings['password'];
         $dbname = $this->databaseSettings['name'];
         try {
-            $pdo = new PDO("mysql:host=" . $dbhost . ";dbname=" . $dbname . ";charset=utf8", $dbuser, $dbpass);
-            $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-        }catch(PDOException $e) {
+            $pdo = new \PDO("mysql:host=" . $dbhost . ";dbname=" . $dbname . ";charset=utf8", $dbuser, $dbpass);
+            $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
+        } catch (PDOException $e) {
             print "Error!: " . $e->getMessage() . "<br/>";
             die();
         }
