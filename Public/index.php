@@ -27,7 +27,8 @@ $db = $pdoDb->getDatabaseInstance();
  */
 require(__DIR__."/../App/Includes/CommonFunctions.php");
 /**
- * Get the current request to determine which PHP file to load.  Do not load all files, because it can take longer to load.
+ * Get the current request to determine which PHP file to load.  Do not load all files, because it can take longer to
+ * load.
  *
  * @author Johnathan Pulos
  */
@@ -40,7 +41,7 @@ $requestedUrl = $appRequest->getResourceUri();
  */
 $extArray = explode('.', $requestedUrl);
 $ext = end($extArray);
-if(!in_array($ext, array('json', 'xml'))) {
+if (!in_array($ext, array('json', 'xml'))) {
     $app->render("/errors/400.xml.php");
     exit;
 }
@@ -49,7 +50,7 @@ if(!in_array($ext, array('json', 'xml'))) {
  *
  * @author Johnathan Pulos
  */
-if (strpos($requestedUrl,'people_groups/') !== false) {
+if (strpos($requestedUrl, 'people_groups/') !== false) {
     require(__DIR__."/../App/PeopleGroups.php");
 }
 /**
