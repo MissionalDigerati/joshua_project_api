@@ -17,8 +17,10 @@ $app = new \Slim\Slim(array('templates.path' => "../App/Views/"));
  *
  * @author Johnathan Pulos
  */
+require(__DIR__."/../Config/database_settings.php");
 require(__DIR__."/../App/Includes/PDODatabase.php");
-$pdoDb = PDODatabase::getInstance();
+$pdoDb = \PHPToolbox\PDODatabase::getInstance();
+$pdoDb->setDatabaseSettings(new DatabaseSettings);
 $db = $pdoDb->getDatabaseInstance();
 /**
  * Include common functions
