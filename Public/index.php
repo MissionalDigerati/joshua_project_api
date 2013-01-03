@@ -4,23 +4,38 @@
  *
  * @author Johnathan Pulos
  */
+$DS = DIRECTORY_SEPARATOR;
 /**
  * Get the Slim Framework, and instantiate the class
  *
  * @author Johnathan Pulos
  */
-require(__DIR__."/../Slim/Slim.php");
+require(__DIR__ . $DS . ".." . $DS . "Slim" . $DS . "Slim.php");
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim(array('templates.path' => "../App/Views/"));
+/**
+ * Load up the Aura Auto Loader
+ *
+ * @author Johnathan Pulos
+ */
+$vendorDirectory = __DIR__ . $DS . ".." . $DS . "Vendor" . $DS;
+$loader = require $vendorDirectory . "Aura.Autoload" . $DS . "scripts" . $DS . "instance.php";
+$loader->register();
 /**
  * Setup the database object
  *
  * @author Johnathan Pulos
  */
-require(__DIR__."/../Config/database_settings.php");
-require(__DIR__."/../App/Includes/PDODatabase.php");
-$pdoDb = \PHPToolbox\PDODatabase::getInstance();
-$pdoDb->setDatabaseSettings(new DatabaseSettings);
+$loader->add("JPAPI\DatabaseSettings", __DIR__ . $DS . ".." . $DS . "Config");
+/**
+ * Autoload the PDO Database Class
+ *
+ * @author Johnathan Pulos
+ */
+$loader->add("PHPToolbox\PDODatabase\PDODatabaseConnect", $vendorDirectory . "PHPToolbox" . $DS . "src");
+
+$pdoDb = \PHPToolbox\PDODatabase\PDODatabaseConnect::getInstance();
+$pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings);
 $db = $pdoDb->getDatabaseInstance();
 /**
  * Include common functions

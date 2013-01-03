@@ -11,8 +11,9 @@
  * @return boolean
  * @author Johnathan Pulos
  */
-function isJSON($string) {
-	return json_decode($string) != null;
+function isJSON($string)
+{
+    return json_decode($string) != null;
 }
 /**
  * Checks if a string is XML
@@ -21,7 +22,7 @@ function isJSON($string) {
  * @return boolean
  * @author Johnathan Pulos
  */
-function isXML($string) {
-	return simplexml_load_string($string) !== false;
+function isXML($string)
+{
+    return simplexml_load_string($string) !== false;
 }
-?>

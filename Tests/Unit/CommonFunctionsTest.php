@@ -1,11 +1,13 @@
 <?php
-require_once('App/Includes/CommonFunctions.php');
+namespace Tests\Unit;
+
 /**
  * Test the common functions file
  *
  * @author Johnathan Pulos
  */
-class CommonFunctionsTest extends PHPUnit_Framework_TestCase {
+class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
+{
     
     /**
      * arrayToXML must return a valid XML structure
@@ -14,7 +16,8 @@ class CommonFunctionsTest extends PHPUnit_Framework_TestCase {
      * @access public
      * @author Johnathan Pulos
      */
-    public function testArrayToXMLShouldCreateCorrectXML() {
+    public function testArrayToXMLShouldCreateCorrectXML()
+    {
         $expected = "<?xml version=\"1.0\"?><api><tests><test><name>test arrayToXML</name></test></tests></api>";
         $actual = arrayToXML(array("data" => array("name" => "test arrayToXML")), "tests", "test");
         $this->assertEquals($expected, $actual);
@@ -27,10 +30,10 @@ class CommonFunctionsTest extends PHPUnit_Framework_TestCase {
      * @access public
      * @author Johnathan Pulos
      */
-    public function testArrayToXMLShouldDefaultWrappers() {
+    public function testArrayToXMLShouldDefaultWrappers()
+    {
         $expected = "<?xml version=\"1.0\"?><api><items><item><name>test arrayToXML</name></item></items></api>";
         $actual = arrayToXML(array("data" => array("name" => "test arrayToXML")));
         $this->assertEquals($expected, $actual);
     }
-
 }
