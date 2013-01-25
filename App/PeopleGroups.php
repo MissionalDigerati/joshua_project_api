@@ -1,13 +1,13 @@
 <?php
 /**
- * Get the daily people group for today.  You can specify a specific date using the following parameters
+ * Get the daily unreached people group for today.  You can specify a specific date using the following parameters
  * as GET vars.
  * month - two digit month
  * day - two digit day
  * 
- * For example, /people_groups/daily.json?month=01&day=31 will get the people group for Jan. 31st.
+ * For example, /people_groups/daily_unreached.json?month=01&day=31 will get the people group for Jan. 31st.
  *
- * GET /people_groups/daily
+ * GET /people_groups/daily_unreached
  * 
  * @api
  * @author Johnathan Pulos
