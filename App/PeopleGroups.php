@@ -8,6 +8,7 @@
  * For example, /people_groups/daily_unreached.json?month=01&day=31 will get the people group for Jan. 31st.
  *
  * GET /people_groups/daily_unreached
+ * Available Formats JSON & XML
  * 
  * @api
  * @author Johnathan Pulos
