@@ -26,6 +26,7 @@
  * @author Johnathan Pulos
  */
 $DS = DIRECTORY_SEPARATOR;
+$bypassExtTest = false;
 /**
  * Get the Slim Framework, and instantiate the class
  *
@@ -72,6 +73,10 @@ require(__DIR__."/../App/Includes/CommonFunctions.php");
  */
 $appRequest = $app->request();
 $requestedUrl = $appRequest->getResourceUri();
+if ($requestedUrl == "/") {
+    require(__DIR__."/../App/APIKeyRequestPages.php");
+    $bypassExtTest = true;
+}
 /**
  * Make sure they only supply supported formats
  *
@@ -79,7 +84,7 @@ $requestedUrl = $appRequest->getResourceUri();
  */
 $extArray = explode('.', $requestedUrl);
 $ext = end($extArray);
-if (!in_array($ext, array('json', 'xml'))) {
+if (($bypassExtTest === false) && (!in_array($ext, array('json', 'xml')))) {
     $app->render("/errors/400.xml.php");
     exit;
 }
