@@ -43,6 +43,23 @@ function arrayToXML($data, $parentWrap = "items", $individualWrap = "item")
     return stripReturns($xml->asXML());
 }
 /**
+ * Checks if $variable is false, if so it returns $variable, else it returns $default
+ *
+ * @param mixed $variable The variable to test if empty
+ * @param mixed $default The value to set if empty
+ * @return mixed
+ * @access public
+ * @author Johnathan Pulos
+ */
+function returnPresentOrDefault($variable, $default)
+{
+    if ($variable) {
+        return $variable;
+    } else {
+        return $default;
+    }
+}
+/**
  * Strips the string of carriage returns
  *
  * @param string $str the string to clean 

@@ -42,13 +42,10 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
-        $month = $appRequest->params('month');
-        $day = $appRequest->params('day');
-        if ($month) {
-            $month = intval(strip_tags($month));
-        } else {
-            $month = Date('n');
-        }
+        $paramMonth = intval(strip_tags($appRequest->params('month')));
+        $month = returnPresentOrDefault($paramMonth, Date('n'));
+        $paramDay = intval(strip_tags($appRequest->params('day')));
+        $day = returnPresentOrDefault($paramDay, Date('j'));
         if ((1 > $month) || ($month > 12)) {
             /**
              * They did not supply a valid month
@@ -57,11 +54,6 @@ $app->get(
              */
             $app->render("/errors/400.xml.php");
             exit;
-        }
-        if ($day) {
-            $day = intval(strip_tags($day));
-        } else {
-            $day = Date('j');
         }
         if ((1 > $day) || ($day > 31)) {
             /**

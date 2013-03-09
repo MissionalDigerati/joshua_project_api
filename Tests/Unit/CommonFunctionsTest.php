@@ -57,4 +57,36 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
         $actual = arrayToXML(array("data" => array("name" => "test arrayToXML")));
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * Test that returnPresentOrDefault returns the passed variable
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testReturnPresentOrDefaultShouldReturnPresentedVar()
+    {
+        $variable = "Frog";
+        $default = "Cow";
+        $expected = $variable;
+        $actual = returnPresentOrDefault($variable, $default);
+        $this->assertEquals($expected, $actual);
+    }
+
+        /**
+     * Test that returnPresentOrDefault returns the passed variable
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testReturnPresentOrDefaultShouldReturnDefaultVar()
+    {
+        $variable = "";
+        $default = "default";
+        $expected = $default;
+        $actual = returnPresentOrDefault($variable, $default);
+        $this->assertEquals($expected, $actual);
+    }
 }
