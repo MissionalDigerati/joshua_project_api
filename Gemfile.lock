@@ -1,0 +1,14 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    growl_notify (0.0.3)
+      rb-appscript
+    rb-appscript (0.6.1)
+    watchr (0.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  growl_notify
+  watchr

@@ -80,7 +80,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
             "up_json"
         );
         $this->assertEquals($this->cachedRequest->responseCode, 200);
-        $this->assertTrue(isJSON($response));
+        $this->assertFalse(isJSON($response));
     }
 
      /**
