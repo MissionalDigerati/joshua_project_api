@@ -74,7 +74,7 @@ require(__DIR__."/../App/Includes/CommonFunctions.php");
 $appRequest = $app->request();
 $requestedUrl = $appRequest->getResourceUri();
 if ($requestedUrl == "/") {
-    require(__DIR__."/../App/APIKeyRequestPages.php");
+    require(__DIR__."/../App/Resources/APIKeyRequestPages.php");
     $bypassExtTest = true;
 }
 /**
@@ -94,7 +94,7 @@ if (($bypassExtTest === false) && (!in_array($ext, array('json', 'xml')))) {
  * @author Johnathan Pulos
  */
 if (strpos($requestedUrl, 'people_groups/') !== false) {
-    require(__DIR__."/../App/PeopleGroups.php");
+    require(__DIR__."/../App/Resources/PeopleGroups.php");
 }
 /**
  * Now run the Slim Framework rendering
