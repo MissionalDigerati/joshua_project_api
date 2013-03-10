@@ -31,6 +31,6 @@
 $app->get(
     "/",
     function () use ($app, $db, $appRequest) {
-        $app->render('APIKeyRequest/home.html.php', array());
+        $app->render('StaticPages/home.html.php', array());
     }
 );

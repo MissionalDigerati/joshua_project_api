@@ -74,7 +74,7 @@ require(__DIR__."/../App/Includes/CommonFunctions.php");
 $appRequest = $app->request();
 $requestedUrl = $appRequest->getResourceUri();
 if ($requestedUrl == "/") {
-    require(__DIR__."/../App/Resources/APIKeyRequestPages.php");
+    require(__DIR__."/../App/Resources/StaticPages.php");
     $bypassExtTest = true;
 }
 /**
