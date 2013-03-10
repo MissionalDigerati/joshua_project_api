@@ -73,8 +73,17 @@ require(__DIR__."/../App/Includes/CommonFunctions.php");
  */
 $appRequest = $app->request();
 $requestedUrl = $appRequest->getResourceUri();
+/**
+ * Handle the visual HTML for handling the API Key Requests
+ *
+ * @author Johnathan Pulos
+ **/
 if ($requestedUrl == "/") {
     require(__DIR__."/../App/Resources/StaticPages.php");
+    $bypassExtTest = true;
+}
+if ($requestedUrl == "/api_keys") {
+    require(__DIR__."/../App/Resources/APIKeys.php");
     $bypassExtTest = true;
 }
 /**

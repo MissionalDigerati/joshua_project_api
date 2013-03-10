@@ -73,3 +73,52 @@ function stripReturns($str)
     $str = str_replace("\r", '', $str);
     return $str;
 }
+/**
+ * Validates the POST data when requesting a new API key and returns an array of missing fields
+ *
+ * @param object $appRequest the $app->request() object from SLIM
+ * @return array
+ * @access public
+ * @author Johnathan Pulos
+ **/
+function validateAPIKeyRequest($appRequest)
+{
+    $requireFields = array('name', 'email', 'usage');
+    $invalidFields = array();
+    foreach ($requireFields as $field) {
+        $fieldParam = strip_tags($appRequest->post($field));
+        if (!$fieldParam) {
+            array_push($invalidFields, $field);
+        }
+    }
+    return $invalidFields;
+}
+/**
+ * Creates the redirect url based on the invalid parameters, and the data passed
+ * It redirects to the homepage and passed required_fields in GET if there was an error
+ *
+ * @param array $formData the $app->request()->post() array from SLIM
+ * @param array $invalidFields an array with the names of all invalid fields
+ * @return string
+ * @author Johnathan Pulos
+ **/
+function generateAPIKeyRedirectURL(array $formData, array $invalidFields)
+{
+    $redirectURL = "/";
+    $validFieldParams = array();
+    $validParamsStartSymbol = "?";
+    foreach ($formData as $key => $value) {
+        $val = urlencode(strip_tags($value));
+        if ($val) {
+            array_push($validFieldParams, $key . "=" . $val);
+        }
+    }
+    if (!empty($invalidFields)) {
+        $redirectURL .= "?required_fields=" . implode("|", $invalidFields);
+        $validParamsStartSymbol = "&";
+    }
+    if (!empty($validFieldParams)) {
+        $redirectURL .= $validParamsStartSymbol . implode("&", $validFieldParams);
+    }
+    return $redirectURL;
+}

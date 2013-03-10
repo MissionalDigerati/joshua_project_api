@@ -31,7 +31,7 @@
 		<p>This is a new development of <a href="http://www.missionaldigerati.org">Missional Digerati</a>.  If you would like to get an API key, 
 			please complete the form below.</p>
 
-		<form class="form-horizontal" method="POST">
+		<form class="form-horizontal" method="POST" action="api_keys">
 			<fieldset>
 				<legend>Request An API Key</legend>
 				<div class="control-group">

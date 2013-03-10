@@ -74,7 +74,7 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 
-        /**
+    /**
      * Test that returnPresentOrDefault returns the passed variable
      *
      * @return void
@@ -87,6 +87,70 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
         $default = "default";
         $expected = $default;
         $actual = returnPresentOrDefault($variable, $default);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * Tests whether validateAPIKeyRequest() returns all required fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testValidateAPIKeyRequestShouldReturnAllFieldsIfEmpty()
+    {
+        $expected = array("name", "email", "usage");
+        $appRequest = $this->getMock('AppRequest', array('post'));
+        $appRequest->expects($this->any())->method('post')->will($this->returnValue(''));
+        $actual = validateAPIKeyRequest($appRequest);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * Tests whether validateAPIKeyRequest() returns only empty fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testValidateAPIKeyRequestShouldReturnOnlyEmptyFields()
+    {
+        $expected = array("name");
+        $appRequest = $this->getMock('AppRequest', array('post'));
+        $appRequest->expects($this->at(0))->method('post')->will($this->returnValue(''));
+        $appRequest->expects($this->at(1))->method('post')->will($this->returnValue('joe@yahoo.com'));
+        $appRequest->expects($this->at(2))->method('post')->will($this->returnValue('My website.'));
+        $actual = validateAPIKeyRequest($appRequest);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * Tests that the valid URL is created based on invalid params for generateAPIKeyRedirectURL
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testGenerateAPIKeyRedirectURLCreatesCorrectURLWithInvalidParams()
+    {
+        $expected = "/?required_fields=name|email|usage";
+        $formData = array("name" => "", "email" => "", "usage" => "");
+        $invalidFields = array("name", "email", "usage");
+        $actual = generateAPIKeyRedirectURL($formData, $invalidFields);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * Tests that the valid URL is created based on all valid params for generateAPIKeyRedirectURL
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testGenerateAPIKeyRedirectURLCreatesCorrectURLWithValidParams()
+    {
+        $expected = "/?name=Joe&email=joe%40yahoo.com&usage=Free+Willie";
+        $formData = array("name" => "Joe", "email" => "joe@yahoo.com", "usage" => "Free Willie");
+        $invalidFields = array();
+        $actual = generateAPIKeyRedirectURL($formData, $invalidFields);
         $this->assertEquals($expected, $actual);
     }
 }
