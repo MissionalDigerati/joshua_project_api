@@ -153,4 +153,29 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
         $actual = generateRedirectURL($redirectUrl, $formData, $invalidFields);
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * Test that generateRandomKey() creates the key
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testGenerateRandomKeyShouldReturnAValidKey()
+    {
+        $result = generateRandomKey(10);
+        $this->assertTrue($result != "");
+        $this->assertEquals(strtolower(gettype($result)), 'string');
+    }
+
+    /**
+     * Test wether generateRandomKey returns the correct length
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testGenerateRandomKeyShouldReturnCorrectLength()
+    {
+        $result = generateRandomKey(6);
+        $this->assertTrue(strlen($result) == 6);
+    }
 }

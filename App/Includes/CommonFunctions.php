@@ -123,3 +123,25 @@ function generateRedirectURL($redirectURL, array $formData, array $invalidFields
     }
     return $redirectURL;
 }
+/**
+ * Generate a random key of alphanumerical characters.  This function:
+ *
+ * @return void
+ * @author Johnathan Pulos
+ **/
+function generateRandomKey($length = 10)
+{
+    /**
+     * Gets both seconds and microseconds parts of the time
+     *
+     * @author Johnathan Pulos
+     **/
+    list($usec, $sec) = explode(' ', microtime());
+    /**
+     * remove the period in $usec
+     *
+     * @author Johnathan Pulos
+     **/
+    $usec = preg_replace('[\.]', '', $usec);
+    return substr(md5(date('ymd') . $usec . $sec), 0, $length);
+}
