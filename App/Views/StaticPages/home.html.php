@@ -30,7 +30,15 @@
     	<h2>Welcome to the Joshua Project API</h2>
 		<p>This is a new development of <a href="http://www.missionaldigerati.org">Missional Digerati</a>.  If you would like to get an API key, 
 			please complete the form below.</p>
-
+<?php
+if ((isset($data['api_key'])) && ($data['api_key'] != "")) {
+    ?>
+    <div class="alert alert-message">
+        You got a shiny new API key: <strong><?php echo $data['api_key']; ?></strong>  Happy programming!
+    </div>
+    <?php
+}
+?>
 		<form class="form-horizontal" method="POST" action="api_keys">
 			<fieldset>
 				<legend>Request An API Key</legend>

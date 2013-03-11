@@ -31,6 +31,7 @@
 $app->get(
     "/",
     function () use ($app, $db, $appRequest) {
-        $app->render('StaticPages/home.html.php', array());
+        $data = $appRequest->get();
+        $app->render('StaticPages/home.html.php', array('data' => $data));
     }
 );
