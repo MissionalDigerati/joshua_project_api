@@ -32,6 +32,10 @@ $app->get(
     "/",
     function () use ($app, $db, $appRequest) {
         $data = $appRequest->get();
-        $app->render('StaticPages/home.html.php', array('data' => $data));
+        $errors = array();
+        if ((isset($data['required_fields'])) && ($data['required_fields'] !="")) {
+            $errors = explode("|", $data['required_fields']);
+        }
+        $app->render('StaticPages/home.html.php', array('data' => $data, 'errors' => $errors));
     }
 );
