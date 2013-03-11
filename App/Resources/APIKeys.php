@@ -33,7 +33,7 @@ $app->post(
     function () use ($app, $db, $appRequest) {
         $formData = $appRequest->post();
         $invalidFields = validatePresenceOf(array("name", "email", "usage"), $formData);
-        $redirectURL = generateAPIKeyRedirectURL($formData, $invalidFields);
+        $redirectURL = generateRedirectURL("/", $formData, $invalidFields);
         if (!empty($invalidFields)) {
             $app->redirect($redirectURL);
         }

@@ -94,17 +94,18 @@ function validatePresenceOf(array $requiredFields, array $formData)
     return $invalidFields;
 }
 /**
- * Creates the redirect url based on the invalid parameters, and the data passed
- * It redirects to the homepage and passed required_fields in GET if there was an error
+ * Creates the redirect url based on the $invalidFields parameters, and the data passed $formData
+ * It redirects to the $redirectUrl and passes required_fields in GET string if there was an error
+ * @example /home?required_fields=name|address&state=CA&zip=91801
  *
- * @param array $formData the $app->request()->post() array from SLIM
+ * @param string $redirectURL the url to redirect to
+ * @param array $formData the data supplied by the form
  * @param array $invalidFields an array with the names of all invalid fields
  * @return string
  * @author Johnathan Pulos
  **/
-function generateAPIKeyRedirectURL(array $formData, array $invalidFields)
+function generateRedirectURL($redirectURL, array $formData, array $invalidFields)
 {
-    $redirectURL = "/";
     $validFieldParams = array();
     $validParamsStartSymbol = "?";
     foreach ($formData as $key => $value) {

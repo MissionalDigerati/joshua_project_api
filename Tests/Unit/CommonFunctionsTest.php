@@ -123,32 +123,34 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests that the valid URL is created based on invalid params for generateAPIKeyRedirectURL
+     * Tests that the valid URL is created based on invalid params for generateRedirectURL
      *
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testGenerateAPIKeyRedirectURLCreatesCorrectURLWithInvalidParams()
+    public function testGenerateRedirectURLCreatesCorrectURLWithInvalidParams()
     {
         $expected = "/?required_fields=name|email|usage";
         $formData = array("name" => "", "email" => "", "usage" => "");
         $invalidFields = array("name", "email", "usage");
-        $actual = generateAPIKeyRedirectURL($formData, $invalidFields);
+        $redirectUrl = "/";
+        $actual = generateRedirectURL($redirectUrl, $formData, $invalidFields);
         $this->assertEquals($expected, $actual);
     }
 
     /**
-     * Tests that the valid URL is created based on all valid params for generateAPIKeyRedirectURL
+     * Tests that the valid URL is created based on all valid params for generateRedirectURL
      *
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testGenerateAPIKeyRedirectURLCreatesCorrectURLWithValidParams()
+    public function testGenerateRedirectURLCreatesCorrectURLWithValidParams()
     {
         $expected = "/?name=Joe&email=joe%40yahoo.com&usage=Free+Willie";
         $formData = array("name" => "Joe", "email" => "joe@yahoo.com", "usage" => "Free Willie");
         $invalidFields = array();
-        $actual = generateAPIKeyRedirectURL($formData, $invalidFields);
+        $redirectUrl = "/";
+        $actual = generateRedirectURL($redirectUrl, $formData, $invalidFields);
         $this->assertEquals($expected, $actual);
     }
 }
