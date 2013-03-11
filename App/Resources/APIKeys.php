@@ -37,5 +37,23 @@ $app->post(
         if (!empty($invalidFields)) {
             $app->redirect($redirectURL);
         }
+        $newAPIKey = generateRandomKey(12);
+        $query = "INSERT INTO md_api_keys (name, email, api_usage, api_key, created)" .
+        " VALUES (:name, :email, :usage, :api_key, NOW())";
+        try {
+            $statement = $db->prepare($query);
+            $statement->execute(
+                array(
+                    'name' => $formData['name'],
+                    'email' => $formData['email'],
+                    'usage' => $formData['usage'],
+                    'api_key' => $newAPIKey
+                )
+            );
+        } catch (PDOException $e) {
+            $app->redirect("/?saving_error=true");
+        }
+        $redirectURL = generateRedirectURL("/", array('api_key' => $newAPIKey), array());
+        $app->redirect($redirectURL);
     }
 );
