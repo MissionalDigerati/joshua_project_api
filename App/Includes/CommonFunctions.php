@@ -74,19 +74,19 @@ function stripReturns($str)
     return $str;
 }
 /**
- * Validates the POST data when requesting a new API key and returns an array of missing fields
+ * Validates the presence of the requiredFields against the supplied formData
  *
- * @param object $appRequest the $app->request() object from SLIM
+ * @param array $requiredFields the fields requiring presence of
+ * @param array $formData the data passed form the form
  * @return array
  * @access public
  * @author Johnathan Pulos
  **/
-function validateAPIKeyRequest($appRequest)
+function validatePresenceOf(array $requiredFields, array $formData)
 {
-    $requireFields = array('name', 'email', 'usage');
     $invalidFields = array();
-    foreach ($requireFields as $field) {
-        $fieldParam = strip_tags($appRequest->post($field));
+    foreach ($requiredFields as $field) {
+        $fieldParam = strip_tags($formData[$field]);
         if (!$fieldParam) {
             array_push($invalidFields, $field);
         }

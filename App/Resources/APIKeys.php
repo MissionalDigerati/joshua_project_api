@@ -31,8 +31,8 @@
 $app->post(
     "/api_keys",
     function () use ($app, $db, $appRequest) {
-        $invalidFields = validateAPIKeyRequest($appRequest);
         $formData = $appRequest->post();
+        $invalidFields = validatePresenceOf(array("name", "email", "usage"), $formData);
         $redirectURL = generateAPIKeyRedirectURL($formData, $invalidFields);
         if (!empty($invalidFields)) {
             $app->redirect($redirectURL);

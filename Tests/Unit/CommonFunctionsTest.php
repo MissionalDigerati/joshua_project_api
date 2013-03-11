@@ -91,36 +91,34 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests whether validateAPIKeyRequest() returns all required fields
+     * Tests whether validatePresenceOf() returns all required fields
      *
      * @return void
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testValidateAPIKeyRequestShouldReturnAllFieldsIfEmpty()
+    public function testValidatePresenceShouldReturnAllFieldsIfEmpty()
     {
         $expected = array("name", "email", "usage");
-        $appRequest = $this->getMock('AppRequest', array('post'));
-        $appRequest->expects($this->any())->method('post')->will($this->returnValue(''));
-        $actual = validateAPIKeyRequest($appRequest);
+        $requiredFields = array("name", "email", "usage");
+        $formData = array("name" => "", "email" => "", "usage" => "");
+        $actual = validatePresenceOf($requiredFields, $formData);
         $this->assertEquals($expected, $actual);
     }
 
     /**
-     * Tests whether validateAPIKeyRequest() returns only empty fields
+     * Tests whether validatePresenceOf() returns only empty fields
      *
      * @return void
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testValidateAPIKeyRequestShouldReturnOnlyEmptyFields()
+    public function testValidatePresenceOfShouldReturnOnlyEmptyFields()
     {
         $expected = array("name");
-        $appRequest = $this->getMock('AppRequest', array('post'));
-        $appRequest->expects($this->at(0))->method('post')->will($this->returnValue(''));
-        $appRequest->expects($this->at(1))->method('post')->will($this->returnValue('joe@yahoo.com'));
-        $appRequest->expects($this->at(2))->method('post')->will($this->returnValue('My website.'));
-        $actual = validateAPIKeyRequest($appRequest);
+        $requiredFields = array("name", "email", "usage");
+        $formData = array("name" => "", "email" => "joe@yahoo.com", "usage" => "My website.");
+        $actual = validatePresenceOf($requiredFields, $formData);
         $this->assertEquals($expected, $actual);
     }
 
