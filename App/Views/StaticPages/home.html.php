@@ -45,8 +45,16 @@ if ((isset($data['api_key'])) && ($data['api_key'] != "")) {
 				<div class="control-group">
 					<label class="control-label" for="input-name">Name <span class="required-field">*</span></label>
 					<div class="controls">
-						<input type="text" name="name" id="input-name" placeholder="Name">
 <?php
+if ((isset($data['name'])) && ($data['name'] != "")) {
+    ?>
+        <input type="text" name="name" id="input-name"  value="<?php echo $data['name']; ?>">
+    <?php
+} else {
+    ?>
+        <input type="text" name="name" id="input-name" placeholder="Name">
+    <?php
+}
 if ((!empty($errors)) && (in_array('name', $errors))) {
     ?>
         <span class="help-inline error">Name is Required!</span>
@@ -58,8 +66,16 @@ if ((!empty($errors)) && (in_array('name', $errors))) {
 				<div class="control-group">
 					<label class="control-label" for="input-email">Email <span class="required-field">*</span></label>
 					<div class="controls">
-						<input type="text" name="email" id="input-email" placeholder="Email">
 <?php
+if ((isset($data['email'])) && ($data['email'] != "")) {
+    ?>
+        <input type="text" name="email" id="input-email" value="<?php echo $data['email']; ?>">
+    <?php
+} else {
+    ?>
+        <input type="text" name="email" id="input-email" placeholder="Email">
+    <?php
+}
 if ((!empty($errors)) && (in_array('email', $errors))) {
     ?>
         <span class="help-inline error">Email is Required!</span>
@@ -71,8 +87,16 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
 				<div class="control-group">
 					<label class="control-label" for="input-usage">How Will You Use the API? <span class="required-field">*</span></label>
 					<div class="controls">
-						<textarea rows="6" id="input-usage" name="usage"></textarea>
 <?php
+if ((isset($data['usage'])) && ($data['usage'] != "")) {
+    ?>
+        <textarea rows="6" id="input-usage" name="usage"><?php echo $data['usage']; ?></textarea>
+    <?php
+} else {
+    ?>
+        <textarea rows="6" id="input-usage" name="usage"></textarea>
+    <?php
+}
 if ((!empty($errors)) && (in_array('usage', $errors))) {
     ?>
         <span class="help-inline error">Usage is Required!</span>
