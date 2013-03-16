@@ -20,6 +20,21 @@
  * 
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  */
+$app->get(
+    "/api_keys",
+    function () use ($app, $db, $appRequest) {
+        $query = "SELECT * FROM md_api_keys ORDER BY created DESC";
+        try {
+            $statement = $db->prepare($query);
+            $statement->execute(array());
+            $api_keys = $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo $e;
+            exit;
+        }
+        $app->render('APIKeys/index.html.php', array('api_keys' => $api_keys));
+    }
+);
 /**
  * Create an API key
  *
