@@ -20,5 +20,6 @@
  * @copyright Copyright 2013 Missional Digerati
  * 
  */
+header('HTTP/1.1 400 Bad Request');
 ?>
 <api><status>error</status><error><code>400</code><message>Bad Request</message></error></api>

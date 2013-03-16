@@ -20,7 +20,7 @@
  * @copyright Copyright 2013 Missional Digerati
  * 
  */
-header('HTTP/1.1 400 Bad Request');
+header('HTTP/1.1 401 Unauthorized');
 echo json_encode(
-    array('api' => array('status'  =>  'error', 'error' => array('code'    =>  400, 'message'  =>  'Bad Request')))
+    array('api' => array('status'  =>  'error', 'error' => array('code'    =>  401, 'message'  =>  'Unautorized')))
 );

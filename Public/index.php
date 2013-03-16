@@ -98,6 +98,35 @@ if (($bypassExtTest === false) && (!in_array($ext, array('json', 'xml')))) {
     exit;
 }
 /**
+ * Check if they have a valid API key, else send a 401 error
+ *
+ * @author Johnathan Pulos
+ **/
+if ($bypassExtTest === false) {
+    $APIKey = $appRequest->get('api_key');
+    if ((!isset($APIKey)) || ($APIKey == "")) {
+        $app->render("/errors/401." . $ext . ".php");
+        exit;
+    }
+    /**
+     * Find the API Key in the database, and validate it
+     *
+     * @author Johnathan Pulos
+     **/
+    $query = "SELECT * FROM md_api_keys where api_key = :api_key LIMIT 1";
+    $statement = $db->prepare($query);
+    $statement->execute(array('api_key' => $APIKey));
+    $apiKeyData = $statement->fetchAll(PDO::FETCH_ASSOC);
+    if (empty($apiKeyData)) {
+        $app->render("/errors/401." . $ext . ".php");
+        exit;
+    }
+    if ($apiKeyData[0]['suspended'] == 1) {
+        $app->render("/errors/401." . $ext . ".php");
+        exit;
+    }
+}
+/**
  * Check if the request is for People Groups
  *
  * @author Johnathan Pulos

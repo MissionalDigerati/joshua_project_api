@@ -93,10 +93,10 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      **/
     public function testAPIKequestWithMissingNamePOSTParamsShouldSetRequiredFieldsParam()
     {
-        $expectedURL = "http://joshua.api.local/?required_fields=name&email=joe%40yahoo.com&usage=awebsite";
+        $expectedURL = "http://joshua.api.local/?required_fields=name&email=joe%40yahoo.com&usage=testing";
         $this->cachedRequest->post(
             "http://joshua.api.local/api_keys",
-            array('name' => '', 'email' => 'joe@yahoo.com', 'usage' => 'awebsite'),
+            array('name' => '', 'email' => 'joe@yahoo.com', 'usage' => 'testing'),
             "api_keys_required_fields"
         );
         $actualURL = $this->cachedRequest->lastVisitedURL;
@@ -112,10 +112,10 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      **/
     public function testAPIKequestWithMissingEmailPOSTParamsShouldSetRequiredFieldsParam()
     {
-        $expectedURL = "http://joshua.api.local/?required_fields=email&name=joe&usage=awebsite";
+        $expectedURL = "http://joshua.api.local/?required_fields=email&name=joe&usage=testing";
         $this->cachedRequest->post(
             "http://joshua.api.local/api_keys",
-            array('name' => 'joe', 'email' => '', 'usage' => 'awebsite'),
+            array('name' => 'joe', 'email' => '', 'usage' => 'testing'),
             "api_keys_required_fields"
         );
         $actualURL = $this->cachedRequest->lastVisitedURL;
@@ -152,7 +152,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     {
         $this->cachedRequest->post(
             "http://joshua.api.local/api_keys",
-            array('name' => 'joe', 'email' => 'joe@yahoo.com', 'usage' => 'awebsite'),
+            array('name' => 'joe', 'email' => 'joe@yahoo.com', 'usage' => 'testing'),
             "api_keys_required_fields"
         );
         $lastVisitedURL = $this->cachedRequest->lastVisitedURL;

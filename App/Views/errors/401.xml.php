@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of Joshua Project API.
  * 
@@ -20,7 +20,6 @@
  * @copyright Copyright 2013 Missional Digerati
  * 
  */
-header('HTTP/1.1 400 Bad Request');
-echo json_encode(
-    array('api' => array('status'  =>  'error', 'error' => array('code'    =>  400, 'message'  =>  'Bad Request')))
-);
+header('HTTP/1.1 401 Unauthorized');
+?>
+<api><status>error</status><error><code>401</code><message>Unauthorized</message></error></api>

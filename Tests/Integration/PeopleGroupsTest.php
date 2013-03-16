@@ -38,6 +38,14 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     public $cachedRequest;
 
     /**
+     * The APIKey to access the API
+     *
+     * @var string
+     * @access private
+     **/
+    private $APIKey = '';
+
+    /**
      * Set up the test class
      *
      * @return void
@@ -53,6 +61,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
             DIRECTORY_SEPARATOR . "Support" .
             DIRECTORY_SEPARATOR . "cache" .
             DIRECTORY_SEPARATOR;
+        $this->setAPIKey();
     }
     /**
      * Runs at the end of each test
@@ -63,6 +72,38 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         $this->cachedRequest->clearCache();
+    }
+
+    /**
+     * Tests that you can only access page with an API Key
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testShouldRefuseAccessWithoutAnAPIKey()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups/daily_unreached.json",
+            array(),
+            "up_json"
+        );
+        $this->assertEquals($this->cachedRequest->responseCode, 401);
+    }
+
+    /**
+     * Tests that you can only access page with a valid API Key
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testShouldRefuseAccessWithABadAPIKey()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups/daily_unreached.json?api_key=BADKEY",
+            array(),
+            "up_json"
+        );
+        $this->assertEquals($this->cachedRequest->responseCode, 401);
     }
 
      /**
@@ -76,7 +117,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/people_groups/daily_unreached.json",
-            array(),
+            array('api_key' => $this->APIKey),
             "up_json"
         );
         $this->assertEquals($this->cachedRequest->responseCode, 200);
@@ -94,7 +135,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/people_groups/daily_unreached.xml",
-            array(),
+            array('api_key' => $this->APIKey),
             "up_xml"
         );
         $this->assertEquals($this->cachedRequest->responseCode, 200);
@@ -112,8 +153,8 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedMonth = '5';
         $expectedDay = Date('j');
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups/daily_unreached.json?month=".$expectedMonth,
-            array(),
+            "http://joshua.api.local/people_groups/daily_unreached.json",
+            array('api_key' => $this->APIKey, 'month' => $expectedMonth),
             "up_month"
         );
         $decodedResponse = json_decode($response, true);
@@ -132,8 +173,8 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedMonth = Date('n');
         $expectedDay = '23';
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups/daily_unreached.json?day=".$expectedDay,
-            array(),
+            "http://joshua.api.local/people_groups/daily_unreached.json",
+            array('api_key' => $this->APIKey, 'day' => $expectedDay),
             "up_day"
         );
         $decodedResponse = json_decode($response, true);
@@ -152,12 +193,37 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedMonth = '3';
         $expectedDay = '21';
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups/daily_unreached.json?day=".$expectedDay."&month=".$expectedMonth,
-            array(),
+            "http://joshua.api.local/people_groups/daily_unreached.json",
+            array('api_key' => $this->APIKey, 'day' => $expectedDay, 'month' => $expectedMonth),
             "up_day_and_month"
         );
         $decodedResponse = json_decode($response, true);
         $this->assertEquals($expectedMonth, $decodedResponse[0]['LRofTheDayMonth']);
         $this->assertEquals($expectedDay, $decodedResponse[0]['LRofTheDayDay']);
+    }
+
+    /**
+     * gets an APIKey by sending a request to the /api_keys url
+     *
+     * @return string
+     * @author Johnathan Pulos
+     **/
+    private function setAPIKey()
+    {
+        if ($this->APIKey == "") {
+            $this->cachedRequest->post(
+                "http://joshua.api.local/api_keys",
+                array('name' => 'people_groups_test', 'email' => 'joe@people_groups.com', 'usage' => 'testing'),
+                "people_groups_api"
+            );
+            $lastVisitedURL = $this->cachedRequest->lastVisitedURL;
+            $APIKeyCheck = preg_match('/api_key=(.*)/', $lastVisitedURL, $matches);
+            if (isset($matches[1])) {
+                $this->APIKey = $matches[1];
+            } else {
+                echo "Unable to set the API Key!";
+                die();
+            }
+        }
     }
 }
