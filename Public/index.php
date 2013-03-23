@@ -60,6 +60,12 @@ $pdoDb = \PHPToolbox\PDODatabase\PDODatabaseConnect::getInstance();
 $pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings);
 $db = $pdoDb->getDatabaseInstance();
 /**
+ * Autoload the HTTP basic authentication
+ *
+ * @author Johnathan Pulos
+ **/
+$loader->add("Slim\Extras\Middleware\HttpBasicAuth", $vendorDirectory . "SlimExtras");
+/**
  * Include common functions
  *
  * @author Johnathan Pulos
@@ -83,6 +89,21 @@ if ($requestedUrl == "/") {
     $bypassExtTest = true;
 }
 if (strpos($requestedUrl, '/api_keys') !== false) {
+    /**
+     * We need to lock out all PUT and GET requests for api_keys.  These are the admin users.
+     *
+     * @author Johnathan Pulos
+     **/
+    if (($appRequest->isGet()) || ($appRequest->isPut())) {
+        /**
+         * Autoload the Admin settings
+         *
+         * @author Johnathan Pulos
+         */
+        $loader->add("JPAPI\AdminSettings", __DIR__ . $DS . ".." . $DS . "Config");
+        $adminSettings = new \JPAPI\AdminSettings;
+        $app->add(new Slim\Extras\Middleware\HttpBasicAuth($adminSettings->default['username'], $adminSettings->default['password']));
+    }
     require(__DIR__."/../App/Resources/APIKeys.php");
     $bypassExtTest = true;
 }
