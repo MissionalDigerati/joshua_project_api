@@ -57,7 +57,7 @@
 <?php
 if ((isset($data['api_key'])) && ($data['api_key'] != "")) {
     ?>
-    <div class="alert alert-message">
+    <div class="alert alert-success">
         You got a shiny new API key: <strong><?php echo $data['api_key']; ?></strong>  Happy programming!
     </div>
     <?php

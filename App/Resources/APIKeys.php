@@ -20,9 +20,18 @@
  * 
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  */
+/**
+ * Lists all the current API Keys
+ *
+ * GET /api_keys
+ * Available Formats HTML
+ *
+ * @author Johnathan Pulos
+ **/
 $app->get(
     "/api_keys",
     function () use ($app, $db, $appRequest) {
+        $data = $appRequest->get();
         $query = "SELECT * FROM md_api_keys ORDER BY created DESC";
         try {
             $statement = $db->prepare($query);
@@ -32,7 +41,42 @@ $app->get(
             echo $e;
             exit;
         }
-        $app->render('APIKeys/index.html.php', array('api_keys' => $api_keys));
+        $app->render('APIKeys/index.html.php', array('api_keys' => $api_keys, 'data' => $data));
+    }
+);
+/**
+ * Sets the suspended attribute on the API Key
+ *
+ * PUT /api_keys/:id
+ * Available Formats HTML
+ *
+ * @author Johnathan Pulos
+ **/
+$app->put(
+    "/api_keys/:id",
+    function ($id) use ($app, $db, $appRequest) {
+        $formData = $appRequest->put();
+        if (!isset($formData['suspended'])) {
+            $app->redirect("/api_keys?saving_error=true");
+        }
+        $query = "UPDATE md_api_keys SET suspended = :suspended WHERE id = :id";
+        try {
+            $statement = $db->prepare($query);
+            $statement->execute(
+                array(
+                    'id' => $id,
+                    'suspended' => $formData['suspended']
+                )
+            );
+        } catch (PDOException $e) {
+            $app->redirect("/api_keys?saving_error=true");
+        }
+        if ($formData['suspended'] == 0) {
+            $keyState = "reinstated";
+        } else {
+            $keyState = "suspended";
+        }
+        $app->redirect("/api_keys?saved=true&key_state=" . $keyState);
     }
 );
 /**

@@ -82,7 +82,7 @@ if ($requestedUrl == "/") {
     require(__DIR__."/../App/Resources/StaticPages.php");
     $bypassExtTest = true;
 }
-if ($requestedUrl == "/api_keys") {
+if (strpos($requestedUrl, '/api_keys') !== false) {
     require(__DIR__."/../App/Resources/APIKeys.php");
     $bypassExtTest = true;
 }

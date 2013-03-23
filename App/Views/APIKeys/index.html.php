@@ -52,6 +52,21 @@
 	</div>
     <div class="container">
     	<h2>Existing API Keys</h2>
+<?php
+if ((isset($data['saving_error'])) && ($data['saving_error'] == "true")) {
+    ?>
+    <div class="alert alert-error">
+        Your request has had an error!  Please try again.
+    </div>
+    <?php
+} else if ((isset($data['saved'])) && ($data['saved'] == "true")) {
+    ?>
+    <div class="alert alert-success">
+        The API Key has been <?php echo $data['key_state']; ?>!
+    </div>
+    <?php
+}
+?>
 		<table class="table table-bordered table-condensed table-hover">
 			<thead>
 				<tr>
@@ -72,7 +87,8 @@ foreach ($api_keys as $api_key) {
         <td><?php echo $api_key['api_key']; ?></td>
         <td><?php echo date("M j, Y g:i a", strtotime($api_key['created'])); ?></td>
         <td>
-            <form method="put" action="/api_keys/<?php echo $api_key['id']; ?>">
+            <form method="post" action="/api_keys/<?php echo $api_key['id']; ?>">
+                <input type="hidden" name="_METHOD" value="PUT">
     <?php
     if ($api_key['suspended'] == 1) {
         ?>
