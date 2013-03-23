@@ -23,7 +23,7 @@
 namespace JPAPI;
 
 /**
- * A class that holds the database settings, please rename to database_settings.php
+ * A class that holds the database settings, please rename to DatabaseSettings.php
  *
  * @package default
  * @author Johnathan Pulos
