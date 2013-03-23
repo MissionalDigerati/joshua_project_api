@@ -88,7 +88,7 @@ if ($requestedUrl == "/") {
     require(__DIR__."/../App/Resources/StaticPages.php");
     $bypassExtTest = true;
 }
-if ( strpos($requestedUrl, '/api_keys') !== false ) {
+if (strpos($requestedUrl, '/api_keys') !== false) {
     /**
      * We need to lock out all PUT and GET requests for api_keys.  These are the admin users.
      *
