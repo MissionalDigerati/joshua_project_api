@@ -36,9 +36,9 @@ class DatabaseSettings
      * @var array
      * @access public
      */
-    public $default = array(    'host'      =>  'localhost',
-                                'name'      =>  'jp',
-                                'username'  =>  'jp',
-                                'password'  =>  'jp'
+    public $default = array(    'host'      =>  'HOST',
+                                'name'      =>  'DATABASE_NAME',
+                                'username'  =>  'USERNAME',
+                                'password'  =>  'PASSWORD'
                             );
 }
