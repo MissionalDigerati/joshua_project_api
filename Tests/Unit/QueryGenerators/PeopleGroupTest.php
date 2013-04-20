@@ -115,4 +115,25 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $method->setAccessible(true);
         $method->invoke($peopleGroup, array('name'));
     }
+    public function testShouldReturnCleanedVariableFromCleanParams()
+    {
+        $var = "<html>1223 Fresh Cake <a href='hello'>Boo</a></html>";
+        $expected = array("my_string" => "1223 Fresh Cake Boo");
+        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        /**
+         * We need to reset $this->providedParams, since it is cleaned during the construction of the class
+         *
+         * @package default
+         * @author Johnathan Pulos
+         */
+        $property = $reflectionOfPeopleGroup->getProperty('providedParams');
+        $property->setAccessible(true);
+        $property->setValue($reflectionOfPeopleGroup, $expected);
+        $method = $reflectionOfPeopleGroup->getMethod('cleanParams');
+        $method->setAccessible(true);
+        $method->invoke($peopleGroup);
+        $actual = $property->getValue($reflectionOfPeopleGroup);
+        $this->assertEquals($expected['my_string'], $actual['my_string']);
+    }
 }

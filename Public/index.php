@@ -124,7 +124,7 @@ if (($bypassExtTest === false) && (!in_array($ext, array('json', 'xml')))) {
  * @author Johnathan Pulos
  **/
 if ($bypassExtTest === false) {
-    $APIKey = $appRequest->get('api_key');
+    $APIKey = strip_tags($appRequest->get('api_key'));
     if ((!isset($APIKey)) || ($APIKey == "")) {
         $app->render("/errors/401." . $ext . ".php");
         exit;

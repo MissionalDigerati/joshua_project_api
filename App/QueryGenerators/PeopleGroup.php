@@ -42,12 +42,14 @@ class PeopleGroup
      * The variables for the prepared statement
      *
      * @var array
+      * @access public
      */
     public $preparedVariables = array();
     /**
      * The provided parameters passed in from the $_GET params
      *
      * @var array
+      * @access private
      */
     private $providedParams = array();
     /**
@@ -57,9 +59,19 @@ class PeopleGroup
      * @access private
      */
     private $tableName = "jppeoples";
+    /**
+     * Construct the class
+     *
+     * @param array $getParams the params to use for the query.  Each message has required fields, and will throw error
+     * if they are missing
+     * 
+     * @access public
+     * @author Johnathan Pulos
+     */
     public function __construct($getParams)
     {
         $this->providedParams = $getParams;
+        $this->cleanParams();
     }
     /**
      * Get the unreached of the day query statement.  Requires a month and day param in the given params.
@@ -71,16 +83,18 @@ class PeopleGroup
      */
     public function dailyUnreached()
     {
+        $month = intval($this->providedParams['month']);
+        $day = intval($this->providedParams['day']);
         $this->validateProvidedParams(array('month', 'day'));
         $this->preparedStatement = "SELECT * FROM jppeoples WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
-        $this->preparedVariables = array('month' => $this->providedParams['month'], 'day' => $this->providedParams['day']);
+        $this->preparedVariables = array('month' => $month, 'day' => $day);
     }
     /**
      * Checks if the params were set in the __construct() method of this class on providedParams. If not, then throw an error.
      *
      * @param array $params the keys of the required params
      * @return void
-     * @access public
+     * @access private
      * @author Johnathan Pulos
      */
     private function validateProvidedParams(array $params)
@@ -90,5 +104,20 @@ class PeopleGroup
                 throw new \InvalidArgumentException("Missing the required parameter " . $key);
             }
         }
+    }
+    /**
+     * Cleans the parameters passed to $this->providedParams variable.
+     *
+     * @return void
+     * @access private
+     * @author Johnathan Pulos
+     */
+    private function cleanParams()
+    {
+        $newValue = array();
+        foreach ($this->providedParams as $key => $value) {
+            $newValue[$key] = strip_tags($value);
+        }
+        $this->providedParams = $newValue;
     }
 }

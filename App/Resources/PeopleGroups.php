@@ -42,10 +42,8 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
-        $paramMonth = intval(strip_tags($appRequest->params('month')));
-        $month = returnPresentOrDefault($paramMonth, Date('n'));
-        $paramDay = intval(strip_tags($appRequest->params('day')));
-        $day = returnPresentOrDefault($paramDay, Date('j'));
+        $month = returnPresentOrDefault($appRequest->params('month'), Date('n'));
+        $day = returnPresentOrDefault($appRequest->params('day'), Date('j'));
         if ((1 > $month) || ($month > 12)) {
             /**
              * They did not supply a valid month
