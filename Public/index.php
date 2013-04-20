@@ -153,6 +153,12 @@ if ($bypassExtTest === false) {
  * @author Johnathan Pulos
  */
 if (strpos($requestedUrl, 'people_groups/') !== false) {
+    /**
+     * Load the Query Generator for People Groups
+     *
+     * @author Johnathan Pulos
+     */
+    $loader->add("QueryGenerators", __DIR__ . $DS . ".." . $DS . "App");
     require(__DIR__."/../App/Resources/PeopleGroups.php");
 }
 /**

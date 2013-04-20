@@ -64,9 +64,10 @@ $app->get(
             $app->render("/errors/400.xml.php");
             exit;
         }
-        $query = "SELECT * FROM jppeoples WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
-        $statement = $db->prepare($query);
-        $statement->execute(array('month' => $month, 'day' => $day));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('month' => $month, 'day' => $day));
+        $peopleGroup->dailyUnreached();
+        $statement = $db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
         $data = $statement->fetchAll(PDO::FETCH_ASSOC);
         if (empty($data)) {
             $app->render("/errors/404.xml.php");
