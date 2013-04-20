@@ -30,19 +30,50 @@ $PHPToolboxDirectory =
     __DIR__ . $DS . ".." .
     $DS . "Vendor" . $DS .
     "PHPToolbox" . $DS .
-    "src" . $DS .
-    "PHPToolbox" . $DS;
-require_once($PHPToolboxDirectory . "CachedRequest" . $DS . "CurlUtility.php");
-require_once($PHPToolboxDirectory . "CachedRequest" . $DS . "CachedRequest.php");
+    "src" . $DS;
 require_once("Tests" . $DS . "Support" . $DS . "HelperFunctions.php");
 require_once("App" . $DS . "Includes" . $DS . "CommonFunctions.php");
+/**
+ * Load up the Aura Auto Loader
+ *
+ * @author Johnathan Pulos
+ */
+$vendorDirectory = __DIR__ . $DS . ".." . $DS . "Vendor" . $DS;
+$loader = require $vendorDirectory . "Aura.Autoload" . $DS . "scripts" . $DS . "instance.php";
+$loader->register();
+/**
+ * Silent the Autoloader so we can see correct errors
+ *
+ * @author Johnathan Pulos
+ */
+$loader->setMode(\Aura\Autoload\Loader::MODE_SILENT);
+/**
+ * Autoload the Vendor Class
+ *
+ * @author Johnathan Pulos
+ */
+$loader->add("PHPToolbox\CachedRequest\CurlUtility", $PHPToolboxDirectory);
+$loader->add("PHPToolbox\CachedRequest\CachedRequest", $PHPToolboxDirectory);
+/**
+ * Setup the database object
+ *
+ * @author Johnathan Pulos
+ */
+$loader->add("JPAPI\DatabaseSettings", __DIR__ . $DS . ".." . $DS . "Config");
+/**
+ * Autoload the PDO Database Class
+ *
+ * @author Johnathan Pulos
+ */
+$loader->add("PHPToolbox\PDODatabase\PDODatabaseConnect", $PHPToolboxDirectory);
+$loader->add("QueryGenerators\PeopleGroup", __DIR__ . $DS . ".." . $DS . "App");
 /**
  * preload source files
  *
  * @author Johnathan Pulos
  */
 /**
- * autoload test files
+ * autoload models & test files
  *
  * @package default
  * @author Johnathan Pulos

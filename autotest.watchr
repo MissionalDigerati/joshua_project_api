@@ -7,6 +7,11 @@ watch("App/Includes/.*") { |md|
 	code_changed(file)
 }
 
+watch("App/Models/.*") { |md|
+	file = File.join("Tests", "Unit", "Models", "#{File.basename(md[0], '.*')}Test.php")
+	code_changed(file)
+}
+
 watch("App/Resources/.*") { |md|
 	file = File.join("Tests", "Integration", "#{File.basename(md[0], '.*')}Test.php")
 	code_changed(file)  unless md[0].to_s.include?("APIKeys")
