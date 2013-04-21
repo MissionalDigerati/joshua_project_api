@@ -227,4 +227,34 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected['country'], $data[0]['ROG3']);
         $this->assertEquals($expectedName, $data[0]['PeopNameInCountry']);
     }
+    /**
+     * findByIdAndCountry() should require an ID
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testFindByIdAndCountryShouldErrorIfNoIDProvided()
+    {
+        $expected = array('country' => 'CB');
+        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup->findByIdAndCountry();
+    }
+    /**
+     * findByIdAndCountry() should require an country
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testFindByIdAndCountryShouldErrorIfNoCountryProvided()
+    {
+        $expected = array('id' => '12662');
+        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup->findByIdAndCountry();
+    }
 }
