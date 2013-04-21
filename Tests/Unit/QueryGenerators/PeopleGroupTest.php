@@ -98,6 +98,36 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $peopleGroup->dailyUnreached();
     }
     /**
+     * We should throw an InvalidArgumentException if I do not send a month in range
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+      * 
+      * @expectedException InvalidArgumentException
+     */
+    public function testDailyUnreachedShouldThrowErrorIfMonthIsOutOfRange()
+    {
+        $expected = array('month' => 13, 'day' => 1);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup->dailyUnreached();
+    }
+    /**
+     * We should throw an InvalidArgumentException if I do not send a day in range
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+      * 
+      * @expectedException InvalidArgumentException
+     */
+    public function testDailyUnreachedShouldThrowErrorIfDayIsOutOfRange()
+    {
+        $expected = array('month' => 12, 'day' => 32);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup->dailyUnreached();
+    }
+    /**
      * Tests that validateProvidedFields throws the correct error if a param is missing
      *
      * @return void
@@ -115,6 +145,13 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $method->setAccessible(true);
         $method->invoke($peopleGroup, array('name'));
     }
+    /**
+     * cleanParams() should return safe variables
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
     public function testShouldReturnCleanedVariableFromCleanParams()
     {
         $var = "<html>1223 Fresh Cake <a href='hello'>Boo</a></html>";
@@ -135,5 +172,39 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $method->invoke($peopleGroup);
         $actual = $property->getValue($reflectionOfPeopleGroup);
         $this->assertEquals($expected['my_string'], $actual['my_string']);
+    }
+    /**
+     * Validate that validateVariableInRange() sends back true if it is in range
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testValidateVariableInRangeShouldReturnTrueIfVariableIsInRange()
+    {
+        $data = array('in_range' => 5);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('validateVariableInRange');
+        $method->setAccessible(true);
+        $actual = $method->invoke($peopleGroup, 'in_range', 1, 7);
+        $this->assertTrue($actual);
+    }
+    /**
+     * Validate that validateVariableInRange() sends back false if it is not in range
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testValidateVariableInRangeShouldReturnFalseIfVariableIsOutOfRange()
+    {
+        $data = array('out_range' => 10);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('validateVariableInRange');
+        $method->setAccessible(true);
+        $actual = $method->invoke($peopleGroup, 'out_range', 1, 7);
+        $this->assertFalse($actual);
     }
 }

@@ -44,29 +44,15 @@ $app->get(
          */
         $month = returnPresentOrDefault($appRequest->params('month'), Date('n'));
         $day = returnPresentOrDefault($appRequest->params('day'), Date('j'));
-        if ((1 > $month) || ($month > 12)) {
-            /**
-             * They did not supply a valid month
-             *
-             * @author Johnathan Pulos
-             */
+        try {
+            $peopleGroup = new \QueryGenerators\PeopleGroup(array('month' => $month, 'day' => $day));
+            $peopleGroup->dailyUnreached();
+            $statement = $db->prepare($peopleGroup->preparedStatement);
+            $statement->execute($peopleGroup->preparedVariables);
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
             $app->render("/errors/400.xml.php");
-            exit;
         }
-        if ((1 > $day) || ($day > 31)) {
-            /**
-             * They did not supply a valid day
-             *
-             * @author Johnathan Pulos
-             */
-            $app->render("/errors/400.xml.php");
-            exit;
-        }
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('month' => $month, 'day' => $day));
-        $peopleGroup->dailyUnreached();
-        $statement = $db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
         if (empty($data)) {
             $app->render("/errors/404.xml.php");
             exit;

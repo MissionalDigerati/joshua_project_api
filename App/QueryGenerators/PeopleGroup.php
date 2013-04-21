@@ -83,9 +83,15 @@ class PeopleGroup
      */
     public function dailyUnreached()
     {
+        $this->validateProvidedParams(array('month', 'day'));
+        if ($this->validateVariableInRange('month', 1, 12) === false) {
+            throw new \InvalidArgumentException("The month is out of range.  It should be 1-12.");
+        }
+        if ($this->validateVariableInRange('day', 1, 31) === false) {
+            throw new \InvalidArgumentException("The day is out of range.  It should be 1-31.");
+        }
         $month = intval($this->providedParams['month']);
         $day = intval($this->providedParams['day']);
-        $this->validateProvidedParams(array('month', 'day'));
         $this->preparedStatement = "SELECT * FROM jppeoples WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
         $this->preparedVariables = array('month' => $month, 'day' => $day);
     }
@@ -97,13 +103,28 @@ class PeopleGroup
      * @access private
      * @author Johnathan Pulos
      */
-    private function validateProvidedParams(array $params)
+    private function validateProvidedParams($params)
     {
         foreach ($params as $key) {
             if (array_key_exists($key, $this->providedParams) === false) {
                 throw new \InvalidArgumentException("Missing the required parameter " . $key);
             }
         }
+    }
+    /**
+     * validates a integer is in range
+     *
+     * @param string $key the key of the $this->providedParams param to test
+     * @param integer $start the start of the range
+     * @param integer $end the end of the range
+     * @return boolean
+     * @access public
+     * @author Johnathan Pulos
+     */
+    private function validateVariableInRange($key, $start, $end)
+    {
+        $var = intval($this->providedParams[$key]);
+        return (($var >= $start) && ($var <= $end));
     }
     /**
      * Cleans the parameters passed to $this->providedParams variable.
