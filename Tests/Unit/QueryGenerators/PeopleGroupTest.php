@@ -207,4 +207,24 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $actual = $method->invoke($peopleGroup, 'out_range', 1, 7);
         $this->assertFalse($actual);
     }
+    /**
+     * findByIdAndCountry() should return the correct people group, based on the supplied ID, and country.
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindByIdAndCountryShouldReturnTheCorrectPeopleGroup()
+    {
+        $expected = array('id' => '12662', 'country' => 'CB');
+        $expectedName = "Khmer, Central";
+        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup->findByIdAndCountry();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($expected['id'], $data[0]['PeopleID3']);
+        $this->assertEquals($expected['country'], $data[0]['ROG3']);
+        $this->assertEquals($expectedName, $data[0]['PeopNameInCountry']);
+    }
 }

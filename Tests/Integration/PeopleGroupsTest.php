@@ -36,7 +36,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @var object
      */
     public $cachedRequest;
-
     /**
      * The APIKey to access the API
      *
@@ -44,7 +43,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access private
      **/
     private $APIKey = '';
-
     /**
      * Set up the test class
      *
@@ -73,7 +71,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $this->cachedRequest->clearCache();
     }
-
     /**
      * Tests that you can only access page with an API Key
      *
@@ -89,7 +86,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals($this->cachedRequest->responseCode, 401);
     }
-
     /**
      * Tests that you can only access page with a valid API Key
      *
@@ -105,7 +101,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals($this->cachedRequest->responseCode, 401);
     }
-
      /**
       * GET /people_groups/daily_unreached.json 
       * test page is available, and delivers JSON
@@ -123,7 +118,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->cachedRequest->responseCode, 200);
         $this->assertTrue(isJSON($response));
     }
-
      /**
       * GET /people_groups/daily_unreached.xml 
       * test page is available, and delivers XML
@@ -141,7 +135,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->cachedRequest->responseCode, 200);
         $this->assertTrue(isXML($response));
     }
-
     /**
      * A request for Daily Unreached should allow setting the month
      *
@@ -161,7 +154,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedMonth, $decodedResponse[0]['LRofTheDayMonth']);
         $this->assertEquals($expectedDay, $decodedResponse[0]['LRofTheDayDay']);
     }
-
     /**
      * A request for Daily Unreached should allow setting the day
      *
@@ -181,7 +173,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedMonth, $decodedResponse[0]['LRofTheDayMonth']);
         $this->assertEquals($expectedDay, $decodedResponse[0]['LRofTheDayDay']);
     }
-
     /**
      * A request for Daily Unreached should allow setting the day and month
      *
@@ -201,7 +192,46 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedMonth, $decodedResponse[0]['LRofTheDayMonth']);
         $this->assertEquals($expectedDay, $decodedResponse[0]['LRofTheDayDay']);
     }
-
+     /**
+      * GET /people_groups/[ID].json 
+      * test page is available, and delivers JSON
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testShowActionShouldGive404IfNoValidId()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups/a.json",
+            array('api_key' => $this->APIKey),
+            "wrong_id_request"
+        );
+        $this->assertEquals($this->cachedRequest->responseCode, 404);
+        $this->assertTrue(isJSON($response));
+    }
+     /**
+      * GET /people_groups/12662.json?country=CB
+      * test page is available, and delivers the correct People Group
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testShouldGetCorrectPeopleGroupFromShowWhenIDAndCountryProvided()
+    {
+        $expectedID = "12662";
+        $expectedCountry = "CB";
+        $expectedName = "Khmer, Central";
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups/12662.json",
+            array('api_key' => $this->APIKey, 'country' => 'CB'),
+            "show_in_country_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertEquals($expectedID, $decodedResponse[0]['PeopleID3']);
+        $this->assertEquals($expectedCountry, $decodedResponse[0]['ROG3']);
+        $this->assertEquals($expectedName, $decodedResponse[0]['PeopNameInCountry']);
+    }
     /**
      * gets an APIKey by sending a request to the /api_keys url
      *

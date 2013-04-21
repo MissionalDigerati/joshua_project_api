@@ -51,11 +51,88 @@ $app->get(
             $statement->execute($peopleGroup->preparedVariables);
             $data = $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            $app->render("/errors/400.xml.php");
+            $app->render("/errors/400." . $format . ".php");
         }
         if (empty($data)) {
-            $app->render("/errors/404.xml.php");
+            $app->render("/errors/404." . $format . ".php");
             exit;
+        }
+        /**
+         * Rename the 10_40Window to a XML friendly tagname
+         *
+         * @author Johnathan Pulos
+         */
+        foreach ($data as $key => $val) {
+            $data[$key]['Window10_40'] = $val['10_40Window'];
+            unset($data[$key]['10_40Window']);
+        }
+        /**
+         * Render the final data
+         *
+         * @author Johnathan Pulos
+         */
+        if ($format == 'json') {
+            echo json_encode($data);
+        } else {
+            echo arrayToXML($data, "people_groups", "people_group");
+        }
+    }
+);
+/**
+ * Get the details of a specific People Group.  You can either 1) get a summary of countries that these People Groups live in, or
+ * 2) Get the details of a people group in a specific country.  If you do not supply a country param,  you will get the summary.  You
+ * must specify the id (PeopleID3), or else you will get an error.  You can also specify the ISO two letter country code, to designate 
+ * the specific country you would like information about.
+ * @link http://www.joshuaproject.net/global-countries.php
+ * 
+ * GET /people_groups/[ID]
+ * 
+ * Available Formats JSON & XML
+ *
+ * @api
+ * @author Johnathan Pulos
+ */
+$app->get(
+    "/people_groups/:id\.:format",
+    function ($id, $format) use ($app, $db, $appRequest) {
+        $data = array();
+        /**
+         * Make sure we have an ID, else crash
+         *
+         * @author Johnathan Pulos
+         */
+        $peopleId = intval(strip_tags($id));
+        $country = $appRequest->params('country');
+        if (empty($peopleId)) {
+            $app->render("/errors/404." . $format . ".php");
+            exit;
+        }
+        /**
+         * Determine the data we need to return
+         *
+         * @author Johnathan Pulos
+         */
+        if ($country) {
+            /**
+             * Get the people group in a specific country
+             *
+             * @author Johnathan Pulos
+             */
+            try {
+                $peopleGroup = new \QueryGenerators\PeopleGroup(array('id' => $peopleId, 'country' => $country));
+                $peopleGroup->findByIdAndCountry();
+                $statement = $db->prepare($peopleGroup->preparedStatement);
+                $statement->execute($peopleGroup->preparedVariables);
+                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                $app->render("/errors/400." . $format . ".php");
+            }
+        } else {
+            /**
+             * Get all the countries the people group exists in, and some basic stats
+             *
+             * @author Johnathan Pulos
+             */
         }
         /**
          * Rename the 10_40Window to a XML friendly tagname

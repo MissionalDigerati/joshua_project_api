@@ -96,6 +96,21 @@ class PeopleGroup
         $this->preparedVariables = array('month' => $month, 'day' => $day);
     }
     /**
+     * Find the People Group using the id (PeopleID3), and the country (ROG3)
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function findByIdAndCountry()
+    {
+        $this->validateProvidedParams(array('id', 'country'));
+        $id = intval($this->providedParams['id']);
+        $country = strtoupper($this->providedParams['country']);
+        $this->preparedStatement = "SELECT * FROM jppeoples WHERE PeopleID3 = :id AND ROG3 = :country LIMIT 1";
+        $this->preparedVariables = array('id' => $id, 'country' => $country);
+    }
+    /**
      * Checks if the params were set in the __construct() method of this class on providedParams. If not, then throw an error.
      *
      * @param array $params the keys of the required params
