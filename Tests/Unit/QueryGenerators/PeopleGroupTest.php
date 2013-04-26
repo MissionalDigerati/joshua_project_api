@@ -257,4 +257,38 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
     }
+    /**
+     * findById() should return the correct people group, from many countries
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindByIdShouldReturnTheCorrectPeopleGroups()
+    {
+        $expected = array('id' => '12662');
+        $expectedPeopleGroups = 10;
+        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup->findById();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($expected['id'], $data[0]['PeopleID3']);
+        $this->assertEquals($expectedPeopleGroups, count($data));
+    }
+    /**
+     * findById() should require an id
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testFindByIdShouldErrorIfNoIDProvided()
+    {
+        $expected = array();
+        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup->findById();
+    }
 }
