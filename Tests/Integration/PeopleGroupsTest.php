@@ -233,6 +233,28 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedName, $decodedResponse[0]['PeopNameInCountry']);
     }
     /**
+     * GET /people_groups/12662.json
+     * test page is available, and delivers the correct number of people groups
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testShouldGetCorrectPeopleGroupsFromShowWhenIDProvided()
+    {
+        $expectedID = "12662";
+        $expectedPeopleGroups = 10;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups/12662.json",
+            array('api_key' => $this->APIKey),
+            "show_in_country_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertEquals($expectedID, $decodedResponse[0]['PeopleID3']);
+        $this->assertEquals($expectedPeopleGroups, count($decodedResponse));
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string

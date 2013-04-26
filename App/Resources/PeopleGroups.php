@@ -133,6 +133,15 @@ $app->get(
              *
              * @author Johnathan Pulos
              */
+            try {
+                $peopleGroup = new \QueryGenerators\PeopleGroup(array('id' => $peopleId));
+                $peopleGroup->findById();
+                $statement = $db->prepare($peopleGroup->preparedStatement);
+                $statement->execute($peopleGroup->preparedVariables);
+                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                $app->render("/errors/400." . $format . ".php");
+            }
         }
         /**
          * Rename the 10_40Window to a XML friendly tagname
