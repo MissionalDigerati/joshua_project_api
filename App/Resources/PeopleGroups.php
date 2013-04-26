@@ -143,6 +143,10 @@ $app->get(
                 $app->render("/errors/400." . $format . ".php");
             }
         }
+        if (empty($data)) {
+            $app->render("/errors/404." . $format . ".php");
+            exit;
+        }
         /**
          * Rename the 10_40Window to a XML friendly tagname
          *
