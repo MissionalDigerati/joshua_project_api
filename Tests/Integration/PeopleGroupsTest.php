@@ -210,7 +210,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
     }
      /**
-      * GET /people_groups/12662.json?country=CB
+      * GET /people_groups/[ID].json?country=CB
       * test page is available, and delivers the correct People Group
       *
       * @access public
@@ -233,7 +233,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedName, $decodedResponse[0]['PeopNameInCountry']);
     }
     /**
-     * GET /people_groups/12662.json
+     * GET /people_groups/[ID].json
      * test page is available, and delivers the correct number of people groups
      *
      * @return void
@@ -253,6 +253,24 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->cachedRequest->responseCode, 200);
         $this->assertEquals($expectedID, $decodedResponse[0]['PeopleID3']);
         $this->assertEquals($expectedPeopleGroups, count($decodedResponse));
+    }
+    /**
+     * GET /people_groups/[ID].json
+     * test page returns a 404 error because the PeopleGroup by that ID does not exists
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testShouldProvide404ErrorIfTheIDDoesNotExist()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups/2292828272736363511516.json",
+            array('api_key' => $this->APIKey),
+            "show_in_country_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 404);
     }
     /**
      * gets an APIKey by sending a request to the /api_keys url
