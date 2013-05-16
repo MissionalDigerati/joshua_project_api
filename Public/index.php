@@ -25,8 +25,21 @@
  *
  * @author Johnathan Pulos
  */
+/**
+ * Set whether to use Memcached for caching the queries.  Most queries are cached for 1 day.
+ *
+ * @var boolean
+ * @author Johnathan Pulos
+ */
+$useCaching = true;
 $DS = DIRECTORY_SEPARATOR;
 $bypassExtTest = false;
+if ($useCaching === true) {
+    $cache = new Memcached();
+    $cache->addServer('localhost', 11211) or die('Memcached not found');
+} else {
+    $cache = '';
+}
 /**
  * Get the Slim Framework, and instantiate the class
  *

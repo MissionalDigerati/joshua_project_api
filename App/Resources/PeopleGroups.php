@@ -94,7 +94,7 @@ $app->get(
  */
 $app->get(
     "/people_groups/:id\.:format",
-    function ($id, $format) use ($app, $db, $appRequest) {
+    function ($id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
         $data = array();
         /**
          * Make sure we have an ID, else crash
@@ -113,34 +113,67 @@ $app->get(
          * @author Johnathan Pulos
          */
         if ($country) {
-            /**
-             * Get the people group in a specific country
-             *
-             * @author Johnathan Pulos
-             */
-            try {
-                $peopleGroup = new \QueryGenerators\PeopleGroup(array('id' => $peopleId, 'country' => $country));
-                $peopleGroup->findByIdAndCountry();
-                $statement = $db->prepare($peopleGroup->preparedStatement);
-                $statement->execute($peopleGroup->preparedVariables);
-                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-            } catch (Exception $e) {
-                $app->render("/errors/400." . $format . ".php");
+            if ($useCaching === true) {
+                /**
+                 * Check the cache
+                 *
+                 * @author Johnathan Pulos
+                 */
+                $cacheKey = md5("PeopleGroupShowId_".$peopleId."_InCountry_".$country);
+                $data = $cache->get($cacheKey);
+            }
+            if (empty($data)) {
+                /**
+                 * Get the people group in a specific country
+                 *
+                 * @author Johnathan Pulos
+                 */
+                try {
+                    $peopleGroup = new \QueryGenerators\PeopleGroup(array('id' => $peopleId, 'country' => $country));
+                    $peopleGroup->findByIdAndCountry();
+                    $statement = $db->prepare($peopleGroup->preparedStatement);
+                    $statement->execute($peopleGroup->preparedVariables);
+                    $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    if ($useCaching === true) {
+                        /**
+                         * Set the data to the cache using it's cache key, and expire it in 1 day
+                         *
+                         * @author Johnathan Pulos
+                         */
+                        $cache->set($cacheKey, $data, 86400);
+                    }
+                } catch (Exception $e) {
+                    $app->render("/errors/400." . $format . ".php");
+                }
             }
         } else {
-            /**
-             * Get all the countries the people group exists in, and some basic stats
-             *
-             * @author Johnathan Pulos
-             */
-            try {
-                $peopleGroup = new \QueryGenerators\PeopleGroup(array('id' => $peopleId));
-                $peopleGroup->findById();
-                $statement = $db->prepare($peopleGroup->preparedStatement);
-                $statement->execute($peopleGroup->preparedVariables);
-                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-            } catch (Exception $e) {
-                $app->render("/errors/400." . $format . ".php");
+            if ($useCaching === true) {
+                $cacheKey = md5("PeopleGroupShowId_".$peopleId);
+                $data = $cache->get($cacheKey);
+            }
+            if (empty($data)) {
+                /**
+                 * Get all the countries the people group exists in, and some basic stats
+                 *
+                 * @author Johnathan Pulos
+                 */
+                try {
+                    $peopleGroup = new \QueryGenerators\PeopleGroup(array('id' => $peopleId));
+                    $peopleGroup->findById();
+                    $statement = $db->prepare($peopleGroup->preparedStatement);
+                    $statement->execute($peopleGroup->preparedVariables);
+                    $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    if ($useCaching === true) {
+                        /**
+                         * Set the data to the cache using it's cache key, and expire it in 1 day
+                         *
+                         * @author Johnathan Pulos
+                         */
+                        $cache->set($cacheKey, $data, 86400);
+                    }
+                } catch (Exception $e) {
+                    $app->render("/errors/400." . $format . ".php");
+                }
             }
         }
         if (empty($data)) {
