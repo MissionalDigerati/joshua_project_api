@@ -19,7 +19,8 @@
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @copyright Copyright 2013 Missional Digerati
  * @todo Remove the following fields from the query results (JPScalePC, LeastReachedPC, RLG3PC, PrimaryReligionPC, JPScalePGAC, LeastReachedPGAC, 
- * RLG3PGAC, PrimaryReligionPGAC, ROL3Edition14Orig, EthnologueCountryCode, EthnologueMapExists, WorldMapExists, UNMap, EthneMonth)
+ * RLG3PGAC, PrimaryReligionPGAC, ROL3Edition14Orig, EthnologueCountryCode, EthnologueMapExists, WorldMapExists, UNMap, EthneMonth) also fields starting
+ * with OW, HDI
  * 
  */
 namespace QueryGenerators;
