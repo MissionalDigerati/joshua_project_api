@@ -5,6 +5,7 @@ An API for connecting to the [Joshua Project](http://www.joshuaproject.net) data
 
 Development
 -----------
+This repository is following the branching technique described in [this blog post](http://nvie.com/posts/a-successful-git-branching-model/), and the semantic version set out on the [Semantic Versioning Website](http://semver.org/).
 
 Questions or problems? Please post them on the [issue tracker](https://github.com/MissionalDigerati/vts_cakephp_plugin/issues). You can contribute changes by forking the project and submitting a pull request.
 
