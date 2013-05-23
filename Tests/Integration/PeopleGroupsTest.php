@@ -289,12 +289,9 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnAllPeopleGroupsOnIndexWithNoFilters()
+    public function testIndexShouldReturn100PeopleGroupsOnIndexWithNoFiltersByDefault()
     {
-        $pgCountQuery = $this->db->prepare("SELECT COUNT(*) FROM jppeoples");
-        $pgCountQuery->execute(array());
-        $rows = $pgCountQuery->fetch(\PDO::FETCH_NUM);
-        $expectedNumberOfResults = intval($rows[0]);
+        $expectedNumberOfResults = 100;
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/people_groups.json",
             array('api_key' => $this->APIKey),

@@ -227,7 +227,7 @@ $app->get(
         }
         if (empty($data)) {
             try {
-                $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+                $peopleGroup = new \QueryGenerators\PeopleGroup($appRequest->params());
                 $peopleGroup->findAllWithFilters();
                 $statement = $db->prepare($peopleGroup->preparedStatement);
                 $statement->execute($peopleGroup->preparedVariables);

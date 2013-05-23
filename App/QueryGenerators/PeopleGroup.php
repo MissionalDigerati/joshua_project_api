@@ -136,10 +136,40 @@ class PeopleGroup
      */
     public function findAllWithFilters()
     {
-        if (empty($this->providedParams)) {
-            $this->preparedStatement = "SELECT * FROM jppeoples";
-            $this->preparedVariables = array();
+        $this->setFindAllFilterLimitAndPageVariables();
+        $this->preparedStatement = "SELECT * FROM jppeoples LIMIT :starting, :limit";
+    }
+    /**
+     * Set the limit and starting variables based on the given limit and page variables
+     *
+     * @return void
+     * @access private
+     * @author Johnathan Pulos
+     */
+    private function setFindAllFilterLimitAndPageVariables()
+    {
+        if (($this->paramExists('limit')) && intval($this->providedParams['limit']) > 0) {
+            $this->preparedVariables['limit'] = intval($this->providedParams['limit']);
+        } else {
+            $this->preparedVariables['limit'] = 100;
         }
+        if (($this->paramExists('page')) && intval($this->providedParams['page']) > 0) {
+            $this->preparedVariables['starting'] = (intval($this->providedParams['page'])*$this->preparedVariables['limit'])-1;
+        } else {
+            $this->preparedVariables['starting'] = 0;
+        }
+    }
+    /**
+     * A shorter method for checking if the array_key_exists
+     *
+     * @param string $paramName the name of the param your looking for
+     * @return void
+     * @access private
+     * @author Johnathan Pulos
+     */
+    private function paramExists($paramName)
+    {
+        return array_key_exists($paramName, $this->providedParams);
     }
     /**
      * Checks if the params were set in the __construct() method of this class on providedParams. If not, then throw an error.
