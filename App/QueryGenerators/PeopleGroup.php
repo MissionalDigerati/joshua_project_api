@@ -128,6 +128,20 @@ class PeopleGroup
         $this->preparedVariables = array('id' => $id);
     }
     /**
+     * Find all the People Groups using filters passed in the GET params
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function findAllWithFilters()
+    {
+        if (empty($this->providedParams)) {
+            $this->preparedStatement = "SELECT * FROM jppeoples";
+            $this->preparedVariables = array();
+        }
+    }
+    /**
      * Checks if the params were set in the __construct() method of this class on providedParams. If not, then throw an error.
      *
      * @param array $params the keys of the required params

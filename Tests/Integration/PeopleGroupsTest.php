@@ -44,6 +44,12 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      **/
     private $APIKey = '';
     /**
+     * The PDO database connection object
+     *
+     * @var object
+     */
+    private $db;
+    /**
      * Set up the test class
      *
      * @return void
@@ -60,6 +66,9 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
             DIRECTORY_SEPARATOR . "cache" .
             DIRECTORY_SEPARATOR;
         $this->setAPIKey();
+        $pdoDb = \PHPToolbox\PDODatabase\PDODatabaseConnect::getInstance();
+        $pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings);
+        $this->db = $pdoDb->getDatabaseInstance();
     }
     /**
      * Runs at the end of each test
@@ -271,6 +280,29 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         );
         $decodedResponse = json_decode($response, true);
         $this->assertEquals($this->cachedRequest->responseCode, 404);
+    }
+    /**
+     * GET /people_groups.json
+     * test page returns all the people groups if no filters are applied
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnAllPeopleGroupsOnIndexWithNoFilters()
+    {
+        $pgCountQuery = $this->db->prepare("SELECT COUNT(*) FROM jppeoples");
+        $pgCountQuery->execute(array());
+        $rows = $pgCountQuery->fetch(\PDO::FETCH_NUM);
+        $expectedNumberOfResults = intval($rows[0]);
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups.json",
+            array('api_key' => $this->APIKey),
+            "all_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertEquals(count($decodedResponse), $expectedNumberOfResults);
     }
     /**
      * gets an APIKey by sending a request to the /api_keys url

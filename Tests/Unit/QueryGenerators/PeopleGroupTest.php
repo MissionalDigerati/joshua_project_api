@@ -291,4 +291,24 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findById();
     }
+    /**
+     * findAllWithFilters() query should return the correct number of people groups
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersReturnsAllResultsWithNoFilters()
+    {
+        $pgCountQuery = $this->db->prepare("SELECT COUNT(*) FROM jppeoples");
+        $pgCountQuery->execute(array());
+        $rows = $pgCountQuery->fetch(\PDO::FETCH_NUM);
+        $expectedNumberOfResults = intval($rows[0]);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($expectedNumberOfResults, count($data));
+    }
 }
