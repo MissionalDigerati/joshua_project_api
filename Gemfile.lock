@@ -4,6 +4,7 @@ GEM
     growl_notify (0.0.3)
       rb-appscript
     rb-appscript (0.6.1)
+    semver (1.0.1)
     watchr (0.7)
 
 PLATFORMS
@@ -11,4 +12,5 @@ PLATFORMS
 
 DEPENDENCIES
   growl_notify
+  semver
   watchr
