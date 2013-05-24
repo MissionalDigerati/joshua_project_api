@@ -308,4 +308,55 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertEquals($expectedNumberOfResults, count($data));
     }
+    /**
+     * findAllWithFilters() query should filter by PeopleID1
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPeopleID1()
+    {
+        $expectedPeopleIds = array(17, 23);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('people_id1' => join("|", $expectedPeopleIds)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array(intval($peopleGroup['PeopleID1']), $expectedPeopleIds));
+        }
+    }
+    /**
+     * Tests that paramExists() returns true if the param is in the providedParams array
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testParamExistsShouldReturnTrueWhenItExists()
+    {
+        $expected = array('PeopleIdAndName' => '23-Tibetian');
+        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('paramExists');
+        $method->setAccessible(true);
+        $this->assertTrue($method->invoke($peopleGroup, 'PeopleIdAndName'));
+    }
+    /**
+     * Tests that paramExists() returns false if the param is not in the providedParams array
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testParamExistsShouldReturnFalseWhenItDoesNotExist()
+    {
+        $expected = array();
+        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('paramExists');
+        $method->setAccessible(true);
+        $this->assertFalse($method->invoke($peopleGroup, 'PeopleIdAndName'));
+    }
 }

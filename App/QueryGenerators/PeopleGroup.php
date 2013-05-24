@@ -136,7 +136,14 @@ class PeopleGroup
      */
     public function findAllWithFilters()
     {
+        $where = "";
         $this->preparedStatement = "SELECT * FROM jppeoples";
+        if ($this->paramExists('people_id1')) {
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id1'], 'PeopleID1');
+        }
+        if ($where != "") {
+            $this->preparedStatement .= " WHERE " . $where;
+        }
         $this->addLimitFilter();
     }
     /**
@@ -159,6 +166,29 @@ class PeopleGroup
             $this->preparedVariables['starting'] = 0;
         }
         $this->preparedStatement .= " LIMIT :starting, :limit";
+    }
+    /**
+     * Generates an IN () statement from a piped string.  It writes the prepared version, and adds the variables to the preparedVariables params.
+     * @example 17|23|12 -> IN (17, 23, 12)
+     *
+     * @param string $str The piped string
+     * @param string $columnName the column name that you want to search
+     * @return string
+     * @access private
+     * @author Johnathan Pulos
+     */
+    private function generateInStatementFromPipedString($str, $columnName)
+    {
+        $preparedInVars = array();
+        $i = 0;
+        $stringParts = explode("|", $str);
+        foreach ($stringParts as $element) {
+            $preparedParamName = str_replace(' ', '', strtolower($columnName)) . '_' . $i;
+            array_push($preparedInVars, ':' . $preparedParamName);
+            $this->preparedVariables[$preparedParamName] = intval($element);
+            $i = $i+1;
+        }
+        return $columnName . " IN (" . join(", ", $preparedInVars) . ")";
     }
     /**
      * A shorter method for checking if the array_key_exists
