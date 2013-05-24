@@ -136,8 +136,8 @@ class PeopleGroup
      */
     public function findAllWithFilters()
     {
-        $this->setFindAllFilterLimitAndPageVariables();
-        $this->preparedStatement = "SELECT * FROM jppeoples LIMIT :starting, :limit";
+        $this->preparedStatement = "SELECT * FROM jppeoples";
+        $this->addLimitFilter();
     }
     /**
      * Set the limit and starting variables based on the given limit and page variables
@@ -146,7 +146,7 @@ class PeopleGroup
      * @access private
      * @author Johnathan Pulos
      */
-    private function setFindAllFilterLimitAndPageVariables()
+    private function addLimitFilter()
     {
         if (($this->paramExists('limit')) && intval($this->providedParams['limit']) > 0) {
             $this->preparedVariables['limit'] = intval($this->providedParams['limit']);
@@ -158,6 +158,7 @@ class PeopleGroup
         } else {
             $this->preparedVariables['starting'] = 0;
         }
+        $this->preparedStatement = $this->preparedStatement . " LIMIT :starting, :limit";
     }
     /**
      * A shorter method for checking if the array_key_exists
