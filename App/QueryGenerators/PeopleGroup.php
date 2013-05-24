@@ -158,7 +158,7 @@ class PeopleGroup
         } else {
             $this->preparedVariables['starting'] = 0;
         }
-        $this->preparedStatement = $this->preparedStatement . " LIMIT :starting, :limit";
+        $this->preparedStatement .= " LIMIT :starting, :limit";
     }
     /**
      * A shorter method for checking if the array_key_exists
