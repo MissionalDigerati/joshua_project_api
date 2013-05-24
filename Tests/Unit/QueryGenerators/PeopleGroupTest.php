@@ -336,8 +336,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testParamExistsShouldReturnTrueWhenItExists()
     {
-        $expected = array('PeopleIdAndName' => '23-Tibetian');
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $data = array('PeopleIdAndName' => '23-Tibetian');
+        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
         $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
         $method = $reflectionOfPeopleGroup->getMethod('paramExists');
         $method->setAccessible(true);
@@ -352,11 +352,27 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testParamExistsShouldReturnFalseWhenItDoesNotExist()
     {
-        $expected = array();
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
         $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
         $method = $reflectionOfPeopleGroup->getMethod('paramExists');
         $method->setAccessible(true);
         $this->assertFalse($method->invoke($peopleGroup, 'PeopleIdAndName'));
+    }
+    /**
+     * Tests that generateInStatementFromPipedString() returns the correct statement, and the variables exists
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testGenerateInStatementFromPipedStringShouldReturnCorrectStatement()
+    {
+        $expectedString = "PeopleId1 IN (:peopleid1_0, :peopleid1_1, :peopleid1_2)";
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateInStatementFromPipedString');
+        $method->setAccessible(true);
+        $actualString = $method->invoke($peopleGroup, '1|2|3', 'PeopleId1');
+        $this->assertEquals($expectedString, $actualString);
     }
 }
