@@ -368,11 +368,15 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     public function testGenerateInStatementFromPipedStringShouldReturnCorrectStatement()
     {
         $expectedString = "PeopleId1 IN (:peopleid1_0, :peopleid1_1, :peopleid1_2)";
+        $expectedKeys = array('peopleid1_0', 'peopleid1_1', 'peopleid1_2');
+        $expectedValues = array(1, 2, 3);
         $peopleGroup = new \QueryGenerators\PeopleGroup(array());
         $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
         $method = $reflectionOfPeopleGroup->getMethod('generateInStatementFromPipedString');
         $method->setAccessible(true);
         $actualString = $method->invoke($peopleGroup, '1|2|3', 'PeopleId1');
         $this->assertEquals($expectedString, $actualString);
+        $this->assertEquals($expectedKeys, array_keys($peopleGroup->preparedVariables));
+        $this->assertEquals($expectedValues, array_values($peopleGroup->preparedVariables));
     }
 }
