@@ -411,7 +411,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-     * findAllWithFilters() query should filter by PeopleID2
+     * findAllWithFilters() query should filter by PeopleID3
      *
      * @return void
      * @access public

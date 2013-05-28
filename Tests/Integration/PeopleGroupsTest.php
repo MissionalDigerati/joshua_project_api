@@ -419,8 +419,8 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-     * GET /people_groups.json?people_id2=115
-     * test page filters by people_id2
+     * GET /people_groups.json?people_id3=11722
+     * test page filters by people_id3
      *
      * @return void
      * @access public
