@@ -411,6 +411,26 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * findAllWithFilters() query should filter by PeopleID2
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPeopleID3()
+    {
+        $expectedPeopleIDs = array(11722, 19204);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('people_id3' => join("|", $expectedPeopleIDs)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array(intval($peopleGroup['PeopleID3']), $expectedPeopleIDs));
+        }
+    }
+    /**
      * Tests that paramExists() returns true if the param is in the providedParams array
      *
      * @return void
