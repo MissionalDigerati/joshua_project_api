@@ -157,6 +157,13 @@ class PeopleGroup
             $where .= $this->generateInStatementFromPipedString($this->providedParams['rop1'], 'ROP1');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('rop2')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['rop2'], 'ROP2');
+            $appendAndOnWhere = true;
+        }
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }
