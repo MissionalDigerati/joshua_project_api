@@ -323,8 +323,51 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array(intval($peopleGroup['PeopleID1']), $expectedPeopleIds));
+        }
+    }
+    /**
+     * findAllWithFilters() query should filter by ROP1
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByROP1()
+    {
+        $expectedROP = array('A014', 'A010');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('rop1' => join("|", $expectedROP)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array($peopleGroup['ROP1'], $expectedROP));
+        }
+    }
+    /**
+     * findAllWithFilters() query should filter by ROP1 and PeopleID1
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByROP1AndPeopleID1()
+    {
+        $expectedROP = 'A014';
+        $expectedPeopleID = 23;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('rop1' => $expectedROP, 'people_id1' => $expectedPeopleID));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals($expectedROP, $peopleGroup['ROP1']);
+            $this->assertEquals($expectedPeopleID, intval($peopleGroup['PeopleID1']));
         }
     }
     /**

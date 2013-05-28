@@ -137,13 +137,23 @@ class PeopleGroup
     public function findAllWithFilters()
     {
         $where = "";
+        $appendAndOnWhere = false;
         $this->preparedStatement = "SELECT * FROM jppeoples";
         if ($this->paramExists('people_id1')) {
             $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id1'], 'PeopleID1');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('rop1')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['rop1'], 'ROP1');
+            $appendAndOnWhere = true;
         }
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }
+        $this->preparedStatement .= " ORDER BY PeopleID1 ASC ";
         $this->addLimitFilter();
     }
     /**
@@ -165,7 +175,7 @@ class PeopleGroup
         } else {
             $this->preparedVariables['starting'] = 0;
         }
-        $this->preparedStatement .= " LIMIT :starting, :limit";
+        $this->preparedStatement .= "LIMIT :starting, :limit";
     }
     /**
      * Generates an IN () statement from a piped string.  It writes the prepared version, and adds the variables to the preparedVariables params.
@@ -185,7 +195,7 @@ class PeopleGroup
         foreach ($stringParts as $element) {
             $preparedParamName = str_replace(' ', '', strtolower($columnName)) . '_' . $i;
             array_push($preparedInVars, ':' . $preparedParamName);
-            $this->preparedVariables[$preparedParamName] = intval($element);
+            $this->preparedVariables[$preparedParamName] = $element;
             $i = $i+1;
         }
         return $columnName . " IN (" . join(", ", $preparedInVars) . ")";
