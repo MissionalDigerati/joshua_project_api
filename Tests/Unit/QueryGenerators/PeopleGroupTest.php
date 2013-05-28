@@ -431,6 +431,26 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * findAllWithFilters() query should filter by ROP3
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByROP3()
+    {
+        $expectedROP = array(115485, 115409);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('rop3' => join("|", $expectedROP)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array(intval($peopleGroup['ROP3']), $expectedROP));
+        }
+    }
+    /**
      * Tests that paramExists() returns true if the param is in the providedParams array
      *
      * @return void
