@@ -87,14 +87,10 @@ class PeopleGroup
     public function dailyUnreached()
     {
         $this->validateProvidedParams(array('month', 'day'));
-        if ($this->validateVariableInRange('month', 1, 12) === false) {
-            throw new \InvalidArgumentException("The month is out of range.  It should be 1-12.");
-        }
-        if ($this->validateVariableInRange('day', 1, 31) === false) {
-            throw new \InvalidArgumentException("The day is out of range.  It should be 1-31.");
-        }
         $month = intval($this->providedParams['month']);
         $day = intval($this->providedParams['day']);
+        $this->validateVariableInRange($month, 1, 12);
+        $this->validateVariableInRange($day, 1, 31);
         $this->preparedStatement = "SELECT * FROM jppeoples WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
         $this->preparedVariables = array('month' => $month, 'day' => $day);
     }
@@ -166,6 +162,17 @@ class PeopleGroup
                 $where .= " AND ";
             }
             $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id3'], 'PeopleID3');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('regions')) {
+            $regions = explode('|', $this->providedParams['regions']);
+            foreach ($regions as $region) {
+                $this->validateVariableInRange($region, 1, 12);
+            }
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['regions'], 'RegionCode');
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('rop1')) {
@@ -289,17 +296,19 @@ class PeopleGroup
     /**
      * validates a integer is in range
      *
-     * @param string $key the key of the $this->providedParams param to test
+     * @param integer $var the variable to check
      * @param integer $start the start of the range
      * @param integer $end the end of the range
-     * @return boolean
+     * @return void
+     * @throws InvalidArgumentException if the variable is out of range
      * @access public
      * @author Johnathan Pulos
      */
-    private function validateVariableInRange($key, $start, $end)
+    private function validateVariableInRange($var, $start, $end)
     {
-        $var = intval($this->providedParams[$key]);
-        return (($var >= $start) && ($var <= $end));
+        if ((($var >= $start) && ($var <= $end)) == false) {
+            throw new \InvalidArgumentException("One of the provided variables are out of range.");
+        }
     }
     /**
      * Cleans the parameters passed to $this->providedParams variable.

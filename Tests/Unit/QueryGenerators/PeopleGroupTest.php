@@ -192,30 +192,14 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected['my_string'], $actual['my_string']);
     }
     /**
-     * Validate that validateVariableInRange() sends back true if it is in range
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testValidateVariableInRangeShouldReturnTrueIfVariableIsInRange()
-    {
-        $data = array('in_range' => 5);
-        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        $method = $reflectionOfPeopleGroup->getMethod('validateVariableInRange');
-        $method->setAccessible(true);
-        $actual = $method->invoke($peopleGroup, 'in_range', 1, 7);
-        $this->assertTrue($actual);
-    }
-    /**
      * Validate that validateVariableInRange() sends back false if it is not in range
      *
      * @return void
      * @access public
      * @author Johnathan Pulos
+     * @expectedException InvalidArgumentException
      */
-    public function testValidateVariableInRangeShouldReturnFalseIfVariableIsOutOfRange()
+    public function testValidateVariableInRangeShouldThrowErrorIfVariableIsOutOfRange()
     {
         $data = array('out_range' => 10);
         $peopleGroup = new \QueryGenerators\PeopleGroup($data);
@@ -223,7 +207,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $method = $reflectionOfPeopleGroup->getMethod('validateVariableInRange');
         $method->setAccessible(true);
         $actual = $method->invoke($peopleGroup, 'out_range', 1, 7);
-        $this->assertFalse($actual);
     }
     /**
      * findByIdAndCountry() should return the correct people group, based on the supplied ID, and country.
@@ -502,6 +485,42 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $expectedCountries = array('BBC', 'DED');
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('continents' => join("|", $expectedCountries)));
         $peopleGroup->findAllWithFilters();
+    }
+    /**
+      * Tests that findAllWithFilters() throws the correct error if a the regions are not in the correct range
+      *
+      * @return void
+      * @access public
+      * @author Johnathan Pulos
+      * 
+      * @expectedException InvalidArgumentException
+      */
+    public function testShouldErrorIfFindAllWithFilterFindsInCorrectRegionCodes()
+    {
+        $regionCodes = array(0, 13);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('regions' => join("|", $regionCodes)));
+        $peopleGroup->findAllWithFilters();
+    }
+    /**
+     * Tests that findAllWithFilters() filters by the given region codes
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByRegions()
+    {
+        $expectedRegions = array(3 => 'northeast asia', 4 => 'south asia');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('regions' => join("|", array_keys($expectedRegions))));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array(intval($peopleGroup['RegionCode']), array_keys($expectedRegions)));
+            $this->assertTrue(in_array(strtolower($peopleGroup['RegionName']), array_values($expectedRegions)));
+        }
     }
     /**
      * Tests that paramExists() returns true if the param is in the providedParams array
