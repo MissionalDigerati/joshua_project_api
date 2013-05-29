@@ -31,7 +31,7 @@
  * @var boolean
  * @author Johnathan Pulos
  */
-$useCaching = true;
+$useCaching = false;
 $DS = DIRECTORY_SEPARATOR;
 $bypassExtTest = false;
 if ($useCaching === true) {
@@ -165,7 +165,7 @@ if ($bypassExtTest === false) {
  *
  * @author Johnathan Pulos
  */
-if (strpos($requestedUrl, 'people_groups/') !== false) {
+if (strpos($requestedUrl, 'people_groups') !== false) {
     /**
      * Load the Query Generator for People Groups
      *

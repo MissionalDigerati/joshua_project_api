@@ -201,3 +201,67 @@ $app->get(
         }
     }
 );
+/**
+ * Get all People Groups with filtering.  Available Filters:
+ * 
+ * 
+ * GET /people_groups
+ * 
+ * Available Formats JSON & XML
+ *
+ * @api
+ * @author Johnathan Pulos
+ */
+$app->get(
+    "/people_groups\.:format",
+    function ($format) use ($app, $db, $appRequest, $useCaching, $cache) {
+        $data = array();
+        if ($useCaching === true) {
+            /**
+             * Check the cache
+             *
+             * @author Johnathan Pulos
+             */
+            $cacheKey = md5("PeopleGroupIndex");
+            $data = $cache->get($cacheKey);
+        }
+        if (empty($data)) {
+            try {
+                $peopleGroup = new \QueryGenerators\PeopleGroup($appRequest->params());
+                $peopleGroup->findAllWithFilters();
+                $statement = $db->prepare($peopleGroup->preparedStatement);
+                $statement->execute($peopleGroup->preparedVariables);
+                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+                if ($useCaching === true) {
+                    /**
+                     * Set the data to the cache using it's cache key, and expire it in 1 day
+                     *
+                     * @author Johnathan Pulos
+                     */
+                    $cache->set($cacheKey, $data, 86400);
+                }
+            } catch (Exception $e) {
+                $app->render("/errors/400." . $format . ".php");
+            }
+        }
+        /**
+         * Rename the 10_40Window to a XML friendly tagname
+         *
+         * @author Johnathan Pulos
+         */
+        foreach ($data as $key => $val) {
+            $data[$key]['Window10_40'] = $val['10_40Window'];
+            unset($data[$key]['10_40Window']);
+        }
+        /**
+         * Render the final data
+         *
+         * @author Johnathan Pulos
+         */
+        if ($format == 'json') {
+            echo json_encode($data);
+        } else {
+            echo arrayToXML($data, "people_groups", "people_group");
+        }
+    }
+);

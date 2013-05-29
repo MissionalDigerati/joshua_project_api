@@ -18,6 +18,9 @@
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @copyright Copyright 2013 Missional Digerati
+ * @todo Remove the following fields from the query results (JPScalePC, LeastReachedPC, RLG3PC, PrimaryReligionPC, JPScalePGAC, LeastReachedPGAC, 
+ * RLG3PGAC, PrimaryReligionPGAC, ROL3Edition14Orig, EthnologueCountryCode, EthnologueMapExists, WorldMapExists, UNMap, EthneMonth) also fields starting
+ * with OW, HDI
  * 
  */
 namespace QueryGenerators;
@@ -84,14 +87,10 @@ class PeopleGroup
     public function dailyUnreached()
     {
         $this->validateProvidedParams(array('month', 'day'));
-        if ($this->validateVariableInRange('month', 1, 12) === false) {
-            throw new \InvalidArgumentException("The month is out of range.  It should be 1-12.");
-        }
-        if ($this->validateVariableInRange('day', 1, 31) === false) {
-            throw new \InvalidArgumentException("The day is out of range.  It should be 1-31.");
-        }
         $month = intval($this->providedParams['month']);
         $day = intval($this->providedParams['day']);
+        $this->validateVariableInRange($month, 1, 12);
+        $this->validateVariableInRange($day, 1, 31);
         $this->preparedStatement = "SELECT * FROM jppeoples WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
         $this->preparedVariables = array('month' => $month, 'day' => $day);
     }
@@ -125,10 +124,146 @@ class PeopleGroup
         $this->preparedVariables = array('id' => $id);
     }
     /**
+     * Find all the People Groups using filters passed in the GET params
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function findAllWithFilters()
+    {
+        $where = "";
+        $appendAndOnWhere = false;
+        $this->preparedStatement = "SELECT * FROM jppeoples";
+        if ($this->paramExists('continents')) {
+            $this->validateContinents();
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['continents'], 'ROG2');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('people_id1')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id1'], 'PeopleID1');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('people_id2')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id2'], 'PeopleID2');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('people_id3')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id3'], 'PeopleID3');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('regions')) {
+            $regions = explode('|', $this->providedParams['regions']);
+            foreach ($regions as $region) {
+                $this->validateVariableInRange($region, 1, 12);
+            }
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['regions'], 'RegionCode');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('rop1')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['rop1'], 'ROP1');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('rop2')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['rop2'], 'ROP2');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('rop3')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['rop3'], 'ROP3');
+            $appendAndOnWhere = true;
+        }
+        if ($where != "") {
+            $this->preparedStatement .= " WHERE " . $where;
+        }
+        $this->preparedStatement .= " ORDER BY PeopleID1 ASC ";
+        $this->addLimitFilter();
+    }
+    /**
+     * Set the limit and starting variables based on the given limit and page variables
+     *
+     * @return void
+     * @access private
+     * @author Johnathan Pulos
+     */
+    private function addLimitFilter()
+    {
+        if (($this->paramExists('limit')) && intval($this->providedParams['limit']) > 0) {
+            $this->preparedVariables['limit'] = intval($this->providedParams['limit']);
+        } else {
+            $this->preparedVariables['limit'] = 100;
+        }
+        if (($this->paramExists('page')) && intval($this->providedParams['page']) > 0) {
+            $this->preparedVariables['starting'] = (intval($this->providedParams['page'])*$this->preparedVariables['limit'])-1;
+        } else {
+            $this->preparedVariables['starting'] = 0;
+        }
+        $this->preparedStatement .= "LIMIT :starting, :limit";
+    }
+    /**
+     * Generates an IN () statement from a piped string.  It writes the prepared version, and adds the variables to the preparedVariables params.
+     * @example 17|23|12 -> IN (17, 23, 12)
+     *
+     * @param string $str The piped string
+     * @param string $columnName the column name that you want to search
+     * @return string
+     * @access private
+     * @author Johnathan Pulos
+     */
+    private function generateInStatementFromPipedString($str, $columnName)
+    {
+        $preparedInVars = array();
+        $i = 0;
+        $stringParts = explode("|", $str);
+        foreach ($stringParts as $element) {
+            $preparedParamName = str_replace(' ', '', strtolower($columnName)) . '_' . $i;
+            array_push($preparedInVars, ':' . $preparedParamName);
+            $this->preparedVariables[$preparedParamName] = $element;
+            $i = $i+1;
+        }
+        return $columnName . " IN (" . join(", ", $preparedInVars) . ")";
+    }
+    /**
+     * A shorter method for checking if the array_key_exists
+     *
+     * @param string $paramName the name of the param your looking for
+     * @return void
+     * @access private
+     * @author Johnathan Pulos
+     */
+    private function paramExists($paramName)
+    {
+        return array_key_exists($paramName, $this->providedParams);
+    }
+    /**
      * Checks if the params were set in the __construct() method of this class on providedParams. If not, then throw an error.
      *
      * @param array $params the keys of the required params
      * @return void
+     * @throws InvalidArgumentException if the param does not exist
      * @access private
      * @author Johnathan Pulos
      */
@@ -141,19 +276,39 @@ class PeopleGroup
         }
     }
     /**
+     * validates that the provided continent is a correct continent
+     *
+     * @return void
+     * @throws InvalidArgumentException if it continents param has an invalid continent
+     * @access private
+     * @author Johnathan Pulos
+     */
+    private function validateContinents()
+    {
+        $continents = explode('|', $this->providedParams['continents']);
+        $validContinents = array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam');
+        foreach ($continents as $continent) {
+            if (!in_array(strtolower($continent), $validContinents)) {
+                throw new \InvalidArgumentException("Continents provided do not exist.");
+            }
+        }
+    }
+    /**
      * validates a integer is in range
      *
-     * @param string $key the key of the $this->providedParams param to test
+     * @param integer $var the variable to check
      * @param integer $start the start of the range
      * @param integer $end the end of the range
-     * @return boolean
+     * @return void
+     * @throws InvalidArgumentException if the variable is out of range
      * @access public
      * @author Johnathan Pulos
      */
-    private function validateVariableInRange($key, $start, $end)
+    private function validateVariableInRange($var, $start, $end)
     {
-        $var = intval($this->providedParams[$key]);
-        return (($var >= $start) && ($var <= $end));
+        if ((($var >= $start) && ($var <= $end)) == false) {
+            throw new \InvalidArgumentException("One of the provided variables are out of range.");
+        }
     }
     /**
      * Cleans the parameters passed to $this->providedParams variable.

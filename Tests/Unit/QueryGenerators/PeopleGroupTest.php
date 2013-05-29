@@ -78,8 +78,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testShouldThrowErrorIfMissingMonthOnDailyUnreached()
     {
-        $expected = array('day' => 11);
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $getVars = array('day' => 11);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
         $peopleGroup->dailyUnreached();
     }
     /**
@@ -93,8 +93,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testShouldThrowErrorIfMissingDayOnDailyUnreached()
     {
-        $expected = array('month' => 11);
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $getVars = array('month' => 11);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
         $peopleGroup->dailyUnreached();
     }
     /**
@@ -108,8 +108,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testDailyUnreachedShouldThrowErrorIfMonthIsOutOfRange()
     {
-        $expected = array('month' => 13, 'day' => 1);
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $getVars = array('month' => 13, 'day' => 1);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
         $peopleGroup->dailyUnreached();
     }
     /**
@@ -123,8 +123,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testDailyUnreachedShouldThrowErrorIfDayIsOutOfRange()
     {
-        $expected = array('month' => 12, 'day' => 32);
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $getVars = array('month' => 12, 'day' => 32);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
         $peopleGroup->dailyUnreached();
     }
     /**
@@ -138,12 +138,30 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testShouldErrorIfValidateProvidedParamsFindsMissingParam()
     {
-        $expected = array();
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $getVars = array();
+        $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
         $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
         $method = $reflectionOfPeopleGroup->getMethod('validateProvidedParams');
         $method->setAccessible(true);
         $method->invoke($peopleGroup, array('name'));
+    }
+    /**
+     * Tests that validateContinents throws the correct error if a continent in the continents param is invalid
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testShouldErrorIfValidateContinentsFindsABadContinent()
+    {
+        $getVars = array('continents' => 'AFR|BEN');
+        $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('validateContinents');
+        $method->setAccessible(true);
+        $method->invoke($peopleGroup);
     }
     /**
      * cleanParams() should return safe variables
@@ -174,30 +192,14 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected['my_string'], $actual['my_string']);
     }
     /**
-     * Validate that validateVariableInRange() sends back true if it is in range
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testValidateVariableInRangeShouldReturnTrueIfVariableIsInRange()
-    {
-        $data = array('in_range' => 5);
-        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        $method = $reflectionOfPeopleGroup->getMethod('validateVariableInRange');
-        $method->setAccessible(true);
-        $actual = $method->invoke($peopleGroup, 'in_range', 1, 7);
-        $this->assertTrue($actual);
-    }
-    /**
      * Validate that validateVariableInRange() sends back false if it is not in range
      *
      * @return void
      * @access public
      * @author Johnathan Pulos
+     * @expectedException InvalidArgumentException
      */
-    public function testValidateVariableInRangeShouldReturnFalseIfVariableIsOutOfRange()
+    public function testValidateVariableInRangeShouldThrowErrorIfVariableIsOutOfRange()
     {
         $data = array('out_range' => 10);
         $peopleGroup = new \QueryGenerators\PeopleGroup($data);
@@ -205,7 +207,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $method = $reflectionOfPeopleGroup->getMethod('validateVariableInRange');
         $method->setAccessible(true);
         $actual = $method->invoke($peopleGroup, 'out_range', 1, 7);
-        $this->assertFalse($actual);
     }
     /**
      * findByIdAndCountry() should return the correct people group, based on the supplied ID, and country.
@@ -290,5 +291,287 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $expected = array();
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findById();
+    }
+    /**
+     * findAllWithFilters() query should return 100 people groups by default
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersReturns100ResultsWithNoFiltersByDefault()
+    {
+        $expectedNumberOfResults = 100;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($expectedNumberOfResults, count($data));
+    }
+    /**
+     * findAllWithFilters() query should filter by PeopleID1
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPeopleID1()
+    {
+        $expectedPeopleIds = array(17, 23);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('people_id1' => join("|", $expectedPeopleIds)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array(intval($peopleGroup['PeopleID1']), $expectedPeopleIds));
+        }
+    }
+    /**
+     * findAllWithFilters() query should filter by ROP1
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByROP1()
+    {
+        $expectedROP = array('A014', 'A010');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('rop1' => join("|", $expectedROP)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array($peopleGroup['ROP1'], $expectedROP));
+        }
+    }
+    /**
+     * findAllWithFilters() query should filter by ROP1 and PeopleID1
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByROP1AndPeopleID1()
+    {
+        $expectedROP = 'A014';
+        $expectedPeopleID = 23;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('rop1' => $expectedROP, 'people_id1' => $expectedPeopleID));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals($expectedROP, $peopleGroup['ROP1']);
+            $this->assertEquals($expectedPeopleID, intval($peopleGroup['PeopleID1']));
+        }
+    }
+    /**
+     * findAllWithFilters() query should filter by PeopleID2
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPeopleID2()
+    {
+        $expectedPeopleIDs = array(117, 115);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('people_id2' => join("|", $expectedPeopleIDs)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array(intval($peopleGroup['PeopleID2']), $expectedPeopleIDs));
+        }
+    }
+    /**
+     * findAllWithFilters() query should filter by ROP2
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByROP2()
+    {
+        $expectedROP = array('C0013', 'C0067');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('rop2' => join("|", $expectedROP)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array($peopleGroup['ROP2'], $expectedROP));
+        }
+    }
+    /**
+     * findAllWithFilters() query should filter by PeopleID3
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPeopleID3()
+    {
+        $expectedPeopleIDs = array(11722, 19204);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('people_id3' => join("|", $expectedPeopleIDs)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array(intval($peopleGroup['PeopleID3']), $expectedPeopleIDs));
+        }
+    }
+    /**
+     * findAllWithFilters() query should filter by ROP3
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByROP3()
+    {
+        $expectedROP = array(115485, 115409);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('rop3' => join("|", $expectedROP)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array(intval($peopleGroup['ROP3']), $expectedROP));
+        }
+    }
+    /**
+     * findAllWithFilters() query should filter by continents
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByContinents()
+    {
+        $expectedCountries = array('AFR', 'NAR');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('continents' => join("|", $expectedCountries)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array($peopleGroup['ROG2'], $expectedCountries));
+        }
+    }
+    /**
+      * Tests that findAllWithFilters() throws the correct error if a the continent is not a correct continent
+      *
+      * @return void
+      * @access public
+      * @author Johnathan Pulos
+      * 
+      * @expectedException InvalidArgumentException
+      */
+    public function testShouldErrorIfFindAllWithFilterFindsInCorrectContinents()
+    {
+        $expectedCountries = array('BBC', 'DED');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('continents' => join("|", $expectedCountries)));
+        $peopleGroup->findAllWithFilters();
+    }
+    /**
+      * Tests that findAllWithFilters() throws the correct error if a the regions are not in the correct range
+      *
+      * @return void
+      * @access public
+      * @author Johnathan Pulos
+      * 
+      * @expectedException InvalidArgumentException
+      */
+    public function testShouldErrorIfFindAllWithFilterFindsInCorrectRegionCodes()
+    {
+        $regionCodes = array(0, 13);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('regions' => join("|", $regionCodes)));
+        $peopleGroup->findAllWithFilters();
+    }
+    /**
+     * Tests that findAllWithFilters() filters by the given region codes
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByRegions()
+    {
+        $expectedRegions = array(3 => 'northeast asia', 4 => 'south asia');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('regions' => join("|", array_keys($expectedRegions))));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array(intval($peopleGroup['RegionCode']), array_keys($expectedRegions)));
+            $this->assertTrue(in_array(strtolower($peopleGroup['RegionName']), array_values($expectedRegions)));
+        }
+    }
+    /**
+     * Tests that paramExists() returns true if the param is in the providedParams array
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testParamExistsShouldReturnTrueWhenItExists()
+    {
+        $data = array('PeopleIdAndName' => '23-Tibetian');
+        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('paramExists');
+        $method->setAccessible(true);
+        $this->assertTrue($method->invoke($peopleGroup, 'PeopleIdAndName'));
+    }
+    /**
+     * Tests that paramExists() returns false if the param is not in the providedParams array
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testParamExistsShouldReturnFalseWhenItDoesNotExist()
+    {
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('paramExists');
+        $method->setAccessible(true);
+        $this->assertFalse($method->invoke($peopleGroup, 'PeopleIdAndName'));
+    }
+    /**
+     * Tests that generateInStatementFromPipedString() returns the correct statement, and the variables exists
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testGenerateInStatementFromPipedStringShouldReturnCorrectStatement()
+    {
+        $expectedString = "PeopleId1 IN (:peopleid1_0, :peopleid1_1, :peopleid1_2)";
+        $expectedKeys = array('peopleid1_0', 'peopleid1_1', 'peopleid1_2');
+        $expectedValues = array(1, 2, 3);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateInStatementFromPipedString');
+        $method->setAccessible(true);
+        $actualString = $method->invoke($peopleGroup, '1|2|3', 'PeopleId1');
+        $this->assertEquals($expectedString, $actualString);
+        $this->assertEquals($expectedKeys, array_keys($peopleGroup->preparedVariables));
+        $this->assertEquals($expectedValues, array_values($peopleGroup->preparedVariables));
     }
 }

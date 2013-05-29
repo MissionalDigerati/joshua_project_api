@@ -33,13 +33,14 @@ def growl(message, file)
     message = message.split("\n").last(3);
     growlnotify = `which growlnotify`.chomp
 	title = message.find { |e| /FAILURES/ =~ e } ? "FAILURES" : "PASS"
-    if title == "FAILURES"
-        image = "/Users/Technoguru/Pictures/GrowlNotification/fail.png"
-        info = "Tests have failed on #{File.basename(file)}!"
-    else
-        image = "/Users/Technoguru/Pictures/GrowlNotification/pass.png"
-        info = "Your the best!!! Test passed on #{File.basename(file)}!"
-    end
+	title = message.find { |e| /Fatal error/ =~ e } ? "FAILURES" : title
+  if title == "FAILURES"
+      image = "/Users/Technoguru/Pictures/GrowlNotification/fail.png"
+      info = "Tests have failed on #{File.basename(file)}!"
+  else
+      image = "/Users/Technoguru/Pictures/GrowlNotification/pass.png"
+      info = "Your the best!!! Test passed on #{File.basename(file)}!"
+  end
  
     options = "-w -n Watchr --image '#{File.expand_path(image)}' --html '#{title}'  -m '#{info}'"
     system %(#{growlnotify} #{options} &)
