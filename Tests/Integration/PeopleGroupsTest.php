@@ -386,7 +386,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/people_groups.json",
             array('api_key' => $this->APIKey, 'people_id2' => join("|", $expectedPeopleIds)),
-            "filter_by_people_id_1_on_index_json"
+            "filter_by_people_id_2_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
@@ -409,7 +409,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/people_groups.json",
             array('api_key' => $this->APIKey, 'rop2' => join("|", $expectedROP)),
-            "filter_by_rop_1_on_index_json"
+            "filter_by_rop_2_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
@@ -432,7 +432,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/people_groups.json",
             array('api_key' => $this->APIKey, 'people_id3' => join("|", $expectedPeopleIds)),
-            "filter_by_people_id_1_on_index_json"
+            "filter_by_people_id_3_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
@@ -455,13 +455,36 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/people_groups.json",
             array('api_key' => $this->APIKey, 'rop3' => join("|", $expectedROP)),
-            "filter_by_rop_1_on_index_json"
+            "filter_by_rop_3_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $peopleGroup) {
             $this->assertTrue(in_array(intval($peopleGroup['ROP3']), $expectedROP));
+        }
+    }
+    /**
+     * GET /people_groups.json?continents=afr|nar
+     * test page filters by continents
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnPeopleGroupsFilteredByContinents()
+    {
+        $expectedCountries = array('AFR', 'NAR');
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups.json",
+            array('api_key' => $this->APIKey, 'continents' => join("|", $expectedCountries)),
+            "filter_by_continents_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $peopleGroup) {
+            $this->assertTrue(in_array($peopleGroup['ROG2'], $expectedCountries));
         }
     }
     /**

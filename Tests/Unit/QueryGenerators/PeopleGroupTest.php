@@ -78,8 +78,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testShouldThrowErrorIfMissingMonthOnDailyUnreached()
     {
-        $expected = array('day' => 11);
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $getVars = array('day' => 11);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
         $peopleGroup->dailyUnreached();
     }
     /**
@@ -93,8 +93,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testShouldThrowErrorIfMissingDayOnDailyUnreached()
     {
-        $expected = array('month' => 11);
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $getVars = array('month' => 11);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
         $peopleGroup->dailyUnreached();
     }
     /**
@@ -108,8 +108,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testDailyUnreachedShouldThrowErrorIfMonthIsOutOfRange()
     {
-        $expected = array('month' => 13, 'day' => 1);
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $getVars = array('month' => 13, 'day' => 1);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
         $peopleGroup->dailyUnreached();
     }
     /**
@@ -123,8 +123,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testDailyUnreachedShouldThrowErrorIfDayIsOutOfRange()
     {
-        $expected = array('month' => 12, 'day' => 32);
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $getVars = array('month' => 12, 'day' => 32);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
         $peopleGroup->dailyUnreached();
     }
     /**
@@ -138,12 +138,30 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testShouldErrorIfValidateProvidedParamsFindsMissingParam()
     {
-        $expected = array();
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $getVars = array();
+        $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
         $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
         $method = $reflectionOfPeopleGroup->getMethod('validateProvidedParams');
         $method->setAccessible(true);
         $method->invoke($peopleGroup, array('name'));
+    }
+    /**
+     * Tests that validateContinents throws the correct error if a continent in the continents param is invalid
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testShouldErrorIfValidateContinentsFindsABadContinent()
+    {
+        $getVars = array('continents' => 'AFR|BEN');
+        $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('validateContinents');
+        $method->setAccessible(true);
+        $method->invoke($peopleGroup);
     }
     /**
      * cleanParams() should return safe variables
@@ -449,6 +467,41 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array(intval($peopleGroup['ROP3']), $expectedROP));
         }
+    }
+    /**
+     * findAllWithFilters() query should filter by continents
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByContinents()
+    {
+        $expectedCountries = array('AFR', 'NAR');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('continents' => join("|", $expectedCountries)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array($peopleGroup['ROG2'], $expectedCountries));
+        }
+    }
+    /**
+      * Tests that findAllWithFilters() throws the correct error if a the continent is not a correct continent
+      *
+      * @return void
+      * @access public
+      * @author Johnathan Pulos
+      * 
+      * @expectedException InvalidArgumentException
+      */
+    public function testShouldErrorIfFindAllWithFilterFindsInCorrectContinents()
+    {
+        $expectedCountries = array('BBC', 'DED');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('continents' => join("|", $expectedCountries)));
+        $peopleGroup->findAllWithFilters();
     }
     /**
      * Tests that paramExists() returns true if the param is in the providedParams array

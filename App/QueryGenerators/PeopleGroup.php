@@ -139,7 +139,18 @@ class PeopleGroup
         $where = "";
         $appendAndOnWhere = false;
         $this->preparedStatement = "SELECT * FROM jppeoples";
+        if ($this->paramExists('continents')) {
+            $this->validateContinents();
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['continents'], 'ROG2');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('people_id1')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
             $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id1'], 'PeopleID1');
             $appendAndOnWhere = true;
         }
@@ -245,6 +256,7 @@ class PeopleGroup
      *
      * @param array $params the keys of the required params
      * @return void
+     * @throws InvalidArgumentException if the param does not exist
      * @access private
      * @author Johnathan Pulos
      */
@@ -253,6 +265,24 @@ class PeopleGroup
         foreach ($params as $key) {
             if (array_key_exists($key, $this->providedParams) === false) {
                 throw new \InvalidArgumentException("Missing the required parameter " . $key);
+            }
+        }
+    }
+    /**
+     * validates that the provided continent is a correct continent
+     *
+     * @return void
+     * @throws InvalidArgumentException if it continents param has an invalid continent
+     * @access private
+     * @author Johnathan Pulos
+     */
+    private function validateContinents()
+    {
+        $continents = explode('|', $this->providedParams['continents']);
+        $validContinents = array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam');
+        foreach ($continents as $continent) {
+            if (!in_array(strtolower($continent), $validContinents)) {
+                throw new \InvalidArgumentException("Continents provided do not exist.");
             }
         }
     }
