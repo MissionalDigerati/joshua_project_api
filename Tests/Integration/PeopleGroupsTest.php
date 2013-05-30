@@ -512,6 +512,29 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * GET /people_groups.json?countries=an|bg
+     * test page filters by countries
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnPeopleGroupsFilteredByCountries()
+    {
+        $expectedCountries = array('AN', 'BG');
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups.json",
+            array('api_key' => $this->APIKey, 'countries' => join("|", $expectedCountries)),
+            "filter_by_countries_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $peopleGroup) {
+            $this->assertTrue(in_array($peopleGroup['ROG3'], $expectedCountries));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string

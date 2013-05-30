@@ -479,15 +479,35 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindAllWithFiltersShouldFilterByContinents()
     {
-        $expectedCountries = array('AFR', 'NAR');
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('continents' => join("|", $expectedCountries)));
+        $expectedContinents = array('AFR', 'NAR');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('continents' => join("|", $expectedContinents)));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
-            $this->assertTrue(in_array($peopleGroup['ROG2'], $expectedCountries));
+            $this->assertTrue(in_array($peopleGroup['ROG2'], $expectedContinents));
+        }
+    }
+    /**
+     * findAllWithFilters() query should filter by countries
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByCountries()
+    {
+        $expectedCountries = array('AN', 'BG');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('countries' => join("|", $expectedCountries)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array($peopleGroup['ROG3'], $expectedCountries));
         }
     }
     /**

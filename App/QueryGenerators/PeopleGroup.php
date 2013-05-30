@@ -155,6 +155,17 @@ class PeopleGroup
             $where .= $this->generateInStatementFromPipedString($this->providedParams['continents'], 'ROG2');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('countries')) {
+            $countries = explode('|', $this->providedParams['countries']);
+            foreach ($countries as $country) {
+                $this->validateVariableLength($country, 2);
+            }
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['countries'], 'ROG3');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('people_id1')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
