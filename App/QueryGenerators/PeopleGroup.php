@@ -300,9 +300,26 @@ class PeopleGroup
         $continents = explode('|', $this->providedParams['continents']);
         $validContinents = array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam');
         foreach ($continents as $continent) {
+            $this->validateVariableLength($continent, 3);
             if (!in_array(strtolower($continent), $validContinents)) {
                 throw new \InvalidArgumentException("Continents provided do not exist.");
             }
+        }
+    }
+    /**
+     * Validates that the string is the correct length
+     *
+     * @param string $var the string to check
+     * @param integer $length the number of characters to test against
+     * @return void
+     * @throws InvalidArgumentException if the param is the wrong length
+     * @access private
+     * @author Johnathan Pulos
+     */
+    private function validateVariableLength($var, $length)
+    {
+        if (strlen($var) !== $length) {
+            throw new \InvalidArgumentException("The string is not the correct length.");
         }
     }
     /**
