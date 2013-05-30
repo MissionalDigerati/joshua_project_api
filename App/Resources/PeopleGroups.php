@@ -52,6 +52,7 @@ $app->get(
             $data = $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
+            exit;
         }
         if (empty($data)) {
             $app->render("/errors/404." . $format . ".php");
@@ -135,6 +136,7 @@ $app->get(
                     }
                 } catch (Exception $e) {
                     $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
+                    exit;
                 }
             }
         } else {
@@ -164,6 +166,7 @@ $app->get(
                     }
                 } catch (Exception $e) {
                     $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
+                    exit;
                 }
             }
         }
@@ -224,6 +227,7 @@ $app->get(
                 }
             } catch (Exception $e) {
                 $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
+                exit;
             }
         }
         /**
