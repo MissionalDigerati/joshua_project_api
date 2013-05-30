@@ -319,7 +319,7 @@ class PeopleGroup
     private function validateVariableLength($var, $length)
     {
         if (strlen($var) !== $length) {
-            throw new \InvalidArgumentException("The string is not the correct length.");
+            throw new \InvalidArgumentException("One of your parameters are not the correct length.");
         }
     }
     /**
