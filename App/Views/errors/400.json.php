@@ -22,5 +22,5 @@
  */
 header('HTTP/1.1 400 Bad Request');
 echo json_encode(
-    array('api' => array('status'  =>  'error', 'error' => array('code'    =>  400, 'message'  =>  'Bad Request')))
+    array('api' => array('status'  =>  'error', 'error' => array('code'    =>  400, 'message'  =>  'Bad Request', 'details' => $details)))
 );

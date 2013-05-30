@@ -51,7 +51,7 @@ $app->get(
             $statement->execute($peopleGroup->preparedVariables);
             $data = $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            $app->render("/errors/400." . $format . ".php");
+            $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
         }
         if (empty($data)) {
             $app->render("/errors/404." . $format . ".php");
@@ -134,7 +134,7 @@ $app->get(
                         $cache->set($cacheKey, $data, 86400);
                     }
                 } catch (Exception $e) {
-                    $app->render("/errors/400." . $format . ".php");
+                    $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
                 }
             }
         } else {
@@ -163,7 +163,7 @@ $app->get(
                         $cache->set($cacheKey, $data, 86400);
                     }
                 } catch (Exception $e) {
-                    $app->render("/errors/400." . $format . ".php");
+                    $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
                 }
             }
         }
@@ -223,7 +223,7 @@ $app->get(
                     $cache->set($cacheKey, $data, 86400);
                 }
             } catch (Exception $e) {
-                $app->render("/errors/400." . $format . ".php");
+                $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
             }
         }
         /**
