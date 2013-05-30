@@ -562,6 +562,41 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * Tests that findAllWithFilters() filters by the given window1040
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterBy1040Window()
+    {
+        $expected1040Window = 'N';
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('window1040' => $expected1040Window));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals(null, $peopleGroup['Window10_40']);
+        }
+    }
+    /**
+      * Tests that findAllWithFilters() throws the correct error if the window1040 is set to anything else but Y & N
+      *
+      * @return void
+      * @access public
+      * @author Johnathan Pulos
+      * 
+      * @expectedException InvalidArgumentException
+      */
+    public function testShouldErrorIfFindAllWithFilterFindsInCorrectWindow1040()
+    {
+        $regionCodes = array(0, 13);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('window1040' => 'b'));
+        $peopleGroup->findAllWithFilters();
+    }
+    /**
      * Tests that paramExists() returns true if the param is in the providedParams array
      *
      * @return void

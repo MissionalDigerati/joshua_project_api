@@ -147,6 +147,22 @@ class PeopleGroup
         $where = "";
         $appendAndOnWhere = false;
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples";
+        if ($this->paramExists('window1040')) {
+            $window1040 = strtoupper($this->providedParams['window1040']);
+            $this->validateVariableLength($window1040, 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            if ($window1040 == 'Y') {
+                $where .= "10_40Window = :window_10_40";
+                $this->preparedVariables['window_10_40'] = strtoupper($this->providedParams['window1040']);
+            } else if ($window1040 == 'N') {
+                $where .= "10_40Window IS NULL";
+            } else {
+                throw new \InvalidArgumentException("Invalid window1040 value sent.");
+            }
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('continents')) {
             $this->validateContinents();
             if ($appendAndOnWhere === true) {
