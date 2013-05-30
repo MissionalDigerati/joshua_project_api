@@ -192,6 +192,25 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected['my_string'], $actual['my_string']);
     }
     /**
+     * validateVariableLength() should error if the character length is incorrect
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testValidateVariableLengthShouldThrowErrorIfLengthIsIncorrect()
+    {
+        $data = array();
+        $testString = "iloveicecream";
+        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('validateVariableLength');
+        $method->setAccessible(true);
+        $method->invoke($peopleGroup, $testString, 20);
+    }
+    /**
      * Validate that validateVariableInRange() sends back false if it is not in range
      *
      * @return void
@@ -460,15 +479,35 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindAllWithFiltersShouldFilterByContinents()
     {
-        $expectedCountries = array('AFR', 'NAR');
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('continents' => join("|", $expectedCountries)));
+        $expectedContinents = array('AFR', 'NAR');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('continents' => join("|", $expectedContinents)));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
-            $this->assertTrue(in_array($peopleGroup['ROG2'], $expectedCountries));
+            $this->assertTrue(in_array($peopleGroup['ROG2'], $expectedContinents));
+        }
+    }
+    /**
+     * findAllWithFilters() query should filter by countries
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByCountries()
+    {
+        $expectedCountries = array('AN', 'BG');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('countries' => join("|", $expectedCountries)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array($peopleGroup['ROG3'], $expectedCountries));
         }
     }
     /**
@@ -523,6 +562,41 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * Tests that findAllWithFilters() filters by the given window1040
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterBy1040Window()
+    {
+        $expected1040Window = 'N';
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('window1040' => $expected1040Window));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals(null, $peopleGroup['Window10_40']);
+        }
+    }
+    /**
+      * Tests that findAllWithFilters() throws the correct error if the window1040 is set to anything else but Y & N
+      *
+      * @return void
+      * @access public
+      * @author Johnathan Pulos
+      * 
+      * @expectedException InvalidArgumentException
+      */
+    public function testShouldErrorIfFindAllWithFilterFindsInCorrectWindow1040()
+    {
+        $regionCodes = array(0, 13);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('window1040' => 'b'));
+        $peopleGroup->findAllWithFilters();
+    }
+    /**
      * Tests that paramExists() returns true if the param is in the providedParams array
      *
      * @return void
@@ -552,6 +626,93 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $method = $reflectionOfPeopleGroup->getMethod('paramExists');
         $method->setAccessible(true);
         $this->assertFalse($method->invoke($peopleGroup, 'PeopleIdAndName'));
+    }
+    /**
+     * The findAllWithFilters query should exclude several fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersQueryShouldExcludeSeveralFieldsAndChanges1040Field()
+    {
+        $restrictedFields = array('JPScalePC', 'LeastReachedPC', 'RLG3PC', 'PrimaryReligionPC', 'JPScalePGAC', 'LeastReachedPGAC', 'RLG3PGAC', 'PrimaryReligionPGAC', 'ROL3Edition14Orig', 'EthnologueCountryCode', 'EthnologueMapExists', 'WorldMapExists', 'UNMap', 'EthneMonth');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('limit' => 1));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($restrictedFields as $field) {
+            $this->assertFalse(array_key_exists($field, $data[0]));
+        }
+        $this->assertTrue(array_key_exists('Window10_40', $data[0]));
+        $this->assertFalse(array_key_exists('10_40Window', $data[0]));
+    }
+    /**
+     * The findById query should exclude several fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindByIDQueryShouldExcludeSeveralFieldsAndChanges1040Field()
+    {
+        $restrictedFields = array('JPScalePC', 'LeastReachedPC', 'RLG3PC', 'PrimaryReligionPC', 'JPScalePGAC', 'LeastReachedPGAC', 'RLG3PGAC', 'PrimaryReligionPGAC', 'ROL3Edition14Orig', 'EthnologueCountryCode', 'EthnologueMapExists', 'WorldMapExists', 'UNMap', 'EthneMonth');
+        $data = array('id' => '12662');
+        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
+        $peopleGroup->findById();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($restrictedFields as $field) {
+            $this->assertFalse(array_key_exists($field, $data[0]));
+        }
+        $this->assertTrue(array_key_exists('Window10_40', $data[0]));
+        $this->assertFalse(array_key_exists('10_40Window', $data[0]));
+    }
+    /**
+     * The findByIdAndCountry query should exclude several fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindByIdAndCountryQueryShouldExcludeSeveralFieldsAndChanges1040Field()
+    {
+        $restrictedFields = array('JPScalePC', 'LeastReachedPC', 'RLG3PC', 'PrimaryReligionPC', 'JPScalePGAC', 'LeastReachedPGAC', 'RLG3PGAC', 'PrimaryReligionPGAC', 'ROL3Edition14Orig', 'EthnologueCountryCode', 'EthnologueMapExists', 'WorldMapExists', 'UNMap', 'EthneMonth');
+        $data = array('id' => '12662', 'country' => 'CB');
+        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
+        $peopleGroup->findByIdAndCountry();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($restrictedFields as $field) {
+            $this->assertFalse(array_key_exists($field, $data[0]));
+        }
+        $this->assertTrue(array_key_exists('Window10_40', $data[0]));
+        $this->assertFalse(array_key_exists('10_40Window', $data[0]));
+    }
+    /**
+     * The dailyUnreached query should exclude several fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testDailyUnreachedQueryShouldExcludeSeveralFieldsAndChanges1040Field()
+    {
+        $restrictedFields = array('JPScalePC', 'LeastReachedPC', 'RLG3PC', 'PrimaryReligionPC', 'JPScalePGAC', 'LeastReachedPGAC', 'RLG3PGAC', 'PrimaryReligionPGAC', 'ROL3Edition14Orig', 'EthnologueCountryCode', 'EthnologueMapExists', 'WorldMapExists', 'UNMap', 'EthneMonth');
+        $data = array('month' => 1, 'day' => 11);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
+        $peopleGroup->dailyUnreached();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($restrictedFields as $field) {
+            $this->assertFalse(array_key_exists($field, $data[0]));
+        }
+        $this->assertTrue(array_key_exists('Window10_40', $data[0]));
+        $this->assertFalse(array_key_exists('10_40Window', $data[0]));
     }
     /**
      * Tests that generateInStatementFromPipedString() returns the correct statement, and the variables exists

@@ -18,9 +18,6 @@
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @copyright Copyright 2013 Missional Digerati
- * @todo Remove the following fields from the query results (JPScalePC, LeastReachedPC, RLG3PC, PrimaryReligionPC, JPScalePGAC, LeastReachedPGAC, 
- * RLG3PGAC, PrimaryReligionPGAC, ROL3Edition14Orig, EthnologueCountryCode, EthnologueMapExists, WorldMapExists, UNMap, EthneMonth) also fields starting
- * with OW, HDI
  * 
  */
 namespace QueryGenerators;
@@ -56,6 +53,20 @@ class PeopleGroup
      */
     private $providedParams = array();
     /**
+     * An array of column names for this database table that we want to select in searches.  Simply remove fields you do not want to expose.
+     *
+     * @var array
+     * @access private
+     */
+    private $fieldsToSelectArray = array('ROG3', 'Ctry', 'PeopleID3', 'ROP3', 'PeopNameInCountry', 'ROG2', 'Continent', 'RegionCode', 'RegionName', 'ISO3', 'LocationInCountry', 'PeopleID1', 'ROP1', 'AffinityBloc', 'PeopleID2', 'ROP2', 'PeopleCluster', 'PeopNameAcrossCountries', 'Population', 'PopulationPercentUN', 'Category', 'ROL3', 'PrimaryLanguageName', 'ROL4', 'PrimaryLanguageDialect', 'NumberLanguagesSpoken', 'ROL3OfficialLanguage', 'OfficialLang', 'SpeakNationalLang', 'BibleStatus', 'BibleYear', 'NTYear', 'PortionsYear', 'TranslationNeedQuestionable', 'JPScale', 'LeastReached', 'LeastReachedBasis', 'GSEC', 'Unengaged', 'API', 'CPI', 'JF', 'AudioRecordings', 'NTOnline', 'GospelRadio', 'CPTeam', 'Church100', 'RLG3', 'PrimaryReligion', 'RLG4', 'ReligionSubdivision', 'PercentAdherents', 'PercentEvangelical', 'PCBuddhism', 'PCDblyProfessing', 'PCEthnicReligions', 'PCHinduism', 'PCIslam', 'PCNonReligious', 'PCOtherSmall', 'PCUnknown', 'PCAnglican', 'PCIndependent', 'PCProtestant', 'PCOrthodox', 'PCOtherChristian', 'PCRomanCatholic', 'StonyGround', 'SecurityLevel', 'UPG153', 'Table71Focus253', 'OriginalJPL', 'RaceCode', 'IndigenousCode', 'LRWebProfile', 'LRofTheDayMonth', 'LRofTheDayDay', 'LRTop100', 'Dalit', 'PhotoAddress', 'PhotoWidth', 'PhotoHeight', 'PhotoAddressExpanded', 'PhotoCredits', 'PhotoCreditURL', 'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission', 'MapAddress', 'MapAddressExpanded', 'MapCredits', 'MapCreditURL', 'MapCopyright', 'MapPermission', 'ProfileTextExists', 'FileAddress', 'FileAddressExpanded', 'FileCredits', 'FileCreditURL', 'FileCopyright', 'FilePermission', 'Top10Ranking', 'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation', 'RankMinistryTools', 'CountOfCountries', 'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'V59Country', 'MegablocPC', 'LargeSouthAsianLanguageROL3', 'Longitude', 'Latitude');
+    /**
+     * A string that will hold the fields for the Select statement
+     *
+     * @var string
+     * @access private
+     */
+    private $selectFieldsStatement = '';
+    /**
      * The table to pull the data from
      *
      * @var string
@@ -74,6 +85,7 @@ class PeopleGroup
     public function __construct($getParams)
     {
         $this->providedParams = $getParams;
+        $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", 10_40Window as Window10_40";
         $this->cleanParams();
     }
     /**
@@ -91,7 +103,7 @@ class PeopleGroup
         $day = intval($this->providedParams['day']);
         $this->validateVariableInRange($month, 1, 12);
         $this->validateVariableInRange($day, 1, 31);
-        $this->preparedStatement = "SELECT * FROM jppeoples WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
         $this->preparedVariables = array('month' => $month, 'day' => $day);
     }
     /**
@@ -106,7 +118,7 @@ class PeopleGroup
         $this->validateProvidedParams(array('id', 'country'));
         $id = intval($this->providedParams['id']);
         $country = strtoupper($this->providedParams['country']);
-        $this->preparedStatement = "SELECT * FROM jppeoples WHERE PeopleID3 = :id AND ROG3 = :country LIMIT 1";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples WHERE PeopleID3 = :id AND ROG3 = :country LIMIT 1";
         $this->preparedVariables = array('id' => $id, 'country' => $country);
     }
     /**
@@ -120,7 +132,7 @@ class PeopleGroup
     {
         $this->validateProvidedParams(array('id'));
         $id = intval($this->providedParams['id']);
-        $this->preparedStatement = "SELECT * FROM jppeoples WHERE PeopleID3 = :id";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples WHERE PeopleID3 = :id";
         $this->preparedVariables = array('id' => $id);
     }
     /**
@@ -134,13 +146,40 @@ class PeopleGroup
     {
         $where = "";
         $appendAndOnWhere = false;
-        $this->preparedStatement = "SELECT * FROM jppeoples";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples";
+        if ($this->paramExists('window1040')) {
+            $window1040 = strtoupper($this->providedParams['window1040']);
+            $this->validateVariableLength($window1040, 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            if ($window1040 == 'Y') {
+                $where .= "10_40Window = :window_10_40";
+                $this->preparedVariables['window_10_40'] = strtoupper($this->providedParams['window1040']);
+            } else if ($window1040 == 'N') {
+                $where .= "10_40Window IS NULL";
+            } else {
+                throw new \InvalidArgumentException("Invalid window1040 value sent.");
+            }
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('continents')) {
             $this->validateContinents();
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
             $where .= $this->generateInStatementFromPipedString($this->providedParams['continents'], 'ROG2');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('countries')) {
+            $countries = explode('|', $this->providedParams['countries']);
+            foreach ($countries as $country) {
+                $this->validateVariableLength($country, 2);
+            }
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['countries'], 'ROG3');
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('people_id1')) {
@@ -288,9 +327,26 @@ class PeopleGroup
         $continents = explode('|', $this->providedParams['continents']);
         $validContinents = array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam');
         foreach ($continents as $continent) {
+            $this->validateVariableLength($continent, 3);
             if (!in_array(strtolower($continent), $validContinents)) {
                 throw new \InvalidArgumentException("Continents provided do not exist.");
             }
+        }
+    }
+    /**
+     * Validates that the string is the correct length
+     *
+     * @param string $var the string to check
+     * @param integer $length the number of characters to test against
+     * @return void
+     * @throws InvalidArgumentException if the param is the wrong length
+     * @access private
+     * @author Johnathan Pulos
+     */
+    private function validateVariableLength($var, $length)
+    {
+        if (strlen($var) !== $length) {
+            throw new \InvalidArgumentException("One of your parameters are not the correct length.");
         }
     }
     /**

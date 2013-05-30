@@ -22,4 +22,4 @@
  */
 header('HTTP/1.1 404 Not Found');
 ?>
-<api><status>error</status><error><code>404</code><message>Not Found</message></error></api>
+<api><status>error</status><error><code>404</code><message>Not Found</message><details></details></error></api>
