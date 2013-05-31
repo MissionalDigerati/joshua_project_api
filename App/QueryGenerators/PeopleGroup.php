@@ -149,7 +149,7 @@ class PeopleGroup
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples";
         if ($this->paramExists('window1040')) {
             $window1040 = strtoupper($this->providedParams['window1040']);
-            $this->validateVariableLength($window1040, 1);
+            $this->validateStringLength($window1040, 1);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -172,14 +172,19 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('countries')) {
-            $countries = explode('|', $this->providedParams['countries']);
-            foreach ($countries as $country) {
-                $this->validateVariableLength($country, 2);
-            }
+            $this->validateBarSeperatedStringValueLength($this->providedParams['countries'], 2);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
             $where .= $this->generateInStatementFromPipedString($this->providedParams['countries'], 'ROG3');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('languages')) {
+            $this->validateBarSeperatedStringValueLength($this->providedParams['languages'], 3);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['languages'], 'ROL3');
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('people_id1')) {
@@ -327,10 +332,27 @@ class PeopleGroup
         $continents = explode('|', $this->providedParams['continents']);
         $validContinents = array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam');
         foreach ($continents as $continent) {
-            $this->validateVariableLength($continent, 3);
+            $this->validateStringLength($continent, 3);
             if (!in_array(strtolower($continent), $validContinents)) {
                 throw new \InvalidArgumentException("Continents provided do not exist.");
             }
+        }
+    }
+    /**
+     * Separates a bar separated string and iterates over each element.  Then it validates the length of each element
+     *
+     * @param string $str the bar separated string
+     * @param string $length the length desired
+     * @return void
+     * @access private
+     * @throws InvalidArgumentException if the param is the wrong length
+     * @author Johnathan Pulos
+     */
+    private function validateBarSeperatedStringValueLength($str, $length)
+    {
+        $elements = explode('|', $str);
+        foreach ($elements as $element) {
+            $this->validateStringLength($element, $length);
         }
     }
     /**
@@ -343,7 +365,7 @@ class PeopleGroup
      * @access private
      * @author Johnathan Pulos
      */
-    private function validateVariableLength($var, $length)
+    private function validateStringLength($var, $length)
     {
         if (strlen($var) !== $length) {
             throw new \InvalidArgumentException("One of your parameters are not the correct length.");

@@ -192,7 +192,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected['my_string'], $actual['my_string']);
     }
     /**
-     * validateVariableLength() should error if the character length is incorrect
+     * validateStringLength() should error if the character length is incorrect
      *
      * @return void
      * @access public
@@ -206,7 +206,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $testString = "iloveicecream";
         $peopleGroup = new \QueryGenerators\PeopleGroup($data);
         $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        $method = $reflectionOfPeopleGroup->getMethod('validateVariableLength');
+        $method = $reflectionOfPeopleGroup->getMethod('validateStringLength');
         $method->setAccessible(true);
         $method->invoke($peopleGroup, $testString, 20);
     }
@@ -579,6 +579,26 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertEquals(null, $peopleGroup['Window10_40']);
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by the given languages
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByLanguages()
+    {
+        $expectedLanguages = array('AKA', 'ALE');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('languages' => join("|", $expectedLanguages)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array(strtoupper($peopleGroup['ROL3']), $expectedLanguages));
         }
     }
     /**
