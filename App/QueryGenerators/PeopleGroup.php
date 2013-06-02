@@ -208,6 +208,29 @@ class PeopleGroup
             $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id3'], 'PeopleID3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('population')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $popValues = explode('-', $this->providedParams['population']);
+            $popLength = count($popValues);
+            if ($popLength == 2) {
+                $minPop = intval($popValues[0]);
+                $maxPop = intval($popValues[1]);
+                if ($minPop >= $maxPop) {
+                    throw new \InvalidArgumentException("The population parameter is set incorrectly.");
+                }
+                $where .= "Population BETWEEN :min_pop AND :max_pop";
+                $this->preparedVariables['min_pop'] = $minPop;
+                $this->preparedVariables['max_pop'] = $maxPop;
+            } else if ($popLength == 1) {
+                $where .= "Population = :pop";
+                $this->preparedVariables['pop'] = intval($popValues[0]);
+            } else {
+                throw new \InvalidArgumentException("The population parameter is set incorrectly.");
+            }
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('regions')) {
             $regions = explode('|', $this->providedParams['regions']);
             foreach ($regions as $region) {
@@ -399,7 +422,7 @@ class PeopleGroup
     {
         $newValue = array();
         foreach ($this->providedParams as $key => $value) {
-            $newValue[$key] = strip_tags($value);
+            $newValue[$key] = preg_replace('/[^a-z\d\-|]/i', '', strip_tags($value));
         }
         $this->providedParams = $newValue;
     }

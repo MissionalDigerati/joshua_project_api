@@ -602,6 +602,76 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * Tests that findAllWithFilters() filters by a population range
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPopulationRange()
+    {
+        $expectedMin = 10000;
+        $expectedMax = 20000;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population' => $expectedMin."-".$expectedMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedMax, intval($peopleGroup['Population']));
+            $this->assertGreaterThanOrEqual($expectedMin, intval($peopleGroup['Population']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a single population
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterBySinglePopulation()
+    {
+        $expectedPop = 19900;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population' => $expectedPop));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals($expectedPop, intval($peopleGroup['Population']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() throws error if incorrect population sent
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testFindAllWithFiltersShouldThrowErrorWithIncorrectPopulation()
+    {
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population' => '1900-23000-3400'));
+        $peopleGroup->findAllWithFilters();
+    }
+    /**
+     * Tests that findAllWithFilters() throws error if min is greater then max population
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testFindAllWithFiltersShouldThrowErrorWithMinPopulationGreaterThenMaxPopulation()
+    {
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population' => '30000-1000'));
+        $peopleGroup->findAllWithFilters();
+    }
+    /**
       * Tests that findAllWithFilters() throws the correct error if the window1040 is set to anything else but Y & N
       *
       * @return void
