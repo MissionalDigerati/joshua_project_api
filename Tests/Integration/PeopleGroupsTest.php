@@ -581,6 +581,54 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * GET /people_groups.json?population=10000-20000
+     * test page filters by a set range of population
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnPeopleGroupsFliteredByAMinAndMaxPopulation()
+    {
+        $expectedMin = 10000;
+        $expectedMax = 20000;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups.json",
+            array('api_key' => $this->APIKey, 'population' => $expectedMin."-".$expectedMax),
+            "filter_by_pop_in_range_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedMax, intval($peopleGroup['Population']));
+            $this->assertGreaterThanOrEqual($expectedMin, intval($peopleGroup['Population']));
+        }
+    }
+    /**
+     * GET /people_groups.json?population=10000
+     * test page filters by a single population number
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnPeopleGroupsFliteredByASetPopulation()
+    {
+        $expectedPop = 19900;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups.json",
+            array('api_key' => $this->APIKey, 'population' => $expectedPop),
+            "filter_by_set_pop_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $peopleGroup) {
+            $this->assertEquals($expectedPop, intval($peopleGroup['Population']));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string
