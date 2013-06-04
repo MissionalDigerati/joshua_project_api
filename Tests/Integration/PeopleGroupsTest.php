@@ -673,8 +673,8 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, intval($peopleGroup['PercentAdherents']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, intval($peopleGroup['PercentAdherents']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PercentAdherents']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PercentAdherents']));
         }
     }
     /**

@@ -333,8 +333,8 @@ class PeopleGroup
         $stringValues = explode('-', $str);
         $stringValuesLength = count($stringValues);
         if ($stringValuesLength == 2) {
-            $min = intval($stringValues[0]);
-            $max = intval($stringValues[1]);
+            $min = floatval($stringValues[0]);
+            $max = floatval($stringValues[1]);
             if ($min >= $max) {
                 throw new \InvalidArgumentException("A dashed parameter has a minimum greater than it's maximum.");
             }
@@ -342,7 +342,7 @@ class PeopleGroup
             $this->preparedVariables["max_" . $suffix] = $max;
             return $columnName . " BETWEEN :min_" . $suffix . " AND :max_" . $suffix;
         } else if ($stringValuesLength == 1) {
-            $this->preparedVariables["total_" . $suffix] = intval($stringValues[0]);
+            $this->preparedVariables["total_" . $suffix] = floatval($stringValues[0]);
             return $columnName . " = :total_" . $suffix;
         } else {
             throw new \InvalidArgumentException("A dashed parameter has too many values.");

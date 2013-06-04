@@ -727,8 +727,28 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, intval($peopleGroup['PercentAdherents']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, intval($peopleGroup['PercentAdherents']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PercentAdherents']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PercentAdherents']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of adherents with only 1 decimal value
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfAdherentsWithOnlyOneDecimalParameter()
+    {
+        $expectedPercent = 1.6;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_adherent' => $expectedPercent));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals($expectedPercent, floatval($peopleGroup['PercentAdherents']));
         }
     }
     /**
