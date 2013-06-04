@@ -638,7 +638,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      */
     public function testIndexShouldReturnPeopleGroupsFliteredByPrimaryReligions()
     {
-        $expectedReligions = array(2 => 'buddhism', 6 => 'islam');
+        $expectedReligions = array(2 => 'buddhism');
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/people_groups.json",
             array('api_key' => $this->APIKey, 'primary_religions' => join('|', array_keys($expectedReligions))),
