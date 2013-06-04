@@ -231,6 +231,17 @@ class PeopleGroup
             }
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('primary_religions')) {
+            $religions = explode('|', $this->providedParams['primary_religions']);
+            foreach ($religions as $religion) {
+                $this->validateVariableInRange($religion, 1, 9, array(3));
+            }
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['primary_religions'], 'RLG3');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('regions')) {
             $regions = explode('|', $this->providedParams['regions']);
             foreach ($regions as $region) {
@@ -405,10 +416,13 @@ class PeopleGroup
      * @access public
      * @author Johnathan Pulos
      */
-    private function validateVariableInRange($var, $start, $end)
+    private function validateVariableInRange($var, $start, $end, $except = array())
     {
         if ((($var >= $start) && ($var <= $end)) == false) {
             throw new \InvalidArgumentException("One of the provided variables are out of range.");
+        }
+        if (in_array($var, $except)) {
+            throw new \InvalidArgumentException("One of the provided variables is not allowed.");
         }
     }
     /**

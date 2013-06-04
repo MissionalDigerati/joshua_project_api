@@ -211,7 +211,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $method->invoke($peopleGroup, $testString, 20);
     }
     /**
-     * Validate that validateVariableInRange() sends back false if it is not in range
+     * Validate that validateVariableInRange() throws error if it is not in range
      *
      * @return void
      * @access public
@@ -226,6 +226,23 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $method = $reflectionOfPeopleGroup->getMethod('validateVariableInRange');
         $method->setAccessible(true);
         $actual = $method->invoke($peopleGroup, 'out_range', 1, 7);
+    }
+    /**
+     * Validate that validateVariableInRange() throws an error in the integer is in the $exceptions
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * @expectedException InvalidArgumentException
+     */
+    public function testValidateVariableInRangeShouldThrowErrorIfVariableIsAnException()
+    {
+        $data = array('exception' => 5);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('validateVariableInRange');
+        $method->setAccessible(true);
+        $actual = $method->invoke($peopleGroup, 'exception', 1, 7, array(5));
     }
     /**
      * findByIdAndCountry() should return the correct people group, based on the supplied ID, and country.
@@ -621,6 +638,27 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         foreach ($data as $peopleGroup) {
             $this->assertLessThanOrEqual($expectedMax, intval($peopleGroup['Population']));
             $this->assertGreaterThanOrEqual($expectedMin, intval($peopleGroup['Population']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by primary religions
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPrimaryReligions()
+    {
+        $expectedReligions = array(2 => 'buddhism', 6 => 'islam');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('primary_religions' => join('|', array_keys($expectedReligions))));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array(strtolower($peopleGroup['PrimaryReligion']), array_values($expectedReligions)));
+            $this->assertTrue(in_array($peopleGroup['RLG3'], array_keys($expectedReligions)));
         }
     }
     /**
