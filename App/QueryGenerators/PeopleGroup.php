@@ -208,6 +208,13 @@ class PeopleGroup
             $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id3'], 'PeopleID3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('pc_adherent')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_adherent'], 'PercentAdherents', 'pc_adherents');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('population')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -453,7 +460,7 @@ class PeopleGroup
     {
         $newValue = array();
         foreach ($this->providedParams as $key => $value) {
-            $newValue[$key] = preg_replace('/[^a-z\d\-|]/i', '', strip_tags($value));
+            $newValue[$key] = preg_replace('/[^a-z\d\-|\.]/i', '', strip_tags($value));
         }
         $this->providedParams = $newValue;
     }
