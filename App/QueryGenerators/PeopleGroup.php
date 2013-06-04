@@ -212,23 +212,7 @@ class PeopleGroup
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $popValues = explode('-', $this->providedParams['population']);
-            $popLength = count($popValues);
-            if ($popLength == 2) {
-                $minPop = intval($popValues[0]);
-                $maxPop = intval($popValues[1]);
-                if ($minPop >= $maxPop) {
-                    throw new \InvalidArgumentException("The population parameter is set incorrectly.");
-                }
-                $where .= "Population BETWEEN :min_pop AND :max_pop";
-                $this->preparedVariables['min_pop'] = $minPop;
-                $this->preparedVariables['max_pop'] = $maxPop;
-            } else if ($popLength == 1) {
-                $where .= "Population = :pop";
-                $this->preparedVariables['pop'] = intval($popValues[0]);
-            } else {
-                throw new \InvalidArgumentException("The population parameter is set incorrectly.");
-            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['population'], 'Population', 'pop');
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('primary_religions')) {
@@ -323,6 +307,39 @@ class PeopleGroup
             $i = $i+1;
         }
         return $columnName . " IN (" . join(", ", $preparedInVars) . ")";
+    }
+    /**
+     * Generates a BETWEEN statement using a dash separated string.  The string should have either a single integer with no dash, or
+     * a min and max separated by a dash.  This will throw an error if you supply too many parameters, or if you minimum is greater
+     * then your max.
+     *
+     * @param string $str The dash separated string min-max
+     * @param string $columnName the name of the table column to search
+     * @param string $suffix a suffix to be appended to the variable name (Please do not separate with spaces)
+     * @return string
+     * @throws InvalidArgumentException if the param has too many variables, or the min is greater than the max
+     * @access private
+     * @author Johnathan Pulos
+     */
+    private function generateBetweenStatementFromDashSeperatedString($str, $columnName, $suffix)
+    {
+        $stringValues = explode('-', $str);
+        $stringValuesLength = count($stringValues);
+        if ($stringValuesLength == 2) {
+            $min = intval($stringValues[0]);
+            $max = intval($stringValues[1]);
+            if ($min >= $max) {
+                throw new \InvalidArgumentException("A dashed parameter has a minimum greater than it's maximum.");
+            }
+            $this->preparedVariables["min_" . $suffix] = $min;
+            $this->preparedVariables["max_" . $suffix] = $max;
+            return $columnName . " BETWEEN :min_" . $suffix . " AND :max_" . $suffix;
+        } else if ($stringValuesLength == 1) {
+            $this->preparedVariables["total_" . $suffix] = intval($stringValues[0]);
+            return $columnName . " = :total_" . $suffix;
+        } else {
+            throw new \InvalidArgumentException("A dashed parameter has too many values.");
+        }
     }
     /**
      * A shorter method for checking if the array_key_exists

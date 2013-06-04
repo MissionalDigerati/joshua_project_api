@@ -863,4 +863,80 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedKeys, array_keys($peopleGroup->preparedVariables));
         $this->assertEquals($expectedValues, array_values($peopleGroup->preparedVariables));
     }
+    /**
+     * generateBetweenStatementFromDashSeperatedString() should generate an appropriate BETWEEN statement with a max and minimum
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testGenerateBetweenStatementFromDashSeperatedStringShouldReturnCorrectStatementWithAMaxAndMin()
+    {
+        $expectedString = "Population BETWEEN :min_pop AND :max_pop";
+        $expectedKeys = array('min_pop', 'max_pop');
+        $expectedValues = array(10, 20);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateBetweenStatementFromDashSeperatedString');
+        $method->setAccessible(true);
+        $actualString = $method->invoke($peopleGroup, '10-20', 'Population', 'pop');
+        $this->assertEquals($expectedString, $actualString);
+        $this->assertEquals($expectedKeys, array_keys($peopleGroup->preparedVariables));
+        $this->assertEquals($expectedValues, array_values($peopleGroup->preparedVariables));
+    }
+    /**
+     * generateBetweenStatementFromDashSeperatedString() should generate an appropriate statement with only a minimum
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testGenerateBetweenStatementFromDashSeperatedStringShouldReturnCorrectStatementWithAMinOnly()
+    {
+        $expectedString = "Population = :total_population";
+        $expectedKeys = array('total_population');
+        $expectedValues = array(10);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateBetweenStatementFromDashSeperatedString');
+        $method->setAccessible(true);
+        $actualString = $method->invoke($peopleGroup, '10', 'Population', 'population');
+        $this->assertEquals($expectedString, $actualString);
+        $this->assertEquals($expectedKeys, array_keys($peopleGroup->preparedVariables));
+        $this->assertEquals($expectedValues, array_values($peopleGroup->preparedVariables));
+    }
+    /**
+     * Tests that generateBetweenStatementFromDashSeperatedString() throws error if too many parameters are provided
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMoreThenMaxAndMinAreGiven()
+    {
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateBetweenStatementFromDashSeperatedString');
+        $method->setAccessible(true);
+        $actualString = $method->invoke($peopleGroup, '10-20-39', 'Population', 'population');
+    }
+    /**
+     * Tests that generateBetweenStatementFromDashSeperatedString() throws error if min is greater than max
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMoreMinIsGreaterThanMax()
+    {
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateBetweenStatementFromDashSeperatedString');
+        $method->setAccessible(true);
+        $actualString = $method->invoke($peopleGroup, '30-20', 'Population', 'population');
+    }
 }
