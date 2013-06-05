@@ -226,7 +226,7 @@ class PeopleGroup
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_ethnic_religion'], 'PCEthnicReligions', 'pc_ethnic_religion');
+             $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_ethnic_religion'], 'PCEthnicReligions', 'pc_ethnic_religion');
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_evangelical')) {
@@ -241,6 +241,13 @@ class PeopleGroup
                 $where .= " AND ";
             }
             $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_hindu'], 'PCHinduism', 'pc_hindu');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_islam')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_islam'], 'PCIslam', 'pc_islam');
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('population')) {
