@@ -34,11 +34,19 @@
 $useCaching = false;
 $DS = DIRECTORY_SEPARATOR;
 /**
- * @todo Need to create a way to dynamically setup the version in the url
+ * Lets get the version of the API based on the URL (http://joshua.api.local/v12/people_groups/daily_unreached.json?api_key=37e24112caae)
+ * It will default to the latest API.  Youu must provide an API Version if you are accessing the data.  The default is only for
+ * static pages
  *
  * @author Johnathan Pulos
  */
-$API_VERSION = "v1";
+$pattern = '/([v][1-9]*)/';
+preg_match($pattern, $_SERVER['REQUEST_URI'], $matches);
+if (empty($matches)) {
+    $API_VERSION = "v1";
+} else {
+    $API_VERSION = $matches[0];
+}
 $bypassExtTest = false;
 if ($useCaching === true) {
     $cache = new Memcached();
