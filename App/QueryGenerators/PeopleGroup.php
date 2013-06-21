@@ -380,6 +380,14 @@ class PeopleGroup
             $where .= $this->generateInStatementFromPipedString($this->providedParams['rop3'], 'ROP3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('unengaged')) {
+            $this->validateStringLength($this->providedParams['unengaged'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean($this->providedParams['unengaged'], 'Unengaged', 'unengaged');
+            $appendAndOnWhere = true;
+        }
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }
@@ -482,7 +490,7 @@ class PeopleGroup
             $this->preparedVariables[$suffix] = $val;
             return $columnName . " = :" . $suffix;
         } else if ($val == 'N') {
-            return $columnName . " IS NULL";
+            return "(" . $columnName . " IS NULL OR " . $columnName . " = '')";
         } else {
             throw new \InvalidArgumentException("A boolean was set with the wrong value.");
         }

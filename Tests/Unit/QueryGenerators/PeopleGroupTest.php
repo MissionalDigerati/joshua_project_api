@@ -1070,8 +1070,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindAllWithFiltersShouldFilterOutLeastReachedPeopleGroups()
     {
-        $expectedLeastreachedStatus = 'n';
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('least_reached' => $expectedLeastreachedStatus));
+        $expectedLeastReachedStatus = 'n';
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('least_reached' => $expectedLeastReachedStatus));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -1079,6 +1079,26 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertNull($peopleGroup['LeastReached']);
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters out Unengaged Groups
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterOutUnengagedPeopleGroups()
+    {
+        $expectedUnengagedStatus = 'n';
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('unengaged' => $expectedUnengagedStatus));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals('', $peopleGroup['Unengaged']);
         }
     }
     /**
@@ -1377,7 +1397,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForANo()
     {
-        $expectedStatement = "10_40Window IS NULL";
+        $expectedStatement = "(10_40Window IS NULL OR 10_40Window = '')";
         $peopleGroup = new \QueryGenerators\PeopleGroup(array());
         $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
         $method = $reflectionOfPeopleGroup->getMethod('generateWhereStatementForBoolean');
