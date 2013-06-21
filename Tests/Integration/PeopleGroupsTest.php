@@ -873,7 +873,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_unknown' => $expectedPercentMin . "-" . $expectedPercentMax),
-            "filter_by_percent_other_religions_on_index_json"
+            "filter_by_percent_unknown_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
@@ -898,7 +898,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_anglican' => $expectedPercentMin . "-" . $expectedPercentMax),
-            "filter_by_percent_other_religions_on_index_json"
+            "filter_by_percent_anglican_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
@@ -923,7 +923,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_independent' => $expectedPercentMin . "-" . $expectedPercentMax),
-            "filter_by_percent_other_religions_on_index_json"
+            "filter_by_percent_independent_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
@@ -931,6 +931,31 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         foreach ($decodedResponse as $peopleGroup) {
             $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCIndependent']));
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCIndependent']));
+        }
+    }
+    /**
+     * GET /people_groups.json?pc_protestant=55.5-87.77
+     * test page filters by percentage of Protestants
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnPeopleGroupsFliteredByPercentageOfProtestants()
+    {
+        $expectedPercentMin = 55.5;
+        $expectedPercentMax = 87.77;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups.json",
+            array('api_key' => $this->APIKey, 'pc_protestant' => $expectedPercentMin . "-" . $expectedPercentMax),
+            "filter_by_percent_protestant_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCProtestant']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCProtestant']));
         }
     }
     /**
