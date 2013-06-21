@@ -196,6 +196,14 @@ class PeopleGroup
             $where .= $this->generateInStatementFromPipedString($this->providedParams['languages'], 'ROL3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('least_reached')) {
+            $this->validateStringLength($this->providedParams['least_reached'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean($this->providedParams['least_reached'], 'LeastReached', 'least_reached');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('people_id1')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";

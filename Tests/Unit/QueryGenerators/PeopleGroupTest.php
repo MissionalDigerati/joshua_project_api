@@ -1062,6 +1062,26 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * Tests that findAllWithFilters() filters out Least Reached Groups
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterOutLeastReachedPeopleGroups()
+    {
+        $expectedLeastreachedStatus = 'n';
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('least_reached' => $expectedLeastreachedStatus));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertNull($peopleGroup['LeastReached']);
+        }
+    }
+    /**
      * Tests that findAllWithFilters() filters by JPScale
      *
      * @return void
