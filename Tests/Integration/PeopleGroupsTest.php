@@ -834,7 +834,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-     * GET /people_groups.json?pc_other_religions=3.2-12.6
+     * GET /people_groups.json?pc_other_religion=3.2-12.6
      * test page filters by percentage of Other Religions
      *
      * @return void
@@ -847,7 +847,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMax = 12.6;
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_other_religions' => $expectedPercentMin . "-" . $expectedPercentMax),
+            array('api_key' => $this->APIKey, 'pc_other_religion' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_other_religions_on_index_json"
         );
         $decodedResponse = json_decode($response, true);

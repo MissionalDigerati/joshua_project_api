@@ -894,7 +894,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 2.0;
         $expectedPercentMax = 10.3;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_other_religions' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_other_religion' => $expectedPercentMin."-".$expectedPercentMax));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
