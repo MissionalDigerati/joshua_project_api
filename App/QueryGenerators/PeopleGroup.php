@@ -208,6 +208,13 @@ class PeopleGroup
             $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id3'], 'PeopleID3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('pc_anglican')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_anglican'], 'PCAnglican', 'pc_anglican');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('pc_adherent')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
