@@ -20,7 +20,7 @@
  * @copyright Copyright 2013 Missional Digerati
  * 
  */
-namespace Tests\Integration;
+namespace Tests\v1\Integration;
 
 /**
  * The class for testing integration of the People Groups
@@ -62,6 +62,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->cachedRequest->cacheDirectory =
             __DIR__ .
             DIRECTORY_SEPARATOR . ".." .
+            DIRECTORY_SEPARATOR . ".." .
             DIRECTORY_SEPARATOR . "Support" .
             DIRECTORY_SEPARATOR . "cache" .
             DIRECTORY_SEPARATOR;
@@ -95,11 +96,26 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     public function testShouldRefuseAccessWithoutAnAPIKey()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups/daily_unreached.json",
+            "http://joshua.api.local/v1/people_groups/daily_unreached.json",
             array(),
             "up_json"
         );
         $this->assertEquals(401, $this->cachedRequest->responseCode);
+    }
+    /**
+     * Tests that you can only access page with a version number
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testShouldRefuseAccessWithoutAVersionNumber()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups/daily_unreached.json",
+            array('api_key' => $this->APIKey),
+            "versioning_json"
+        );
+        $this->assertEquals(404, $this->cachedRequest->responseCode);
     }
     /**
      * Tests that you can only access page with a valid API Key
@@ -110,7 +126,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     public function testShouldRefuseAccessWithABadAPIKey()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups/daily_unreached.json?api_key=BADKEY",
+            "http://joshua.api.local/v1/people_groups/daily_unreached.json?api_key=BADKEY",
             array(),
             "up_json"
         );
@@ -126,7 +142,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     public function testShouldGetDailyUnreachedInJSON()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups/daily_unreached.json",
+            "http://joshua.api.local/v1/people_groups/daily_unreached.json",
             array('api_key' => $this->APIKey),
             "up_json"
         );
@@ -143,7 +159,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     public function testShouldGetDailyUnreachedInXML()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups/daily_unreached.xml",
+            "http://joshua.api.local/v1/people_groups/daily_unreached.xml",
             array('api_key' => $this->APIKey),
             "up_xml"
         );
@@ -161,7 +177,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedMonth = '5';
         $expectedDay = Date('j');
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups/daily_unreached.json",
+            "http://joshua.api.local/v1/people_groups/daily_unreached.json",
             array('api_key' => $this->APIKey, 'month' => $expectedMonth),
             "up_month"
         );
@@ -180,7 +196,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedMonth = Date('n');
         $expectedDay = '23';
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups/daily_unreached.json",
+            "http://joshua.api.local/v1/people_groups/daily_unreached.json",
             array('api_key' => $this->APIKey, 'day' => $expectedDay),
             "up_day"
         );
@@ -199,7 +215,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedMonth = '3';
         $expectedDay = '21';
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups/daily_unreached.json",
+            "http://joshua.api.local/v1/people_groups/daily_unreached.json",
             array('api_key' => $this->APIKey, 'day' => $expectedDay, 'month' => $expectedMonth),
             "up_day_and_month"
         );
@@ -217,7 +233,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     public function testShowActionShouldGive404IfNoValidId()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups/a.json",
+            "http://joshua.api.local/v1/people_groups/a.json",
             array('api_key' => $this->APIKey),
             "wrong_id_request"
         );
@@ -237,7 +253,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedCountry = "CB";
         $expectedName = "Khmer, Central";
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups/12662.json",
+            "http://joshua.api.local/v1/people_groups/12662.json",
             array('api_key' => $this->APIKey, 'country' => 'CB'),
             "show_in_country_json"
         );
@@ -260,7 +276,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedID = "12662";
         $expectedPeopleGroups = 10;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups/12662.json",
+            "http://joshua.api.local/v1/people_groups/12662.json",
             array('api_key' => $this->APIKey),
             "show_in_country_json"
         );
@@ -280,7 +296,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     public function testShouldProvide404ErrorIfTheIDDoesNotExist()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups/2292828272736363511516.json",
+            "http://joshua.api.local/v1/people_groups/2292828272736363511516.json",
             array('api_key' => $this->APIKey),
             "show_in_country_json"
         );
@@ -299,7 +315,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedNumberOfResults = 100;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey),
             "all_on_index_json"
         );
@@ -319,7 +335,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPeopleIds = array(17, 23);
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'people_id1' => join("|", $expectedPeopleIds)),
             "filter_by_people_id_1_on_index_json"
         );
@@ -342,7 +358,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedROP = array('A014', 'A010');
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'rop1' => join("|", $expectedROP)),
             "filter_by_rop_1_on_index_json"
         );
@@ -366,7 +382,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedROP = 'A014';
         $expectedPeopleID = 23;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'rop1' => $expectedROP, 'people_id1' => $expectedPeopleID),
             "filter_by_rop_1_on_index_json"
         );
@@ -390,7 +406,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPeopleIds = array(117, 115);
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'people_id2' => join("|", $expectedPeopleIds)),
             "filter_by_people_id_2_on_index_json"
         );
@@ -413,7 +429,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedROP = array('C0013', 'C0067');
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'rop2' => join("|", $expectedROP)),
             "filter_by_rop_2_on_index_json"
         );
@@ -436,7 +452,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPeopleIds = array(11722, 19204);
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'people_id3' => join("|", $expectedPeopleIds)),
             "filter_by_people_id_3_on_index_json"
         );
@@ -459,7 +475,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedROP = array(115485, 115409);
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'rop3' => join("|", $expectedROP)),
             "filter_by_rop_3_on_index_json"
         );
@@ -482,7 +498,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedCountries = array('AFR', 'NAR');
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'continents' => join("|", $expectedCountries)),
             "filter_by_continents_on_index_json"
         );
@@ -505,7 +521,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedRegions = array(3 => 'northeast asia', 4 => 'south asia');
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'regions' => join("|", array_keys($expectedRegions))),
             "filter_by_regions_on_index_json"
         );
@@ -529,7 +545,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedCountries = array('AN', 'BG');
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'countries' => join("|", $expectedCountries)),
             "filter_by_countries_on_index_json"
         );
@@ -552,7 +568,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expected1040Window = 'Y';
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'window1040' => $expected1040Window),
             "filter_by_1040_window_on_index_json"
         );
@@ -575,7 +591,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedLanguages = array('AKA', 'ALE');
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'languages' => join("|", $expectedLanguages)),
             "filter_by_languages_aka_on_index_json"
         );
@@ -599,7 +615,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 10000;
         $expectedMax = 20000;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'population' => $expectedMin."-".$expectedMax),
             "filter_by_pop_in_range_on_index_json"
         );
@@ -623,7 +639,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPop = 19900;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'population' => $expectedPop),
             "filter_by_set_pop_on_index_json"
         );
@@ -646,7 +662,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedReligions = array(2 => 'buddhism');
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'primary_religions' => join('|', array_keys($expectedReligions))),
             "filter_by_primary_religions_on_index_json"
         );
@@ -671,7 +687,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMin = 1.0;
         $expectedPercentMax = 6.9;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_adherent' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_adherents_on_index_json"
         );
@@ -696,7 +712,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMin = 10.0;
         $expectedPercentMax = 20.8;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_evangelical' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_evangelicals_on_index_json"
         );
@@ -721,7 +737,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMin = 30.0;
         $expectedPercentMax = 40.9;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_buddhist' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_buddhist_on_index_json"
         );
@@ -746,7 +762,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMin = 1.0;
         $expectedPercentMax = 3.9;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_ethnic_religion' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_ethnic_religions_on_index_json"
         );
@@ -771,7 +787,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMin = 1.0;
         $expectedPercentMax = 30.2;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_hindu' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_hindus_on_index_json"
         );
@@ -796,7 +812,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMin = 30.12;
         $expectedPercentMax = 40.3;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_islam' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_islam_on_index_json"
         );
@@ -821,7 +837,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMin = 40.12;
         $expectedPercentMax = 55.3;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_non_religious' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_non_religious_on_index_json"
         );
@@ -846,7 +862,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMin = 3.2;
         $expectedPercentMax = 12.6;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_other_religion' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_other_religions_on_index_json"
         );
@@ -871,7 +887,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMin = 3.22;
         $expectedPercentMax = 35.67;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_unknown' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_unknown_on_index_json"
         );
@@ -896,7 +912,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMin = 8.7;
         $expectedPercentMax = 40.1;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_anglican' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_anglican_on_index_json"
         );
@@ -921,7 +937,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMin = 8.7;
         $expectedPercentMax = 40.1;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_independent' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_independent_on_index_json"
         );
@@ -946,7 +962,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMin = 55.5;
         $expectedPercentMax = 87.77;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_protestant' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_protestant_on_index_json"
         );
@@ -971,7 +987,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMin = 31.4;
         $expectedPercentMax = 56.7;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_orthodox' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_orthodox_on_index_json"
         );
@@ -996,7 +1012,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMin = 2.34;
         $expectedPercentMax = 56.7;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_rcatholic' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_orthodox_on_index_json"
         );
@@ -1021,7 +1037,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedPercentMin = 1.1;
         $expectedPercentMax = 27.2;
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'pc_other_christian' => $expectedPercentMin . "-" . $expectedPercentMax),
             "filter_by_percent_other_christians_on_index_json"
         );
@@ -1046,7 +1062,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedJPScales = "1.1|2.2|3.1";
         $expectedJPScalesArray = array(1.1, 2.2, 3.1);
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'jpscale' => $expectedJPScales),
             "filter_by_jp_scale_on_index_json"
         );
@@ -1069,7 +1085,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedIndigenousStatus = 'y';
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'indigenous' => $expectedIndigenousStatus),
             "filter_by_indigenous_status_on_index_json"
         );
@@ -1092,7 +1108,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedLeastReachedStatus = 'y';
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'least_reached' => $expectedLeastReachedStatus),
             "filter_by_least_reached_status_on_index_json"
         );
@@ -1115,7 +1131,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedUnengagedStatus = 'y';
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/people_groups.json",
+            "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey, 'unengaged' => $expectedUnengagedStatus),
             "filter_by_unengaged_status_on_index_json"
         );

@@ -26,7 +26,7 @@
  * month - two digit month
  * day - two digit day
  * 
- * For example, /people_groups/daily_unreached.json?month=01&day=31 will get the people group for Jan. 31st.
+ * For example, /v1/people_groups/daily_unreached.json?month=01&day=31 will get the people group for Jan. 31st.
  *
  * GET /people_groups/daily_unreached
  * Available Formats JSON & XML
@@ -35,8 +35,8 @@
  * @author Johnathan Pulos
  */
 $app->get(
-    "/people_groups/daily_unreached.:format",
-    function ($format) use ($app, $db, $appRequest) {
+    "/:version/people_groups/daily_unreached.:format",
+    function ($version, $format) use ($app, $db, $appRequest) {
         /**
          * Get the given parameters, and clean them
          *
@@ -85,8 +85,8 @@ $app->get(
  * @author Johnathan Pulos
  */
 $app->get(
-    "/people_groups/:id\.:format",
-    function ($id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
+    "/:version/people_groups/:id\.:format",
+    function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
         $data = array();
         /**
          * Make sure we have an ID, else crash
@@ -198,8 +198,8 @@ $app->get(
  * @author Johnathan Pulos
  */
 $app->get(
-    "/people_groups\.:format",
-    function ($format) use ($app, $db, $appRequest, $useCaching, $cache) {
+    "/:version/people_groups\.:format",
+    function ($version, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
         $data = array();
         if ($useCaching === true) {
             /**
