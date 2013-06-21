@@ -1309,4 +1309,60 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $method->setAccessible(true);
         $actualString = $method->invoke($peopleGroup, '30-20', 'Population', 'population');
     }
+    /**
+     * Tests that generateWhereStatementForBoolean generates the correct statement for a Yes Boolean
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForAYes()
+    {
+        $expectedStatement = "IndigenousCode = :indigenous";
+        $expectedKeys = array('indigenous');
+        $expectedValues = array('Y');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateWhereStatementForBoolean');
+        $method->setAccessible(true);
+        $actualStatement = $method->invoke($peopleGroup, 'y', 'IndigenousCode', 'indigenous');
+        $this->assertEquals($expectedStatement, $actualStatement);
+        $this->assertEquals($expectedKeys, array_keys($peopleGroup->preparedVariables));
+        $this->assertEquals($expectedValues, array_values($peopleGroup->preparedVariables));
+    }
+    /**
+     * Tests that generateWhereStatementForBoolean generates the correct statement for a No Boolean
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForANo()
+    {
+        $expectedStatement = "10_40Window IS NULL";
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateWhereStatementForBoolean');
+        $method->setAccessible(true);
+        $actualStatement = $method->invoke($peopleGroup, 'n', '10_40Window', 'window_10_40');
+        $this->assertEquals($expectedStatement, $actualStatement);
+        $this->assertTrue(empty($peopleGroup->preparedVariables));
+    }
+    /**
+     * Tests that generateWhereStatementForBoolean() throws error if you send anything else but Y or N
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testGenerateWhereStatementFromBooleanShouldThrowErrorIfNotYOrN()
+    {
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateWhereStatementForBoolean');
+        $method->setAccessible(true);
+        $actualString = $method->invoke($peopleGroup, 'p', 'Population', 'population');
+    }
 }

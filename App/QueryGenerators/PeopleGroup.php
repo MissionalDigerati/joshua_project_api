@@ -148,19 +148,11 @@ class PeopleGroup
         $appendAndOnWhere = false;
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples";
         if ($this->paramExists('window1040')) {
-            $window1040 = strtoupper($this->providedParams['window1040']);
-            $this->validateStringLength($window1040, 1);
+            $this->validateStringLength($this->providedParams['window1040'], 1);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            if ($window1040 == 'Y') {
-                $where .= "10_40Window = :window_10_40";
-                $this->preparedVariables['window_10_40'] = strtoupper($this->providedParams['window1040']);
-            } else if ($window1040 == 'N') {
-                $where .= "10_40Window IS NULL";
-            } else {
-                throw new \InvalidArgumentException("Invalid window1040 value sent.");
-            }
+            $where .= $this->generateWhereStatementForBoolean($this->providedParams['window1040'], '10_40Window', 'window_10_40');
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('continents')) {
@@ -180,19 +172,11 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('indigenous')) {
-            $indigenous = strtoupper($this->providedParams['indigenous']);
-            $this->validateStringLength($indigenous, 1);
+            $this->validateStringLength($this->providedParams['indigenous'], 1);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            if ($indigenous == 'Y') {
-                $where .= "IndigenousCode = :indigenous";
-                $this->preparedVariables['indigenous'] = strtoupper($this->providedParams['indigenous']);
-            } else if ($indigenous == 'N') {
-                $where .= "IndigenousCode IS NULL";
-            } else {
-                throw new \InvalidArgumentException("Invalid indigenous value sent.");
-            }
+            $where .= $this->generateWhereStatementForBoolean($this->providedParams['indigenous'], 'IndigenousCode', 'indigenous');
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('languages')) {
@@ -460,6 +444,30 @@ class PeopleGroup
             return $columnName . " = :total_" . $suffix;
         } else {
             throw new \InvalidArgumentException("A dashed parameter has too many values.");
+        }
+    }
+    /**
+     * Generates the where statement for a boolean.  If the value is Y,  it looks for a value of Y.  If it is N, it looks for
+     * a value of NULL.
+     *
+     * @param string $str The value the user is looking for
+     * @param string $columnName the name of the table column to search
+     * @param string $suffix a suffix to be appended to the variable name (Please do not separate with spaces)
+     * @return string
+     * @throws InvalidArgumentException if the param has too many variables, or the min is greater than the max
+     * @access private
+     * @author Johnathan Pulos
+     */
+    private function generateWhereStatementForBoolean($str, $columnName, $suffix)
+    {
+        $val = strtoupper($str);
+        if ($val == 'Y') {
+            $this->preparedVariables[$suffix] = $val;
+            return $columnName . " = :" . $suffix;
+        } else if ($val == 'N') {
+            return $columnName . " IS NULL";
+        } else {
+            throw new \InvalidArgumentException("A boolean was set with the wrong value.");
         }
     }
     /**
