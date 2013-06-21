@@ -20,6 +20,7 @@
  * @copyright Copyright 2013 Missional Digerati
  * 
  */
+use Swagger\Annotations as SWG;
 /**
  * Get the daily unreached people group for today.  You can specify a specific date using the following parameters
  * as GET vars.
