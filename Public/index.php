@@ -33,6 +33,12 @@
  */
 $useCaching = false;
 $DS = DIRECTORY_SEPARATOR;
+/**
+ * @todo Need to create a way to dynamically setup the version in the url
+ *
+ * @author Johnathan Pulos
+ */
+$API_VERSION = "v1";
 $bypassExtTest = false;
 if ($useCaching === true) {
     $cache = new Memcached();
@@ -47,7 +53,7 @@ if ($useCaching === true) {
  */
 require(__DIR__ . $DS . ".." . $DS . "Slim" . $DS . "Slim.php");
 \Slim\Slim::registerAutoloader();
-$app = new \Slim\Slim(array('templates.path' => "../App/Views/"));
+$app = new \Slim\Slim(array('templates.path' => "../App/" . $API_VERSION . "/Views/"));
 /**
  * Load up the Aura Auto Loader
  *
@@ -79,12 +85,6 @@ $db = $pdoDb->getDatabaseInstance();
  **/
 $loader->add("Slim\Extras\Middleware\HttpBasicAuth", $vendorDirectory . "SlimExtras");
 /**
- * Include common functions
- *
- * @author Johnathan Pulos
- */
-require(__DIR__."/../App/Includes/CommonFunctions.php");
-/**
  * Get the current request to determine which PHP file to load.  Do not load all files, because it can take longer to
  * load.
  *
@@ -93,12 +93,18 @@ require(__DIR__."/../App/Includes/CommonFunctions.php");
 $appRequest = $app->request();
 $requestedUrl = $appRequest->getResourceUri();
 /**
+ * Include common functions
+ *
+ * @author Johnathan Pulos
+ */
+require(__DIR__."/../App/" . $API_VERSION . "/Includes/CommonFunctions.php");
+/**
  * Handle the visual HTML for handling the API Key Requests
  *
  * @author Johnathan Pulos
  **/
 if ($requestedUrl == "/") {
-    require(__DIR__."/../App/Resources/StaticPages.php");
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/StaticPages.php");
     $bypassExtTest = true;
 }
 if (strpos($requestedUrl, '/api_keys') !== false) {
@@ -117,7 +123,7 @@ if (strpos($requestedUrl, '/api_keys') !== false) {
         $adminSettings = new \JPAPI\AdminSettings;
         $app->add(new Slim\Extras\Middleware\HttpBasicAuth($adminSettings->default['username'], $adminSettings->default['password']));
     }
-    require(__DIR__."/../App/Resources/APIKeys.php");
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/APIKeys.php");
     $bypassExtTest = true;
 }
 /**
@@ -171,8 +177,8 @@ if (strpos($requestedUrl, 'people_groups') !== false) {
      *
      * @author Johnathan Pulos
      */
-    $loader->add("QueryGenerators", __DIR__ . $DS . ".." . $DS . "App");
-    require(__DIR__."/../App/Resources/PeopleGroups.php");
+    $loader->add("QueryGenerators", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/PeopleGroups.php");
 }
 /**
  * Now run the Slim Framework rendering

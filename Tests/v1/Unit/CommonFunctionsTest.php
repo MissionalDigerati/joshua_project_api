@@ -20,7 +20,7 @@
  * @copyright Copyright 2013 Missional Digerati
  * 
  */
-namespace Tests\Unit;
+namespace Tests\v1\Unit;
 
 /**
  * Test the common functions file

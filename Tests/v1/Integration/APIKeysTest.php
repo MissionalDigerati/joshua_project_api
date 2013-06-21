@@ -20,7 +20,7 @@
  * @copyright Copyright 2013 Missional Digerati
  * 
  */
-namespace Tests\Integration;
+namespace Tests\v1\Integration;
 
 /**
  * The class for testing integration of the People Groups
@@ -49,6 +49,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
         $this->cachedRequest = new \PHPToolbox\CachedRequest\CachedRequest;
         $this->cachedRequest->cacheDirectory =
             __DIR__ .
+            DIRECTORY_SEPARATOR . ".." .
             DIRECTORY_SEPARATOR . ".." .
             DIRECTORY_SEPARATOR . "Support" .
             DIRECTORY_SEPARATOR . "cache" .

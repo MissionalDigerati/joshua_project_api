@@ -22,6 +22,13 @@
  */
 $DS = DIRECTORY_SEPARATOR;
 /**
+ * The version of the API to test for (ex. v1)
+ *
+ * @param string
+ * @author Johnathan Pulos
+ */
+$API_VERSION = "v1";
+/**
  * Load up the Aura Auto Loader
  *
  * @author Johnathan Pulos
@@ -32,7 +39,7 @@ $PHPToolboxDirectory =
     "PHPToolbox" . $DS .
     "src" . $DS;
 require_once("Tests" . $DS . "Support" . $DS . "HelperFunctions.php");
-require_once("App" . $DS . "Includes" . $DS . "CommonFunctions.php");
+require_once("App" . $DS . $API_VERSION . $DS . "Includes" . $DS . "CommonFunctions.php");
 /**
  * Load up the Aura Auto Loader
  *
@@ -66,7 +73,7 @@ $loader->add("JPAPI\DatabaseSettings", __DIR__ . $DS . ".." . $DS . "Config");
  * @author Johnathan Pulos
  */
 $loader->add("PHPToolbox\PDODatabase\PDODatabaseConnect", $PHPToolboxDirectory);
-$loader->add("QueryGenerators\PeopleGroup", __DIR__ . $DS . ".." . $DS . "App");
+$loader->add("QueryGenerators\PeopleGroup", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
 /**
  * preload source files
  *

@@ -20,7 +20,7 @@
  * @copyright Copyright 2013 Missional Digerati
  * 
  */
-namespace Tests\Unit\QueryGenerators;
+namespace Tests\v1\Unit\QueryGenerators;
 
 /**
  * Test the Query Generator for the People Group Data
