@@ -906,6 +906,28 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * Tests that findAllWithFilters() filters by a percent of Unknown Religions
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfUnknownReligions()
+    {
+        $expectedPercentMin = 2.0;
+        $expectedPercentMax = 10.3;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_unknown' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCUnknown']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCUnknown']));
+        }
+    }
+    /**
       * Tests that findAllWithFilters() throws the correct error if the window1040 is set to anything else but Y & N
       *
       * @return void

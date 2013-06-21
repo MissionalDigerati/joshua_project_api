@@ -859,6 +859,31 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * GET /people_groups.json?pc_unknown=3.22-35.67
+     * test page filters by percentage of Unknown Religions
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnPeopleGroupsFliteredByPercentageOfUnknownReligions()
+    {
+        $expectedPercentMin = 3.22;
+        $expectedPercentMax = 35.67;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups.json",
+            array('api_key' => $this->APIKey, 'pc_unknown' => $expectedPercentMin . "-" . $expectedPercentMax),
+            "filter_by_percent_other_religions_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCUnknown']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCUnknown']));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string
