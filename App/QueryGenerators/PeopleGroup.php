@@ -257,6 +257,13 @@ class PeopleGroup
             $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_non_religious'], 'PCNonReligious', 'pc_non_religious');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('pc_other_religions')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_other_religions'], 'PCOtherSmall', 'pc_other_religions');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('population')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
