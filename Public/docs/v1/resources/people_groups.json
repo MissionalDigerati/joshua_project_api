@@ -1,0 +1,38 @@
+{
+    "basePath": "http://api.joshuaproject.com/v1",
+    "swaggerVersion": "1.1",
+    "apiVersion": "0.1",
+    "resourcePath": "/people_groups",
+    "apis": [
+        {
+            "path": "/daily_unreached.{format}?api_key={api_key}",
+            "operations": [
+                {
+                    "httpMethod": "GET",
+                    "summary": "Retrieve the Unreached of the Day information.",
+                    "nickname": "getDailyUnreachedPeopleGroup",
+                    "parameters": [
+                        {
+                            "name": "month",
+                            "description": "The two digit month that you want to receive the information from.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "day",
+                            "description": "The two digit day that you want to receive the information from.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        }
+                    ],
+                    "notes": "You have two options when retrieving the Unreached of the Day.  1) Get today's Unreached of the Day.  This is the default if you do not send parameters.\n         2) You can specify the month and day parameter to get a specific day of the year. For example, /daily_unreached.json?month=01&day=31 will \n         get the people group for Jan. 31st.  You must provide both parameters!"
+                }
+            ],
+            "description": "Retrieve the Unreached of the Day information."
+        }
+    ]
+}

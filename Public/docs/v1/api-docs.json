@@ -1,0 +1,10 @@
+{
+    "apiVersion": "0.1",
+    "swaggerVersion": "1.1",
+    "apis": [
+        {
+            "path": "/resources/people_groups.{format}",
+            "description": "Retrieve the Unreached of the Day information."
+        }
+    ]
+}

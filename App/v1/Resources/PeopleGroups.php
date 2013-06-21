@@ -22,18 +22,48 @@
  */
 use Swagger\Annotations as SWG;
 /**
- * Get the daily unreached people group for today.  You can specify a specific date using the following parameters
- * as GET vars.
- * month - two digit month
- * day - two digit day
+ * @SWG\Resource(
+ *     apiVersion="0.1",
+ *     swaggerVersion="1.1",
+ *     resourcePath="/people_groups",
+ *     basePath="http://api.joshuaproject.com/v1"
+ * )
+ */
+/**
  * 
- * For example, /v1/people_groups/daily_unreached.json?month=01&day=31 will get the people group for Jan. 31st.
- *
- * GET /people_groups/daily_unreached
- * Available Formats JSON & XML
+ * @SWG\API(
+ *  path="/daily_unreached.{format}?api_key={api_key}",
+ *  description="Retrieve the Unreached of the Day information.",
+ *  @SWG\Operations(
+ *      @SWG\Operation(
+ *          httpMethod="GET",
+ *          nickname="getDailyUnreachedPeopleGroup",
+ *          summary="Retrieve the Unreached of the Day information.",
+ *          notes="You have two options when retrieving the Unreached of the Day.  1) Get today's Unreached of the Day.  This is the default if you do not send parameters.
+ *          2) You can specify the month and day parameter to get a specific day of the year. For example, /daily_unreached.json?month=01&day=31 will 
+ *          get the people group for Jan. 31st.  You must provide both parameters!",
+ *          @SWG\Parameters(
+ *              @SWG\Parameter(
+ *                  name="month",
+ *                  description="The two digit month that you want to receive the information from.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="day",
+ *                  description="The two digit day that you want to receive the information from.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              )
+ *          )
+ *      )
+ *  )
+ * )
  * 
- * @api
- * @author Johnathan Pulos
  */
 $app->get(
     "/:version/people_groups/daily_unreached.:format",
