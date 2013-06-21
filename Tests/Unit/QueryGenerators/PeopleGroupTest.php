@@ -1060,6 +1060,26 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * Tests that findAllWithFilters() filters out Indigenous Groups
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterOutIndigenousPeopleGroups()
+    {
+        $expectedIndigenousStatus = 'n';
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('indigenous' => $expectedIndigenousStatus));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertNull($peopleGroup['IndigenousCode']);
+        }
+    }
+    /**
       * Tests that findAllWithFilters() throws the correct error if the window1040 is set to anything else but Y & N
       *
       * @return void

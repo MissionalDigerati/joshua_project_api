@@ -179,6 +179,22 @@ class PeopleGroup
             $where .= $this->generateInStatementFromPipedString($this->providedParams['countries'], 'ROG3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('indigenous')) {
+            $indigenous = strtoupper($this->providedParams['indigenous']);
+            $this->validateStringLength($indigenous, 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            if ($indigenous == 'Y') {
+                $where .= "IndigenousCode = :indigenous";
+                $this->preparedVariables['indigenous'] = strtoupper($this->providedParams['indigenous']);
+            } else if ($indigenous == 'N') {
+                $where .= "IndigenousCode IS NULL";
+            } else {
+                throw new \InvalidArgumentException("Invalid indigenous value sent.");
+            }
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('languages')) {
             $this->validateBarSeperatedStringValueLength($this->providedParams['languages'], 3);
             if ($appendAndOnWhere === true) {

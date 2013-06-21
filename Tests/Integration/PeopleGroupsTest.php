@@ -1034,6 +1034,29 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * GET /people_groups.json?indigenous=y
+     * test page filters out non indigenous people groups
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnPeopleGroupsFilteredByIndigenousStatus()
+    {
+        $expectedIndigenousStatus = 'y';
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups.json",
+            array('api_key' => $this->APIKey, 'indigenous' => $expectedIndigenousStatus),
+            "filter_by_indigenous_status_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $peopleGroup) {
+            $this->assertEquals($expectedIndigenousStatus, strtolower($peopleGroup['IndigenousCode']));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string
