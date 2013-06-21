@@ -146,24 +146,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $method->invoke($peopleGroup, array('name'));
     }
     /**
-     * Tests that validateContinents throws the correct error if a continent in the continents param is invalid
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     * 
-     * @expectedException InvalidArgumentException
-     */
-    public function testShouldErrorIfValidateContinentsFindsABadContinent()
-    {
-        $getVars = array('continents' => 'AFR|BEN');
-        $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        $method = $reflectionOfPeopleGroup->getMethod('validateContinents');
-        $method->setAccessible(true);
-        $method->invoke($peopleGroup);
-    }
-    /**
      * cleanParams() should return safe variables
      *
      * @return void
@@ -1060,6 +1042,102 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * Tests that findAllWithFilters() filters out Indigenous Groups
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterOutIndigenousPeopleGroups()
+    {
+        $expectedIndigenousStatus = 'n';
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('indigenous' => $expectedIndigenousStatus));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertNull($peopleGroup['IndigenousCode']);
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters out Least Reached Groups
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterOutLeastReachedPeopleGroups()
+    {
+        $expectedLeastReachedStatus = 'n';
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('least_reached' => $expectedLeastReachedStatus));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertNull($peopleGroup['LeastReached']);
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters out Unengaged Groups
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterOutUnengagedPeopleGroups()
+    {
+        $expectedUnengagedStatus = 'n';
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('unengaged' => $expectedUnengagedStatus));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals('', $peopleGroup['Unengaged']);
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by JPScale
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFiltersByJPScale()
+    {
+        $expectedJPScales = "1.2|2.1";
+        $expectedJPScalesArray = array(1.2, 2.1);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('jpscale' => $expectedJPScales));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array(floatval($peopleGroup['JPScale']), $expectedJPScalesArray));
+        }
+    }
+    /**
+      * Tests that findAllWithFilters() throws the correct error if one of the jpscale parameters is not a required numbers
+      *
+      * @return void
+      * @access public
+      * @author Johnathan Pulos
+      * 
+      * @expectedException InvalidArgumentException
+      */
+    public function testShouldErrorIfFindAllWithFilterReceivesIncorrectJPScaleParameter()
+    {
+        $expectedJPScales = "1.5|2.6";
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('jpscale' => $expectedJPScales));
+        $peopleGroup->findAllWithFilters();
+    }
+    /**
       * Tests that findAllWithFilters() throws the correct error if the window1040 is set to anything else but Y & N
       *
       * @return void
@@ -1288,5 +1366,78 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $method = $reflectionOfPeopleGroup->getMethod('generateBetweenStatementFromDashSeperatedString');
         $method->setAccessible(true);
         $actualString = $method->invoke($peopleGroup, '30-20', 'Population', 'population');
+    }
+    /**
+     * Tests that generateWhereStatementForBoolean generates the correct statement for a Yes Boolean
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForAYes()
+    {
+        $expectedStatement = "IndigenousCode = :indigenous";
+        $expectedKeys = array('indigenous');
+        $expectedValues = array('Y');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateWhereStatementForBoolean');
+        $method->setAccessible(true);
+        $actualStatement = $method->invoke($peopleGroup, 'y', 'IndigenousCode', 'indigenous');
+        $this->assertEquals($expectedStatement, $actualStatement);
+        $this->assertEquals($expectedKeys, array_keys($peopleGroup->preparedVariables));
+        $this->assertEquals($expectedValues, array_values($peopleGroup->preparedVariables));
+    }
+    /**
+     * Tests that generateWhereStatementForBoolean generates the correct statement for a No Boolean
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForANo()
+    {
+        $expectedStatement = "(10_40Window IS NULL OR 10_40Window = '')";
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateWhereStatementForBoolean');
+        $method->setAccessible(true);
+        $actualStatement = $method->invoke($peopleGroup, 'n', '10_40Window', 'window_10_40');
+        $this->assertEquals($expectedStatement, $actualStatement);
+        $this->assertTrue(empty($peopleGroup->preparedVariables));
+    }
+    /**
+     * Tests that generateWhereStatementForBoolean() throws error if you send anything else but Y or N
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testGenerateWhereStatementFromBooleanShouldThrowErrorIfNotYOrN()
+    {
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateWhereStatementForBoolean');
+        $method->setAccessible(true);
+        $actualString = $method->invoke($peopleGroup, 'p', 'Population', 'population');
+    }
+    /**
+     * Tests that validateBarSeperatedStringValueInArray() throws error if not in the given array
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testValidateBarSeperatedStringValueInArrayShouldThrowErrorIfNotInexpectedValues()
+    {
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('validateBarSeperatedStringValuesInArray');
+        $method->setAccessible(true);
+        $actualString = $method->invoke($peopleGroup, '2.3|34.4', array('1.1', '5.4'));
     }
 }

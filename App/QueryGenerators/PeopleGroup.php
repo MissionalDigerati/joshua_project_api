@@ -148,23 +148,16 @@ class PeopleGroup
         $appendAndOnWhere = false;
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples";
         if ($this->paramExists('window1040')) {
-            $window1040 = strtoupper($this->providedParams['window1040']);
-            $this->validateStringLength($window1040, 1);
+            $this->validateStringLength($this->providedParams['window1040'], 1);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            if ($window1040 == 'Y') {
-                $where .= "10_40Window = :window_10_40";
-                $this->preparedVariables['window_10_40'] = strtoupper($this->providedParams['window1040']);
-            } else if ($window1040 == 'N') {
-                $where .= "10_40Window IS NULL";
-            } else {
-                throw new \InvalidArgumentException("Invalid window1040 value sent.");
-            }
+            $where .= $this->generateWhereStatementForBoolean($this->providedParams['window1040'], '10_40Window', 'window_10_40');
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('continents')) {
-            $this->validateContinents();
+            $this->validateBarSeperatedStringValueLength($this->providedParams['continents'], 3);
+            $this->validateBarSeperatedStringValuesInArray($this->providedParams['continents'], array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam'));
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -179,12 +172,36 @@ class PeopleGroup
             $where .= $this->generateInStatementFromPipedString($this->providedParams['countries'], 'ROG3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('indigenous')) {
+            $this->validateStringLength($this->providedParams['indigenous'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean($this->providedParams['indigenous'], 'IndigenousCode', 'indigenous');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('jpscale')) {
+            $this->validateBarSeperatedStringValuesInArray($this->providedParams['jpscale'], array('1.1', '1.2', '2.1', '2.2', '3.1', '3.2'));
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['jpscale'], 'JPScale');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('languages')) {
             $this->validateBarSeperatedStringValueLength($this->providedParams['languages'], 3);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
             $where .= $this->generateInStatementFromPipedString($this->providedParams['languages'], 'ROL3');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('least_reached')) {
+            $this->validateStringLength($this->providedParams['least_reached'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean($this->providedParams['least_reached'], 'LeastReached', 'least_reached');
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('people_id1')) {
@@ -363,6 +380,14 @@ class PeopleGroup
             $where .= $this->generateInStatementFromPipedString($this->providedParams['rop3'], 'ROP3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('unengaged')) {
+            $this->validateStringLength($this->providedParams['unengaged'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean($this->providedParams['unengaged'], 'Unengaged', 'unengaged');
+            $appendAndOnWhere = true;
+        }
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }
@@ -447,6 +472,30 @@ class PeopleGroup
         }
     }
     /**
+     * Generates the where statement for a boolean.  If the value is Y,  it looks for a value of Y.  If it is N, it looks for
+     * a value of NULL.
+     *
+     * @param string $str The value the user is looking for
+     * @param string $columnName the name of the table column to search
+     * @param string $suffix a suffix to be appended to the variable name (Please do not separate with spaces)
+     * @return string
+     * @throws InvalidArgumentException if the param has too many variables, or the min is greater than the max
+     * @access private
+     * @author Johnathan Pulos
+     */
+    private function generateWhereStatementForBoolean($str, $columnName, $suffix)
+    {
+        $val = strtoupper($str);
+        if ($val == 'Y') {
+            $this->preparedVariables[$suffix] = $val;
+            return $columnName . " = :" . $suffix;
+        } else if ($val == 'N') {
+            return "(" . $columnName . " IS NULL OR " . $columnName . " = '')";
+        } else {
+            throw new \InvalidArgumentException("A boolean was set with the wrong value.");
+        }
+    }
+    /**
      * A shorter method for checking if the array_key_exists
      *
      * @param string $paramName the name of the param your looking for
@@ -476,21 +525,21 @@ class PeopleGroup
         }
     }
     /**
-     * validates that the provided continent is a correct continent
+     * Validates all parameters in a bar seperated string are in the approvedValues array
      *
+     * @param string $str the bar seperated value
+     * @param array $approvedValues an array of valid values
      * @return void
-     * @throws InvalidArgumentException if it continents param has an invalid continent
      * @access private
+     * @throws InvalidArgumentException if a value is not in the array
      * @author Johnathan Pulos
      */
-    private function validateContinents()
+    private function validateBarSeperatedStringValuesInArray($str, $approvedValues)
     {
-        $continents = explode('|', $this->providedParams['continents']);
-        $validContinents = array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam');
-        foreach ($continents as $continent) {
-            $this->validateStringLength($continent, 3);
-            if (!in_array(strtolower($continent), $validContinents)) {
-                throw new \InvalidArgumentException("Continents provided do not exist.");
+        $providedValues = explode('|', $str);
+        foreach ($providedValues as $pv) {
+            if (!in_array(strtolower($pv), $approvedValues)) {
+                throw new \InvalidArgumentException("A bar seperated parameter has the wrong permitted value.");
             }
         }
     }

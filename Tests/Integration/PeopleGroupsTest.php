@@ -1034,6 +1034,99 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * GET /people_groups.json?jpscale=1.1|2.2|3.1
+     * test page filters by JPScale
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnPeopleGroupsFliteredByJPScale()
+    {
+        $expectedJPScales = "1.1|2.2|3.1";
+        $expectedJPScalesArray = array(1.1, 2.2, 3.1);
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups.json",
+            array('api_key' => $this->APIKey, 'jpscale' => $expectedJPScales),
+            "filter_by_jp_scale_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $peopleGroup) {
+            $this->assertTrue(in_array(floatval($peopleGroup['JPScale']), $expectedJPScalesArray));
+        }
+    }
+    /**
+     * GET /people_groups.json?indigenous=y
+     * test page filters out non indigenous people groups
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnPeopleGroupsFilteredByIndigenousStatus()
+    {
+        $expectedIndigenousStatus = 'y';
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups.json",
+            array('api_key' => $this->APIKey, 'indigenous' => $expectedIndigenousStatus),
+            "filter_by_indigenous_status_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $peopleGroup) {
+            $this->assertEquals($expectedIndigenousStatus, strtolower($peopleGroup['IndigenousCode']));
+        }
+    }
+    /**
+     * GET /people_groups.json?least_reached=y
+     * test page filters out non least reached people groups
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnPeopleGroupsFilteredByLeastReached()
+    {
+        $expectedLeastReachedStatus = 'y';
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups.json",
+            array('api_key' => $this->APIKey, 'least_reached' => $expectedLeastReachedStatus),
+            "filter_by_least_reached_status_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $peopleGroup) {
+            $this->assertEquals($expectedLeastReachedStatus, strtolower($peopleGroup['LeastReached']));
+        }
+    }
+    /**
+     * GET /people_groups.json?unengaged=y
+     * test page filters out non unengaged people groups
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnPeopleGroupsFilteredByUnengaged()
+    {
+        $expectedUnengagedStatus = 'y';
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups.json",
+            array('api_key' => $this->APIKey, 'unengaged' => $expectedUnengagedStatus),
+            "filter_by_unengaged_status_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $peopleGroup) {
+            $this->assertEquals($expectedUnengagedStatus, strtolower($peopleGroup['Unengaged']));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string
