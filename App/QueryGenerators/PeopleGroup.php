@@ -208,27 +208,127 @@ class PeopleGroup
             $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id3'], 'PeopleID3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('pc_anglican')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_anglican'], 'PCAnglican', 'pc_anglican');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_adherent')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_adherent'], 'PercentAdherents', 'pc_adherents');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_buddhist')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_buddhist'], 'PCBuddhism', 'pc_buddhist');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_ethnic_religion')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_ethnic_religion'], 'PCEthnicReligions', 'pc_ethnic_religion');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_evangelical')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_evangelical'], 'PercentEvangelical', 'pc_evangelical');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_hindu')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_hindu'], 'PCHinduism', 'pc_hindu');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_independent')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_independent'], 'PCIndependent', 'pc_independent');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_islam')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_islam'], 'PCIslam', 'pc_islam');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_non_religious')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_non_religious'], 'PCNonReligious', 'pc_non_religious');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_orthodox')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_orthodox'], 'PCOrthodox', 'pc_orthodox');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_other_christian')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_other_christian'], 'PCOtherChristian', 'pc_other_christian');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_other_religion')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_other_religion'], 'PCOtherSmall', 'pc_other_religion');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_protestant')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_protestant'], 'PCProtestant', 'pc_protestant');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_rcatholic')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_rcatholic'], 'PCRomanCatholic', 'pc_rcatholic');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_unknown')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_unknown'], 'PCUnknown', 'pc_unknown');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('population')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $popValues = explode('-', $this->providedParams['population']);
-            $popLength = count($popValues);
-            if ($popLength == 2) {
-                $minPop = intval($popValues[0]);
-                $maxPop = intval($popValues[1]);
-                if ($minPop >= $maxPop) {
-                    throw new \InvalidArgumentException("The population parameter is set incorrectly.");
-                }
-                $where .= "Population BETWEEN :min_pop AND :max_pop";
-                $this->preparedVariables['min_pop'] = $minPop;
-                $this->preparedVariables['max_pop'] = $maxPop;
-            } else if ($popLength == 1) {
-                $where .= "Population = :pop";
-                $this->preparedVariables['pop'] = intval($popValues[0]);
-            } else {
-                throw new \InvalidArgumentException("The population parameter is set incorrectly.");
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['population'], 'Population', 'pop');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('primary_religions')) {
+            $religions = explode('|', $this->providedParams['primary_religions']);
+            foreach ($religions as $religion) {
+                $this->validateVariableInRange($religion, 1, 9, array(3));
             }
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['primary_religions'], 'RLG3');
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('regions')) {
@@ -312,6 +412,39 @@ class PeopleGroup
             $i = $i+1;
         }
         return $columnName . " IN (" . join(", ", $preparedInVars) . ")";
+    }
+    /**
+     * Generates a BETWEEN statement using a dash separated string.  The string should have either a single integer with no dash, or
+     * a min and max separated by a dash.  This will throw an error if you supply too many parameters, or if you minimum is greater
+     * then your max.
+     *
+     * @param string $str The dash separated string min-max
+     * @param string $columnName the name of the table column to search
+     * @param string $suffix a suffix to be appended to the variable name (Please do not separate with spaces)
+     * @return string
+     * @throws InvalidArgumentException if the param has too many variables, or the min is greater than the max
+     * @access private
+     * @author Johnathan Pulos
+     */
+    private function generateBetweenStatementFromDashSeperatedString($str, $columnName, $suffix)
+    {
+        $stringValues = explode('-', $str);
+        $stringValuesLength = count($stringValues);
+        if ($stringValuesLength == 2) {
+            $min = floatval($stringValues[0]);
+            $max = floatval($stringValues[1]);
+            if ($min >= $max) {
+                throw new \InvalidArgumentException("A dashed parameter has a minimum greater than it's maximum.");
+            }
+            $this->preparedVariables["min_" . $suffix] = $min;
+            $this->preparedVariables["max_" . $suffix] = $max;
+            return $columnName . " BETWEEN :min_" . $suffix . " AND :max_" . $suffix;
+        } else if ($stringValuesLength == 1) {
+            $this->preparedVariables["total_" . $suffix] = floatval($stringValues[0]);
+            return $columnName . " = :total_" . $suffix;
+        } else {
+            throw new \InvalidArgumentException("A dashed parameter has too many values.");
+        }
     }
     /**
      * A shorter method for checking if the array_key_exists
@@ -405,10 +538,13 @@ class PeopleGroup
      * @access public
      * @author Johnathan Pulos
      */
-    private function validateVariableInRange($var, $start, $end)
+    private function validateVariableInRange($var, $start, $end, $except = array())
     {
         if ((($var >= $start) && ($var <= $end)) == false) {
             throw new \InvalidArgumentException("One of the provided variables are out of range.");
+        }
+        if (in_array($var, $except)) {
+            throw new \InvalidArgumentException("One of the provided variables is not allowed.");
         }
     }
     /**
@@ -422,7 +558,7 @@ class PeopleGroup
     {
         $newValue = array();
         foreach ($this->providedParams as $key => $value) {
-            $newValue[$key] = preg_replace('/[^a-z\d\-|]/i', '', strip_tags($value));
+            $newValue[$key] = preg_replace('/[^a-z\d\-|\.]/i', '', strip_tags($value));
         }
         $this->providedParams = $newValue;
     }

@@ -211,7 +211,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $method->invoke($peopleGroup, $testString, 20);
     }
     /**
-     * Validate that validateVariableInRange() sends back false if it is not in range
+     * Validate that validateVariableInRange() throws error if it is not in range
      *
      * @return void
      * @access public
@@ -226,6 +226,23 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $method = $reflectionOfPeopleGroup->getMethod('validateVariableInRange');
         $method->setAccessible(true);
         $actual = $method->invoke($peopleGroup, 'out_range', 1, 7);
+    }
+    /**
+     * Validate that validateVariableInRange() throws an error in the integer is in the $exceptions
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * @expectedException InvalidArgumentException
+     */
+    public function testValidateVariableInRangeShouldThrowErrorIfVariableIsAnException()
+    {
+        $data = array('exception' => 5);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('validateVariableInRange');
+        $method->setAccessible(true);
+        $actual = $method->invoke($peopleGroup, 'exception', 1, 7, array(5));
     }
     /**
      * findByIdAndCountry() should return the correct people group, based on the supplied ID, and country.
@@ -624,6 +641,27 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * Tests that findAllWithFilters() filters by primary religions
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPrimaryReligions()
+    {
+        $expectedReligions = array(2 => 'buddhism', 6 => 'islam');
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('primary_religions' => join('|', array_keys($expectedReligions))));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array(strtolower($peopleGroup['PrimaryReligion']), array_values($expectedReligions)));
+            $this->assertTrue(in_array($peopleGroup['RLG3'], array_keys($expectedReligions)));
+        }
+    }
+    /**
      * Tests that findAllWithFilters() filters by a single population
      *
      * @return void
@@ -670,6 +708,356 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('population' => '30000-1000'));
         $peopleGroup->findAllWithFilters();
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of adherents
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfAdherents()
+    {
+        $expectedPercentMin = 50.0;
+        $expectedPercentMax = 60.1;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_adherent' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PercentAdherents']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PercentAdherents']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of adherents with only 1 decimal value
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfAdherentsWithOnlyOneDecimalParameter()
+    {
+        $expectedPercent = 1.6;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_adherent' => $expectedPercent));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals($expectedPercent, floatval($peopleGroup['PercentAdherents']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of evangelicals
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfEvangelicals()
+    {
+        $expectedPercentMin = 50.0;
+        $expectedPercentMax = 60.1;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_evangelical' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PercentEvangelical']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PercentEvangelical']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of buddhists
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfBuddhists()
+    {
+        $expectedPercentMin = 50.0;
+        $expectedPercentMax = 60.1;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_buddhist' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCBuddhism']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCBuddhism']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of ethnic religions
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfEthnicReligions()
+    {
+        $expectedPercentMin = 50.0;
+        $expectedPercentMax = 60.1;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_ethnic_religion' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCEthnicReligions']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCEthnicReligions']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of hindus
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfHindus()
+    {
+        $expectedPercentMin = 50.0;
+        $expectedPercentMax = 60.1;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_hindu' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCHinduism']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCHinduism']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of islam
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfIslam()
+    {
+        $expectedPercentMin = 20.0;
+        $expectedPercentMax = 30.1;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_islam' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCIslam']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCIslam']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of non-religious
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfNonReligions()
+    {
+        $expectedPercentMin = 22.0;
+        $expectedPercentMax = 40.1;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_non_religious' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCNonReligious']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCNonReligious']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of Other Religions
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfOtherReligions()
+    {
+        $expectedPercentMin = 2.0;
+        $expectedPercentMax = 10.3;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_other_religion' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCOtherSmall']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCOtherSmall']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of Unknown Religions
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfUnknownReligions()
+    {
+        $expectedPercentMin = 2.0;
+        $expectedPercentMax = 10.3;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_unknown' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCUnknown']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCUnknown']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of Anglicans
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfAnglicans()
+    {
+        $expectedPercentMin = 5.4;
+        $expectedPercentMax = 21.2;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_anglican' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCAnglican']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCAnglican']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of Independents
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfIndependents()
+    {
+        $expectedPercentMin = 5.4;
+        $expectedPercentMax = 21.2;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_independent' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCIndependent']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCIndependent']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of Protestants
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfProtestants()
+    {
+        $expectedPercentMin = 33.4;
+        $expectedPercentMax = 66.74;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_protestant' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCProtestant']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCProtestant']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of Orthodox
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfOrthodox()
+    {
+        $expectedPercentMin = 22.43;
+        $expectedPercentMax = 74.56;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_orthodox' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCOrthodox']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCOrthodox']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of Roman Catholic
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfRomanCatholic()
+    {
+        $expectedPercentMin = 22.43;
+        $expectedPercentMax = 74.56;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_rcatholic' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCRomanCatholic']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCRomanCatholic']));
+        }
+    }
+    /**
+     * Tests that findAllWithFilters() filters by a percent of Other Christian
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testFindAllWithFiltersShouldFilterByPercentOfOtherChristian()
+    {
+        $expectedPercentMin = 22.43;
+        $expectedPercentMax = 74.56;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_other_christian' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCOtherChristian']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCOtherChristian']));
+        }
     }
     /**
       * Tests that findAllWithFilters() throws the correct error if the window1040 is set to anything else but Y & N
@@ -824,5 +1212,81 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedString, $actualString);
         $this->assertEquals($expectedKeys, array_keys($peopleGroup->preparedVariables));
         $this->assertEquals($expectedValues, array_values($peopleGroup->preparedVariables));
+    }
+    /**
+     * generateBetweenStatementFromDashSeperatedString() should generate an appropriate BETWEEN statement with a max and minimum
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testGenerateBetweenStatementFromDashSeperatedStringShouldReturnCorrectStatementWithAMaxAndMin()
+    {
+        $expectedString = "Population BETWEEN :min_pop AND :max_pop";
+        $expectedKeys = array('min_pop', 'max_pop');
+        $expectedValues = array(10, 20);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateBetweenStatementFromDashSeperatedString');
+        $method->setAccessible(true);
+        $actualString = $method->invoke($peopleGroup, '10-20', 'Population', 'pop');
+        $this->assertEquals($expectedString, $actualString);
+        $this->assertEquals($expectedKeys, array_keys($peopleGroup->preparedVariables));
+        $this->assertEquals($expectedValues, array_values($peopleGroup->preparedVariables));
+    }
+    /**
+     * generateBetweenStatementFromDashSeperatedString() should generate an appropriate statement with only a minimum
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testGenerateBetweenStatementFromDashSeperatedStringShouldReturnCorrectStatementWithAMinOnly()
+    {
+        $expectedString = "Population = :total_population";
+        $expectedKeys = array('total_population');
+        $expectedValues = array(10);
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateBetweenStatementFromDashSeperatedString');
+        $method->setAccessible(true);
+        $actualString = $method->invoke($peopleGroup, '10', 'Population', 'population');
+        $this->assertEquals($expectedString, $actualString);
+        $this->assertEquals($expectedKeys, array_keys($peopleGroup->preparedVariables));
+        $this->assertEquals($expectedValues, array_values($peopleGroup->preparedVariables));
+    }
+    /**
+     * Tests that generateBetweenStatementFromDashSeperatedString() throws error if too many parameters are provided
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMoreThenMaxAndMinAreGiven()
+    {
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateBetweenStatementFromDashSeperatedString');
+        $method->setAccessible(true);
+        $actualString = $method->invoke($peopleGroup, '10-20-39', 'Population', 'population');
+    }
+    /**
+     * Tests that generateBetweenStatementFromDashSeperatedString() throws error if min is greater than max
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMoreMinIsGreaterThanMax()
+    {
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $method = $reflectionOfPeopleGroup->getMethod('generateBetweenStatementFromDashSeperatedString');
+        $method->setAccessible(true);
+        $actualString = $method->invoke($peopleGroup, '30-20', 'Population', 'population');
     }
 }
