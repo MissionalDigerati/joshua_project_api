@@ -1034,6 +1034,30 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * GET /people_groups.json?jpscale=1.1|2.2|3.1
+     * test page filters by JPScale
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnPeopleGroupsFliteredByJPScale()
+    {
+        $expectedJPScales = "1.1|2.2|3.1";
+        $expectedJPScalesArray = array(1.1, 2.2, 3.1);
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups.json",
+            array('api_key' => $this->APIKey, 'jpscale' => $expectedJPScales),
+            "filter_by_jp_scale_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $peopleGroup) {
+            $this->assertTrue(in_array(floatval($peopleGroup['JPScale']), $expectedJPScalesArray));
+        }
+    }
+    /**
      * GET /people_groups.json?indigenous=y
      * test page filters out non indigenous people groups
      *

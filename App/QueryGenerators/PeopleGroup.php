@@ -156,7 +156,8 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('continents')) {
-            $this->validateContinents();
+            $this->validateBarSeperatedStringValueLength($this->providedParams['continents'], 3);
+            $this->validateBarSeperatedStringValuesInArray($this->providedParams['continents'], array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam'));
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -177,6 +178,14 @@ class PeopleGroup
                 $where .= " AND ";
             }
             $where .= $this->generateWhereStatementForBoolean($this->providedParams['indigenous'], 'IndigenousCode', 'indigenous');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('jpscale')) {
+            $this->validateBarSeperatedStringValuesInArray($this->providedParams['jpscale'], array('1.1', '1.2', '2.1', '2.2', '3.1', '3.2'));
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['jpscale'], 'JPScale');
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('languages')) {
@@ -500,21 +509,21 @@ class PeopleGroup
         }
     }
     /**
-     * validates that the provided continent is a correct continent
+     * Validates all parameters in a bar seperated string are in the approvedValues array
      *
+     * @param string $str the bar seperated value
+     * @param array $approvedValues an array of valid values
      * @return void
-     * @throws InvalidArgumentException if it continents param has an invalid continent
      * @access private
+     * @throws InvalidArgumentException if a value is not in the array
      * @author Johnathan Pulos
      */
-    private function validateContinents()
+    private function validateBarSeperatedStringValuesInArray($str, $approvedValues)
     {
-        $continents = explode('|', $this->providedParams['continents']);
-        $validContinents = array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam');
-        foreach ($continents as $continent) {
-            $this->validateStringLength($continent, 3);
-            if (!in_array(strtolower($continent), $validContinents)) {
-                throw new \InvalidArgumentException("Continents provided do not exist.");
+        $providedValues = explode('|', $str);
+        foreach ($providedValues as $pv) {
+            if (!in_array(strtolower($pv), $approvedValues)) {
+                throw new \InvalidArgumentException("A bar seperated parameter has the wrong permitted value.");
             }
         }
     }
