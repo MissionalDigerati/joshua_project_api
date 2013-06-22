@@ -23,7 +23,7 @@
 use Swagger\Annotations as SWG;
 /**
  * @SWG\Resource(
- *     apiVersion="0.1",
+ *     apiVersion="1",
  *     swaggerVersion="1.1",
  *     resourcePath="/people_groups",
  *     basePath="http://joshua.api.local/v1"
