@@ -4,7 +4,7 @@
     "apis": [
         {
             "path": "/resources/people_groups.{format}",
-            "description": "Retrieve the Unreached of the Day information."
+            "description": "Find all People Groups that match your filter criteria."
         }
     ]
 }
