@@ -26,13 +26,13 @@ use Swagger\Annotations as SWG;
  *     apiVersion="0.1",
  *     swaggerVersion="1.1",
  *     resourcePath="/people_groups",
- *     basePath="http://api.joshuaproject.com/v1"
+ *     basePath="http://joshua.api.local/v1"
  * )
  */
 /**
  * 
  * @SWG\API(
- *  path="/daily_unreached.{format}?api_key={api_key}",
+ *  path="/people_groups/daily_unreached.{format}",
  *  description="Retrieve the Unreached of the Day information.",
  *  @SWG\Operations(
  *      @SWG\Operation(
@@ -43,6 +43,14 @@ use Swagger\Annotations as SWG;
  *          2) You can specify the month and day parameter to get a specific day of the year. For example, /daily_unreached.json?month=01&day=31 will 
  *          get the people group for Jan. 31st.  You must provide both parameters!",
  *          @SWG\Parameters(
+ *              @SWG\Parameter(
+ *                  name="api_key",
+ *                  description="Your Joshua Project API key.",
+ *                  paramType="query",
+ *                  required="true",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
  *              @SWG\Parameter(
  *                  name="month",
  *                  description="The two digit month that you want to receive the information from.",

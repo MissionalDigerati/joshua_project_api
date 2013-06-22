@@ -1,17 +1,25 @@
 {
-    "basePath": "http://api.joshuaproject.com/v1",
+    "basePath": "http://joshua.api.local/v1",
     "swaggerVersion": "1.1",
     "apiVersion": "0.1",
     "resourcePath": "/people_groups",
     "apis": [
         {
-            "path": "/daily_unreached.{format}?api_key={api_key}",
+            "path": "/people_groups/daily_unreached.{format}",
             "operations": [
                 {
                     "httpMethod": "GET",
                     "summary": "Retrieve the Unreached of the Day information.",
                     "nickname": "getDailyUnreachedPeopleGroup",
                     "parameters": [
+                        {
+                            "name": "api_key",
+                            "description": "Your Joshua Project API key.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": true
+                        },
                         {
                             "name": "month",
                             "description": "The two digit month that you want to receive the information from.",
