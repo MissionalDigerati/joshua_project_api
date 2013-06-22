@@ -124,20 +124,65 @@ $app->get(
         }
     }
 );
-/**
- * Get the details of a specific People Group.  You can either 1) get a summary of countries that these People Groups live in, or
- * 2) Get the details of a people group in a specific country.  If you do not supply a country param,  you will get the summary.  You
- * must specify the id (PeopleID3), or else you will get an error.  You can also specify the ISO two letter country code, to designate 
- * the specific country you would like information about.
- * @link http://www.joshuaproject.net/global-countries.php
- * 
- * GET /people_groups/[ID]
- * 
- * Available Formats JSON & XML
- *
- * @api
- * @author Johnathan Pulos
- */
+ /**
+  * 
+  * @SWG\API(
+  *  path="/people_groups/{id}.{format}",
+  *  description="Retrieve the details of a People Group around the world or in a specific country.",
+  *  @SWG\Operations(
+  *      @SWG\Operation(
+  *          httpMethod="GET",
+  *          nickname="getPeopleGroupByCountry",
+  *          summary="Retrieve the details of a specific People Group (JSON or XML)",
+  *          notes="Retrieve the details of a specific People Group around the world or in a specific country.  You can either 
+  *                 1) get a summary of all occurances of the People Group by supplying the PeopleGroup.id (PeopleID3) only, or 
+  *                 2) Get the details of a specific people group in a specific country by providing the PeopleGroup.id (PeopleID3) 
+  *                 and the country's 2 letter ISO Code.",
+  *          @SWG\Parameters(
+  *              @SWG\Parameter(
+  *                  name="api_key",
+  *                  description="Your Joshua Project API key.",
+  *                  paramType="query",
+  *                  required="true",
+  *                  allowMultiple="false",
+  *                  dataType="string"
+  *              ),
+  *              @SWG\Parameter(
+  *                  name="id",
+  *                  description="Joshua Project's PeopleID3.",
+  *                  paramType="path",
+  *                  required="true",
+  *                  allowMultiple="false",
+  *                  dataType="string"
+  *              ),
+  *              @SWG\Parameter(
+  *                  name="country",
+  *                  description="The country's 2 letter ISO Code specified at http://www.joshuaproject.net/global-countries.php.",
+  *                  paramType="query",
+  *                  required="false",
+  *                  allowMultiple="false",
+  *                  dataType="string"
+  *              )
+  *          ),
+  *          @SWG\ErrorResponses(
+  *              @SWG\ErrorResponse(
+  *                  code="400",
+  *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="401",
+  *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="404",
+  *                  reason="Not found.  Your search ended up with no results."
+  *              )
+  *          )
+  *      )
+  *  )
+  * )
+  * 
+  */
 $app->get(
     "/:version/people_groups/:id\.:format",
     function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {

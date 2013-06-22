@@ -55,6 +55,58 @@
                 }
             ],
             "description": "Retrieve the Unreached of the Day information."
+        },
+        {
+            "path": "/people_groups/{id}.{format}",
+            "operations": [
+                {
+                    "httpMethod": "GET",
+                    "summary": "Retrieve the details of a specific People Group (JSON or XML)",
+                    "nickname": "getPeopleGroupByCountry",
+                    "parameters": [
+                        {
+                            "name": "api_key",
+                            "description": "Your Joshua Project API key.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": true
+                        },
+                        {
+                            "name": "id",
+                            "description": "Joshua Project's PeopleID3.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "path",
+                            "required": true
+                        },
+                        {
+                            "name": "country",
+                            "description": "The country's 2 letter ISO Code specified at http://www.joshuaproject.net/global-countries.php.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        }
+                    ],
+                    "errorResponses": [
+                        {
+                            "reason": "Bad request.  Your request is malformed in some way.  Check your supplied parameters.",
+                            "code": 400
+                        },
+                        {
+                            "reason": "Unauthorized.  Your missing your API key, or it has been suspended.",
+                            "code": 401
+                        },
+                        {
+                            "reason": "Not found.  Your search ended up with no results.",
+                            "code": 404
+                        }
+                    ],
+                    "notes": "Retrieve the details of a specific People Group around the world or in a specific country.  You can either \n                1) get a summary of all occurances of the People Group by supplying the PeopleGroup.id (PeopleID3) only, or \n                2) Get the details of a specific people group in a specific country by providing the PeopleGroup.id (PeopleID3) \n                and the country's 2 letter ISO Code."
+                }
+            ],
+            "description": "Retrieve the details of a People Group around the world or in a specific country."
         }
     ]
 }
