@@ -20,19 +20,73 @@
  * @copyright Copyright 2013 Missional Digerati
  * 
  */
+use Swagger\Annotations as SWG;
 /**
- * Get the daily unreached people group for today.  You can specify a specific date using the following parameters
- * as GET vars.
- * month - two digit month
- * day - two digit day
+ * @SWG\Resource(
+ *     apiVersion="1",
+ *     swaggerVersion="1.1",
+ *     resourcePath="/people_groups",
+ *     basePath="http://joshua.api.local/v1"
+ * )
+ */
+/**
  * 
- * For example, /v1/people_groups/daily_unreached.json?month=01&day=31 will get the people group for Jan. 31st.
- *
- * GET /people_groups/daily_unreached
- * Available Formats JSON & XML
+ * @SWG\API(
+ *  path="/people_groups/daily_unreached.{format}",
+ *  description="Retrieve the Unreached of the Day information.",
+ *  @SWG\Operations(
+ *      @SWG\Operation(
+ *          httpMethod="GET",
+ *          nickname="getDailyUnreachedPeopleGroup",
+ *          summary="Retrieve the Unreached of the Day information (JSON or XML)",
+ *          notes="You have two options when retrieving the Unreached of the Day.  1) Get today's Unreached of the Day.  This is the default if you do not send parameters.
+ *          2) You can specify the month and day parameter to get a specific day of the year. For example, /daily_unreached.json?month=01&day=31 will 
+ *          get the people group for Jan. 31st.  You must provide both parameters!",
+ *          @SWG\Parameters(
+ *              @SWG\Parameter(
+ *                  name="api_key",
+ *                  description="Your Joshua Project API key.",
+ *                  paramType="query",
+ *                  required="true",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="month",
+ *                  description="The two digit month that you want to receive the information from.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="day",
+ *                  description="The two digit day that you want to receive the information from.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
  * 
- * @api
- * @author Johnathan Pulos
+ *                  dataType="string"
+ *              )
+ *          ),
+ *          @SWG\ErrorResponses(
+ *              @SWG\ErrorResponse(
+ *                  code="400",
+ *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
+ *              ),
+ *              @SWG\ErrorResponse(
+ *                  code="401",
+ *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
+ *              ),
+ *              @SWG\ErrorResponse(
+ *                  code="404",
+ *                  reason="Not found.  Your search ended up with no results."
+ *              )
+ *          )
+ *      )
+ *  )
+ * )
+ * 
  */
 $app->get(
     "/:version/people_groups/daily_unreached.:format",
@@ -70,20 +124,65 @@ $app->get(
         }
     }
 );
-/**
- * Get the details of a specific People Group.  You can either 1) get a summary of countries that these People Groups live in, or
- * 2) Get the details of a people group in a specific country.  If you do not supply a country param,  you will get the summary.  You
- * must specify the id (PeopleID3), or else you will get an error.  You can also specify the ISO two letter country code, to designate 
- * the specific country you would like information about.
- * @link http://www.joshuaproject.net/global-countries.php
- * 
- * GET /people_groups/[ID]
- * 
- * Available Formats JSON & XML
- *
- * @api
- * @author Johnathan Pulos
- */
+ /**
+  * 
+  * @SWG\API(
+  *  path="/people_groups/{id}.{format}",
+  *  description="Retrieve the details of a People Group around the world or in a specific country.",
+  *  @SWG\Operations(
+  *      @SWG\Operation(
+  *          httpMethod="GET",
+  *          nickname="getPeopleGroupByCountry",
+  *          summary="Retrieve the details of a specific People Group (JSON or XML)",
+  *          notes="Retrieve the details of a specific People Group around the world or in a specific country.  You can either 
+  *                 1) get a summary of all occurances of the People Group by supplying the PeopleGroup.id (PeopleID3) only, or 
+  *                 2) Get the details of a specific people group in a specific country by providing the PeopleGroup.id (PeopleID3) 
+  *                 and the country's 2 letter ISO Code.",
+  *          @SWG\Parameters(
+  *              @SWG\Parameter(
+  *                  name="api_key",
+  *                  description="Your Joshua Project API key.",
+  *                  paramType="query",
+  *                  required="true",
+  *                  allowMultiple="false",
+  *                  dataType="string"
+  *              ),
+  *              @SWG\Parameter(
+  *                  name="id",
+  *                  description="Joshua Project's PeopleID3.",
+  *                  paramType="path",
+  *                  required="true",
+  *                  allowMultiple="false",
+  *                  dataType="string"
+  *              ),
+  *              @SWG\Parameter(
+  *                  name="country",
+  *                  description="The country's 2 letter ISO Code specified at http://www.joshuaproject.net/global-countries.php.",
+  *                  paramType="query",
+  *                  required="false",
+  *                  allowMultiple="false",
+  *                  dataType="string"
+  *              )
+  *          ),
+  *          @SWG\ErrorResponses(
+  *              @SWG\ErrorResponse(
+  *                  code="400",
+  *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="401",
+  *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="404",
+  *                  reason="Not found.  Your search ended up with no results."
+  *              )
+  *          )
+  *      )
+  *  )
+  * )
+  * 
+  */
 $app->get(
     "/:version/people_groups/:id\.:format",
     function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
@@ -187,15 +286,316 @@ $app->get(
     }
 );
 /**
- * Get all People Groups with filtering.  Available Filters:
  * 
+ * @SWG\API(
+ *  path="/people_groups.{format}",
+ *  description="Find all People Groups that match your filter criteria.",
+ *  @SWG\Operations(
+ *      @SWG\Operation(
+ *          httpMethod="GET",
+ *          nickname="getAllPeopleGroupWithFilters",
+ *          summary="Search all People Groups with diverse filters (JSON or XML)",
+ *          notes="Retrieve a list of People Groups that match your filter settings.",
+ *          @SWG\Parameters(
+ *              @SWG\Parameter(
+ *                  name="api_key",
+ *                  description="Your Joshua Project API key.",
+ *                  paramType="query",
+ *                  required="true",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="people_id1",
+ *                  description="A bar separated list of one or more Joshua Project affinity block codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="rop1",
+ *                  description="A bar separated list of one or more Registry of People affinity block codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="people_id2",
+ *                  description="A bar separated list of one or more Joshua Project people cluster codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="rop2",
+ *                  description="A bar separated list of one or more Registry of People people cluster codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="people_id3",
+ *                  description="A bar separated list of one or more Joshua Project people group codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="rop3",
+ *                  description="A bar separated list of one or more Registry of People people group codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="continents",
+ *                  description="A bar separated list of one or more continents to filter by. Use the following 3 letter Continent code: Africa (use AFR), Asia (use ASI), Australia (use AUS), Europe (use EUR), North America (use NAR), Oceania (use SOP), South America (use LAM)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="regions",
+ *                  description="A bar separated list of one or more regions to filter by. Use the following numbers: South Pacific (use 1), Southeast Asia (use 2), Northeast Asia (use 3), South Asia (use 4), Central Asia (use 5), Middle East and North Africa (use 6), East and Southern Africa (use 7), West and Central Africa (Use 8), Eastern Europe and Eurasia (use 9), Western Europe (use 10), Central and South America (use 11), North America and Caribbean (use 12)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="countries",
+ *                  description="A bar separated list of one or more countries to filter by. Use the 2 letter ISO code.  See http://www.joshuaproject.net/global-countries.php for the codes.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="window1040",
+ *                  description="A boolean that states whether you want People Groups in the 1040 Window. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="languages",
+ *                  description="A bar separated list of one or more language codes to filter by. Use the 3 letter ISO code.  See http://www.loc.gov/standards/iso639-2/php/code_list.php for the codes.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="population",
+ *                  description="A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get People Groups matching that number.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="primary_religions",
+ *                  description="A bar separated list of one or more primary religions to filter by. Use the following numbers: Christianity (use 1), Buddhism (use 2), Ethnic Religions (use 4), Hinduism (use 5), Islam (use 6), Non-Religious (use 7), Other/Small (use 8), Unknown (use 9)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_adherent",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Adherents.(min-max) You can supply just the minimum to get People Groups matching that percentage.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_evangelical",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_buddhist",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Buddhist.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_ethnic_religion",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Ethnic Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_hindu",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Hindus.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_islam",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_non_religious",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Non-Religious.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_other_religion",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Other Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_unknown",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Unkown Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_anglican",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Anglicans.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_independent",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Independents.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_protestant",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Protestants.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_orthodox",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Orthodox.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_rcatholic",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Roman Catholic.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_other_christian",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Other Christian Denominations.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="indigenous",
+ *                  description="A boolean that states whether you want People Groups that are indigenous. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="least_reached",
+ *                  description="A boolean that states whether you want People Groups that are least reached. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="unengaged",
+ *                  description="A boolean that states whether you want People Groups that are unengaged. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="jpscale",
+ *                  description="A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1.1, 1.2, 2.1, 2.2, 3.1, 3.2.  For more information check out http://joshuaproject.net/progress-scale-definition.php.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="limit",
+ *                  description="The maximum results to return. (Defaults to 100)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="page",
+ *                  description="The page of results to display  (Defaults to 1)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              )
+ *          ),
+ *          @SWG\ErrorResponses(
+ *              @SWG\ErrorResponse(
+ *                  code="400",
+ *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
+ *              ),
+ *              @SWG\ErrorResponse(
+ *                  code="401",
+ *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
+ *              ),
+ *              @SWG\ErrorResponse(
+ *                  code="404",
+ *                  reason="Not found.  Your search ended up with no results."
+ *              )
+ *          )
+ *      )
+ *  )
+ * )
  * 
- * GET /people_groups
- * 
- * Available Formats JSON & XML
- *
- * @api
- * @author Johnathan Pulos
  */
 $app->get(
     "/:version/people_groups\.:format",
