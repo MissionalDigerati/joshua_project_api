@@ -68,6 +68,20 @@ use Swagger\Annotations as SWG;
  * 
  *                  dataType="string"
  *              )
+ *          ),
+ *          @SWG\ErrorResponses(
+ *              @SWG\ErrorResponse(
+ *                  code="400",
+ *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
+ *              ),
+ *              @SWG\ErrorResponse(
+ *                  code="401",
+ *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
+ *              ),
+ *              @SWG\ErrorResponse(
+ *                  code="404",
+ *                  reason="Not found.  Your search ended up with no results."
+ *              )
  *          )
  *      )
  *  )

@@ -37,6 +37,20 @@
                             "required": false
                         }
                     ],
+                    "errorResponses": [
+                        {
+                            "reason": "Bad request.  Your request is malformed in some way.  Check your supplied parameters.",
+                            "code": 400
+                        },
+                        {
+                            "reason": "Unauthorized.  Your missing your API key, or it has been suspended.",
+                            "code": 401
+                        },
+                        {
+                            "reason": "Not found.  Your search ended up with no results.",
+                            "code": 404
+                        }
+                    ],
                     "notes": "You have two options when retrieving the Unreached of the Day.  1) Get today's Unreached of the Day.  This is the default if you do not send parameters.\n         2) You can specify the month and day parameter to get a specific day of the year. For example, /daily_unreached.json?month=01&day=31 will \n         get the people group for Jan. 31st.  You must provide both parameters!"
                 }
             ],
