@@ -38,7 +38,7 @@ use Swagger\Annotations as SWG;
  *      @SWG\Operation(
  *          httpMethod="GET",
  *          nickname="getDailyUnreachedPeopleGroup",
- *          summary="Retrieve the Unreached of the Day information.",
+ *          summary="Retrieve the Unreached of the Day information (JSON or XML)",
  *          notes="You have two options when retrieving the Unreached of the Day.  1) Get today's Unreached of the Day.  This is the default if you do not send parameters.
  *          2) You can specify the month and day parameter to get a specific day of the year. For example, /daily_unreached.json?month=01&day=31 will 
  *          get the people group for Jan. 31st.  You must provide both parameters!",

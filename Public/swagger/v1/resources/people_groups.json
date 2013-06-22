@@ -9,7 +9,7 @@
             "operations": [
                 {
                     "httpMethod": "GET",
-                    "summary": "Retrieve the Unreached of the Day information.",
+                    "summary": "Retrieve the Unreached of the Day information (JSON or XML)",
                     "nickname": "getDailyUnreachedPeopleGroup",
                     "parameters": [
                         {
