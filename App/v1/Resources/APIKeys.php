@@ -51,6 +51,7 @@ $app->get(
  * Available Formats HTML
  *
  * @author Johnathan Pulos
+ * @todo verify this works with the new status column
  **/
 $app->put(
     "/api_keys/:id",
@@ -115,6 +116,11 @@ $app->post(
         } catch (PDOException $e) {
             $app->redirect("/?saving_error=true");
         }
+        /**
+         * @todo Need to send email with link to retrieve API Key
+         *
+         * @author Johnathan Pulos
+         */
         $redirectURL = generateRedirectURL("/", array('api_key' => 'true'), array());
         $app->redirect($redirectURL);
     }
