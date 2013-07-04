@@ -169,9 +169,9 @@ if ($bypassExtTest === false) {
         $app->render("/errors/401." . $ext . ".php");
         exit;
     }
-    if ($apiKeyData[0]['status'] == 0) {
+    if ($apiKeyData[0]['status'] == 0 || $apiKeyData[0]['status'] == 2) {
         /**
-         * Suspended
+         * Pending (0) or Suspended (2)
          *
          * @author Johnathan Pulos
          */

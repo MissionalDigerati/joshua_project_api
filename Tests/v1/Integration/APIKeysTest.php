@@ -177,4 +177,23 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isset($matches[1]));
         $this->assertFalse($matches[1] == "");
     }
+    
+    /**
+     * Tests that APIKey requests with all fields should set status to 0 (ie. pending)
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testAPIKequestShouldSetStatusTo0()
+    {
+        $this->cachedRequest->post(
+            "http://joshua.api.local/api_keys",
+            array('name' => 'status_should_be_zero', 'email' => 'joe@yahoo.com', 'usage' => 'testing'),
+            "api_keys_required_fields"
+        );
+        $statement = $this->db->query("SELECT status from `md_api_keys` WHERE `name` = 'status_should_be_zero'");
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals(0, $data[0]['status']);
+    }
 }

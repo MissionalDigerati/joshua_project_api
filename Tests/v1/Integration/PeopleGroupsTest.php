@@ -118,6 +118,38 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(404, $this->cachedRequest->responseCode);
     }
     /**
+     * Tests that you can not access page without an active API Key
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testShouldRefuseAccessWithoutActiveAPIKey()
+    {
+        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups/daily_unreached.json",
+            array('api_key' => $this->APIKey),
+            "versioning_json"
+        );
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+    }
+    /**
+     * Tests that you can not access page with a suspended API Key
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testShouldRefuseAccessWithSuspendedAPIKey()
+    {
+        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/people_groups/daily_unreached.json",
+            array('api_key' => $this->APIKey),
+            "versioning_json"
+        );
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+    }
+    /**
      * Tests that you can only access page with a valid API Key
      *
      * @return void
