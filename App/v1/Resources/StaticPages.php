@@ -39,3 +39,45 @@ $app->get(
         $app->render('StaticPages/home.html.php', array('data' => $data, 'errors' => $errors));
     }
 );
+$app->get(
+    "/get_my_api_key",
+    function () use ($app, $db, $appRequest) {
+        $APIKey = "";
+        $message = "";
+        $error = "";
+        $getData = $appRequest->get();
+        try {
+            $statement = $db->prepare("SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token");
+            $statement->execute(array('authorize_token' => $getData['authorize_token']));
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            $error = "Unable to locate your API key.";
+        }
+        if ($error == '') {
+            try {
+                switch ($data[0]['status']) {
+                    case 0:
+                        $status = 1;
+                        $message = "Your API Key has been activated.";
+                        $APIKey = $data[0]['api_key'];
+                        break;
+                    case 1:
+                        $status = 1;
+                        $message = "Your API Key was already activated.";
+                        $APIKey = $data[0]['api_key'];
+                        break;
+                    case 2:
+                        $status = 2;
+                        $error = "Your API Key was suspended!";
+                        break;
+                }
+                $statement = $db->prepare("UPDATE `md_api_keys` SET authorize_token = NULL, status = :status WHERE id = :id");
+                $statement->execute(array('id' => $data[0]['id'], 'status' => $status));
+            } catch (Exception $e) {
+                $error = "Unable to update your API Key.";
+            }
+        }
+        
+        $app->render('StaticPages/get_my_api_key.html.php', array('message' => $message, 'error' => $error, 'APIKey' => $APIKey));
+    }
+);

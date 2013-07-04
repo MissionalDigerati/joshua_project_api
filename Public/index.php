@@ -112,14 +112,20 @@ $requestedUrl = $appRequest->getResourceUri();
 require(__DIR__."/../App/" . $API_VERSION . "/Includes/CommonFunctions.php");
 require(__DIR__."/../App/" . $API_VERSION . "/Includes/EmailFunctions.php");
 /**
- * Handle the visual HTML for handling the API Key Requests
+ * Are we on a static page?
  *
  * @author Johnathan Pulos
- **/
-if ($requestedUrl == "/") {
+ */
+$staticPages = array("/", "/get_my_api_key");
+if (in_array($requestedUrl, $staticPages)) {
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/StaticPages.php");
     $bypassExtTest = true;
 }
+/**
+ * Are we on a API Key page?
+ *
+ * @author Johnathan Pulos
+ */
 if (strpos($requestedUrl, '/api_keys') !== false) {
     /**
      * We need to lock out all PUT and GET requests for api_keys.  These are the admin users.
@@ -146,7 +152,7 @@ if (strpos($requestedUrl, '/api_keys') !== false) {
     $bypassExtTest = true;
 }
 /**
- * Make sure they only supply supported formats
+ * We must be on an API Request.  Make sure they only supply supported formats.
  *
  * @author Johnathan Pulos
  */
@@ -191,7 +197,7 @@ if ($bypassExtTest === false) {
     }
 }
 /**
- * Check if the request is for People Groups
+ * Are we searching API for People Groups?
  *
  * @author Johnathan Pulos
  */

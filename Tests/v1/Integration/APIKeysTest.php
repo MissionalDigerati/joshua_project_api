@@ -27,6 +27,7 @@ namespace Tests\v1\Integration;
  *
  * @package default
  * @author Johnathan Pulos
+ * @todo do not use url request to create API keys, change to database queries
  */
 class APIKeysTest extends \PHPUnit_Framework_TestCase
 {
@@ -88,7 +89,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKequestWithMissingAllPOSTParamsShouldSetRequiredFieldsParam()
+    public function testAPIKeyRequestWithMissingAllPOSTParamsShouldSetRequiredFieldsParam()
     {
         $expectedURL = "http://joshua.api.local/?required_fields=name|email|usage";
         $this->cachedRequest->post(
@@ -107,7 +108,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKequestWithMissingNamePOSTParamsShouldSetRequiredFieldsParam()
+    public function testAPIKeyRequestWithMissingNamePOSTParamsShouldSetRequiredFieldsParam()
     {
         $expectedURL = "http://joshua.api.local/?required_fields=name&email=joe%40yahoo.com&usage=testing";
         $this->cachedRequest->post(
@@ -126,7 +127,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKequestWithMissingEmailPOSTParamsShouldSetRequiredFieldsParam()
+    public function testAPIKeyRequestWithMissingEmailPOSTParamsShouldSetRequiredFieldsParam()
     {
         $expectedURL = "http://joshua.api.local/?required_fields=email&name=joe&usage=testing";
         $this->cachedRequest->post(
@@ -145,7 +146,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKequestWithMissingUsagePOSTParamsShouldSetRequiredFieldsParam()
+    public function testAPIKeyRequestWithMissingUsagePOSTParamsShouldSetRequiredFieldsParam()
     {
         $expectedURL = "http://joshua.api.local/?required_fields=usage&name=joe&email=joe%40yahoo.com";
         $this->cachedRequest->post(
@@ -164,7 +165,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKequestShouldSetReturnAnAPIKey()
+    public function testAPIKeyRequestShouldSetReturnAnAPIKey()
     {
         $this->cachedRequest->post(
             "http://joshua.api.local/api_keys",
@@ -185,7 +186,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKequestShouldSetStatusTo0()
+    public function testAPIKeyRequestShouldSetStatusTo0()
     {
         $content = $this->cachedRequest->post(
             "http://joshua.api.local/api_keys",
@@ -204,7 +205,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKequestShouldSetAnAuthorizeToken()
+    public function testAPIKeyRequestShouldSetAnAuthorizeToken()
     {
         $this->cachedRequest->post(
             "http://joshua.api.local/api_keys",
@@ -215,5 +216,62 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertNotNull($data[0]['authorize_token']);
         $this->assertNotEmpty($data[0]['authorize_token']);
+    }
+    
+    /**
+     * Tests that APIKey get_my_api_key sets the key to active, and removes the authorize_token
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testGetMyAPIKeySetsProperFields()
+    {
+        $expectedStatus = 1;
+        $this->cachedRequest->post(
+            "http://joshua.api.local/api_keys",
+            array('name' => 'i_should_become_active', 'email' => 'joe@gmail.com', 'usage' => 'testing'),
+            "i_should_become_active"
+        );
+        $statement = $this->db->query("SELECT authorize_token from `md_api_keys` WHERE `name` = 'i_should_become_active'");
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->cachedRequest->get(
+            "http://joshua.api.local/get_my_api_key",
+            array('authorize_token' => $data[0]['authorize_token']),
+            "i_should_become_active_authorize"
+        );
+        $statement = $this->db->query("SELECT * from `md_api_keys` WHERE `name` = 'i_should_become_active'");
+        $actualData = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertNull($actualData[0]['authorize_token']);
+        $this->assertEquals($expectedStatus, $actualData[0]['status']);
+    }
+    
+    /**
+     * Tests that APIKey get_my_api_key should not set a suspended status to active
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testGetMyAPIKeyDoesNotChangeSuspendedKeys()
+    {
+        $expectedStatus = 2;
+        $this->cachedRequest->post(
+            "http://joshua.api.local/api_keys",
+            array('name' => 'i_should_stay_suspended', 'email' => 'joe@gmail.com', 'usage' => 'testing'),
+            "i_should_stay_suspended"
+        );
+        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `name` = 'i_should_stay_suspended'");
+        $statement = $this->db->query("SELECT authorize_token from `md_api_keys` WHERE `name` = 'i_should_stay_suspended'");
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->cachedRequest->get(
+            "http://joshua.api.local/get_my_api_key",
+            array('authorize_token' => $data[0]['authorize_token']),
+            "i_should_stay_suspended_authorize"
+        );
+        $statement = $this->db->query("SELECT * from `md_api_keys` WHERE `name` = 'i_should_stay_suspended'");
+        $actualData = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertNull($actualData[0]['authorize_token']);
+        $this->assertEquals($expectedStatus, $actualData[0]['status']);
     }
 }
