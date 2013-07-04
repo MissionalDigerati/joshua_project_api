@@ -98,18 +98,23 @@ $app->post(
             $app->redirect($redirectURL);
         }
         $newAPIKey = generateRandomKey(12);
-        $cleanedPhoneNumber = preg_replace("/[^0-9]/", "", $formData['phone_number']);
+        $authorizeToken = generateRandomKey(12);
+        $phoneNumber = returnPresentIfKeyExistsOrDefault($formData, 'phone_number', '');
+        $organization = returnPresentIfKeyExistsOrDefault($formData, 'organization', '');
+        $website = returnPresentIfKeyExistsOrDefault($formData, 'website', '');
+        $cleanedPhoneNumber = preg_replace("/[^0-9]/", "", $phoneNumber);
         $apiKeyValues = array(  'name' => $formData['name'],
                                 'email' => $formData['email'],
-                                'organization' => $formData['organization'],
-                                'website' => $formData['website'],
+                                'organization' => $organization,
+                                'website' => $website,
                                 'phone_number' => $cleanedPhoneNumber,
                                 'api_usage' => $formData['usage'],
                                 'api_key' => $newAPIKey,
+                                'authorize_token' => $authorizeToken,
                                 'status' => 0
                             );
-        $query = "INSERT INTO md_api_keys (name, email, organization, website, phone_number, api_usage, api_key, status, created)" .
-        " VALUES (:name, :email, :organization, :website, :phone_number, :api_usage, :api_key, :status, NOW())";
+        $query = "INSERT INTO md_api_keys (name, email, organization, website, phone_number, api_usage, api_key, authorize_token, status, created)" .
+        " VALUES (:name, :email, :organization, :website, :phone_number, :api_usage, :api_key, :authorize_token, :status, NOW())";
         try {
             $statement = $db->prepare($query);
             $statement->execute($apiKeyValues);

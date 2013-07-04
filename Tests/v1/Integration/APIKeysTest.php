@@ -187,13 +187,33 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      **/
     public function testAPIKequestShouldSetStatusTo0()
     {
-        $this->cachedRequest->post(
+        $content = $this->cachedRequest->post(
             "http://joshua.api.local/api_keys",
             array('name' => 'status_should_be_zero', 'email' => 'joe@yahoo.com', 'usage' => 'testing'),
-            "api_keys_required_fields"
+            "status_should_be_zero"
         );
         $statement = $this->db->query("SELECT status from `md_api_keys` WHERE `name` = 'status_should_be_zero'");
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertEquals(0, $data[0]['status']);
+    }
+    
+    /**
+     * Tests that APIKey requests with all fields should set an authorize token for the url
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testAPIKequestShouldSetAnAuthorizeToken()
+    {
+        $this->cachedRequest->post(
+            "http://joshua.api.local/api_keys",
+            array('name' => 'should_set_authorize_token', 'email' => 'joe@gmail.com', 'usage' => 'testing'),
+            "should_set_authorize_token"
+        );
+        $statement = $this->db->query("SELECT authorize_token from `md_api_keys` WHERE `name` = 'should_set_authorize_token'");
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertNotNull($data[0]['authorize_token']);
+        $this->assertNotEmpty($data[0]['authorize_token']);
     }
 }

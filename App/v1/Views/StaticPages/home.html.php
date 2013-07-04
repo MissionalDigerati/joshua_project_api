@@ -59,7 +59,7 @@
 if ((isset($data['api_key'])) && ($data['api_key'] == 'true')) {
     ?>
     <div class="alert alert-success">
-        Thank you!  You got a shiny new API key.  Before you can get it,  please visit the email you provided and click the link in it.  Happy programming!
+        Thank you!  We made you a shiny new API key.  Before you can retrieve it,  please visit the email you provided and click the link in the email we sent you.  Happy programming!
     </div>
     <?php
 }
