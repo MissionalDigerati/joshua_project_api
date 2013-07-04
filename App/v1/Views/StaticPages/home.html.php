@@ -56,10 +56,10 @@
 		<p>This is a new development of <a href="http://www.missionaldigerati.org">Missional Digerati</a>.  If you would like to get an API key, 
 			please complete the form below.</p>
 <?php
-if ((isset($data['api_key'])) && ($data['api_key'] != "")) {
+if ((isset($data['api_key'])) && ($data['api_key'] == 'true')) {
     ?>
     <div class="alert alert-success">
-        You got a shiny new API key: <strong><?php echo $data['api_key']; ?></strong>  Happy programming!
+        Thank you!  You got a shiny new API key.  Before you cam get it,  please visit the email you provided, and click the link in it.  Happy programming!
     </div>
     <?php
 }
@@ -104,6 +104,54 @@ if ((isset($data['email'])) && ($data['email'] != "")) {
 if ((!empty($errors)) && (in_array('email', $errors))) {
     ?>
         <span class="help-inline error">Email is Required!</span>
+    <?php
+}
+?>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input-name">Organization</label>
+					<div class="controls">
+<?php
+if ((isset($data['organization'])) && ($data['organization'] != "")) {
+    ?>
+        <input type="text" name="organization" id="input-organization"  value="<?php echo $data['organization']; ?>">
+    <?php
+} else {
+    ?>
+        <input type="text" name="organization" id="input-organization" placeholder="Organization">
+    <?php
+}
+?>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input-name">Website</label>
+					<div class="controls">
+<?php
+if ((isset($data['website'])) && ($data['website'] != "")) {
+    ?>
+        <input type="text" name="website" id="input-website"  value="<?php echo $data['website']; ?>">
+    <?php
+} else {
+    ?>
+        <input type="text" name="website" id="input-website" placeholder="Website">
+    <?php
+}
+?>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input-name">Phone Number</label>
+					<div class="controls">
+<?php
+if ((isset($data['phone_number'])) && ($data['phone_number'] != "")) {
+    ?>
+        <input type="text" name="phone_number" id="input-phone_number"  value="<?php echo $data['phone_number']; ?>">
+    <?php
+} else {
+    ?>
+        <input type="text" name="phone_number" id="input-phone_number" placeholder="Phone Number">
     <?php
 }
 ?>

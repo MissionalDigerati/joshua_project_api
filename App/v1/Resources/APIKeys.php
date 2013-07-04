@@ -97,22 +97,25 @@ $app->post(
             $app->redirect($redirectURL);
         }
         $newAPIKey = generateRandomKey(12);
-        $query = "INSERT INTO md_api_keys (name, email, api_usage, api_key, created)" .
-        " VALUES (:name, :email, :usage, :api_key, NOW())";
+        $cleanedPhoneNumber = preg_replace("/[^0-9]/", "", $formData['phone_number']);
+        $apiKeyValues = array(  'name' => $formData['name'],
+                                'email' => $formData['email'],
+                                'organization' => $formData['organization'],
+                                'website' => $formData['website'],
+                                'phone_number' => $cleanedPhoneNumber,
+                                'api_usage' => $formData['usage'],
+                                'api_key' => $newAPIKey,
+                                'status' => 0
+                            );
+        $query = "INSERT INTO md_api_keys (name, email, organization, website, phone_number, api_usage, api_key, status, created)" .
+        " VALUES (:name, :email, :organization, :website, :phone_number, :api_usage, :api_key, :status, NOW())";
         try {
             $statement = $db->prepare($query);
-            $statement->execute(
-                array(
-                    'name' => $formData['name'],
-                    'email' => $formData['email'],
-                    'usage' => $formData['usage'],
-                    'api_key' => $newAPIKey
-                )
-            );
+            $statement->execute($apiKeyValues);
         } catch (PDOException $e) {
             $app->redirect("/?saving_error=true");
         }
-        $redirectURL = generateRedirectURL("/", array('api_key' => $newAPIKey), array());
+        $redirectURL = generateRedirectURL("/", array('api_key' => 'true'), array());
         $app->redirect($redirectURL);
     }
 );
