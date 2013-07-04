@@ -169,7 +169,12 @@ if ($bypassExtTest === false) {
         $app->render("/errors/401." . $ext . ".php");
         exit;
     }
-    if ($apiKeyData[0]['suspended'] == 1) {
+    if ($apiKeyData[0]['status'] == 0) {
+        /**
+         * Suspended
+         *
+         * @author Johnathan Pulos
+         */
         $app->render("/errors/401." . $ext . ".php");
         exit;
     }

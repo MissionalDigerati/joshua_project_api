@@ -66,10 +66,10 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
             DIRECTORY_SEPARATOR . "Support" .
             DIRECTORY_SEPARATOR . "cache" .
             DIRECTORY_SEPARATOR;
-        $this->setAPIKey();
         $pdoDb = \PHPToolbox\PDODatabase\PDODatabaseConnect::getInstance();
         $pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings);
         $this->db = $pdoDb->getDatabaseInstance();
+        $this->setAPIKey();
     }
     /**
      * Runs at the end of each test
@@ -1151,16 +1151,27 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     private function setAPIKey()
     {
         if ($this->APIKey == "") {
-            $this->cachedRequest->post(
-                "http://joshua.api.local/api_keys",
-                array('name' => 'people_groups_test', 'email' => 'joe@people_groups.com', 'usage' => 'testing'),
-                "people_groups_api"
-            );
-            $lastVisitedURL = $this->cachedRequest->lastVisitedURL;
-            $APIKeyCheck = preg_match('/api_key=(.*)/', $lastVisitedURL, $matches);
-            if (isset($matches[1])) {
-                $this->APIKey = $matches[1];
-            } else {
+            $newAPIKey = generateRandomKey(12);
+            $apiKeyValues = array(  'name' => 'Test API',
+                                    'email' => 'joe@testing.com',
+                                    'organization' => 'Testing.com',
+                                    'website' => 'http://www.testing.com',
+                                    'api_usage' => 'testing',
+                                    'api_key' => $newAPIKey,
+                                    'status' => 1
+                                );
+            /**
+             * Create a new API Key
+             *
+             * @author Johnathan Pulos
+             */
+            $query = "INSERT INTO `md_api_keys` (name, email, organization, website, api_usage, api_key, status) 
+                        VALUES (:name, :email, :organization, :website, :api_usage, :api_key, :status)";
+            try {
+                $statement = $this->db->prepare($query);
+                $statement->execute($apiKeyValues);
+                $this->APIKey = $newAPIKey;
+            } catch (PDOException $e) {
                 echo "Unable to set the API Key!";
                 die();
             }
