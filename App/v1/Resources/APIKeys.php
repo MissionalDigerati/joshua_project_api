@@ -90,7 +90,7 @@ $app->put(
  */
 $app->post(
     "/api_keys",
-    function () use ($app, $db, $appRequest) {
+    function () use ($app, $db, $appRequest, $DOMAIN_ADDRESS) {
         $formData = $appRequest->post();
         $invalidFields = validatePresenceOf(array("name", "email", "usage"), $formData);
         $redirectURL = generateRedirectURL("/", $formData, $invalidFields);
@@ -122,10 +122,12 @@ $app->post(
             $app->redirect("/?saving_error=true");
         }
         /**
-         * @todo Need to send email with link to retrieve API Key
+         * Send the email with the authorization url
          *
          * @author Johnathan Pulos
          */
+        $authorizeUrl = $DOMAIN_ADDRESS . "/get_my_api_key?authorize_token=" . $authorizeToken;
+        sendAuthorizeToken($formData['email'], $authorizeUrl, new PHPMailer());
         $redirectURL = generateRedirectURL("/", array('api_key' => 'true'), array());
         $app->redirect($redirectURL);
     }

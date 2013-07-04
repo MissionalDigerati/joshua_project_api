@@ -33,6 +33,10 @@
  */
 $useCaching = false;
 $DS = DIRECTORY_SEPARATOR;
+$DOMAIN_ADDRESS = $_SERVER['SERVER_NAME'];
+if ((substr_compare($DOMAIN_ADDRESS, "http://", 0, 7)) !== 0) {
+    $DOMAIN_ADDRESS = "http://" . $DOMAIN_ADDRESS;
+}
 /**
  * Lets get the version of the API based on the URL (http://joshua.api.local/v12/people_groups/daily_unreached.json?api_key=37e24112caae)
  * It will default to the latest API.  Youu must provide an API Version if you are accessing the data.  The default is only for
@@ -106,6 +110,7 @@ $requestedUrl = $appRequest->getResourceUri();
  * @author Johnathan Pulos
  */
 require(__DIR__."/../App/" . $API_VERSION . "/Includes/CommonFunctions.php");
+require(__DIR__."/../App/" . $API_VERSION . "/Includes/EmailFunctions.php");
 /**
  * Handle the visual HTML for handling the API Key Requests
  *
@@ -131,6 +136,12 @@ if (strpos($requestedUrl, '/api_keys') !== false) {
         $adminSettings = new \JPAPI\AdminSettings;
         $app->add(new Slim\Extras\Middleware\HttpBasicAuth($adminSettings->default['username'], $adminSettings->default['password']));
     }
+    /**
+     * Autoload the PHPMailer
+     *
+     * @author Johnathan Pulos
+     **/
+    $loader->add("PHPMailer", $vendorDirectory . "phpmailer" . $DS . "phpmailer");
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/APIKeys.php");
     $bypassExtTest = true;
 }
