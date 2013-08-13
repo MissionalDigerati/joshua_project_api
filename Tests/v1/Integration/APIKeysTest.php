@@ -23,11 +23,10 @@
 namespace Tests\v1\Integration;
 
 /**
- * The class for testing integration of the People Groups
+ * The class for testing integration of the API Keys
  *
  * @package default
  * @author Johnathan Pulos
- * @todo do not use url request to create API keys, change to database queries
  */
 class APIKeysTest extends \PHPUnit_Framework_TestCase
 {
