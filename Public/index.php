@@ -177,6 +177,7 @@ if ($bypassExtTest === false) {
      * Find the API Key in the database, and validate it
      *
      * @author Johnathan Pulos
+     * @todo put a try block here
      **/
     $query = "SELECT * FROM md_api_keys where api_key = :api_key LIMIT 1";
     $statement = $db->prepare($query);

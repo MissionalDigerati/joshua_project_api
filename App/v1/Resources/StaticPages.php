@@ -39,6 +39,13 @@ $app->get(
         $app->render('StaticPages/home.html.php', array('data' => $data, 'errors' => $errors));
     }
 );
+/**
+ * Retrieve your API Key.  Triggered by a link in an email.  Requires md_api_keys.authorization token to access
+ *
+ * GET /get_my_api_key?authorize_token=[AUTHORIZATION TOKEN]
+ *
+ * @author Johnathan Pulos
+ */
 $app->get(
     "/get_my_api_key",
     function () use ($app, $db, $appRequest) {
