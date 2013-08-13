@@ -56,10 +56,10 @@
 		<p>This is a new development of <a href="http://www.missionaldigerati.org">Missional Digerati</a>.  If you would like to get an API key, 
 			please complete the form below.</p>
 <?php
-if ((isset($data['api_key'])) && ($data['api_key'] != "")) {
+if ((isset($data['api_key'])) && ($data['api_key'] == 'true')) {
     ?>
     <div class="alert alert-success">
-        You got a shiny new API key: <strong><?php echo $data['api_key']; ?></strong>  Happy programming!
+        Thank you!  We made you a shiny new API key.  Before you can retrieve it,  please visit the email you provided and click the link in the email we sent you.  Happy programming!
     </div>
     <?php
 }
@@ -110,6 +110,54 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
 					</div>
 				</div>
 				<div class="control-group">
+					<label class="control-label" for="input-name">Organization</label>
+					<div class="controls">
+<?php
+if ((isset($data['organization'])) && ($data['organization'] != "")) {
+    ?>
+        <input type="text" name="organization" id="input-organization"  value="<?php echo $data['organization']; ?>">
+    <?php
+} else {
+    ?>
+        <input type="text" name="organization" id="input-organization" placeholder="Organization">
+    <?php
+}
+?>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input-name">Website</label>
+					<div class="controls">
+<?php
+if ((isset($data['website'])) && ($data['website'] != "")) {
+    ?>
+        <input type="text" name="website" id="input-website"  value="<?php echo $data['website']; ?>">
+    <?php
+} else {
+    ?>
+        <input type="text" name="website" id="input-website" placeholder="Website">
+    <?php
+}
+?>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input-name">Phone Number</label>
+					<div class="controls">
+<?php
+if ((isset($data['phone_number'])) && ($data['phone_number'] != "")) {
+    ?>
+        <input type="text" name="phone_number" id="input-phone_number"  value="<?php echo $data['phone_number']; ?>">
+    <?php
+} else {
+    ?>
+        <input type="text" name="phone_number" id="input-phone_number" placeholder="Phone Number">
+    <?php
+}
+?>
+					</div>
+				</div>
+				<div class="control-group">
 					<label class="control-label" for="input-usage">How Will You Use the API? <span class="required-field">*</span></label>
 					<div class="controls">
 <?php
@@ -132,7 +180,8 @@ if ((!empty($errors)) && (in_array('usage', $errors))) {
 				</div>
 				<div class="control-group">
 					<div class="controls">
-						<button type="submit" class="btn">Send request</button>
+						<button type="submit" class="btn btn-primary">Send request</button>
+                        <a type="button" class="btn btn-link" href="/resend_activation_links">Resend Activation Links</a>
 					</div>
 				</div>
 				<span class="required-field">* = Required</span>

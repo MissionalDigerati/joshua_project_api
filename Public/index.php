@@ -33,6 +33,10 @@
  */
 $useCaching = false;
 $DS = DIRECTORY_SEPARATOR;
+$DOMAIN_ADDRESS = $_SERVER['SERVER_NAME'];
+if ((substr_compare($DOMAIN_ADDRESS, "http://", 0, 7)) !== 0) {
+    $DOMAIN_ADDRESS = "http://" . $DOMAIN_ADDRESS;
+}
 /**
  * Lets get the version of the API based on the URL (http://joshua.api.local/v12/people_groups/daily_unreached.json?api_key=37e24112caae)
  * It will default to the latest API.  Youu must provide an API Version if you are accessing the data.  The default is only for
@@ -40,7 +44,7 @@ $DS = DIRECTORY_SEPARATOR;
  *
  * @author Johnathan Pulos
  */
-$pattern = '/([v][1-9]*)/';
+$pattern = '/([v]+[1-9]+)/';
 preg_match($pattern, $_SERVER['REQUEST_URI'], $matches);
 if (empty($matches)) {
     $API_VERSION = "v1";
@@ -93,6 +97,12 @@ $db = $pdoDb->getDatabaseInstance();
  **/
 $loader->add("Slim\Extras\Middleware\HttpBasicAuth", $vendorDirectory . "SlimExtras");
 /**
+ * Autoload the PHPMailer
+ *
+ * @author Johnathan Pulos
+ **/
+$loader->add("PHPMailer", $vendorDirectory . "phpmailer");
+/**
  * Get the current request to determine which PHP file to load.  Do not load all files, because it can take longer to
  * load.
  *
@@ -106,15 +116,22 @@ $requestedUrl = $appRequest->getResourceUri();
  * @author Johnathan Pulos
  */
 require(__DIR__."/../App/" . $API_VERSION . "/Includes/CommonFunctions.php");
+require(__DIR__."/../App/" . $API_VERSION . "/Includes/EmailFunctions.php");
 /**
- * Handle the visual HTML for handling the API Key Requests
+ * Are we on a static page?
  *
  * @author Johnathan Pulos
- **/
-if ($requestedUrl == "/") {
+ */
+$staticPages = array("/", "/get_my_api_key", "/resend_activation_links");
+if (in_array($requestedUrl, $staticPages)) {
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/StaticPages.php");
     $bypassExtTest = true;
 }
+/**
+ * Are we on a API Key page?
+ *
+ * @author Johnathan Pulos
+ */
 if (strpos($requestedUrl, '/api_keys') !== false) {
     /**
      * We need to lock out all PUT and GET requests for api_keys.  These are the admin users.
@@ -135,7 +152,7 @@ if (strpos($requestedUrl, '/api_keys') !== false) {
     $bypassExtTest = true;
 }
 /**
- * Make sure they only supply supported formats
+ * We must be on an API Request.  Make sure they only supply supported formats.
  *
  * @author Johnathan Pulos
  */
@@ -160,6 +177,7 @@ if ($bypassExtTest === false) {
      * Find the API Key in the database, and validate it
      *
      * @author Johnathan Pulos
+     * @todo put a try block here
      **/
     $query = "SELECT * FROM md_api_keys where api_key = :api_key LIMIT 1";
     $statement = $db->prepare($query);
@@ -169,13 +187,18 @@ if ($bypassExtTest === false) {
         $app->render("/errors/401." . $ext . ".php");
         exit;
     }
-    if ($apiKeyData[0]['suspended'] == 1) {
+    if ($apiKeyData[0]['status'] == 0 || $apiKeyData[0]['status'] == 2) {
+        /**
+         * Pending (0) or Suspended (2)
+         *
+         * @author Johnathan Pulos
+         */
         $app->render("/errors/401." . $ext . ".php");
         exit;
     }
 }
 /**
- * Check if the request is for People Groups
+ * Are we searching API for People Groups?
  *
  * @author Johnathan Pulos
  */

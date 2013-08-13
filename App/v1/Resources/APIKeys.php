@@ -51,6 +51,7 @@ $app->get(
  * Available Formats HTML
  *
  * @author Johnathan Pulos
+ * @todo verify this works with the new status column
  **/
 $app->put(
     "/api_keys/:id",
@@ -89,7 +90,7 @@ $app->put(
  */
 $app->post(
     "/api_keys",
-    function () use ($app, $db, $appRequest) {
+    function () use ($app, $db, $appRequest, $DOMAIN_ADDRESS) {
         $formData = $appRequest->post();
         $invalidFields = validatePresenceOf(array("name", "email", "usage"), $formData);
         $redirectURL = generateRedirectURL("/", $formData, $invalidFields);
@@ -97,22 +98,37 @@ $app->post(
             $app->redirect($redirectURL);
         }
         $newAPIKey = generateRandomKey(12);
-        $query = "INSERT INTO md_api_keys (name, email, api_usage, api_key, created)" .
-        " VALUES (:name, :email, :usage, :api_key, NOW())";
+        $authorizeToken = generateRandomKey(12);
+        $phoneNumber = returnPresentIfKeyExistsOrDefault($formData, 'phone_number', '');
+        $organization = returnPresentIfKeyExistsOrDefault($formData, 'organization', '');
+        $website = returnPresentIfKeyExistsOrDefault($formData, 'website', '');
+        $cleanedPhoneNumber = preg_replace("/[^0-9]/", "", $phoneNumber);
+        $apiKeyValues = array(  'name' => $formData['name'],
+                                'email' => $formData['email'],
+                                'organization' => $organization,
+                                'website' => $website,
+                                'phone_number' => $cleanedPhoneNumber,
+                                'api_usage' => $formData['usage'],
+                                'api_key' => $newAPIKey,
+                                'authorize_token' => $authorizeToken,
+                                'status' => 0
+                            );
+        $query = "INSERT INTO md_api_keys (name, email, organization, website, phone_number, api_usage, api_key, authorize_token, status, created)" .
+        " VALUES (:name, :email, :organization, :website, :phone_number, :api_usage, :api_key, :authorize_token, :status, NOW())";
         try {
             $statement = $db->prepare($query);
-            $statement->execute(
-                array(
-                    'name' => $formData['name'],
-                    'email' => $formData['email'],
-                    'usage' => $formData['usage'],
-                    'api_key' => $newAPIKey
-                )
-            );
+            $statement->execute($apiKeyValues);
         } catch (PDOException $e) {
             $app->redirect("/?saving_error=true");
         }
-        $redirectURL = generateRedirectURL("/", array('api_key' => $newAPIKey), array());
+        /**
+         * Send the email with the authorization url
+         *
+         * @author Johnathan Pulos
+         */
+        $authorizeUrl = $DOMAIN_ADDRESS . "/get_my_api_key?authorize_token=" . $authorizeToken;
+        sendAuthorizeToken($formData['email'], $authorizeUrl, new PHPMailer());
+        $redirectURL = generateRedirectURL("/", array('api_key' => 'true'), array());
         $app->redirect($redirectURL);
     }
 );

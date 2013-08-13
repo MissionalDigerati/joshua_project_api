@@ -60,6 +60,24 @@ function returnPresentOrDefault($variable, $default)
     }
 }
 /**
+ * Checks if $variable has the key $key, if so it returns $variable[$key], else it returns $default
+ *
+ * @param array $variable The variable to test for key
+ * @param string $key The key to search for
+ * @param mixed $default The value to set if empty
+ * @return mixed
+ * @access public
+ * @author Johnathan Pulos
+ */
+function returnPresentIfKeyExistsOrDefault($variable, $key, $default)
+{
+    if (array_key_exists($key, $variable)) {
+        return $variable[$key];
+    } else {
+        return $default;
+    }
+}
+/**
  * Strips the string of carriage returns
  *
  * @param string $str the string to clean 
