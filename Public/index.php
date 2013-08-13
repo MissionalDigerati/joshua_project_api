@@ -147,7 +147,7 @@ if (strpos($requestedUrl, '/api_keys') !== false) {
      *
      * @author Johnathan Pulos
      **/
-    $loader->add("PHPMailer", $vendorDirectory . "phpmailer" . $DS . "phpmailer");
+    $loader->add("PHPMailer", $vendorDirectory . "phpmailer");
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/APIKeys.php");
     $bypassExtTest = true;
 }
