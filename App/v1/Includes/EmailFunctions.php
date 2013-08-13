@@ -44,3 +44,33 @@ function sendAuthorizeToken($email, $authorizeUrl, $mail)
     $mail->IsHTML(true);
     $mail->Send();
 }
+/**
+ * Send all authorize urls to the developer so they can get their API Keys
+ *
+ * @param string $email the email address to send it to
+ * @param array $apiKeys the database results of keys that have not been activated
+ * @param string $domain the domain name for the website
+ * @param object $mail the PHPMailer Object
+ * @return void
+ * @access public
+ * @author Johnathan Pulos
+ */
+function sendAuthorizationLinks($email, $apiKeys, $domain, $mail)
+{
+    $mail->IsMail();
+    $mail->Timeout  = 360;
+    $mail->Subject =  'Joshua Project API Key';
+    $mail->From = 'api@joshuaproject.net';
+    $mail->FromName = 'Joshua Project API';
+    $mail->AddAddress($email, '');
+    $emailMessage = "Dear Developer,<br>You have requested your authorization tokens that have not been activated. ";
+    $emailMessage .= "Please click the following links to activate your key:<br><br>";
+    foreach ($apiKeys as $apiKey) {
+        $authorizationUrl = $domain . "/get_my_api_key?authorize_token=" . $apiKey['authorize_token'];
+        $emailMessage .= $apiKey['api_usage'] . "<br><a href='" . $authorizationUrl . "'>" . $authorizationUrl . "</a><br>";
+    }
+    $emailMessage .= "<br>Take care, and God Bless.<br>Sincerely,<br>Joshua Project API";
+    $mail->Body = $emailMessage;
+    $mail->IsHTML(true);
+    $mail->Send();
+}

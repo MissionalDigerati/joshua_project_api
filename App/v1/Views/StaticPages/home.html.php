@@ -180,7 +180,8 @@ if ((!empty($errors)) && (in_array('usage', $errors))) {
 				</div>
 				<div class="control-group">
 					<div class="controls">
-						<button type="submit" class="btn">Send request</button>
+						<button type="submit" class="btn btn-primary">Send request</button>
+                        <a type="button" class="btn btn-link" href="/resend_activation_links">Resend Activation Links</a>
 					</div>
 				</div>
 				<span class="required-field">* = Required</span>

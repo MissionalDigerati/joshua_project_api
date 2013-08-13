@@ -44,7 +44,7 @@ if ((substr_compare($DOMAIN_ADDRESS, "http://", 0, 7)) !== 0) {
  *
  * @author Johnathan Pulos
  */
-$pattern = '/([v][1-9]*)/';
+$pattern = '/([v]+[1-9]+)/';
 preg_match($pattern, $_SERVER['REQUEST_URI'], $matches);
 if (empty($matches)) {
     $API_VERSION = "v1";
@@ -97,6 +97,12 @@ $db = $pdoDb->getDatabaseInstance();
  **/
 $loader->add("Slim\Extras\Middleware\HttpBasicAuth", $vendorDirectory . "SlimExtras");
 /**
+ * Autoload the PHPMailer
+ *
+ * @author Johnathan Pulos
+ **/
+$loader->add("PHPMailer", $vendorDirectory . "phpmailer");
+/**
  * Get the current request to determine which PHP file to load.  Do not load all files, because it can take longer to
  * load.
  *
@@ -116,7 +122,7 @@ require(__DIR__."/../App/" . $API_VERSION . "/Includes/EmailFunctions.php");
  *
  * @author Johnathan Pulos
  */
-$staticPages = array("/", "/get_my_api_key");
+$staticPages = array("/", "/get_my_api_key", "/resend_activation_links");
 if (in_array($requestedUrl, $staticPages)) {
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/StaticPages.php");
     $bypassExtTest = true;
@@ -142,12 +148,6 @@ if (strpos($requestedUrl, '/api_keys') !== false) {
         $adminSettings = new \JPAPI\AdminSettings;
         $app->add(new Slim\Extras\Middleware\HttpBasicAuth($adminSettings->default['username'], $adminSettings->default['password']));
     }
-    /**
-     * Autoload the PHPMailer
-     *
-     * @author Johnathan Pulos
-     **/
-    $loader->add("PHPMailer", $vendorDirectory . "phpmailer");
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/APIKeys.php");
     $bypassExtTest = true;
 }
