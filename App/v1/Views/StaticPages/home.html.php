@@ -54,7 +54,7 @@
     <div class="container">
     	<h2>Welcome to the Joshua Project API</h2>
 		<p>This is a new development of <a href="http://www.missionaldigerati.org">Missional Digerati</a>.  If you would like to get an API key, 
-			please complete the form below, and verify your email address.</p>
+			please complete the form below and verify your email address.</p>
 <?php
 if ((isset($data['api_key'])) && ($data['api_key'] == 'true')) {
     ?>
