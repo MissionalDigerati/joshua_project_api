@@ -43,7 +43,7 @@
 				<div class="nav-collapse collapse">
 					<ul class="nav pull-right">
 						<li class="active"><a href="/">Home</a></li>
-						<li><a href="/docs/v1/">Documentation</a></li>
+						<li><a href="/docs/v1/#!/people_groups">Documentation</a></li>
 						<li><a href="http://www.joshuaproject.net/">Joshua Project</a></li>
 						<li><a href="http://www.missionaldigerati.org">Missional Digerati</a></li>
 					</ul>
