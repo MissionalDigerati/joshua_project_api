@@ -26,7 +26,7 @@ use Swagger\Annotations as SWG;
  *     apiVersion="1",
  *     swaggerVersion="1.1",
  *     resourcePath="/people_groups",
- *     basePath="http://jpapi.serveftp.com/v1"
+ *     basePath="http://jpapi.codingstudio.org/v1"
  * )
  */
 /**
