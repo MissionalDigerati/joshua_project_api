@@ -247,6 +247,61 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedName, $data[0]['PeopNameInCountry']);
     }
     /**
+     * Should return the correct PeopleGroup URL
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testQueryShouldReturnCorrectPeopleGroupURL()
+    {
+        $expected = array('id' => '12662', 'country' => 'CB');
+        $expectedURL = "http://www.joshuaproject.net/people-profile.php?peo3=12662&amp;rog3=cb";
+        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup->findByIdAndCountry();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($expectedURL, strtolower($data[0]['PeopleGroupURL']));
+    }
+    /**
+     * Should return the correct PeopleGroup Photo URL
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testQueryShouldReturnCorrectPeopleGroupPhotoURL()
+    {
+        $expected = array('id' => '12662', 'country' => 'CB');
+        $expectedURL = "http://www.joshuaproject.net/profiles/photos/";
+        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup->findByIdAndCountry();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $expectedURL .= strtolower($data[0]['PhotoAddress']);
+        $this->assertEquals($expectedURL, strtolower($data[0]['PeopleGroupPhotoURL']));
+    }
+    /**
+     * Should return the correct Country URL
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testQueryShouldReturnCorrectCountryURL()
+    {
+        $expected = array('id' => '12662', 'country' => 'CB');
+        $expectedURL = "http://www.joshuaproject.net/countries.php?rog3=cb";
+        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup->findByIdAndCountry();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($expectedURL, strtolower($data[0]['CountryURL']));
+    }
+    /**
      * findByIdAndCountry() should require an ID
      *
      * @return void

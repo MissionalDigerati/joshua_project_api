@@ -74,6 +74,27 @@ class PeopleGroup
      */
     private $tableName = "jppeoples";
     /**
+     * The CONCAT statement for generating the PeopleGroupURL
+     *
+     * @var string
+     * @access private
+     */
+    private $peopleGroupURLSelect = "CONCAT('http://www.joshuaproject.net/people-profile.php?peo3=', PeopleID3, '&amp;rog3=', ROG3)";
+    /**
+     * The CONCAT statement for generating the PeopleGroupPhotoURL
+     *
+     * @var string
+     * @access private
+     */
+    private $peopleGroupPhotoURLSelect = "CONCAT('http://www.joshuaproject.net/profiles/photos/', PhotoAddress)";
+    /**
+     * The CONCAT statement for generating the CountryURL
+     *
+     * @var string
+     * @access private
+     */
+    private $countryURLSelect = "CONCAT('http://www.joshuaproject.net/countries.php?rog3=', ROG3)";
+    /**
      * Construct the class
      *
      * @param array $getParams the params to use for the query.  Each message has required fields, and will throw error
@@ -86,6 +107,9 @@ class PeopleGroup
     {
         $this->providedParams = $getParams;
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", 10_40Window as Window10_40";
+        $this->selectFieldsStatement .= ", " . $this->peopleGroupURLSelect . " as PeopleGroupURL";
+        $this->selectFieldsStatement .= ", " . $this->peopleGroupPhotoURLSelect . " as PeopleGroupPhotoURL";
+        $this->selectFieldsStatement .= ", " . $this->countryURLSelect . " as CountryURL";
         $this->cleanParams();
     }
     /**
