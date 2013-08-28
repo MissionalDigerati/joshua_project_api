@@ -302,6 +302,64 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedURL, strtolower($data[0]['CountryURL']));
     }
     /**
+     * Should return the correct JPScaleText Equal to Unreached
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testQueryShouldReturnCorrectJPScaleTextEqualToUnreached()
+    {
+        $paramData = array('id' => '12662', 'country' => 'CB');
+        $expectedText = "unreached";
+        $peopleGroup = new \QueryGenerators\PeopleGroup($paramData);
+        $peopleGroup->findByIdAndCountry();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertGreaterThan(1, $data[0]['JPScale']);
+        $this->assertLessThan(2, $data[0]['JPScale']);
+        $this->assertEquals($expectedText, strtolower($data[0]['JPScaleText']));
+    }
+    /**
+     * Should return the correct JPScaleText Equal to Nominal Church
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testQueryShouldReturnCorrectJPScaleTextEqualToNominalChurch()
+    {
+        $paramData = array('id' => '16153', 'country' => 'IN');
+        $expectedText = "nominal church";
+        $peopleGroup = new \QueryGenerators\PeopleGroup($paramData);
+        $peopleGroup->findByIdAndCountry();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertGreaterThan(2, $data[0]['JPScale']);
+        $this->assertLessThan(3, $data[0]['JPScale']);
+        $this->assertEquals($expectedText, strtolower($data[0]['JPScaleText']));
+    }
+    /**
+     * Should return the correct JPScaleImageURL
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testQueryShouldReturnCorrectJPScaleImageURL()
+    {
+        $paramData = array('id' => '16153', 'country' => 'IN');
+        $peopleGroup = new \QueryGenerators\PeopleGroup($paramData);
+        $peopleGroup->findByIdAndCountry();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $expectedImageURL = "http://www.joshuaproject.net/images/scale".round($data[0]['JPScale']).".jpg";
+        $this->assertEquals($expectedImageURL, $data[0]['JPScaleImageURL']);
+    }
+    /**
      * findByIdAndCountry() should require an ID
      *
      * @return void
