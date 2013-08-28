@@ -342,6 +342,24 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedText, strtolower($data[0]['JPScaleText']));
     }
     /**
+     * Should return the correct JPScaleImageURL
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testQueryShouldReturnCorrectJPScaleImageURL()
+    {
+        $paramData = array('id' => '16153', 'country' => 'IN');
+        $peopleGroup = new \QueryGenerators\PeopleGroup($paramData);
+        $peopleGroup->findByIdAndCountry();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $expectedImageURL = "http://www.joshuaproject.net/images/scale".round($data[0]['JPScale']).".jpg";
+        $this->assertEquals($expectedImageURL, $data[0]['JPScaleImageURL']);
+    }
+    /**
      * findByIdAndCountry() should require an ID
      *
      * @return void
