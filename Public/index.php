@@ -26,6 +26,10 @@
  * @author Johnathan Pulos
  */
 /**
+ * Set the timezone
+ */
+date_default_timezone_set('America/Denver');
+/**
  * Set whether to use Memcached for caching the queries.  Most queries are cached for 1 day.
  *
  * @var boolean
