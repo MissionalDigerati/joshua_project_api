@@ -95,6 +95,13 @@ class PeopleGroup
      */
     private $countryURLSelect = "CONCAT('http://www.joshuaproject.net/countries.php?rog3=', ROG3)";
     /**
+     * The CASE statement for generating the ProgressScaleText
+     *
+     * @var string
+     * @access private
+     */
+    private $progressScaleTextSelect = "CASE  WHEN JPScale = 1.0 OR JPScale = 2.0 THEN 'Status Unavailable' WHEN JPScale = 1.1 OR JPScale = 1.2 THEN 'Unreached' WHEN JPScale = 2.1 OR JPScale = 2.2 THEN 'Nominal Church' ELSE 'Established Church' END";
+    /**
      * Construct the class
      *
      * @param array $getParams the params to use for the query.  Each message has required fields, and will throw error
@@ -110,6 +117,7 @@ class PeopleGroup
         $this->selectFieldsStatement .= ", " . $this->peopleGroupURLSelect . " as PeopleGroupURL";
         $this->selectFieldsStatement .= ", " . $this->peopleGroupPhotoURLSelect . " as PeopleGroupPhotoURL";
         $this->selectFieldsStatement .= ", " . $this->countryURLSelect . " as CountryURL";
+        $this->selectFieldsStatement .= ", " . $this->progressScaleTextSelect . " as JPScaleText";
         $this->cleanParams();
     }
     /**
