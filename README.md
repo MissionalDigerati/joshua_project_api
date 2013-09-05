@@ -11,6 +11,11 @@ This tool uses [Composer](http://getcomposer.org/) to install the project specif
 
 Questions or problems? Please post them on the [issue tracker](https://github.com/MissionalDigerati/vts_cakephp_plugin/issues). You can contribute changes by forking the project and submitting a pull request.
 
+Sample Code
+-----------
+
+Sample code for PHP, Ruby, Javascript and Python can be found in the following [Github Account](https://github.com/MissionalDigerati/joshua_project_api_sample_code).
+
 License
 -------
 This script is created by Missional Digerati and is under the [GNU General Public License v3](http://www.gnu.org/licenses/gpl-3.0-standalone.html).
