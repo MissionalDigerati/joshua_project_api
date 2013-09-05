@@ -14,7 +14,7 @@ Questions or problems? Please post them on the [issue tracker](https://github.co
 Sample Code
 -----------
 
-Sample code for PHP, Ruby, Javascript and Python can be found in the following [Github Account](https://github.com/MissionalDigerati/joshua_project_api_sample_code).
+Sample code for PHP, Ruby, Javascript and Python can be found in the following [Github Repo](https://github.com/MissionalDigerati/joshua_project_api_sample_code).
 
 License
 -------
