@@ -57,24 +57,24 @@ $app->put(
     "/api_keys/:id",
     function ($id) use ($app, $db, $appRequest) {
         $formData = $appRequest->put();
-        if (!isset($formData['suspended'])) {
+        if (!isset($formData['state'])) {
             $app->redirect("/api_keys?saving_error=true");
         }
-        $query = "UPDATE md_api_keys SET suspended = :suspended WHERE id = :id";
+        $query = "UPDATE md_api_keys SET status = :state WHERE id = :id";
         try {
             $statement = $db->prepare($query);
             $statement->execute(
                 array(
                     'id' => $id,
-                    'suspended' => $formData['suspended']
+                    'state' => $formData['state']
                 )
             );
         } catch (PDOException $e) {
             $app->redirect("/api_keys?saving_error=true");
         }
-        if ($formData['suspended'] == 0) {
-            $keyState = "reinstated";
-        } else {
+        if ($formData['state'] == 1) {
+            $keyState = "activated or reinstated";
+        } else if ($formData['state'] == 2) {
             $keyState = "suspended";
         }
         $app->redirect("/api_keys?saved=true&key_state=" . $keyState);

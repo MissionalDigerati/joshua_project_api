@@ -26,34 +26,38 @@
   <head>
     <title>Joshua Project API</title>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
     <link href="css/styles.css" rel="stylesheet" media="screen">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
-	<div class="navbar">
-		<div class="navbar-inner">
-			<div class="container">
-				<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="brand" href="/">Joshua Project API</a>
-				<div class="nav-collapse collapse">
-					<ul class="nav pull-right">
-						<li class="active"><a href="/">Home</a></li>
-						<li><a href="/docs/v1/#!/people_groups">Documentation</a></li>
-                        <li><a href="/docs/v1/sample_code">Sample Code</a></li>
-						<li><a href="http://www.joshuaproject.net/">Joshua Project</a></li>
-						<li><a href="http://www.missionaldigerati.org">Missional Digerati</a></li>
-					</ul>
-				</div><!--/.nav-collapse -->
-			</div>
-		</div>
-	</div>
+    <div class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Joshua Project API</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="/docs/v1/#!/people_groups">Documentation</a></li>
+                <li><a href="/docs/v1/sample_code">Sample Code</a></li>
+                <li><a href="http://www.joshuaproject.net/">Joshua Project</a></li>
+                <li><a href="http://www.missionaldigerati.org">Missional Digerati</a></li>
+            </ul>
+            <div id="get-api-holder">
+                <a href="/" class="btn pull-right btn-info"><span class="glyphicon glyphicon-cog"></span> Get an API Key</a>
+            </div>
+        </div><!--/.nav-collapse -->
+    </div>
     <div class="container">
-    	<h2>Welcome to the Joshua Project API</h2>
+        <div class="page-header">
+            <h2>Resend Activation Link</h2>
+        </div>
         <p>This form will email you all the links to activate any pending API Keys associated with your email.</p>
 <?php
 if ((isset($message)) && ($message != '')) {
@@ -69,7 +73,7 @@ if ((isset($message)) && ($message != '')) {
 <?php
 if ((!empty($errors)) && (in_array('find_keys', $errors))) {
     ?>
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         <?php
             echo $errors['find_keys'];
         ?>
@@ -77,32 +81,41 @@ if ((!empty($errors)) && (in_array('find_keys', $errors))) {
     <?php
 }
 ?>
-		<form class="form-horizontal" method="POST" action="/resend_activation_links">
+		<form class="form-horizontal" method="POST" action="/resend_activation_links" role="form">
 			<fieldset>
-				<legend>Resend Activation Links</legend>
-				<div class="control-group">
-					<label class="control-label" for="input-email">Email <span class="required-field">*</span></label>
-					<div class="controls">
 <?php
-if ((isset($data['email'])) && ($data['email'] != "")) {
+if ((!empty($errors)) && (in_array('email', $errors))) {
     ?>
-        <input type="text" name="email" id="input-email" value="<?php echo $data['email']; ?>">
+                        <div class="form-group has-error">
     <?php
 } else {
     ?>
-        <input type="text" name="email" id="input-email" placeholder="Email">
+                        <div class="form-group">
+    <?php
+}
+?>
+					<label class="control-label col-lg-2" for="input-email">Email <span class="required-field">*</span></label>
+					<div class="controls col-lg-10">
+<?php
+if ((isset($data['email'])) && ($data['email'] != "")) {
+    ?>
+        <input type="text" name="email" id="input-email" value="<?php echo $data['email']; ?>" class="form-control">
+    <?php
+} else {
+    ?>
+        <input type="text" name="email" id="input-email" placeholder="Email" class="form-control">
     <?php
 }
 if ((!empty($errors)) && (in_array('email', $errors))) {
     ?>
-        <span class="help-inline error">Email is Required!</span>
+        <span class="help-block">Email is Required!</span>
     <?php
 }
 ?>
 					</div>
 				</div>
-				<div class="control-group">
-					<div class="controls">
+				<div class="form-group">
+					<div class="controls col-lg-offset-2 col-lg-10">
 						<button type="submit" class="btn btn-primary">Resend</button>
 					</div>
 				</div>
