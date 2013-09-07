@@ -23,173 +23,214 @@
 ?>
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Joshua Project API</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
-    <link href="css/styles.css" rel="stylesheet" media="screen">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
-	<div class="navbar">
-		<div class="navbar-inner">
-			<div class="container">
-				<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="brand" href="/">Joshua Project API</a>
-				<div class="nav-collapse collapse">
-					<ul class="nav pull-right">
-						<li class="active"><a href="/">Home</a></li>
-						<li><a href="/docs/v1/#!/people_groups">Documentation</a></li>
-                        <li><a href="/docs/v1/sample_code">Sample Code</a></li>
-						<li><a href="http://www.joshuaproject.net/">Joshua Project</a></li>
-						<li><a href="http://www.missionaldigerati.org">Missional Digerati</a></li>
-					</ul>
-				</div><!--/.nav-collapse -->
-			</div>
-		</div>
-	</div>
-    <div class="container">
-    	<h2>Welcome to the Joshua Project API</h2>
-		<p>This is a new development of <a href="http://www.missionaldigerati.org">Missional Digerati</a>.  If you would like to get an API key, 
-			please complete the form below and verify your email address.</p>
+    <head>
+        <title>Joshua Project API</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
+        <link href="css/styles.css" rel="stylesheet" media="screen">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Joshua Project API</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Home</a></li>
+                    <li><a href="/docs/v1/#!/people_groups">Documentation</a></li>
+                    <li><a href="/docs/v1/sample_code">Sample Code</a></li>
+                    <li><a href="http://www.joshuaproject.net/">Joshua Project</a></li>
+                    <li><a href="http://www.missionaldigerati.org">Missional Digerati</a></li>
+                </ul>
+                <div id="get-api-holder">
+                    <a href="/" class="btn pull-right btn-info"><span class="glyphicon glyphicon-cog"></span> Get an API Key</a>
+                </div>
+            </div><!--/.nav-collapse -->
+        </div>
+        <div class="container">
+            <div class="col-sm-8">
+                <div class="page-header">
+                    <h2>Welcome to the Joshua Project API</h2>
+                </div>
+                <p>This is a new development of <a href="http://www.missionaldigerati.org">Missional Digerati</a>.</p>
+            </div>
+            <div class="col-sm-4">
 <?php
 if ((isset($data['api_key'])) && ($data['api_key'] == 'true')) {
     ?>
-    <div class="alert alert-success">
-        Thank you!  We made you a shiny new API key.  Before you can retrieve it,  please visit the email you provided and click the link in the email we sent you.  Happy programming!
-    </div>
+                <div class="alert alert-success">
+                    Thank you!  We made you a shiny new API key.  Before you can retrieve it,  please visit the email you provided and click the link in the email we sent you.  Happy programming!
+                </div>
     <?php
 }
 ?>
-		<form class="form-horizontal" method="POST" action="api_keys">
-			<fieldset>
-				<legend>Request An API Key</legend>
-				<div class="control-group">
-					<label class="control-label" for="input-name">Name <span class="required-field">*</span></label>
-					<div class="controls">
+                <div class="page-header">
+                    <h2>Request An API Key</h2>
+                </div>
+                <p>If you would like to get an API key, please complete the form below and verify your email address.</p>
+                <form class="form-horizontal" method="POST" action="api_keys" role="form">
+                    <fieldset>
 <?php
-if ((isset($data['name'])) && ($data['name'] != "")) {
+if ((!empty($errors)) && (in_array('name', $errors))) {
     ?>
-        <input type="text" name="name" id="input-name"  value="<?php echo $data['name']; ?>">
+                        <div class="form-group has-error">
     <?php
 } else {
     ?>
-        <input type="text" name="name" id="input-name" placeholder="Name">
+                        <div class="form-group">
+    <?php
+}
+?>
+                            <label class="control-label col-lg-4" for="input-name">Name <span class="required-field">*</span></label>
+                            <div class="controls col-lg-8">
+<?php
+if ((isset($data['name'])) && ($data['name'] != "")) {
+    ?>
+                                <input type="text" name="name" id="input-name"  value="<?php echo $data['name']; ?>" class="form-control">
+    <?php
+} else {
+    ?>
+                                <input type="text" name="name" id="input-name" placeholder="Name" class="form-control">
     <?php
 }
 if ((!empty($errors)) && (in_array('name', $errors))) {
     ?>
-        <span class="help-inline error">Name is Required!</span>
+                                <span class="help-block">Name is Required!</span>
     <?php
 }
 ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="input-email">Email <span class="required-field">*</span></label>
-					<div class="controls">
+                            </div>
+                        </div>
 <?php
-if ((isset($data['email'])) && ($data['email'] != "")) {
+if ((!empty($errors)) && (in_array('email', $errors))) {
     ?>
-        <input type="text" name="email" id="input-email" value="<?php echo $data['email']; ?>">
+                        <div class="form-group has-error">
     <?php
 } else {
     ?>
-        <input type="text" name="email" id="input-email" placeholder="Email">
+                        <div class="form-group">
+    <?php
+}
+?>
+                            <label class="control-label col-lg-4" for="input-email">Email <span class="required-field">*</span></label>
+                            <div class="controls col-lg-8">
+<?php
+if ((isset($data['email'])) && ($data['email'] != "")) {
+    ?>
+                                <input type="text" name="email" id="input-email" value="<?php echo $data['email']; ?>" class="form-control">
+    <?php
+} else {
+    ?>
+                                <input type="text" name="email" id="input-email" placeholder="Email" class="form-control">
     <?php
 }
 if ((!empty($errors)) && (in_array('email', $errors))) {
     ?>
-        <span class="help-inline error">Email is Required!</span>
+                                <span class="help-block">Email is Required!</span>
     <?php
 }
 ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="input-name">Organization</label>
-					<div class="controls">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-lg-4" for="input-name">Organization</label>
+                            <div class="controls col-lg-8">
 <?php
 if ((isset($data['organization'])) && ($data['organization'] != "")) {
     ?>
-        <input type="text" name="organization" id="input-organization"  value="<?php echo $data['organization']; ?>">
+                                <input type="text" name="organization" id="input-organization"  value="<?php echo $data['organization']; ?>" class="form-control">
     <?php
 } else {
     ?>
-        <input type="text" name="organization" id="input-organization" placeholder="Organization">
+                                <input type="text" name="organization" id="input-organization" placeholder="Organization" class="form-control">
     <?php
 }
-?>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="input-name">Website</label>
-					<div class="controls">
+    ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-lg-4" for="input-name">Website</label>
+                            <div class="controls col-lg-8">
 <?php
 if ((isset($data['website'])) && ($data['website'] != "")) {
     ?>
-        <input type="text" name="website" id="input-website"  value="<?php echo $data['website']; ?>">
+                                <input type="text" name="website" id="input-website"  value="<?php echo $data['website']; ?>" class="form-control">
     <?php
 } else {
     ?>
-        <input type="text" name="website" id="input-website" placeholder="Website">
+                                <input type="text" name="website" id="input-website" placeholder="Website" class="form-control">
     <?php
 }
 ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="input-name">Phone Number</label>
-					<div class="controls">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-lg-4" for="input-name">Phone Number</label>
+                            <div class="controls col-lg-8">
 <?php
 if ((isset($data['phone_number'])) && ($data['phone_number'] != "")) {
     ?>
-        <input type="text" name="phone_number" id="input-phone_number"  value="<?php echo $data['phone_number']; ?>">
+                                <input type="text" name="phone_number" id="input-phone_number"  value="<?php echo $data['phone_number']; ?>" class="form-control">
     <?php
 } else {
     ?>
-        <input type="text" name="phone_number" id="input-phone_number" placeholder="Phone Number">
+                                <input type="text" name="phone_number" id="input-phone_number" placeholder="Phone Number" class="form-control">
     <?php
 }
 ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="input-usage">How Will You Use the API? <span class="required-field">*</span></label>
-					<div class="controls">
+                            </div>
+                        </div>
 <?php
-if ((isset($data['usage'])) && ($data['usage'] != "")) {
+if ((!empty($errors)) && (in_array('usage', $errors))) {
     ?>
-        <textarea rows="6" id="input-usage" name="usage"><?php echo $data['usage']; ?></textarea>
+                        <div class="form-group has-error">
     <?php
 } else {
     ?>
-        <textarea rows="6" id="input-usage" name="usage"></textarea>
+                        <div class="form-group">
+    <?php
+}
+?>
+                            <label class="control-label col-lg-4" for="input-usage">How Will You Use the API? <span class="required-field">*</span></label>
+                            <div class="controls col-lg-8">
+<?php
+if ((isset($data['usage'])) && ($data['usage'] != "")) {
+    ?>
+                                <textarea rows="6" id="input-usage" name="usage" class="form-control"><?php echo $data['usage']; ?></textarea>
+    <?php
+} else {
+    ?>
+                                <textarea rows="6" id="input-usage" name="usage" class="form-control"></textarea>
     <?php
 }
 if ((!empty($errors)) && (in_array('usage', $errors))) {
     ?>
-        <span class="help-inline error">Usage is Required!</span>
+                                <span class="help-block">Usage is Required!</span>
     <?php
 }
 ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="controls">
-						<button type="submit" class="btn btn-primary">Send request</button>
-                        <a type="button" class="btn btn-link" href="/resend_activation_links">Resend Activation Links</a>
-					</div>
-				</div>
-				<span class="required-field">* = Required</span>
-			</fieldset>
-		</form>
-    </div>
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-  </body>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls col-lg-12">
+                                <button type="submit" class="btn btn-primary btn-block">Send request</button><br>
+                                <a type="button" class="btn btn-link" href="/resend_activation_links">Resend Activation Links</a>
+                            </div>
+                        </div>
+                        <span class="required-field">* = Required</span>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <script src="http://code.jquery.com/jquery.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+    </body>
 </html>
