@@ -59,7 +59,7 @@
                 <div class="page-header">
                     <h2>Welcome to the Joshua Project API</h2>
                 </div>
-                <p>This is a new development of <a href="http://www.missionaldigerati.org">Missional Digerati</a>.</p>
+                <p>Joshua Project is a research initiative seeking to highlight the ethnic people groups of the world with the fewest followers of Christ. Accurate, regularly updated ethnic people group information is critical for understanding and completing the Great Commission.</p>
             </div>
             <div class="col-sm-4">
 <?php
@@ -229,6 +229,9 @@ if ((!empty($errors)) && (in_array('usage', $errors))) {
                 </form>
             </div>
             <div class="clearfix"></div>
+        </div>
+        <div class="container" id="footer">
+            <a href="http://www.joshuaproject.net/" target="_blank">Joshua Project</a> is a ministry of the  <a href="http://www.uscwm.org/" target="_blank">U.S. Center for World Mission</a>. API created by <a href="http://www.missionaldigerati.org" target="_blank">Missional Digerati</a>.
         </div>
         <script src="http://code.jquery.com/jquery.js"></script>
         <script src="js/bootstrap.min.js"></script>
