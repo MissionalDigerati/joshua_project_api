@@ -12,3 +12,9 @@
 	font-size: 11px;
 	margin-top: 20px;
 }
+div.beginner_panel .panel-heading h3.panel-title img {
+	margin-top: -5px;
+}
+.beginner_panel .panel-heading .panel-title {
+	font-size: 24px;
+}

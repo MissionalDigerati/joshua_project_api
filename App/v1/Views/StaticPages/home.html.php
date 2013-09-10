@@ -59,7 +59,67 @@
                 <div class="page-header">
                     <h2>Welcome to the Joshua Project API</h2>
                 </div>
-                <p>Joshua Project is a research initiative seeking to highlight the ethnic people groups of the world with the fewest followers of Christ. Accurate, regularly updated ethnic people group information is critical for understanding and completing the Great Commission.</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Joshua Project is a research initiative seeking to highlight the ethnic people groups of the world with the fewest followers of Christ.  This API was developed to provide believers easier access to the Joshua Project's rich data.  Once you request and receive an API key you will have access to data regarding people groups, countries and languages throughout the world.  You will also have access to current missional work being done in those areas.  If you would like to know more, check out the links below!</p>
+                <div class="beginner_panel row">
+                    <div class="col-sm-6">
+                        <div class="panel panel-default">
+                          <div class="panel-heading">
+                            <h3 class="panel-title"><img src="img/compass.png" alt="compass"> Getting Started</h3>
+                          </div>
+                          <div class="panel-body">
+                            If you are new to API development,  this tutorial will walk you through the basics of using the Joshua Project API.  We offer the tutorial in PHP, Javascript, Ruby, and Python.  So buckle up and prepare to learn API development.
+                          </div>
+                          <div class="panel-footer">
+                            <a href="" class="btn btn-success pull-right">Start Now >></a>
+                            <span class="clearfix"></span>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="panel panel-default">
+                          <div class="panel-heading">
+                            <h3 class="panel-title"><img src="img/computer.png" alt="computer"> Sample Code</h3>
+                          </div>
+                          <div class="panel-body">
+                            If you need to see working examples of the Joshua Project API,  you can visit our <a href="/docs/v1/sample_code">Sample Code</a> section.  Here you can browse the repository of sample code, and find examples written in PHP, Javascript, Ruby, and Python.
+                          </div>
+                          <div class="panel-footer">
+                            <a href="/docs/v1/sample_code" class="btn btn-success pull-right">View Sample Code >></a>
+                            <span class="clearfix"></span>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="beginner_panel row">
+                    <div class="col-sm-6">
+                        <div class="panel panel-default">
+                          <div class="panel-heading">
+                            <h3 class="panel-title"><img src="img/documents.png" alt="documents"> Documentation</h3>
+                          </div>
+                          <div class="panel-body">
+                            To get a better understanding of the API, we highly encourage you to look over the documentation.  The documentation will show you all the resources available to you.  Make sure you have an API Key to use the interactive documentation.
+                          </div>
+                            <div class="panel-footer">
+                                <a href="/docs/v1/#!/people_groups" class="btn btn-success pull-right">View Documentation >></a>
+                                <span class="clearfix"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="panel panel-default">
+                          <div class="panel-heading">
+                            <h3 class="panel-title"><img src="img/people.png" alt="people"> Learn More About Us</h3>
+                          </div>
+                          <div class="panel-body">
+                            <p>Joshua Project is a research initiative seeking to highlight the ethnic people groups of the world with the fewest followers of Christ. Accurate, regularly updated ethnic people group information is critical for understanding and completing the Great Commission. To learn more, please <a href="http://www.joshuaproject.net" target="_blank">visit our website</a>!</p>
+                          </div>
+                          <div class="panel-footer">
+                            <a href="http://www.joshuaproject.net/" target="_blank" class="btn btn-success pull-right">Visit Website >></a>
+                            <span class="clearfix"></span>
+                          </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-sm-4">
 <?php
@@ -231,7 +291,7 @@ if ((!empty($errors)) && (in_array('usage', $errors))) {
             <div class="clearfix"></div>
         </div>
         <div class="container" id="footer">
-            <a href="http://www.joshuaproject.net/" target="_blank">Joshua Project</a> is a ministry of the  <a href="http://www.uscwm.org/" target="_blank">U.S. Center for World Mission</a>. API created by <a href="http://www.missionaldigerati.org" target="_blank">Missional Digerati</a>.
+            <a href="http://www.joshuaproject.net/" target="_blank">Joshua Project</a> is a ministry of the  <a href="http://www.uscwm.org/" target="_blank">U.S. Center for World Mission</a>. API created by <a href="http://www.missionaldigerati.org" target="_blank">Missional Digerati</a>.  Icons provided by <a href="http://gemicon.net/" target="_blank">Gem Icon</a>.
         </div>
         <script src="http://code.jquery.com/jquery.js"></script>
         <script src="js/bootstrap.min.js"></script>
