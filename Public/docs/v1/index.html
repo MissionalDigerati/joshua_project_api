@@ -74,8 +74,21 @@
       </div><!--/.nav-collapse -->
   </div>
   <div class="container">
+    <div class="page-header">
+        <h2>Documentation</h2>
+    </div>
     <div id="message-bar" class="swagger-ui-wrap">
         &nbsp;
+    </div>
+    <div id="content">
+      <p>The Joshua Project API is a <a href="http://en.wikipedia.org/wiki/Representational_state_transfer" target="_blank">REST</a> based API.  All requests to the API <strong>MUST</strong> send two pieces of information:
+      <ol>
+        <li>A Valid API Key</li>
+        <li>A GET Request Method</li>
+      </ol>
+      The server only responds to GET requests!  Your URL should be structured as follows:</p>
+      <pre>http://api.joshuaproject.net/v[api_version_number]/[resource_path]?api_key=[your_api_key]&parm1=[param1]...</pre>
+      <p>The current API version is 1.  To learn more about the API,  check out the <a href="/getting_started">Getting Started Tutorial</a>.</p>
     </div>
     <div id="swagger-ui-container" class="swagger-ui-wrap">
 

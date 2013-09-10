@@ -18,3 +18,12 @@ div.beginner_panel .panel-heading h3.panel-title img {
 .beginner_panel .panel-heading .panel-title {
 	font-size: 24px;
 }
+div#content {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 14px;
+	line-height: 1.4;
+	color: #333;
+}
+div#content pre {
+	margin-bottom: 10px;
+}
