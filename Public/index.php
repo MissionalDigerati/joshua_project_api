@@ -43,7 +43,7 @@ if ((substr_compare($DOMAIN_ADDRESS, "http://", 0, 7)) !== 0) {
 }
 /**
  * Lets get the version of the API based on the URL (http://joshua.api.local/v12/people_groups/daily_unreached.json?api_key=37e24112caae)
- * It will default to the latest API.  Youu must provide an API Version if you are accessing the data.  The default is only for
+ * It will default to the latest API.  You must provide an API Version if you are accessing the data.  The default is only for
  * static pages
  *
  * @author Johnathan Pulos
@@ -126,7 +126,7 @@ require(__DIR__."/../App/" . $API_VERSION . "/Includes/EmailFunctions.php");
  *
  * @author Johnathan Pulos
  */
-$staticPages = array("/", "/get_my_api_key", "/resend_activation_links");
+$staticPages = array("/", "/get_my_api_key", "/resend_activation_links", "/getting_started");
 if (in_array($requestedUrl, $staticPages)) {
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/StaticPages.php");
     $bypassExtTest = true;
