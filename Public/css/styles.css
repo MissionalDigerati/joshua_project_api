@@ -39,6 +39,7 @@ div#content pre {
   text-shadow: 0 1px 0 #fff;
   background-color: #f7f5fa;
   border-radius: 5px;
+  text-shadow: 0 1px 0 #fff;
 }
 .sidenav .nav {
 	display: none;
@@ -68,6 +69,9 @@ ul.sidenav > .nav > li > a {
 	display: block;
 	color: #716b7a;
 	padding: 5px 20px;
+}
+ul.sidenav .nav > li > a {
+	color: #716b7a;
 }
 ul.sidenav .nav > .active > a, ul.sidenav .nav > .active:hover > a, ul.sidenav .nav > .active:focus > a {
 	font-weight: bold;
