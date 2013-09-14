@@ -74,7 +74,14 @@
                                     <li><a href="#getting-started-starting-code">Starting Code</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#javascript">Javascript (JQuery) Example</a></li>
+                            <li>
+                                <a href="#javascript">Javascript (JQuery) Example</a>
+                                <ul class="nav">
+                                    <li><a href="#javascript-jquery-library">The JQuery Library</a></li>
+                                    <li><a href="#javascript-calling-the-api">Calling the API</a></li>
+                                    <li><a href="#javascript-handling-the-error">Handling the Error</a></li>
+                                </ul>
+                            </li>
                             <li><a href="#php">PHP Example</a></li>
                             <li><a href="#python">Python Example</a></li>
                             <li><a href="#ruby">Ruby Example</a></li>
@@ -555,6 +562,56 @@ a#progress-scale-image img {
                         </ul>
                     </p>
                     <h3 id="javascript">Javascript (JQuery) Example</h3>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before beginning this tutorial,  you should have a good understanding of the <a href="http://www.w3schools.com/js/" target="_blank">Javascript programming language</a>, and the <a href="http://jquery.com/" target="_blank">JQuery library</a>!</p>
+                    <h4 id="javascript-jquery-library">The JQuery Library</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JQuery is a Javascript library designed to make scripting in Javascript much more enjoyable and faster.  It helps speed up common tasks like traversing the DOM, animating and manipulating DOM elements, and running Ajax calls.  In order to use the library, we need to include it in the head tag of our <code>index.html</code> file.  So open the <code>index.html</code> file and add the following line between the tags <code>&lt;head&gt;&lt;/head&gt;</code>:</p>
+                    <pre>&lt;script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"&gt;&lt;/script&gt;</pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We do not need to download the JQuery library, because we will just use the file on their hosted CDN.</p>
+                    <h4 id="javascript-calling-the-api">Calling the API</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before calling the API,  we can use a common JQuery method <code>.ready()</code> (<a href="http://api.jquery.com/ready/" target="_blank">Jquery Docs</a>) to check if the DOM has loaded before running our Ajax request.  So in the <code>&lt;head&gt;&lt;/head&gt;</code> tag, after the declaring the JQuery library, we need to add the following code:</p>
+                    <pre>
+&lt;script type="text/javascript"&gt;
+    jQuery(document).ready(function($) {    
+
+    });
+&lt;/script&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We should also declare two variables to hold the API's domain name, and your API key.</p>
+                    <pre>
+&lt;script type="text/javascript"&gt;
+    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var API_KEY = YOUR_API_KEY;
+    jQuery(document).ready(function($) {    
+
+    });
+&lt;/script&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We are now ready to make the API request using JQuery's <code>.ajax()</code> (<a href="http://api.jquery.com/jQuery.ajax/" target="_blank">Jquery Docs</a>) method.  If you are not familiar with Ajax,  it is an acronym for Asynchronous Javascript and XML.  Wikipedia states:</p>
+                    <blockquote cite="http://en.wikipedia.org/wiki/Ajax_(programming)">
+                        <p>With Ajax, web applications can send data to, and retrieve data from, a server asynchronously (in the background) without interfering with the display and behavior of the existing page.<br><br><em><a href="http://en.wikipedia.org/wiki/Ajax_(programming)" target="_blank">Wikipedia</a></em></p>
+                    </blockquote>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is the code to run the Ajax request after the dom has loaded:</p>
+                    <pre>
+&lt;script type="text/javascript"&gt;
+    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var API_KEY = YOUR_API_KEY;
+    jQuery(document).ready(function($) {    
+        $.ajax({
+            url: DOMAIN+'/v1/people_groups/daily_unreached.json',
+            dataType: 'json',
+            data: {api_key: API_KEY},
+        })
+        .done(function(data) {
+            /* Code in here runs when the request is completed */
+        })
+        .fail(function() {
+            /* Code in here runs when the request failed */
+        });
+    });
+&lt;/script&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you can see in the code,  we generate the appropriate URL in the <code>url</code> setting.  We then declare that we want the JSON format using the <code>dataType</code> setting.  We finally pass the API Key, and any other parameters in the <code>data</code> setting.  When this request is completed,  it will call the empty function we provided for JQuery's <code>.done()</code> callback (<a href="hhttp://api.jquery.com/deferred.done/" target="_blank">Jquery Docs</a>).  If the request fails,  the empty function provided for the <code>.fail()</code> callback (<a href="hhttp://api.jquery.com/deferred.fail/" target="_blank">Jquery Docs</a>) is triggered.</p>
+                    <h4 id="javascript-handling-the-error">Handling the Error</h4>
                     <h3 id="php">PHP Example</h3>
                     <h3 id="python">Python Example</h3>
                     <h3 id="ruby">Ruby Example</h3>
