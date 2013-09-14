@@ -66,7 +66,13 @@
                                     <li><a href="#overview-get-http-request-method">GET HTTP Request Method</a></li>
                                     <li><a href="#overview-url-structure">URL Structure</a></li>
                                     <li><a href="#overview-response">Response</a></li>
-                                  </ul>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#getting-started">Getting Started (All Tutorials)</a>
+                                <ul class="nav">
+                                    <li><a href="#getting-started-starting-code">Starting Code</a></li>
+                                </ul>
                             </li>
                             <li><a href="#javascript">Javascript (JQuery) Example</a></li>
                             <li><a href="#php">PHP Example</a></li>
@@ -401,7 +407,153 @@
   &lt;/people_groups&gt;
 &lt;/api&gt;
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once you have a response,  you can use and manipulate the provided data.  In the tutorial below,  we will look at developing a Joshua Project Unreached of the Widget using the server response.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once you have a response,  you can use and manipulate the provided data.</p>
+                    <h3 id="getting-started">Getting Started (All Tutorials)</h3>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the following tutorial,  we will walk through four different approaches for creating the Joshua Project's Unreached People Group of the Day widget using the new API.  This tutorial offers four different programming languages including Javascript using the JQuery library, PHP, Python and Ruby.  Feel free and choose the programming language that you feel more comfortable programming in.  <strong>Before starting this tutorial,  you will need to retrieve an <a href="/">API key</a></strong>.</p>
+                    <h4 id="getting-started-starting-code">Starting Code</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We have created a zip file containing the starting code for all the programming languages.  You can download the <a href="files/starting_code.zip">file here</a>. Once you unzip the file, you will see the following code structure:</p>
+                    <p>
+                        <ul>
+                            <li>css
+                                <ul><li>styles.css</li></ul>
+                            </li>
+                            <li>index.html</li>
+                        </ul>
+                    </p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The <code>css/styles.css</code> file offers the basic design for the widget.  Here is a look at the code:</p>
+                    <pre>
+.upgotd { 
+    color: #000000; 
+    font-family: Arial, Helvetica, Verdana, sans-serif; 
+}
+#jp_widget { 
+    background-color: #EEE; 
+    border: #CCCCCC 1px dashed; 
+    text-align: center; 
+    width: 215px; 
+    font-size:12px;
+}
+#jp_widget a { 
+    color: #000000 !important; 
+    text-decoration: none; 
+}
+#jp_widget a:hover { 
+    color: #0000FF !important; 
+    text-decoration: none; 
+}
+.upgotd-title, .upgotd-footer { 
+    padding: 3px; 
+    background-color: #BBDDFF;
+}
+.upgotd-title, .upgotd-title a { 
+    font-weight: bold; font-size:13px !important; 
+    margin-bottom: 5px;
+}
+.upgotd-image { 
+    text-align: center; 
+}
+.upgotd-pray { 
+    font-style: italic; 
+    font-weight: normal; 
+    padding: 3px 0px; 
+    font-size: 12px;
+}
+.upgotd-people { 
+    font-weight: normal; 
+    font-size:12px !important; 
+    padding-bottom:4px; 
+}
+.upgotd-people a { 
+    font-weight: bold; 
+}
+.upgotd-table td { 
+    font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; 
+    font-size:11px; 
+    font-weight: normal; 
+    color: #000; 
+    line-height: 14px; 
+    text-align: left; 
+    border: 0px; 
+    background-color: #EEE; 
+    margin: 0px; 
+    padding: 0px 0px 0px 3px; 
+}
+.upgotd-more, .upgotd-more a { 
+    font-size: 10px; 
+}
+.upgotd-footer, .upgotd-footer a { 
+    font-weight: normal ;
+    font-size: 11px;  
+    margin-top: 3px; 
+}
+a#progress-scale-image img {
+    border: none;
+}
+.hidden {
+    display: none;
+}
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The <code>index.html</code> file offers the basic structure of the final HTML file.  The code looks like this:</p>
+                    <pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Joshua Project&lt;/title&gt;
+        &lt;link rel="stylesheet" type="text/css" href="css/styles.css"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id="jp_widget"&gt;
+            &lt;div class="upgotd upgotd-title"&gt;
+                &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="upgotd-image"&gt;
+                &lt;a href="#" class="upgotd-link pg-link" id="people-group-image"&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="upgotd upgotd-pray"&gt;Please pray for the ...&lt;/div&gt;
+            &lt;div class="upgotd upgotd-people"&gt;
+                &lt;a href="#" class="upgotd-link pg-link pg-name"&gt;&lt;/a&gt; of &lt;a href="#" class="upgotd-link country-link country-name"&gt;&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;table align="center" class="upgotd-table" cellpadding="0" cellspacing="0"&gt;
+                &lt;tbody&gt;&lt;tr&gt;
+                    &lt;td width="65"&gt;Population:&lt;/td&gt;
+                    &lt;td width="135" class="pg-population"&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Language:&lt;/td&gt;
+                    &lt;td class="pg-language"&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Religion:&lt;/td&gt;
+                    &lt;td class="pg-religion"&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Evangelical:&lt;/td&gt;
+                    &lt;td class="pg-evangelical"&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Status:&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;a href="http://www.joshuaproject.net/definitions.php?term=25" class="upgotd-link pg-scale-text"&gt;&lt;/a&gt; (&lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link pg-scale"&gt;&lt;/a&gt;&nbsp;&lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link" id="progress-scale-image"&gt;&lt;/a&gt;)
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;&lt;/table&gt;
+            &lt;div class="upgotd upgotd-footer"&gt;Add this daily global vision feature to &lt;br&gt;&lt;a href="/upgotdfeed.php" class="upgotd-link"&gt;&lt;b&gt;your website&lt;/b&gt;&lt;/a&gt; or get it &lt;a href="http://www.unreachedoftheday.org/unreached-email.php" class="upgotd-link"&gt;&lt;b&gt;by email&lt;/b&gt;&lt;/a&gt;.&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you load the <code>index.html</code> file in your browser, you should see something similar to this:</p>
+                    <img src="files/getting_started_snapshot.png" alt="Snapshot of the Starting Code" class="img-responsive">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you can see, we are missing the most important information... the Joshua Project data.  Please choose your preferred programming language to continue this tutorial:</p>
+                    <p>
+                        <ul>
+                            <li><a href="#javascript">Javascript (JQuery) Example</a></li>
+                            <li><a href="#php">PHP Example</a></li>
+                            <li><a href="#python">Python Example</a></li>
+                            <li><a href="#ruby">Ruby Example</a></li>
+                        </ul>
+                    </p>
                     <h3 id="javascript">Javascript (JQuery) Example</h3>
                     <h3 id="php">PHP Example</h3>
                     <h3 id="python">Python Example</h3>
