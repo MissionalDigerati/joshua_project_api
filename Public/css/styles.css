@@ -1,3 +1,7 @@
+body {
+	position: relative;
+	padding-top: 50px !important;
+}
 .required-field{
 	color: red;
 	font-weight: bold;
@@ -36,6 +40,38 @@ div#content pre {
   background-color: #f7f5fa;
   border-radius: 5px;
 }
-.sidenav li.active {
+.sidenav .nav {
+	display: none;
+	margin-bottom: 8px;
+}
+.sidenav > .active > ul {
+	display: block;
+}
+.sidenav .nav > li > a {
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-left: 30px;
+	font-size: 90%;
+}
+ul.sidenav > li > a {
+	display: block;
+	color: #716b7a;
+	padding: 5px 20px;
+}
+ul.sidenav > li.active > a {
 	font-weight: bold;
+	color: #563d7c;
+	background-color: transparent;
+	border-right: 1px solid #563d7c;
+}
+ul.sidenav > .nav > li > a {
+	display: block;
+	color: #716b7a;
+	padding: 5px 20px;
+}
+ul.sidenav .nav > .active > a, ul.sidenav .nav > .active:hover > a, ul.sidenav .nav > .active:focus > a {
+	font-weight: bold;
+	color: #563d7c;
+	background-color: transparent;
+	border-right: 1px solid #563d7c;
 }
