@@ -79,3 +79,6 @@ ul.sidenav .nav > .active > a, ul.sidenav .nav > .active:hover > a, ul.sidenav .
 	background-color: transparent;
 	border-right: 1px solid #563d7c;
 }
+pre span.code_highlight {
+	color: #428bca;
+}

@@ -80,11 +80,13 @@
                                     <li><a href="#javascript-jquery-library">The JQuery Library</a></li>
                                     <li><a href="#javascript-calling-the-api">Calling the API</a></li>
                                     <li><a href="#javascript-handling-the-error">Handling the Error</a></li>
+                                    <li><a href="#javascript-creating-the-widget">Creating the Widget</a></li>
+                                    <li><a href="#javascript-finishing-touches">Finishing Touches</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#php">PHP Example</a></li>
+<!--                             <li><a href="#php">PHP Example</a></li>
                             <li><a href="#python">Python Example</a></li>
-                            <li><a href="#ruby">Ruby Example</a></li>
+                            <li><a href="#ruby">Ruby Example</a></li> -->
                         </ul>
                     </div>
                 </div>
@@ -131,7 +133,7 @@
                     <p>The <strong>&</strong> is required to seperate each parameter.  That is pretty much all you will need to do to make a GET request.  We will look at this in more depth below.</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For more information on the REST Architecture and the GET HTTP request method,  check out <a href="http://net.tutsplus.com/tutorials/other/a-beginners-introduction-to-http-and-rest/" target="_blank">this tutorial</a> at NetTuts.</p>
                     <h4 id="overview-url-structure">URL Structure</h4>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Below is a typical request for data from the Joshua Project API.   In this example,  we will request the Joshua Project unreached people group of the day for January 11th.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Below is a typical request for data from the Joshua Project API.   In this example,  we will request the Joshua Project's unreached people group of the day for January 11th.</p>
                     <pre><?php echo $DOMAIN_ADDRESS; ?>/v1/people_groups/daily_unreached.json?api_key=233f76f4c84e&month=01&day=11</pre>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is a breakdown of the URL structure:</p>
                     <pre><?php echo $DOMAIN_ADDRESS; ?>/[api_version_number]/[resource_path].[format]?api_key=[your_api_key]&[other_parameters]</pre>
@@ -416,7 +418,7 @@
                     </pre>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once you have a response,  you can use and manipulate the provided data.</p>
                     <h3 id="getting-started">Getting Started (All Tutorials)</h3>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the following tutorial,  we will walk through four different approaches for creating the Joshua Project's Unreached People Group of the Day widget using the new API.  This tutorial offers four different programming languages including Javascript using the JQuery library, PHP, Python and Ruby.  Feel free and choose the programming language that you feel more comfortable programming in.  <strong>Before starting this tutorial,  you will need to retrieve an <a href="/">API key</a></strong>.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the following tutorials,  we will walk through four different approaches for creating the Joshua Project's unreached people group of the day widget using the new API.  These tutorials come in a variety of programming languages including Javascript using the JQuery library, PHP, Python and Ruby.  Feel free and choose the programming language that you feel more comfortable programming in.  <strong>Before starting this tutorial,  you will need to retrieve an <a href="/">API key</a></strong>.</p>
                     <h4 id="getting-started-starting-code">Starting Code</h4>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We have created a zip file containing the starting code for all the programming languages.  You can download the <a href="files/starting_code.zip">file here</a>. Once you unzip the file, you will see the following code structure:</p>
                     <p>
@@ -551,7 +553,7 @@ a#progress-scale-image img {
 &lt;/html&gt;
                     </pre>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you load the <code>index.html</code> file in your browser, you should see something similar to this:</p>
-                    <img src="files/getting_started_snapshot.png" alt="Snapshot of the Starting Code" class="img-responsive">
+                    <img src="img/getting_started/snapshot.png" alt="Snapshot of the Starting Code" class="img-responsive">
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you can see, we are missing the most important information... the Joshua Project data.  Please choose your preferred programming language to continue this tutorial:</p>
                     <p>
                         <ul>
@@ -571,16 +573,16 @@ a#progress-scale-image img {
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before calling the API,  we can use a common JQuery method <code>.ready()</code> (<a href="http://api.jquery.com/ready/" target="_blank">Jquery Docs</a>) to check if the DOM has loaded before running our Ajax request.  So in the <code>&lt;head&gt;&lt;/head&gt;</code> tag, after the declaring the JQuery library, we need to add the following code:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    jQuery(document).ready(function($) {    
+    <span class="code_highlight">jQuery(document).ready(function($) {    
 
-    });
+    });</span>
 &lt;/script&gt;
                     </pre>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We should also declare two variables to hold the API's domain name, and your API key.</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    <span class="code_highlight">var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var API_KEY = YOUR_API_KEY;</span>
     jQuery(document).ready(function($) {    
 
     });
@@ -596,25 +598,727 @@ a#progress-scale-image img {
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
     var API_KEY = YOUR_API_KEY;
     jQuery(document).ready(function($) {    
-        $.ajax({
+        <span class="code_highlight">$.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
             dataType: 'json',
             data: {api_key: API_KEY},
+            type: 'GET'
         })
         .done(function(data) {
             /* Code in here runs when the request is completed */
         })
-        .fail(function() {
+        .fail(function(jqXHR, textStatus, errorThrown) {
             /* Code in here runs when the request failed */
+        });</span>
+    });
+&lt;/script&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you can see in the code above,  we send the following settings to JQuery's <code>.ajax()</code> (<a href="http://api.jquery.com/jQuery.ajax/" target="_blank">Jquery Docs</a>) method:</p>
+                    <table id="ajax_options" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="2" class="active text-center">JQuery Ajax Settings</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Setting</th>
+                                <th class="text-center">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>url</td>
+                                <td><strong><?php echo $DOMAIN_ADDRESS; ?>/v1/people_groups/daily_unreached.json</strong> - The URL of the web page to request. (See the <a href="#overview-url-structure">URL Structure</a> section)</td>
+                            </tr>
+                            <tr>
+                                <td>dataType</td>
+                                <td><strong>json</strong> - The type of data returned from the web page</td>
+                            </tr>
+                            <tr>
+                                <td>data</td>
+                                <td><strong>{api_key: API_KEY}</strong> - The additional paramaters to pass the web page.</td>
+                            </tr>
+                            <tr>
+                                <td>type</td>
+                                <td><strong>GET</strong> - The HTTP Request Method</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When this request is completed,  it will call the empty function we provided for JQuery's <code>.done()</code> callback (<a href="hhttp://api.jquery.com/deferred.done/" target="_blank">Jquery Docs</a>).  If the request fails,  the empty function provided for the <code>.fail()</code> callback (<a href="hhttp://api.jquery.com/deferred.fail/" target="_blank">Jquery Docs</a>) is triggered.</p>
+                    <h4 id="javascript-handling-the-error">Handling the Error</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let us start with handling any errors.  This will help us debug any problems we may run into later.  If the request for the web page is unsuccessful, it will trigger the <code>.fail()</code> callback (<a href="hhttp://api.jquery.com/deferred.fail/" target="_blank">Jquery Docs</a>).  If this happens,  we should let the visitor know.  We will do this by appending an error message at the top of the page.  Here is the updated code:</p>
+                                        <pre>
+&lt;script type="text/javascript"&gt;
+    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var API_KEY = YOUR_API_KEY;
+    jQuery(document).ready(function($) {    
+        $.ajax({
+            url: DOMAIN+'/v1/people_groups/daily_unreached.json',
+            dataType: 'json',
+            data: {api_key: API_KEY},
+            type: 'GET'
+        })
+        .done(function(data) {
+            /* Code in here runs when the request is completed */
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            <span class="code_highlight">var pTagSettings = {'color': 'red', 'font-weight': 'bold'};
+            var pTag = $('&lt;p/&gt;').text('There was an error: '+errorThrown).css(pTagSettings);
+            $('body').prepend(pTag);</span>
         });
     });
 &lt;/script&gt;
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you can see in the code,  we generate the appropriate URL in the <code>url</code> setting.  We then declare that we want the JSON format using the <code>dataType</code> setting.  We finally pass the API Key, and any other parameters in the <code>data</code> setting.  When this request is completed,  it will call the empty function we provided for JQuery's <code>.done()</code> callback (<a href="hhttp://api.jquery.com/deferred.done/" target="_blank">Jquery Docs</a>).  If the request fails,  the empty function provided for the <code>.fail()</code> callback (<a href="hhttp://api.jquery.com/deferred.fail/" target="_blank">Jquery Docs</a>) is triggered.</p>
-                    <h4 id="javascript-handling-the-error">Handling the Error</h4>
-                    <h3 id="php">PHP Example</h3>
-                    <h3 id="python">Python Example</h3>
-                    <h3 id="ruby">Ruby Example</h3>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We start by declaring CSS styles (Red &amp; Bold) for the <code>&lt;p&gt;&lt;/p&gt;</code> tag that will hold the message:</p>
+                    <pre>var pTagSettings = {'color': 'red', 'font-weight': 'bold'};</pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We then create the <code>&lt;p&gt;&lt;/p&gt;</code> tag, add the warning message using JQuery's <code>.text()</code> method (<a href="http://api.jquery.com/text/" target="_blank">JQuery Docs</a>), and add the CSS styles using JQuery's <code>.css()</code> method (<a href="http://api.jquery.com/css/" target="_blank">JQuery Docs</a>):</p>
+                    <pre>var pTag = $('&lt;p/&gt;').text('There was an error: '+errorThrown).css(pTagSettings);</pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We finally prepend the new <code>&lt;p&gt;&lt;/p&gt;</code> tag to the body of the web page using JQuery's <code>.prepend()</code> method (<a href="http://api.jquery.com/prepend/" target="_blank">JQuery Docs</a>).</p>
+                    <pre>$('body').prepend(pTag);</pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;That is all we need to do to warn the user when the Ajax fails.</p>
+                    <h4 id="javascript-creating-the-widget">Creating the Widget</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that we have handled the errors,  let us deal with the response sent back from the API.  When the Ajax has successfully received a response from the API,  it triggers JQuery's <code>.done()</code> callback (<a href="hhttp://api.jquery.com/deferred.done/" target="_blank">Jquery Docs</a>).  One of the parameters passed to our empty function is <code>data</code>.  This is the API's response.  As you remember, we asked the server for JSON.  So now we need to handle that JSON response.  This code is temporary, but it will help us understand what we are receiving from the API.  In the <code>.done()</code> callback (<a href="hhttp://api.jquery.com/deferred.done/" target="_blank">Jquery Docs</a>) we will prepend the data to the body of our HTML similar to the <code>.fail()</code> callback (<a href="hhttp://api.jquery.com/deferred.fail/" target="_blank">Jquery Docs</a>).  Here is the code:</p>
+                    <pre>
+&lt;script type="text/javascript"&gt;
+    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var API_KEY = YOUR_API_KEY;
+    jQuery(document).ready(function($) {    
+        $.ajax({
+            url: DOMAIN+'/v1/people_groups/daily_unreached.json',
+            dataType: 'json',
+            data: {api_key: API_KEY},
+            type: 'GET'
+        })
+        .done(function(data) {
+            <span class="code_highlight">/* JSON.stringify is only supported in IE 8 > */
+            $('body').prepend(JSON.stringify(data));</span>
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            var pTagSettings = {'color': 'red', 'font-weight': 'bold'};
+            var pTag = $('&lt;p/&gt;').text('There was an error: '+errorThrown).css(pTagSettings);
+            $('body').prepend(pTag);
+        });
+    });
+&lt;/script&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When you save and run this code,  you will see something similar to the <a href="#overview-response">response code</a> we showed up above.  If you do not get a response,  then you need to check if you created your <a href="#overview-url-structure">URL structure</a> correctly.  As you can see in the response,  we are receiving a <a href="http://www.w3schools.com/js/js_obj_array.asp" target="_blank" title="What is an Array">Javascript Array</a> of a single JSON object.  So to get the first JSON object, we simply set a variable to the first object of the array (<code>data[0]</code>) like this:</p>
+                    <pre>
+&lt;script type="text/javascript"&gt;
+    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var API_KEY = YOUR_API_KEY;
+    jQuery(document).ready(function($) {    
+        $.ajax({
+            url: DOMAIN+'/v1/people_groups/daily_unreached.json',
+            dataType: 'json',
+            data: {api_key: API_KEY},
+            type: 'GET'
+        })
+        .done(function(data) {
+            <span class="code_highlight">var unreached = data[0];</span>
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            var pTagSettings = {'color': 'red', 'font-weight': 'bold'};
+            var pTag = $('&lt;p/&gt;').text('There was an error: '+errorThrown).css(pTagSettings);
+            $('body').prepend(pTag);
+        });
+    });
+&lt;/script&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we can access any of the supplied attributes of that JSON object using it's key.  So if we want to get the people group's name,  we can access it like this: <code>unreached['PeopNameInCountry']</code>.Now that we can access the data, we just need to start putting the data into the HTML we already provided.  If you look at the HTML of the <code>index.html</code> file you have been working on,  you will see the following code:</p>
+                    <pre>
+&lt;div id="jp_widget"&gt;
+    &lt;div class="upgotd upgotd-title"&gt;
+        &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="upgotd-image"&gt;
+        &lt;a href="#" class="upgotd-link pg-link" id="people-group-image"&gt;
+        &lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="upgotd upgotd-pray"&gt;Please pray for the ...&lt;/div&gt;
+    &lt;div class="upgotd upgotd-people"&gt;
+        &lt;a href="#" class="upgotd-link pg-link pg-name"&gt;&lt;/a&gt; of &lt;a href="#" class="upgotd-link country-link country-name"&gt;&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;table align="center" class="upgotd-table" cellpadding="0" cellspacing="0"&gt;
+        &lt;tbody&gt;&lt;tr&gt;
+            &lt;td width="65"&gt;Population:&lt;/td&gt;
+            &lt;td width="135" class="pg-population"&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Language:&lt;/td&gt;
+            &lt;td class="pg-language"&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Religion:&lt;/td&gt;
+            &lt;td class="pg-religion"&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Evangelical:&lt;/td&gt;
+            &lt;td class="pg-evangelical"&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Status:&lt;/td&gt;
+            &lt;td&gt;
+                &lt;a href="http://www.joshuaproject.net/definitions.php?term=25" class="upgotd-link pg-scale-text"&gt;&lt;/a&gt; (&lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link pg-scale"&gt;&lt;/a&gt;&nbsp;&lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link" id="progress-scale-image"&gt;&lt;/a&gt;)
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;&lt;/table&gt;
+    &lt;div class="upgotd upgotd-footer"&gt;Add this daily global vision feature to &lt;br&gt;&lt;a href="/upgotdfeed.php" class="upgotd-link"&gt;&lt;b&gt;your website&lt;/b&gt;&lt;/a&gt; or get it &lt;a href="http://www.unreachedoftheday.org/unreached-email.php" class="upgotd-link"&gt;&lt;b&gt;by email&lt;/b&gt;&lt;/a&gt;.&lt;/div&gt;
+&lt;/div&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you look through that code, you will see unique classes and ids set to different elements.  We will use these classes/ids to let Javascript manipulate it and add the appropriate content from the API.  Here is a list of all the classes/ids, and how we will manipulate those elements to show people group data:</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="3" class="active text-center">Widget Classes</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">ID/Class</th>
+                                <th class="text-center">Data Accessible With</th>
+                                <th class="text-center">Changes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;country&#8209;link</td>
+                                <td><code>unreached['CountryURL']</code></td>
+                                <td>We will set the link's <code>href</code> to the Joshua Project's people group's country URL</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;country&#8209;name</td>
+                                <td><code>unreached['Ctry']</code></td>
+                                <td>We will set the text to the people group's country name</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-primary">id</span>&nbsp;people&#8209;group&#8209;image</td>
+                                <td><code>unreached['PeopleGroupPhotoURL']</code></td>
+                                <td>We will create an image with a <code>src</code> equal to the location of the people group's image.  We will also set it's dimensions to 128 X 160</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;evangelical</td>
+                                <td><code>unreached['PercentEvangelical']</code></td>
+                                <td>We will set a percentage formatted number totaling the people group's percentage of Evangelicals</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;language</td>
+                                <td><code>unreached['PrimaryLanguageName']</code></td>
+                                <td>We will set the text to the people group's primary language</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;link</td>
+                                <td><code>unreached['PeopleGroupURL']</code></td>
+                                <td>We will set the link's <code>href</code> to the Joshua Project's people group's URL</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;name</td>
+                                <td><code>unreached['PeopNameInCountry']</code></td>
+                                <td>We will set the text to the people group name</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;population</td>
+                                <td><code>unreached['Population']</code></td>
+                                <td>We will set a comma formatted number totaling the people group's population</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;religion</td>
+                                <td><code>unreached['PrimaryReligion']</code></td>
+                                <td>We will set the text to the people group's primary religion</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;scale</td>
+                                <td><code>unreached['JPScale']</code></td>
+                                <td>We will set the text to the people group's progress scale number</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-primary">id</span>&nbsp;progress&#8209;scale&#8209;image</td>
+                                <td><code>unreached['JPScaleImageURL']</code></td>
+                                <td>We will create an image with a <code>src</code> equal to the progress scale image for the people group</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;scale&#8209;text</td>
+                                <td><code>unreached['JPScaleText']</code></td>
+                                <td>We will set the text to the people group's progress scale text</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;So let us begin by completing all the tasks that say <em>"We will set the text to..."</em>.  This is easy to accomplish by using JQuery's <code>.text()</code> method. (<a href="http://api.jquery.com/text/" target="_blank">JQuery Docs</a>)  Here is the code:</p>
+                    <pre>
+&lt;script type="text/javascript"&gt;
+    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var API_KEY = YOUR_API_KEY;
+    jQuery(document).ready(function($) {    
+        $.ajax({
+            url: DOMAIN+'/v1/people_groups/daily_unreached.json',
+            dataType: 'json',
+            data: {api_key: API_KEY},
+            type: 'GET'
+        })
+        .done(function(data) {
+            var unreached = data[0];
+            <span class="code_highlight">/* Set the text of each class to the appropriate data */
+            $('.country-name').text(unreached['Ctry']);
+            $('.pg-language').text(unreached['PrimaryLanguageName']);
+            $('.pg-name').text(unreached['PeopNameInCountry']);
+            $('.pg-religion').text(unreached['PrimaryReligion']);
+            $('.pg-scale').text(unreached['JPScale']);
+            $('.pg-scale-text').text(unreached['JPScaleText']);</span>
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            var pTagSettings = {'color': 'red', 'font-weight': 'bold'};
+            var pTag = $('&lt;p/&gt;').text('There was an error: '+errorThrown).css(pTagSettings);
+            $('body').prepend(pTag);
+        });
+    });
+&lt;/script&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you refresh the webpage, you should see something like this with different data:</p>
+                    <img src="img/getting_started/jquery_text_example.png" alt="Snapshot of the Adding text() method" class="img-responsive">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;But why different data!  If you do not supply a month or day parameter,  the API will return today's unreached people group of the day by default.  Most likely you are not doing this tutorial the same day as I was.  This now leaves us with the following tasks:</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="3" class="active text-center">Widget Classes</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">ID/Class</th>
+                                <th class="text-center">Data Accessible With</th>
+                                <th class="text-center">Changes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;country&#8209;link</td>
+                                <td><code>unreached['CountryURL']</code></td>
+                                <td>We will set the link's <code>href</code> to the Joshua Project's people group's country URL</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-primary">id</span>&nbsp;people&#8209;group&#8209;image</td>
+                                <td><code>unreached['PeopleGroupPhotoURL']</code></td>
+                                <td>We will create an image with a <code>src</code> equal to the location of the people group's image.  We will also set it's dimensions to 128 X 160</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;evangelical</td>
+                                <td><code>unreached['PercentEvangelical']</code></td>
+                                <td>We will set a percentage formatted number totaling the people group's percentage of Evangelicals</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;link</td>
+                                <td><code>unreached['PeopleGroupURL']</code></td>
+                                <td>We will set the link's <code>href</code> to the Joshua Project's people group's URL</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;population</td>
+                                <td><code>unreached['Population']</code></td>
+                                <td>We will set a comma formatted number totaling the people group's population</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-primary">id</span>&nbsp;progress&#8209;scale&#8209;image</td>
+                                <td><code>unreached['JPScaleImageURL']</code></td>
+                                <td>We will create an image with a <code>src</code> equal to the progress scale image for the people group</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let us now handle the two links that need URLS (.country-link, and .pg-link).  We will use JQuery's <code>.attr()</code> method (<a href="http://api.jquery.com/attr/" target="_blank">JQuery Docs</a>) to handle it.  Here is the code:</p>
+                    <pre>
+&lt;script type="text/javascript"&gt;
+    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var API_KEY = YOUR_API_KEY;
+    jQuery(document).ready(function($) {    
+        $.ajax({
+            url: DOMAIN+'/v1/people_groups/daily_unreached.json',
+            dataType: 'json',
+            data: {api_key: API_KEY},
+            type: 'GET'
+        })
+        .done(function(data) {
+            var unreached = data[0];
+            /* Set the text of each class to the appropriate data */
+            $('.country-name').text(unreached['Ctry']);
+            $('.pg-language').text(unreached['PrimaryLanguageName']);
+            $('.pg-name').text(unreached['PeopNameInCountry']);
+            $('.pg-religion').text(unreached['PrimaryReligion']);
+            $('.pg-scale').text(unreached['JPScale']);
+            $('.pg-scale-text').text(unreached['JPScaleText']);
+            <span class="code_highlight">/* Handle the two links that need URL's*/
+            $('.country-link').attr('href', unreached['CountryURL']);
+            $('.pg-link').attr('href', unreached['PeopleGroupURL']);</span>
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            var pTagSettings = {'color': 'red', 'font-weight': 'bold'};
+            var pTag = $('&lt;p/&gt;').text('There was an error: '+errorThrown).css(pTagSettings);
+            $('body').prepend(pTag);
+        });
+    });
+&lt;/script&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you refresh the page,  you may not see a difference.  Just hover your mouse over either the people group name or country name and verify the URL is set.  So here is what is remaining:</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="3" class="active text-center">Widget Classes</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">ID/Class</th>
+                                <th class="text-center">Data Accessible With</th>
+                                <th class="text-center">Changes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="label label-primary">id</span>&nbsp;people&#8209;group&#8209;image</td>
+                                <td><code>unreached['PeopleGroupPhotoURL']</code></td>
+                                <td>We will create an image with a <code>src</code> equal to the location of the people group's image.  We will also set it's dimensions to 128 X 160</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;evangelical</td>
+                                <td><code>unreached['PercentEvangelical']</code></td>
+                                <td>We will set a percentage formatted number totaling the people group's percentage of Evangelicals</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;population</td>
+                                <td><code>unreached['Population']</code></td>
+                                <td>We will set a comma formatted number totaling the people group's population</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-primary">id</span>&nbsp;progress&#8209;scale&#8209;image</td>
+                                <td><code>unreached['JPScaleImageURL']</code></td>
+                                <td>We will create an image with a <code>src</code> equal to the progress scale image for the people group</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OK,  we are getting close.  Let us now tackle the two images.  We will create an <code>&lt;img&gt;</code> tag similar to how we created the <code>&lt;p&gt;&lt;/p&gt;</code> tag in the <code>.fail()</code> callback (<a href="hhttp://api.jquery.com/deferred.fail/" target="_blank">Jquery Docs</a>).  We will use JQuery's <code>.attr()</code> method (<a href="http://api.jquery.com/attr/" target="_blank">JQuery Docs</a>) to set the <code>src</code> attribute, and JQuery's <code>.css()</code> method (<a href="http://api.jquery.com/css/" target="_blank">JQuery Docs</a>) to add width and height.  Finally,  we will append the image to the element using JQuery's <code>.append()</code> method (<a href="http://api.jquery.com/append/" target="_blank">JQuery Docs</a>).  Here is the code:</p>
+                    <pre>
+&lt;script type="text/javascript"&gt;
+    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var API_KEY = YOUR_API_KEY;
+    jQuery(document).ready(function($) {    
+        $.ajax({
+            url: DOMAIN+'/v1/people_groups/daily_unreached.json',
+            dataType: 'json',
+            data: {api_key: API_KEY},
+            type: 'GET'
+        })
+        .done(function(data) {
+            var unreached = data[0];
+            /* Set the text of each class to the appropriate data */
+            $('.country-name').text(unreached['Ctry']);
+            $('.pg-language').text(unreached['PrimaryLanguageName']);
+            $('.pg-name').text(unreached['PeopNameInCountry']);
+            $('.pg-religion').text(unreached['PrimaryReligion']);
+            $('.pg-scale').text(unreached['JPScale']);
+            $('.pg-scale-text').text(unreached['JPScaleText']);
+            /* Handle the two links that need URL's*/
+            $('.country-link').attr('href', unreached['CountryURL']);
+            $('.pg-link').attr('href', unreached['PeopleGroupURL']);
+            <span class="code_highlight">/* Append the images */
+            var pgSettings = {'height': '160px', 'width': '128px'};
+            var pgImg = $('&lt;img/&gt;').attr('src', unreached['PeopleGroupPhotoURL']).css(pgSettings);
+            $('#people-group-image').append(pgImg);
+            var scaleImg = $('&lt;img/&gt;').attr('src', unreached['JPScaleImageURL']);
+            $('#progress-scale-image').append(scaleImg);</span>
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            var pTagSettings = {'color': 'red', 'font-weight': 'bold'};
+            var pTag = $('&lt;p/&gt;').text('There was an error: '+errorThrown).css(pTagSettings);
+            $('body').prepend(pTag);
+        });
+    });
+&lt;/script&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you refresh the page in your browser, you should see something like this:</p>
+                    <img src="img/getting_started/jquery_images_example.png" alt="Snapshot of the images" class="img-responsive">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;So here is what is remaining:</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="3" class="active text-center">Widget Classes</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">ID/Class</th>
+                                <th class="text-center">Data Accessible With</th>
+                                <th class="text-center">Changes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;evangelical</td>
+                                <td><code>unreached['PercentEvangelical']</code></td>
+                                <td>We will set a percentage formatted number totaling the people group's percentage of Evangelicals</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;population</td>
+                                <td><code>unreached['Population']</code></td>
+                                <td>We will set a comma formatted number totaling the people group's population</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;So let's tackle the percentage of Evangelicals in the people group.  We first need to check if it is set to null,  if so then we will display 0.00.  If not null, we will use Javascript's <code>parseFloat()</code> method (<a href="http://www.w3schools.com/jsref/jsref_parsefloat.asp" target="_blank">Docs</a>) to turn the number to a float.  After that we format it to 2 decimals using Javascripts <code>toFixed()</code> method (<a href="http://www.w3schools.com/jsref/jsref_tofixed.asp" target="_blank">Docs</a>).  Finally,  we will use JQuery's <code>.text()</code> method (<a href="http://api.jquery.com/text/" target="_blank">JQuery Docs</a>) to set the text for the element.  Here is the code:<p>
+                    <pre>
+&lt;script type="text/javascript"&gt;
+    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var API_KEY = YOUR_API_KEY;
+    jQuery(document).ready(function($) {    
+        $.ajax({
+            url: DOMAIN+'/v1/people_groups/daily_unreached.json',
+            dataType: 'json',
+            data: {api_key: API_KEY},
+            type: 'GET'
+        })
+        .done(function(data) {
+            var unreached = data[0];
+            /* Set the text of each class to the appropriate data */
+            $('.country-name').text(unreached['Ctry']);
+            $('.pg-language').text(unreached['PrimaryLanguageName']);
+            $('.pg-name').text(unreached['PeopNameInCountry']);
+            $('.pg-religion').text(unreached['PrimaryReligion']);
+            $('.pg-scale').text(unreached['JPScale']);
+            $('.pg-scale-text').text(unreached['JPScaleText']);
+            /* Handle the two links that need URL's*/
+            $('.country-link').attr('href', unreached['CountryURL']);
+            $('.pg-link').attr('href', unreached['PeopleGroupURL']);
+            /* Append the images */
+            var pgSettings = {'height': '160px', 'width': '128px'};
+            var pgImg = $('&lt;img/&gt;').attr('src', unreached['PeopleGroupPhotoURL']).css(pgSettings);
+            $('#people-group-image').append(pgImg);
+            var scaleImg = $('&lt;img/&gt;').attr('src', unreached['JPScaleImageURL']);
+            $('#progress-scale-image').append(scaleImg);
+            <span class="code_highlight">/* Set the Percent Evangelical */
+            if (unreached['PercentEvangelical'] == null) {
+                percent_evangelical = '0.00';
+            } else {
+                percent_evangelical = parseFloat(unreached['PercentEvangelical']).toFixed(2);
+            }; 
+            $('.pg-evangelical').text(percent_evangelical+'%');</span>
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            var pTagSettings = {'color': 'red', 'font-weight': 'bold'};
+            var pTag = $('&lt;p/&gt;').text('There was an error: '+errorThrown).css(pTagSettings);
+            $('body').prepend(pTag);
+        });
+    });
+&lt;/script&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once you reload the web page,  you should now see the percentage like this:</p>
+                    <img src="img/getting_started/percent_evangelical_example.png" alt="Snapshot of the Percent Evangelical" class="img-responsive">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;So we only have one item remaining:</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="3" class="active text-center">Widget Classes</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">ID/Class</th>
+                                <th class="text-center">Data Accessible With</th>
+                                <th class="text-center">Changes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="label label-info">class</span>&nbsp;pg&#8209;population</td>
+                                <td><code>unreached['Population']</code></td>
+                                <td>We will set a comma formatted number totaling the people group's population</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;First,  we will need to create a custom function for formatting a comma seperated value.  We will use Javascript's <code>toString()</code> method (<a href="http://www.w3schools.com/jsref/jsref_tostring_number.asp" target="_blank">Docs</a>) to make sure the value is a string.  We then will use <a href="http://en.wikipedia.org/wiki/Regular_expression" title="Find Out More About Regular Expressions" target="_blank">Regular Expressions</a> to format it.  Here is the code:</p>
+                    <pre>
+&lt;script type="text/javascript"&gt;
+    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var API_KEY = YOUR_API_KEY;
+    jQuery(document).ready(function($) {    
+        $.ajax({
+            url: DOMAIN+'/v1/people_groups/daily_unreached.json',
+            dataType: 'json',
+            data: {api_key: API_KEY},
+            type: 'GET'
+        })
+        .done(function(data) {
+            var unreached = data[0];
+            /* Set the text of each class to the appropriate data */
+            $('.country-name').text(unreached['Ctry']);
+            $('.pg-language').text(unreached['PrimaryLanguageName']);
+            $('.pg-name').text(unreached['PeopNameInCountry']);
+            $('.pg-religion').text(unreached['PrimaryReligion']);
+            $('.pg-scale').text(unreached['JPScale']);
+            $('.pg-scale-text').text(unreached['JPScaleText']);
+            /* Handle the two links that need URL's*/
+            $('.country-link').attr('href', unreached['CountryURL']);
+            $('.pg-link').attr('href', unreached['PeopleGroupURL']);
+            /* Append the images */
+            var pgSettings = {'height': '160px', 'width': '128px'};
+            var pgImg = $('&lt;img/&gt;').attr('src', unreached['PeopleGroupPhotoURL']).css(pgSettings);
+            $('#people-group-image').append(pgImg);
+            var scaleImg = $('&lt;img/&gt;').attr('src', unreached['JPScaleImageURL']);
+            $('#progress-scale-image').append(scaleImg);
+            /* Set the Percent Evangelical */
+            if (unreached['PercentEvangelical'] == null) {
+                percent_evangelical = '0.00';
+            } else {
+                percent_evangelical = parseFloat(unreached['PercentEvangelical']).toFixed(2);
+            }; 
+            $('.pg-evangelical').text(percent_evangelical+'%');
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            var pTagSettings = {'color': 'red', 'font-weight': 'bold'};
+            var pTag = $('&lt;p/&gt;').text('There was an error: '+errorThrown).css(pTagSettings);
+            $('body').prepend(pTag);
+        });
+    });
+    <span class="code_highlight">/* Number formating method. */
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };</span>
+&lt;/script&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Finally we use JQuery's <code>.text()</code> method. (<a href="http://api.jquery.com/text/" target="_blank">JQuery Docs</a>) to set the text of the element.</p>
+                    <pre>
+&lt;script type="text/javascript"&gt;
+    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var API_KEY = YOUR_API_KEY;
+    jQuery(document).ready(function($) {    
+        $.ajax({
+            url: DOMAIN+'/v1/people_groups/daily_unreached.json',
+            dataType: 'json',
+            data: {api_key: API_KEY},
+            type: 'GET'
+        })
+        .done(function(data) {
+            var unreached = data[0];
+            /* Set the text of each class to the appropriate data */
+            $('.country-name').text(unreached['Ctry']);
+            $('.pg-language').text(unreached['PrimaryLanguageName']);
+            $('.pg-name').text(unreached['PeopNameInCountry']);
+            $('.pg-religion').text(unreached['PrimaryReligion']);
+            $('.pg-scale').text(unreached['JPScale']);
+            $('.pg-scale-text').text(unreached['JPScaleText']);
+            /* Handle the two links that need URL's*/
+            $('.country-link').attr('href', unreached['CountryURL']);
+            $('.pg-link').attr('href', unreached['PeopleGroupURL']);
+            /* Append the images */
+            var pgSettings = {'height': '160px', 'width': '128px'};
+            var pgImg = $('&lt;img/&gt;').attr('src', unreached['PeopleGroupPhotoURL']).css(pgSettings);
+            $('#people-group-image').append(pgImg);
+            var scaleImg = $('&lt;img/&gt;').attr('src', unreached['JPScaleImageURL']);
+            $('#progress-scale-image').append(scaleImg);
+            /* Set the Percent Evangelical */
+            if (unreached['PercentEvangelical'] == null) {
+                percent_evangelical = '0.00';
+            } else {
+                percent_evangelical = parseFloat(unreached['PercentEvangelical']).toFixed(2);
+            }; 
+            $('.pg-evangelical').text(percent_evangelical+'%');
+            <span class="code_highlight">/* Set the Population */
+            $('.pg-population').text(numberWithCommas(unreached['Population']));</span>
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            var pTagSettings = {'color': 'red', 'font-weight': 'bold'};
+            var pTag = $('&lt;p/&gt;').text('There was an error: '+errorThrown).css(pTagSettings);
+            $('body').prepend(pTag);
+        });
+    });
+    /* Number formating method. */
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+&lt;/script&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is the final result of our newly created widget:</p>
+                    <img src="img/getting_started/final_javascript.png" alt="Snapshot of Final Widget" class="img-responsive">
+                    <h4 id="javascript-finishing-touches">Finishing Touches</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you reload the web page, you will notice a delay before all the information is correctly displayed.  Visitors may find this unappealing.  So we will hide the widget, and display it when it is ready.  First we need to add a <code>hidden</code> class to the widget.  This class hides the widget from view.  Here is the code:</p>
+                    <pre>
+&lt;div id="jp_widget"<span class="code_highlight"> class="hidden"</span>&gt;
+    &lt;div class="upgotd upgotd-title"&gt;
+        &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="upgotd-image"&gt;
+        &lt;a href="#" class="upgotd-link pg-link" id="people-group-image"&gt;
+        &lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="upgotd upgotd-pray"&gt;Please pray for the ...&lt;/div&gt;
+    &lt;div class="upgotd upgotd-people"&gt;
+        &lt;a href="#" class="upgotd-link pg-link pg-name"&gt;&lt;/a&gt; of &lt;a href="#" class="upgotd-link country-link country-name"&gt;&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;table align="center" class="upgotd-table" cellpadding="0" cellspacing="0"&gt;
+        &lt;tbody&gt;&lt;tr&gt;
+            &lt;td width="65"&gt;Population:&lt;/td&gt;
+            &lt;td width="135" class="pg-population"&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Language:&lt;/td&gt;
+            &lt;td class="pg-language"&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Religion:&lt;/td&gt;
+            &lt;td class="pg-religion"&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Evangelical:&lt;/td&gt;
+            &lt;td class="pg-evangelical"&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Status:&lt;/td&gt;
+            &lt;td&gt;
+                &lt;a href="http://www.joshuaproject.net/definitions.php?term=25" class="upgotd-link pg-scale-text"&gt;&lt;/a&gt; (&lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link pg-scale"&gt;&lt;/a&gt;&nbsp;&lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link" id="progress-scale-image"&gt;&lt;/a&gt;)
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;&lt;/table&gt;
+    &lt;div class="upgotd upgotd-footer"&gt;Add this daily global vision feature to &lt;br&gt;&lt;a href="/upgotdfeed.php" class="upgotd-link"&gt;&lt;b&gt;your website&lt;/b&gt;&lt;/a&gt; or get it &lt;a href="http://www.unreachedoftheday.org/unreached-email.php" class="upgotd-link"&gt;&lt;b&gt;by email&lt;/b&gt;&lt;/a&gt;.&lt;/div&gt;
+&lt;/div&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Then we will use JQuery's <code>.fadeIn()</code> method (<a href="http://api.jquery.com/fadeIn/" target="_blank">JQuery Docs</a>) to fade in the widget when we finished setting it up.</p>
+                    <pre>
+&lt;script type="text/javascript"&gt;
+    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var API_KEY = YOUR_API_KEY;
+    jQuery(document).ready(function($) {    
+        $.ajax({
+            url: DOMAIN+'/v1/people_groups/daily_unreached.json',
+            dataType: 'json',
+            data: {api_key: API_KEY},
+            type: 'GET'
+        })
+        .done(function(data) {
+            var unreached = data[0];
+            /* Set the text of each class to the appropriate data */
+            $('.country-name').text(unreached['Ctry']);
+            $('.pg-language').text(unreached['PrimaryLanguageName']);
+            $('.pg-name').text(unreached['PeopNameInCountry']);
+            $('.pg-religion').text(unreached['PrimaryReligion']);
+            $('.pg-scale').text(unreached['JPScale']);
+            $('.pg-scale-text').text(unreached['JPScaleText']);
+            /* Handle the two links that need URL's*/
+            $('.country-link').attr('href', unreached['CountryURL']);
+            $('.pg-link').attr('href', unreached['PeopleGroupURL']);
+            /* Append the images */
+            var pgSettings = {'height': '160px', 'width': '128px'};
+            var pgImg = $('&lt;img/&gt;').attr('src', unreached['PeopleGroupPhotoURL']).css(pgSettings);
+            $('#people-group-image').append(pgImg);
+            var scaleImg = $('&lt;img/&gt;').attr('src', unreached['JPScaleImageURL']);
+            $('#progress-scale-image').append(scaleImg);
+            /* Set the Percent Evangelical */
+            if (unreached['PercentEvangelical'] == null) {
+                percent_evangelical = '0.00';
+            } else {
+                percent_evangelical = parseFloat(unreached['PercentEvangelical']).toFixed(2);
+            }; 
+            $('.pg-evangelical').text(percent_evangelical+'%');
+            /* Set the Population */
+            $('.pg-population').text(numberWithCommas(unreached['Population']));
+            <span class="code_highlight">/* Fade in the widget */
+            $('div#jp_widget').fadeIn('slow');</span>
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            var pTagSettings = {'color': 'red', 'font-weight': 'bold'};
+            var pTag = $('&lt;p/&gt;').text('There was an error: '+errorThrown).css(pTagSettings);
+            $('body').prepend(pTag);
+        });
+    });
+    /* Number formating method. */
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+&lt;/script&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congratulations!  You have completed the Javascript tutorial.  If you would like to download the sample code,  you can visit our <a href="https://github.com/MissionalDigerati/joshua_project_api_sample_code" target="_blank">Github Account</a>.</p>
                 </div>
             </div>
         </div>
