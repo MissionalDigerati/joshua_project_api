@@ -44,8 +44,9 @@
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/">Home</a></li>
-                    <li><a href="/docs/v1/#!/people_groups">Documentation</a></li>
+                    <li><a href="/getting_started">Getting Started</a></li>
                     <li><a href="/docs/v1/sample_code">Sample Code</a></li>
+                    <li><a href="/docs/v1/#!/people_groups">Documentation</a></li>
                     <li><a href="http://www.joshuaproject.net/">Joshua Project</a></li>
                     <li><a href="http://www.missionaldigerati.org">Missional Digerati</a></li>
                 </ul>
@@ -70,7 +71,7 @@
                             If you are new to API development,  this tutorial will walk you through the basics of using the Joshua Project API.  We offer the tutorial in PHP, Javascript, Ruby, and Python.  So buckle up and prepare to learn API development.
                           </div>
                           <div class="panel-footer">
-                            <a href="" class="btn btn-success pull-right">Start Now >></a>
+                            <a href="/getting_started" class="btn btn-success pull-right">Start Now >></a>
                             <span class="clearfix"></span>
                           </div>
                         </div>
