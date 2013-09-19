@@ -40,6 +40,20 @@ $app->get(
     }
 );
 /**
+ * Get the getting_started tutorial page
+ *
+ * GET /getting_started
+ * Available Formats HTML
+ * 
+ * @author Johnathan Pulos
+ */
+$app->get(
+    "/getting_started",
+    function () use ($app, $db, $appRequest, $DOMAIN_ADDRESS) {
+        $app->render('StaticPages/getting_started.html.php', array('DOMAIN_ADDRESS' => $DOMAIN_ADDRESS));
+    }
+);
+/**
  * Retrieve your API Key.  Triggered by a link in an email.  Requires md_api_keys.authorization token to access
  *
  * GET /get_my_api_key?authorize_token=[AUTHORIZATION TOKEN]

@@ -1,0 +1,70 @@
+.upgotd { 
+	color: #000000; 
+	font-family: Arial, Helvetica, Verdana, sans-serif; 
+}
+#jp_widget { 
+	background-color: #EEE; 
+	border: #CCCCCC 1px dashed; 
+	text-align: center; 
+	width: 215px; 
+	font-size:12px;
+}
+#jp_widget a { 
+	color: #000000 !important; 
+	text-decoration: none; 
+}
+#jp_widget a:hover { 
+	color: #0000FF !important; 
+	text-decoration: none; 
+}
+.upgotd-title, .upgotd-footer { 
+	padding: 3px; 
+	background-color: #BBDDFF;
+}
+.upgotd-title, .upgotd-title a { 
+	font-weight: bold; font-size:13px !important; 
+	margin-bottom: 5px;
+}
+.upgotd-image { 
+	text-align: center; 
+}
+.upgotd-pray { 
+	font-style: italic; 
+	font-weight: normal; 
+	padding: 3px 0px; 
+	font-size: 12px;
+}
+.upgotd-people { 
+	font-weight: normal; 
+	font-size:12px !important; 
+	padding-bottom:4px; 
+}
+.upgotd-people a { 
+	font-weight: bold; 
+}
+.upgotd-table td { 
+	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; 
+	font-size:11px; 
+	font-weight: normal; 
+	color: #000; 
+	line-height: 14px; 
+	text-align: left; 
+	border: 0px; 
+	background-color: #EEE; 
+	margin: 0px; 
+	padding: 0px 0px 0px 3px; 
+}
+.upgotd-more, .upgotd-more a { 
+	font-size: 10px; 
+}
+.upgotd-footer, .upgotd-footer a { 
+	font-weight: normal ;
+	font-size: 11px;  
+	margin-top: 3px; 
+}
+a#progress-scale-image img {
+	border: none;
+}
+.hidden {
+	display: none;
+}

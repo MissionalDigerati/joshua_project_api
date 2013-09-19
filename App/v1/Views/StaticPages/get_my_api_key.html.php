@@ -31,7 +31,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
-	<div class="navbar navbar-default" role="navigation">
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -44,8 +44,9 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">Home</a></li>
-                <li><a href="/docs/v1/#!/people_groups">Documentation</a></li>
+                <li><a href="/getting_started">Getting Started</a></li>
                 <li><a href="/docs/v1/sample_code">Sample Code</a></li>
+                <li><a href="/docs/v1/#!/people_groups">Documentation</a></li>
                 <li><a href="http://www.joshuaproject.net/">Joshua Project</a></li>
                 <li><a href="http://www.missionaldigerati.org">Missional Digerati</a></li>
             </ul>
