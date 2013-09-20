@@ -85,8 +85,15 @@
                                     <li><a href="#javascript-finishing-touches">Finishing Touches</a></li>
                                 </ul>
                             </li>
-<!--                             <li><a href="#php">PHP Example</a></li>
-                            <li><a href="#python">Python Example</a></li>
+                            <li>
+                                <a href="#php">PHP Example</a>
+                                <ul class="nav">
+                                    <li><a href="#php-setup">Setup</a></li>
+                                    <li><a href="#php-calling-the-api">Calling the API</a></li>
+                                    <li><a href="#php-creating-the-widget">Creating the Widget</a></li>
+                                </ul>
+                            </li>
+                            <!-- <li><a href="#python">Python Example</a></li>
                             <li><a href="#ruby">Ruby Example</a></li> -->
                         </ul>
                     </div>
@@ -564,7 +571,9 @@ a#progress-scale-image img {
                             <li><a href="#ruby">Ruby Example</a></li>
                         </ul>
                     </p>
-                    <h3 id="javascript">Javascript (JQuery) Example</h3>
+                    <div class="page-header">
+                        <h3 id="javascript">Javascript (JQuery) Example</h3>
+                    </div>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before beginning this tutorial,  you should have a good understanding of the <a href="http://www.w3schools.com/js/" target="_blank">Javascript programming language</a>, and the <a href="http://jquery.com/" target="_blank">JQuery library</a>!</p>
                     <h4 id="javascript-jquery-library">The JQuery Library</h4>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JQuery is a Javascript library designed to make scripting in Javascript much more enjoyable and faster.  It helps speed up common tasks like traversing the DOM, animating and manipulating DOM elements, and running Ajax calls.  In order to use the library, we need to include it in the head tag of our <code>index.html</code> file.  So open the <code>index.html</code> file and add the following line between the tags <code>&lt;head&gt;&lt;/head&gt;</code>:</p>
@@ -724,7 +733,7 @@ a#progress-scale-image img {
     });
 &lt;/script&gt;
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we can access any of the supplied attributes of that JSON object using it's key.  So if we want to get the people group's name,  we can access it like this: <code>unreached['PeopNameInCountry']</code>.Now that we can access the data, we just need to start putting the data into the HTML we already provided.  If you look at the HTML of the <code>index.html</code> file you have been working on,  you will see the following code:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we can access any of the supplied attributes of that JSON object using it's key.  So if we want to get the people group's name,  we can access it like this: <code>unreached['PeopNameInCountry']</code>.  Now that we can access the data, we just need to start putting the data into the HTML we already provided.  If you look at the HTML of the <code>index.html</code> file you have been working on,  you will see the following code:</p>
                     <pre>
 &lt;div id="jp_widget"&gt;
     &lt;div class="upgotd upgotd-title"&gt;
@@ -1320,6 +1329,478 @@ a#progress-scale-image img {
 &lt;/script&gt;
                     </pre>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congratulations!  You have completed the Javascript tutorial.  If you would like to download the sample code,  you can visit our <a href="https://github.com/MissionalDigerati/joshua_project_api_sample_code" target="_blank">Github Account</a>.</p>
+                    <div class="page-header">
+                        <h3 id="php">PHP Example</h3>
+                    </div>
+                    <h4 id="php-setup">Setup</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before you start this tutorial,  you will need some understanding of the <a href="http://www.w3schools.com/php/" target="_blank" title="Learn More About PHP">PHP programming language</a>.  You will also need a PHP environment setup on your local machine, or be able to upload your code to a PHP web server.  This tutorial does not cover how to accomplish that.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once you have an environment setup,  you will need to make a few changes to the <a href="#getting_started">Getting Started</a> code you downloaded.  First,  you need to rename <code>index.html</code> to <code>index.php</code>.  Next,  you need to open the <code>index.php</code> file, and add <code>&lt;?php ?&gt;</code> tags to the top of the page.  We will write the code inline.  (I prefer to seperate out the code usually, but wanted to simplify this tutorial)  So the top of the file should look like this:</p>
+                    <pre>
+<span class="code_highlight">&lt;?php
+/* PHP Code will go here */
+?&gt;</span>
+&lt;!DOCTYPE html&gt;
+...
+                    </pre>
+                    <h4 id="php-calling-the-api">Calling the API</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let us start by creating 3 variables to hold the API domain, API key, and the URL to get the unreached of the day information.  Here is the code:</p>
+                    <pre>
+&lt;?php
+<span class="code_highlight">$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$api_key = YOUR_API_KEY;
+$url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;</span>
+?&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To access an API with PHP,  we need to use the <a href="http://php.net/manual/en/book.curl.php" target="_blank" title="Learn More About cURL">cURL</a> Library.</p>
+                    <blockquote cite="http://en.wikipedia.org/wiki/CURL">
+                        <p>cURL is a computer software project providing a library and command-line tool for transferring data using various protocols.<br><br><em><a href="http://en.wikipedia.org/wiki/CURL" target="_blank">Wikipedia</a></em></p>
+                    </blockquote>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PHP offers methods for making cURL requests in the code.  Let us begin by opening a cURL connection using PHP's <code>curl_init()</code> function (<a href="http://www.php.net/manual/en/function.curl-init.php" target="_blank">PHP DOCS</a>).</p>
+                    <pre>
+&lt;?php
+$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$api_key = YOUR_API_KEY;
+$url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
+<span class="code_highlight">/**
+ * open connection
+ *
+ * @author Johnathan Pulos
+ */
+$ch = curl_init();</span>
+?&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next we need to set some options for the request using PHP's <code>curl_setopt()</code> function (<a href="http://www.php.net/manual/en/function.curl-setopt.php" target="_blank">PHP DOCS</a>).</p>
+                    <pre>
+&lt;?php
+$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$api_key = YOUR_API_KEY;
+$url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
+/**
+ * open connection
+ *
+ * @author Johnathan Pulos
+ */
+$ch = curl_init();
+<span class="code_highlight">/**
+ * Setup cURL
+ *
+ * @author Johnathan Pulos
+ */
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');</span>
+?&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here are the options that we set:</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Option</th>
+                                <th class="text-center">Description</th>
+                                <th class="text-center">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>CURLOPT_URL</code></td>
+                                <td>The URL to fetch</td>
+                                <td><?php echo $DOMAIN_ADDRESS; ?>/v1/people_groups/daily_unreached.json?api_key=YOUR_API_KEY</td>
+                            </tr>
+                            <tr>
+                                <td><code>CURLOPT_RETURNTRANSFER</code></td>
+                                <td>Returns the response from CURL_EXEC as a string</td>
+                                <td>1 (true)</td>
+                            </tr>
+                            <tr>
+                                <td><code>CURLOPT_TIMEOUT</code></td>
+                                <td>The maximum number of seconds cURL should execute request</td>
+                                <td>60 seconds</td>
+                            </tr>
+                            <tr>
+                                <td><code>CURLOPT_CUSTOMREQUEST</code></td>
+                                <td>Set a custom HTTP request method</td>
+                                <td>GET</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we need to execute the cURL request using PHP's <code>curl_exec()</code> function (<a href="http://www.php.net/manual/en/function.curl-exec.php" target="_blank">PHP DOCS</a>).  If the request fails,  we will call PHP's <code>die()</code> function (<a href="http://www.php.net/manual/en/function.die.php" target="_blank">PHP DOCS</a>) to stop executing the script.  If it is successful,  we will assign the result to a variable so we can access the JSON response.</p>
+                    <pre>
+&lt;?php
+$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$api_key = YOUR_API_KEY;
+$url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
+/**
+ * open connection
+ *
+ * @author Johnathan Pulos
+ */
+$ch = curl_init();
+/**
+ * Setup cURL
+ *
+ * @author Johnathan Pulos
+ */
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+<span class="code_highlight">/**
+ * execute request
+ *
+ * @author Johnathan Pulos
+ */
+$result = curl_exec($ch) or die(curl_error($ch));</span>
+?&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we need to clean up by closing the cURL request.  We do this by using PHP's <code>curl_close()</code> function (<a href="http://www.php.net/manual/en/function.curl-close.php" target="_blank">PHP DOCS</a>).</p>
+                    <pre>
+&lt;?php
+$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$api_key = YOUR_API_KEY;
+$url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
+/**
+ * open connection
+ *
+ * @author Johnathan Pulos
+ */
+$ch = curl_init();
+/**
+ * Setup cURL
+ *
+ * @author Johnathan Pulos
+ */
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+/**
+ * execute request
+ *
+ * @author Johnathan Pulos
+ */
+$result = curl_exec($ch) or die(curl_error($ch));
+<span class="code_highlight">/**
+ * close connection
+ *
+ * @author Johnathan Pulos
+ */
+curl_close($ch);</span>
+?&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We have now completed the request.  Let's add some temporary code to verify we have the data.  We will remove this code before moving forward.</p>
+                    <pre>
+&lt;?php
+$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$api_key = YOUR_API_KEY;
+$url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
+/**
+ * open connection
+ *
+ * @author Johnathan Pulos
+ */
+$ch = curl_init();
+/**
+ * Setup cURL
+ *
+ * @author Johnathan Pulos
+ */
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+/**
+ * execute request
+ *
+ * @author Johnathan Pulos
+ */
+$result = curl_exec($ch) or die(curl_error($ch));
+/**
+ * close connection
+ *
+ * @author Johnathan Pulos
+ */
+curl_close($ch);
+<span class="code_highlight">/**
+ * TEMP: Print out the results
+ *
+ * @author Johnathan Pulos
+ */
+print_r($result);
+exit();</span>
+?&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When you save and run this code,  you will see something similar to the <a href="#overview-response">response code</a> we showed up above.  If you do not get a response,  then you need to check if you created your <a href="#overview-url-structure">URL structure</a> correctly.  As you can see in the response,  we are receiving a <a href="http://us1.php.net/manual/en/function.array.php" target="_blank" title="What is an Array">PHP Array</a> of a single JSON object.  In order to use this JSON object in PHP,  we need to convert it to a PHP <a href="http://www.w3schools.com/php/php_arrays_multi.asp" target="_blank" title="Learn More About Multidimensional Arrays">multidimensional array</a>.  We can do this with a handy PHP function <code>decoded_json()</code> (<a href="http://php.net/manual/en/function.json-decode.php" target="_blank">PHP DOCS</a>)</p>
+                    <pre>
+&lt;?php
+$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$api_key = YOUR_API_KEY;
+$url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
+/**
+ * open connection
+ *
+ * @author Johnathan Pulos
+ */
+$ch = curl_init();
+/**
+ * Setup cURL
+ *
+ * @author Johnathan Pulos
+ */
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+/**
+ * execute request
+ *
+ * @author Johnathan Pulos
+ */
+$result = curl_exec($ch) or die(curl_error($ch));
+/**
+ * close connection
+ *
+ * @author Johnathan Pulos
+ */
+curl_close($ch);
+<span class="code_highlight">/**
+ * decode the response JSON
+ *
+ * @author Johnathan Pulos
+ */
+$decoded_json = json_decode($result, true);</span>
+?&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We should also add error checking.  If the <a href="http://www.w3schools.com/php/php_arrays_multi.asp" target="_blank" title="Learn More About Multidimensional Arrays">multidimensional array</a> is not an array, we will stop executing the code with a message.</p>
+                    <pre>
+&lt;?php
+$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$api_key = YOUR_API_KEY;
+$url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
+/**
+ * open connection
+ *
+ * @author Johnathan Pulos
+ */
+$ch = curl_init();
+/**
+ * Setup cURL
+ *
+ * @author Johnathan Pulos
+ */
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+/**
+ * execute request
+ *
+ * @author Johnathan Pulos
+ */
+$result = curl_exec($ch) or die(curl_error($ch));
+/**
+ * close connection
+ *
+ * @author Johnathan Pulos
+ */
+curl_close($ch);
+/**
+ * decode the response JSON
+ *
+ * @author Johnathan Pulos
+ */
+$decoded_json = json_decode($result, true);
+<span class="code_highlight">if (!is_array($decoded_json)) {
+    echo "Unable to retrieve the JSON.";
+    exit;
+}</span>
+?&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that we created a <a href="http://www.w3schools.com/php/php_arrays_multi.asp" target="_blank" title="Learn More About Multidimensional Arrays">multidimensional array</a>,  we can access the first object using its index like this: <code>$decoded_json[0]</code>.  We will set this to a variable for easy access.</p>
+                    <pre>
+&lt;?php
+$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$api_key = YOUR_API_KEY;
+$url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
+/**
+ * open connection
+ *
+ * @author Johnathan Pulos
+ */
+$ch = curl_init();
+/**
+ * Setup cURL
+ *
+ * @author Johnathan Pulos
+ */
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+/**
+ * execute request
+ *
+ * @author Johnathan Pulos
+ */
+$result = curl_exec($ch) or die(curl_error($ch));
+/**
+ * close connection
+ *
+ * @author Johnathan Pulos
+ */
+curl_close($ch);
+/**
+ * decode the response JSON
+ *
+ * @author Johnathan Pulos
+ */
+$decoded_json = json_decode($result, true);
+if (!is_array($decoded_json)) {
+    echo "Unable to retrieve the JSON.";
+    exit;
+}
+<span class="code_highlight">/**
+ * Assign the first object to a variable
+ *
+ * @author Johnathan Pulos
+ */
+$unreached = $decoded_json[0];</span>
+?&gt;
+                    </pre>
+                    <h4 id="php-creating-the-widget">Creating the Widget</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we can access any of the supplied attributes of that JSON object using it's key.  So if we want to get the people group's name,  we can access it like this: <code>$unreached['PeopNameInCountry']</code>.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The attribute percentage of Evangelicals in the people group can be set to null,  if so then we should display 0.00.  So let's add a check to evaluate the value, and set it to 0 if it is null.  Here is the code:</p>
+                    <pre>
+&lt;?php
+$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$api_key = YOUR_API_KEY;
+$url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
+/**
+ * open connection
+ *
+ * @author Johnathan Pulos
+ */
+$ch = curl_init();
+/**
+ * Setup cURL
+ *
+ * @author Johnathan Pulos
+ */
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+/**
+ * execute request
+ *
+ * @author Johnathan Pulos
+ */
+$result = curl_exec($ch) or die(curl_error($ch));
+/**
+ * close connection
+ *
+ * @author Johnathan Pulos
+ */
+curl_close($ch);
+/**
+ * decode the response JSON
+ *
+ * @author Johnathan Pulos
+ */
+$decoded_json = json_decode($result, true);
+if (!is_array($decoded_json)) {
+    echo "Unable to retrieve the JSON.";
+    exit;
+}
+/**
+ * Assign the first object to a variable
+ *
+ * @author Johnathan Pulos
+ */
+$unreached = $decoded_json[0];
+<span class="code_highlight">/**
+ * Handle the null value
+ *
+ * @author Johnathan Pulos
+ */
+if ($unreached['PercentEvangelical'] == null) {
+    $unreached['PercentEvangelical'] = 0;
+}</span>
+?&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we just need to add the data to the HTML widget code for displaying.  We will use PHP's <code>echo()</code> function (<a href="http://www.php.net/manual/en/function.echo.php" target="_blank">PHP DOCS</a>) to display the data in the appropriate place.  We will also use PHP's  <code>number_format()</code> function (<a href="http://www.php.net/manual/en/function.number-format.php" target="_blank">PHP DOCS</a>) to format the people group's population, and percent of Evangelicals.  In the <code>index.php</code> file that you have been working on,  update the code to what is below:</p>
+                    <pre>
+&lt;div id="jp_widget"&gt;
+    &lt;div class="upgotd upgotd-title"&gt;
+        &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="upgotd-image"&gt;
+        &lt;a href="<span class="code_highlight">&lt;?php echo $unreached['PeopleGroupURL']; ?&gt;</span>" class="upgotd-link pg-link" id="people-group-image"&gt;
+            <span class="code_highlight">&lt;img src="&lt;?php echo $unreached['PeopleGroupPhotoURL']; ?&gt;" height="160" width="128" alt="Unreached of the Day Photo"&gt;</span>
+        &lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="upgotd upgotd-pray"&gt;Please pray for the ...&lt;/div&gt;
+    &lt;div class="upgotd upgotd-people"&gt;
+        &lt;a href="<span class="code_highlight">&lt;?php echo $unreached['PeopleGroupURL']; ?&gt;</span>" class="upgotd-link pg-link pg-name"&gt;<span class="code_highlight">&lt;?php echo $unreached['PeopNameInCountry']; ?&gt;</span>&lt;/a&gt; of &lt;a href="<span class="code_highlight">&lt;?php echo $unreached['CountryURL']; ?&gt;</span>" class="upgotd-link country-link country-name"&gt;<span class="code_highlight">&lt;?php echo $unreached['Ctry']; ?&gt;</span>&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;table align="center" class="upgotd-table" cellpadding="0" cellspacing="0"&gt;
+        &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td width="65"&gt;
+                Population:
+            &lt;/td&gt;
+            &lt;td width="135" class="pg-population"&gt;
+                <span class="code_highlight">&lt;?php echo number_format($unreached['Population']); ?&gt;</span>
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                Language:
+            &lt;/td&gt;
+            &lt;td class="pg-language"&gt;
+                <span class="code_highlight">&lt;?php echo $unreached['PrimaryLanguageName']; ?&gt;</span>
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                Religion:
+            &lt;/td&gt;
+            &lt;td class="pg-religion"&gt;
+                <span class="code_highlight">&lt;?php echo $unreached['PrimaryReligion']; ?&gt;</span>
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                Evangelical:
+            &lt;/td&gt;
+            &lt;td class="pg-evangelical"&gt;
+                <span class="code_highlight">&lt;?php echo number_format($unreached['PercentEvangelical'], 2); ?&gt;</span>%
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Status:&lt;/td&gt;
+            &lt;td&gt;
+                &lt;a href="http://www.joshuaproject.net/definitions.php?term=25" class="upgotd-link pg-scale-text"&gt;
+                    <span class="code_highlight">&lt;?php echo $unreached['JPScaleText']; ?&gt;</span>
+                &lt;/a&gt; (
+                &lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link pg-scale"&gt;
+                    <span class="code_highlight">&lt;?php echo $unreached['JPScale']; ?&gt;</span>
+                &lt;/a&gt;
+                &lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link" id="progress-scale-image"&gt;
+                    <span class="code_highlight">&lt;img src="&lt;?php echo $unreached['JPScaleImageURL']; ?&gt;" alt="Progress Scale"&gt;</span>
+                &lt;/a&gt;)
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;&lt;/table&gt;
+    &lt;div class="upgotd upgotd-footer"&gt;
+        Add this daily global vision feature to &lt;br&gt;
+        &lt;a href="/upgotdfeed.php" class="upgotd-link"&gt;&lt;b&gt;your website&lt;/b&gt;&lt;/a&gt; or get it &lt;a href="http://www.unreachedoftheday.org/unreached-email.php" class="upgotd-link"&gt;&lt;b&gt;by email&lt;/b&gt;&lt;/a&gt;.
+    &lt;/div&gt;
+&lt;/div&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you reload the webpage, you should see the widget with all the API data.</p>
+                    <img src="img/getting_started/final_php.png" alt="Snapshot of Final Widget" class="img-responsive">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congratulations!  You have completed the PHP tutorial.  If you would like to download the sample code,  you can visit our <a href="https://github.com/MissionalDigerati/joshua_project_api_sample_code" target="_blank">Github Account</a>.</p>
                 </div>
             </div>
         </div>
