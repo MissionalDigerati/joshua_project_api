@@ -93,8 +93,15 @@
                                     <li><a href="#php-creating-the-widget">Creating the Widget</a></li>
                                 </ul>
                             </li>
-                            <!-- <li><a href="#python">Python Example</a></li>
-                            <li><a href="#ruby">Ruby Example</a></li> -->
+                            <li>
+                                <a href="#python">Python Example</a>
+                                <ul class="nav">
+                                    <li><a href="#python-setup">Setup</a></li>
+                                    <li><a href="#python-calling-the-api">Calling the API</a></li>
+                                    <li><a href="#python-creating-the-widget">Creating the Widget</a></li>
+                                </ul>
+                            </li>
+                            <!-- <li><a href="#ruby">Ruby Example</a></li> -->
                         </ul>
                     </div>
                 </div>
@@ -1801,6 +1808,14 @@ if ($unreached['PercentEvangelical'] == null) {
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you reload the webpage, you should see the widget with all the API data.</p>
                     <img src="img/getting_started/final_php.png" alt="Snapshot of Final Widget" class="img-responsive">
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congratulations!  You have completed the PHP tutorial.  If you would like to download the sample code,  you can visit our <a href="https://github.com/MissionalDigerati/joshua_project_api_sample_code" target="_blank">Github Account</a>.</p>
+                    <div class="page-header">
+                        <h3 id="python">Python Example</h3>
+                    </div>
+                    <h4 id="python-setup">Setup</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before starting this tutorial,  you will need to have some understanding of the <a href="http://www.python.org/" target="_blank" title="Learn More About Python">Python programming language</a>.  You will also need Python running in your command line utility.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In this tutorial,  we will build a script that will generate the necessary HTML & CSS for the widget.  Everytime you run the script from the command line,  it will create the widget with the latest people group data.</p>
+                    <h4 id="python-calling-the-api">Calling the API</h4>
+                    <h4 id="python-creating-the-widget">Creating the Widget</h4>
                 </div>
             </div>
         </div>
