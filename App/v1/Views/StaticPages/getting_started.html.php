@@ -435,16 +435,16 @@
                     <h3 id="getting-started">Getting Started (All Tutorials)</h3>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the following tutorials,  we will walk through four different approaches for creating the Joshua Project's unreached people group of the day widget using the new API.  These tutorials come in a variety of programming languages including Javascript using the JQuery library, PHP, Python and Ruby.  Feel free and choose the programming language that you feel more comfortable programming in.  <strong>Before starting this tutorial,  you will need to retrieve an <a href="/">API key</a></strong>.</p>
                     <h4 id="getting-started-starting-code">Starting Code</h4>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We have created a zip file containing the starting code for all the programming languages.  You can download the <a href="files/starting_code.zip">file here</a>. Once you unzip the file, you will see the following code structure:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We have created zip files containing the starting code for each programming language.  You can download these files from the following links:</p>
                     <p>
                         <ul>
-                            <li>css
-                                <ul><li>styles.css</li></ul>
-                            </li>
-                            <li>index.html</li>
+                            <li><a href="files/starting_code/javascript.zip">Javascript Starting Code</a></li>
+                            <li><a href="files/starting_code/php.zip">PHP Starting Code</a></li>
+                            <li><a href="files/starting_code/python.zip">Python Starting Code</a></li>
+                            <li><a href="files/starting_code/ruby.zip">Ruby Starting Code</a></li>
                         </ul>
                     </p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The <code>css/styles.css</code> file offers the basic design for the widget.  Here is a look at the code:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;After downloading and unzipping the directory,  look for the <code>styles.css</code> file.  This file offers the basic design for the widget.  Here is a look at the code:</p>
                     <pre>
 .upgotd { 
     color: #000000; 
@@ -517,7 +517,7 @@ a#progress-scale-image img {
     display: none;
 }
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The <code>index.html</code> file offers the basic structure of the final HTML file.  The code looks like this:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You will also find an <code>index</code> file. (The extension varies based on the programming language) This file offers the basic structure of the final widget.  The code looks like this:</p>
                     <pre>
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -567,9 +567,7 @@ a#progress-scale-image img {
     &lt;/body&gt;
 &lt;/html&gt;
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you load the <code>index.html</code> file in your browser, you should see something similar to this:</p>
-                    <img src="img/getting_started/snapshot.png" alt="Snapshot of the Starting Code" class="img-responsive">
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you can see, we are missing the most important information... the Joshua Project data.  Please choose your preferred programming language to continue this tutorial:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will use this starting code to launch into developing a widget that pulls in the data from our API.  To get started, please choose your preferred programming language to continue this tutorial:</p>
                     <p>
                         <ul>
                             <li><a href="#javascript">Javascript (JQuery) Example</a></li>
@@ -581,7 +579,7 @@ a#progress-scale-image img {
                     <div class="page-header">
                         <h3 id="javascript">Javascript (JQuery) Example</h3>
                     </div>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before beginning this tutorial,  you should have a good understanding of the <a href="http://www.w3schools.com/js/" target="_blank">Javascript programming language</a>, and the <a href="http://jquery.com/" target="_blank">JQuery library</a>!</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before beginning this tutorial,  you should have a good understanding of the <a href="http://www.w3schools.com/js/" target="_blank">Javascript programming language</a>, and the <a href="http://jquery.com/" target="_blank">JQuery library</a>!  You will also need to download the <a href="files/starting_code/javascript.zip">starting code</a>.</p>
                     <h4 id="javascript-jquery-library">The JQuery Library</h4>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JQuery is a Javascript library designed to make scripting in Javascript much more enjoyable and faster.  It helps speed up common tasks like traversing the DOM, animating and manipulating DOM elements, and running Ajax calls.  In order to use the library, we need to include it in the head tag of our <code>index.html</code> file.  So open the <code>index.html</code> file and add the following line between the tags <code>&lt;head&gt;&lt;/head&gt;</code>:</p>
                     <pre>&lt;script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"&gt;&lt;/script&gt;</pre>
@@ -1340,15 +1338,7 @@ a#progress-scale-image img {
                         <h3 id="php">PHP Example</h3>
                     </div>
                     <h4 id="php-setup">Setup</h4>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before you start this tutorial,  you will need some understanding of the <a href="http://www.w3schools.com/php/" target="_blank" title="Learn More About PHP">PHP programming language</a>.  You will also need a PHP environment setup on your local machine, or be able to upload your code to a PHP web server.  This tutorial does not cover how to accomplish that.</p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once you have an environment setup,  you will need to make a few changes to the <a href="#getting_started">Getting Started</a> code you downloaded.  First,  you need to rename <code>index.html</code> to <code>index.php</code>.  Next,  you need to open the <code>index.php</code> file, and add <code>&lt;?php ?&gt;</code> tags to the top of the page.  We will write the code inline.  (I prefer to seperate out the code usually, but wanted to simplify this tutorial)  So the top of the file should look like this:</p>
-                    <pre>
-<span class="code_highlight">&lt;?php
-/* PHP Code will go here */
-?&gt;</span>
-&lt;!DOCTYPE html&gt;
-...
-                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before you start this tutorial,  you will need some understanding of the <a href="http://www.w3schools.com/php/" target="_blank" title="Learn More About PHP">PHP programming language</a>.  You will also need a PHP environment setup on your local machine, or be able to upload your code to a PHP web server.  This tutorial does not cover how to accomplish that.  Once you have an environment setup,  you will need to download the <a href="files/starting_code/php.zip">starting code</a>.</p>
                     <h4 id="php-calling-the-api">Calling the API</h4>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let us start by creating 3 variables to hold the API domain, API key, and the URL to get the unreached of the day information.  Here is the code:</p>
                     <pre>
