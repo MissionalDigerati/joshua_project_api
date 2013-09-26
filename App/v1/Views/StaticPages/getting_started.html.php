@@ -2022,12 +2022,85 @@ else:
     # Everything worked
     # decode the response
     response = request.read().decode("utf8")
-    <span class="code_highlight"># load the JSON
+    # load the JSON
     data = json.loads(response)
     <span class="code_highlight">unreached = data[0]</span>
                     </pre>
                     <h4 id="python-creating-the-widget">Creating the Widget</h4>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we can access any of the supplied attributes of that dict object using it's key. So if we want to get the people group's name, we can access it like this: <code>unreached['PeopNameInCountry']</code>.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let's now turn our attention to formating the data for proper displaying.  The population of the people group needs to be a comma seperated number.  We will first convert the population to an integer using Python's built-in <code>int()</code> function. (<a href="http://docs.python.org/3.3/library/functions.html#int" target="_blank">Python Docs</a>)  We will then use Python's built-in <code>format()</code> function (<a href="http://docs.python.org/3.3/library/functions.html#format" target="_blank">Python Docs</a>) to format it into a comma seperated integer.  Here is the resulting code:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    # load the JSON
+    data = json.loads(response)
+    unreached = data[0]
+    <span class="code_highlight"># format population to be a comma seperated integer
+    unreached['Population'] = format(int(unreached['Population']), ',d')</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Another formatting issue is related to the percent of Evangelicals.  It is possible that it will be set to null.  I would prefer to show 0.00 instead of null.  So we will use Python's <code>if</code> condition to check if the percent of Evangelicals is <code>None</code>,  if so we will set it to 0.  We will then use Python's built-in <code>float()</code> function (<a href="http://docs.python.org/3.3/library/functions.html#float" target="_blank">Python Docs</a>) to format it as a floating point (decimal).  Here is the code:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    # load the JSON
+    data = json.loads(response)
+    unreached = data[0]
+    # format population to be a comma seperated integer
+    unreached['Population'] = format(int(unreached['Population']), ',d')
+    <span class="code_highlight"># check if percent of Evangelicals is None
+    if unreached['PercentEvangelical'] is None:
+        unreached['PercentEvangelical'] = '0'
+    # format percent of Evangelicals to percent
+    unreached['PercentEvangelical'] = float(unreached['PercentEvangelical'])</span>
+                    </pre>
                 </div>
             </div>
         </div>
