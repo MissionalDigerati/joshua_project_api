@@ -1962,7 +1962,7 @@ else:
     <span class="code_highlight"># decode the response
     response = request.read().decode("utf8")</span>
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next we need to convert the JSON to a Python object using the json module's (<a href="http://docs.python.org/3.3/library/json.html" target="_blank">Python Docs</a>) <code>loads()</code> function (<a href="http://docs.python.org/3.3/library/json.html#json.loads" target="_blank">Python Docs</a>).  We will also print out the result temporarily so we can look at it.  Here is how you will acoomplish this:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next we need to convert the JSON to a Python object using the json module's (<a href="http://docs.python.org/3.3/library/json.html" target="_blank">Python Docs</a>) <code>loads()</code> function (<a href="http://docs.python.org/3.3/library/json.html#json.loads" target="_blank">Python Docs</a>).  We will also print out the result temporarily so we can look at it.  Here is how you will accomplish this:</p>
                     <pre>
 #!/usr/bin/python
 # import the necessary libraries
@@ -2101,6 +2101,248 @@ else:
     # format percent of Evangelicals to percent
     unreached['PercentEvangelical'] = float(unreached['PercentEvangelical'])</span>
                     </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;So we are now on the last stretch!  All we have to do now is generate the widget HTML file.  We will use Python's Template strings (<a href="http://docs.python.org/3.3/library/string.html#template-strings" target="_blank">Python Docs</a>) in order to substitute unique $-based variables in our template file with the unreached people group information we already retrieved.  After we have replaced everything,  we will then save the final file as <code>generated_code/widget.html</code>.  First,  open the <code>templates/index.html</code> file.  Now add the following $-based variables to the file:</p>
+                    <pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Joshua Project | Sample Code (Javascript)&lt;/title&gt;
+        &lt;link rel="stylesheet" type="text/css" href="../../css/styles.css"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;
+            This Sample Code is designed to demonstrate how to retrieve the Daily Unreached from the &lt;a href="" class="domain-link"&gt;Joshua Project API&lt;/a&gt; using Python.
+        &lt;/p&gt;
+        &lt;div id="jp_widget"&gt;
+            &lt;div class="upgotd upgotd-title"&gt;
+                &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="upgotd-image"&gt;
+                &lt;a href="<span class="code_highlight">$PeopleGroupURL</span>" class="upgotd-link pg-link" id="people-group-image"&gt;
+                    &lt;img src="<span class="code_highlight">$PeopleGroupPhotoURL</span>" height="160" width="128" alt="Unreached of the Day Photo"&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="upgotd upgotd-pray"&gt;Please pray for the ...&lt;/div&gt;
+            &lt;div class="upgotd upgotd-people"&gt;
+                &lt;a href="<span class="code_highlight">$PeopleGroupURL</span>" class="upgotd-link pg-link pg-name"&gt;<span class="code_highlight">$PeopNameInCountry</span>&lt;/a&gt; of &lt;a href="<span class="code_highlight">$CountryURL</span>" class="upgotd-link country-link country-name"&gt;<span class="code_highlight">$Ctry</span>&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;table align="center" class="upgotd-table" cellpadding="0" cellspacing="0"&gt;
+                &lt;tbody&gt;&lt;tr&gt;
+                    &lt;td width="65"&gt;Population:&lt;/td&gt;
+                    &lt;td width="135" class="pg-population"&gt;<span class="code_highlight">$Population</span>&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Language:&lt;/td&gt;
+                    &lt;td class="pg-language"&gt;<span class="code_highlight">$PrimaryLanguageName</span>&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Religion:&lt;/td&gt;
+                    &lt;td class="pg-religion"&gt;<span class="code_highlight">$PrimaryReligion</span>&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Evangelical:&lt;/td&gt;
+                    &lt;td class="pg-evangelical"&gt;<span class="code_highlight">$PercentEvangelical%</span>&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Status:&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;a href="http://www.joshuaproject.net/definitions.php?term=25" class="upgotd-link pg-scale-text"&gt;
+                            <span class="code_highlight">$JPScaleText</span>
+                        &lt;/a&gt; (
+                        &lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link pg-scale"&gt;
+                            <span class="code_highlight">$JPScale</span>
+                        &lt;/a&gt;
+                        &lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link" id="progress-scale-image"&gt;
+                            &lt;img src="<span class="code_highlight">$JPScaleImageURL</span>" alt="Progress Scale"&gt;
+                        &lt;/a&gt;)
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;&lt;/table&gt;
+            &lt;div class="upgotd upgotd-footer"&gt;Add this daily global vision feature to &lt;br&gt;&lt;a href="/upgotdfeed.php" class="upgotd-link"&gt;&lt;b&gt;your website&lt;/b&gt;&lt;/a&gt; or get it &lt;a href="http://www.unreachedoftheday.org/unreached-email.php" class="upgotd-link"&gt;&lt;b&gt;by email&lt;/b&gt;&lt;/a&gt;.&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you can see in the code above,  we will use Python's Template strings (<a href="http://docs.python.org/3.3/library/string.html#template-strings" target="_blank">Python Docs</a>) to replace <code>$Population</code> with <code>unreached['Population']</code> in our <code>generate_widget.py</code> script.  The first step is to retrieve the template file using Python's built-in <code>open()</code> function (<a href="http://docs.python.org/3.3/library/functions.html#open" target="_blank">Python Docs</a>) which will open the file.  After opening the file,  we want to use Python's file object <code>.read()</code> function (<a href="http://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files" target="_blank">Python Docs</a>) to read the file contents into a variable.  here is the code:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    # load the JSON
+    data = json.loads(response)
+    unreached = data[0]
+    # format population to be a comma seperated integer
+    unreached['Population'] = format(int(unreached['Population']), ',d')
+    # check if percent of Evangelicals is None
+    if unreached['PercentEvangelical'] is None:
+        unreached['PercentEvangelical'] = '0'
+    # format percent of Evangelicals to percent
+    unreached['PercentEvangelical'] = float(unreached['PercentEvangelical'])
+    <span class="code_highlight"># get the template file
+    index_file = open('templates/index.html').read()</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that we have the template file's content,  we can feed that to Python's <code>string.Template</code> function (<a href="http://docs.python.org/3.3/library/string.html#string.Template" target="_blank">Python Docs</a>) to initialize a new template.  Here is the code:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    # load the JSON
+    data = json.loads(response)
+    unreached = data[0]
+    # format population to be a comma seperated integer
+    unreached['Population'] = format(int(unreached['Population']), ',d')
+    # check if percent of Evangelicals is None
+    if unreached['PercentEvangelical'] is None:
+        unreached['PercentEvangelical'] = '0'
+    # format percent of Evangelicals to percent
+    unreached['PercentEvangelical'] = float(unreached['PercentEvangelical'])
+    # get the template file
+    index_file = open('templates/index.html').read()
+    <span class="code_highlight"># initialize a new template
+    template = string.Template(index_file)</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let's trigger the substitution of the $-based variables using Python's string.Template <code>.substitute()</code> function (<a href="http://docs.python.org/3.3/library/string.html#string.Template.substitute" target="_blank">Python Docs</a>) on the new template object we created.  We will pass into it the <code>unreached</code> variable for replacement.</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    # load the JSON
+    data = json.loads(response)
+    unreached = data[0]
+    # format population to be a comma seperated integer
+    unreached['Population'] = format(int(unreached['Population']), ',d')
+    # check if percent of Evangelicals is None
+    if unreached['PercentEvangelical'] is None:
+        unreached['PercentEvangelical'] = '0'
+    # format percent of Evangelicals to percent
+    unreached['PercentEvangelical'] = float(unreached['PercentEvangelical'])
+    # get the template file
+    index_file = open('templates/index.html').read()
+    # initialize a new template
+    template = string.Template(index_file)
+    <span class="code_highlight"># make the substitution
+    final_code = template.substitute(unreached)</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The variable <code>final_code</code> now holds the final code we need to write into our <code>generated_code/widget.html</code> file.  We will use Python's built-in <code>open()</code> function (<a href="http://docs.python.org/3.3/library/functions.html#open" target="_blank">Python Docs</a>) to open the new file.  You will notice that we added a second parameter (<code>'w'</code>) to make the file writable.  We will finally write the file using Python's file object <code>.write()</code> function (<a href="http://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files" target="_blank">Python Docs</a>) passing it the <code>final_code</code> variable.</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    # load the JSON
+    data = json.loads(response)
+    unreached = data[0]
+    # format population to be a comma seperated integer
+    unreached['Population'] = format(int(unreached['Population']), ',d')
+    # check if percent of Evangelicals is None
+    if unreached['PercentEvangelical'] is None:
+        unreached['PercentEvangelical'] = '0'
+    # format percent of Evangelicals to percent
+    unreached['PercentEvangelical'] = float(unreached['PercentEvangelical'])
+    # get the template file
+    index_file = open('templates/index.html').read()
+    # initialize a new template
+    template = string.Template(index_file)
+    # make the substitution
+    final_code = template.substitute(unreached)
+    <span class="code_highlight"># create the widget.html file
+    widget_file = open('generated_code/widget.html','w')
+    widget_file.write(final_code)</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you run this script from your command line utility,  you will see that it generates the <code>generated_code/widget.html</code> file.  Now open that file in your favorite web browser.  This is what you should see:</p>
+                    <img src="img/getting_started/final_python.png" alt="Snapshot of Final Widget" class="img-responsive">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congratulations!  You have completed the Python tutorial.  If you would like to download the sample code,  you can visit our <a href="https://github.com/MissionalDigerati/joshua_project_api_sample_code" target="_blank">Github Account</a>.</p>
                 </div>
             </div>
         </div>
