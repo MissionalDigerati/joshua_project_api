@@ -93,8 +93,15 @@
                                     <li><a href="#php-creating-the-widget">Creating the Widget</a></li>
                                 </ul>
                             </li>
-                            <!-- <li><a href="#python">Python Example</a></li>
-                            <li><a href="#ruby">Ruby Example</a></li> -->
+                            <li>
+                                <a href="#python">Python Example</a>
+                                <ul class="nav">
+                                    <li><a href="#python-setup">Setup</a></li>
+                                    <li><a href="#python-calling-the-api">Calling the API</a></li>
+                                    <li><a href="#python-creating-the-widget">Creating the Widget</a></li>
+                                </ul>
+                            </li>
+                            <!-- <li><a href="#ruby">Ruby Example</a></li> -->
                         </ul>
                     </div>
                 </div>
@@ -428,16 +435,16 @@
                     <h3 id="getting-started">Getting Started (All Tutorials)</h3>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the following tutorials,  we will walk through four different approaches for creating the Joshua Project's unreached people group of the day widget using the new API.  These tutorials come in a variety of programming languages including Javascript using the JQuery library, PHP, Python and Ruby.  Feel free and choose the programming language that you feel more comfortable programming in.  <strong>Before starting this tutorial,  you will need to retrieve an <a href="/">API key</a></strong>.</p>
                     <h4 id="getting-started-starting-code">Starting Code</h4>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We have created a zip file containing the starting code for all the programming languages.  You can download the <a href="files/starting_code.zip">file here</a>. Once you unzip the file, you will see the following code structure:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We have created zip files containing the starting code for each programming language.  You can download these files from the following links:</p>
                     <p>
                         <ul>
-                            <li>css
-                                <ul><li>styles.css</li></ul>
-                            </li>
-                            <li>index.html</li>
+                            <li><a href="files/starting_code/javascript.zip">Javascript Starting Code</a></li>
+                            <li><a href="files/starting_code/php.zip">PHP Starting Code</a></li>
+                            <li><a href="files/starting_code/python.zip">Python Starting Code</a></li>
+                            <li><a href="files/starting_code/ruby.zip">Ruby Starting Code</a></li>
                         </ul>
                     </p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The <code>css/styles.css</code> file offers the basic design for the widget.  Here is a look at the code:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;After downloading and unzipping the directory,  look for the <code>styles.css</code> file.  This file offers the basic design for the widget.  Here is a look at the code:</p>
                     <pre>
 .upgotd { 
     color: #000000; 
@@ -510,7 +517,7 @@ a#progress-scale-image img {
     display: none;
 }
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The <code>index.html</code> file offers the basic structure of the final HTML file.  The code looks like this:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You will also find an <code>index</code> file. (The extension varies based on the programming language) This file offers the basic structure of the final widget.  The code looks like this:</p>
                     <pre>
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -560,9 +567,7 @@ a#progress-scale-image img {
     &lt;/body&gt;
 &lt;/html&gt;
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you load the <code>index.html</code> file in your browser, you should see something similar to this:</p>
-                    <img src="img/getting_started/snapshot.png" alt="Snapshot of the Starting Code" class="img-responsive">
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you can see, we are missing the most important information... the Joshua Project data.  Please choose your preferred programming language to continue this tutorial:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will use this starting code to launch into developing a widget that pulls in the data from our API.  To get started, please choose your preferred programming language to continue this tutorial:</p>
                     <p>
                         <ul>
                             <li><a href="#javascript">Javascript (JQuery) Example</a></li>
@@ -574,7 +579,7 @@ a#progress-scale-image img {
                     <div class="page-header">
                         <h3 id="javascript">Javascript (JQuery) Example</h3>
                     </div>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before beginning this tutorial,  you should have a good understanding of the <a href="http://www.w3schools.com/js/" target="_blank">Javascript programming language</a>, and the <a href="http://jquery.com/" target="_blank">JQuery library</a>!</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before beginning this tutorial,  you should have a good understanding of the <a href="http://www.w3schools.com/js/" target="_blank">Javascript programming language</a>, and the <a href="http://jquery.com/" target="_blank">JQuery library</a>!  You will also need to download the <a href="files/starting_code/javascript.zip">starting code</a>.</p>
                     <h4 id="javascript-jquery-library">The JQuery Library</h4>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JQuery is a Javascript library designed to make scripting in Javascript much more enjoyable and faster.  It helps speed up common tasks like traversing the DOM, animating and manipulating DOM elements, and running Ajax calls.  In order to use the library, we need to include it in the head tag of our <code>index.html</code> file.  So open the <code>index.html</code> file and add the following line between the tags <code>&lt;head&gt;&lt;/head&gt;</code>:</p>
                     <pre>&lt;script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"&gt;&lt;/script&gt;</pre>
@@ -1333,15 +1338,7 @@ a#progress-scale-image img {
                         <h3 id="php">PHP Example</h3>
                     </div>
                     <h4 id="php-setup">Setup</h4>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before you start this tutorial,  you will need some understanding of the <a href="http://www.w3schools.com/php/" target="_blank" title="Learn More About PHP">PHP programming language</a>.  You will also need a PHP environment setup on your local machine, or be able to upload your code to a PHP web server.  This tutorial does not cover how to accomplish that.</p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once you have an environment setup,  you will need to make a few changes to the <a href="#getting_started">Getting Started</a> code you downloaded.  First,  you need to rename <code>index.html</code> to <code>index.php</code>.  Next,  you need to open the <code>index.php</code> file, and add <code>&lt;?php ?&gt;</code> tags to the top of the page.  We will write the code inline.  (I prefer to seperate out the code usually, but wanted to simplify this tutorial)  So the top of the file should look like this:</p>
-                    <pre>
-<span class="code_highlight">&lt;?php
-/* PHP Code will go here */
-?&gt;</span>
-&lt;!DOCTYPE html&gt;
-...
-                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before you start this tutorial,  you will need some understanding of the <a href="http://www.w3schools.com/php/" target="_blank" title="Learn More About PHP">PHP programming language</a>.  You will also need a PHP environment setup on your local machine, or be able to upload your code to a PHP web server.  This tutorial does not cover how to accomplish that.  Once you have an environment setup,  you will need to download the <a href="files/starting_code/php.zip">starting code</a>.</p>
                     <h4 id="php-calling-the-api">Calling the API</h4>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let us start by creating 3 variables to hold the API domain, API key, and the URL to get the unreached of the day information.  Here is the code:</p>
                     <pre>
@@ -1801,6 +1798,551 @@ if ($unreached['PercentEvangelical'] == null) {
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you reload the webpage, you should see the widget with all the API data.</p>
                     <img src="img/getting_started/final_php.png" alt="Snapshot of Final Widget" class="img-responsive">
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congratulations!  You have completed the PHP tutorial.  If you would like to download the sample code,  you can visit our <a href="https://github.com/MissionalDigerati/joshua_project_api_sample_code" target="_blank">Github Account</a>.</p>
+                    <div class="page-header">
+                        <h3 id="python">Python Example</h3>
+                    </div>
+                    <h4 id="python-setup">Setup</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before starting this tutorial,  you will need to have some understanding of the <a href="http://www.python.org/" target="_blank" title="Learn More About Python">Python programming language</a>.  We will be using Python version 3.3.  You will also need Python running in your command line utility.  This tutorial does not show how to install Python.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In this tutorial,  we will build a generator that creates the necessary HTML & CSS for the widget.  Everytime you run the script from the command line,  it will create the widget with the latest people group data.  Once you have downloaded and unzipped the <a href="files/starting_code/python.zip">Python starting code</a>, open it up and look around.  Here is the basic code structure:</p>
+                    <p>
+                        <ul>
+                            <li>
+                                <code>css</code> - directory for CSS Stylesheets
+                                <ul>
+                                    <li><code>styles.css</code> - the basic styles for the widget</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <code>generated_code</code> - directory for the code created by our generator
+                            </li>
+                            <li>
+                                <code>templates</code> - directory for the HTML templates
+                                <ul>
+                                    <li><code>index.html</code> - the HTML template for the widget</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <code>generate_widget.py</code> - the generator script we will build
+                            </li>
+                        </ul>
+                    </p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Go ahead and open the <code>generate_widget.py</code> file in your favorite text editor.  We will begin by including several Python modules using the <code>import</code> statement (<a href="http://docs.python.org/dev/reference/import.html" target="_blank">Python Docs</a>).  We will need the following modules: json (<a href="http://docs.python.org/3.3/library/json.html" target="_blank">Python Docs</a>), urllib.request (<a href="http://docs.python.org/3.3/library/urllib.request.html?highlight=urllib2" target="_blank">Python Docs</a>), urllib.error (<a href="http://docs.python.org/3/library/urllib.error.html" target="_blank">Python Docs</a>), string (<a href="http://docs.python.org/3.3/library/string.html" target="_blank">Python Docs</a>), and sys (<a href="http://docs.python.org/3.3/library/sys.html" target="_blank">Python Docs</a>). The code looks like this:</p>
+                    <pre>
+#!/usr/bin/python
+<span class="code_highlight"># import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys</span>
+                    </pre>
+                    <h4 id="python-calling-the-api">Calling the API</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that we have imported the necessary modules,  we will need to generate the API request.  We will start by creating 3 variables for the API domain, API key, and the API URL for the request.  Here is the code:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+<span class="code_highlight"># set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will call the API within a <code>try...except</code> block. (<a href="http://docs.python.org/3/tutorial/errors.html#handling-exceptions" target="_blank">Python Docs</a>)  Using Python's urllib.error module (<a href="http://docs.python.org/3/library/urllib.error.html" target="_blank">Python Docs</a>),  we will be warned if the API request returns a<code>HTTPError</code> or <code>URLError</code>.  Here is the block:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+<span class="code_highlight">try:
+    # request the API for the Daily Unreached People Group
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now if there is a <code>HTTPError</code> or <code>URLError</code>, we will be able to see what happened.  Now we need to make the request using the urllib.request module (<a href="http://docs.python.org/3.3/library/urllib.request.html?highlight=urllib2" target="_blank">Python Docs</a>) by calling the <code>urlopen()</code> function (<a href="http://docs.python.org/3.3/library/urllib.request.html#urllib.request.urlopen" target="_blank">Python Docs</a>).  Here is the code:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    <span class="code_highlight">request = urllib.request.urlopen(api_url)</span>
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If everything is done correctly,  we should be able to run the code from your command line utility, and see no errors.  Let's add some temporary code to see if we got a response.  Add the following code:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    <span class="code_highlight">response = request.read()
+    print(response)</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If everything went according to plan,  you should see something similar to the <a href="#overview-response">API response</a> shown above.  Using the response of the request, which is set to the <code>request</code> variable,  we need to use the <code>.read()</code> function of the urllib.request module (<a href="http://docs.python.org/3.3/library/urllib.request.html?highlight=urllib2" target="_blank">Python Docs</a>).  We will also need to use the <code>decode()</code> function of the module to decode it to UTF-8.  Here is how it should be written:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    <span class="code_highlight"># decode the response
+    response = request.read().decode("utf8")</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next we need to convert the JSON to a Python object using the json module's (<a href="http://docs.python.org/3.3/library/json.html" target="_blank">Python Docs</a>) <code>loads()</code> function (<a href="http://docs.python.org/3.3/library/json.html#json.loads" target="_blank">Python Docs</a>).  We will also print out the result temporarily so we can look at it.  Here is how you will accomplish this:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    <span class="code_highlight"># load the JSON
+    data = json.loads(response)
+    print(data)</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you look at the response,  you can see that we have a Python list (<a href="http://docs.python.org/3.3/library/stdtypes.html?highlight=list#list" target="_blank">Python Docs</a>) containing a single Python dict (<a href="http://docs.python.org/3.3/library/stdtypes.html?highlight=dict#dict" target="_blank">Python Docs</a>).  To access the first dict, we can refer to it using the index of 0 similar to <code>data[0]</code>.  So let's set a variable to the first dict:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    # load the JSON
+    data = json.loads(response)
+    <span class="code_highlight">unreached = data[0]</span>
+                    </pre>
+                    <h4 id="python-creating-the-widget">Creating the Widget</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we can access any of the supplied attributes of that dict object using it's key. So if we want to get the people group's name, we can access it like this: <code>unreached['PeopNameInCountry']</code>.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let's now turn our attention to formating the data for proper displaying.  The population of the people group needs to be a comma seperated number.  We will first convert the population to an integer using Python's built-in <code>int()</code> function. (<a href="http://docs.python.org/3.3/library/functions.html#int" target="_blank">Python Docs</a>)  We will then use Python's built-in <code>format()</code> function (<a href="http://docs.python.org/3.3/library/functions.html#format" target="_blank">Python Docs</a>) to format it into a comma seperated integer.  Here is the resulting code:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    # load the JSON
+    data = json.loads(response)
+    unreached = data[0]
+    <span class="code_highlight"># format population to be a comma seperated integer
+    unreached['Population'] = format(int(unreached['Population']), ',d')</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Another formatting issue is related to the percent of Evangelicals.  It is possible that it will be set to null.  I would prefer to show 0.00 instead of null.  So we will use Python's <code>if</code> condition to check if the percent of Evangelicals is <code>None</code>,  if so we will set it to 0.  We will then use Python's built-in <code>float()</code> function (<a href="http://docs.python.org/3.3/library/functions.html#float" target="_blank">Python Docs</a>) to format it as a floating point (decimal).  Here is the code:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    # load the JSON
+    data = json.loads(response)
+    unreached = data[0]
+    # format population to be a comma seperated integer
+    unreached['Population'] = format(int(unreached['Population']), ',d')
+    <span class="code_highlight"># check if percent of Evangelicals is None
+    if unreached['PercentEvangelical'] is None:
+        unreached['PercentEvangelical'] = '0'
+    # format percent of Evangelicals to percent
+    unreached['PercentEvangelical'] = float(unreached['PercentEvangelical'])</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;So we are now on the last stretch!  All we have to do now is generate the widget HTML file.  We will use Python's Template strings (<a href="http://docs.python.org/3.3/library/string.html#template-strings" target="_blank">Python Docs</a>) in order to substitute unique $-based variables in our template file with the unreached people group information we already retrieved.  After we have replaced everything,  we will then save the final file as <code>generated_code/widget.html</code>.  First,  open the <code>templates/index.html</code> file.  Now add the following $-based variables to the file:</p>
+                    <pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Joshua Project | Sample Code (Javascript)&lt;/title&gt;
+        &lt;link rel="stylesheet" type="text/css" href="../../css/styles.css"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;
+            This Sample Code is designed to demonstrate how to retrieve the Daily Unreached from the &lt;a href="" class="domain-link"&gt;Joshua Project API&lt;/a&gt; using Python.
+        &lt;/p&gt;
+        &lt;div id="jp_widget"&gt;
+            &lt;div class="upgotd upgotd-title"&gt;
+                &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="upgotd-image"&gt;
+                &lt;a href="<span class="code_highlight">$PeopleGroupURL</span>" class="upgotd-link pg-link" id="people-group-image"&gt;
+                    &lt;img src="<span class="code_highlight">$PeopleGroupPhotoURL</span>" height="160" width="128" alt="Unreached of the Day Photo"&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="upgotd upgotd-pray"&gt;Please pray for the ...&lt;/div&gt;
+            &lt;div class="upgotd upgotd-people"&gt;
+                &lt;a href="<span class="code_highlight">$PeopleGroupURL</span>" class="upgotd-link pg-link pg-name"&gt;<span class="code_highlight">$PeopNameInCountry</span>&lt;/a&gt; of &lt;a href="<span class="code_highlight">$CountryURL</span>" class="upgotd-link country-link country-name"&gt;<span class="code_highlight">$Ctry</span>&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;table align="center" class="upgotd-table" cellpadding="0" cellspacing="0"&gt;
+                &lt;tbody&gt;&lt;tr&gt;
+                    &lt;td width="65"&gt;Population:&lt;/td&gt;
+                    &lt;td width="135" class="pg-population"&gt;<span class="code_highlight">$Population</span>&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Language:&lt;/td&gt;
+                    &lt;td class="pg-language"&gt;<span class="code_highlight">$PrimaryLanguageName</span>&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Religion:&lt;/td&gt;
+                    &lt;td class="pg-religion"&gt;<span class="code_highlight">$PrimaryReligion</span>&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Evangelical:&lt;/td&gt;
+                    &lt;td class="pg-evangelical"&gt;<span class="code_highlight">$PercentEvangelical%</span>&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Status:&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;a href="http://www.joshuaproject.net/definitions.php?term=25" class="upgotd-link pg-scale-text"&gt;
+                            <span class="code_highlight">$JPScaleText</span>
+                        &lt;/a&gt; (
+                        &lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link pg-scale"&gt;
+                            <span class="code_highlight">$JPScale</span>
+                        &lt;/a&gt;
+                        &lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link" id="progress-scale-image"&gt;
+                            &lt;img src="<span class="code_highlight">$JPScaleImageURL</span>" alt="Progress Scale"&gt;
+                        &lt;/a&gt;)
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;&lt;/table&gt;
+            &lt;div class="upgotd upgotd-footer"&gt;Add this daily global vision feature to &lt;br&gt;&lt;a href="/upgotdfeed.php" class="upgotd-link"&gt;&lt;b&gt;your website&lt;/b&gt;&lt;/a&gt; or get it &lt;a href="http://www.unreachedoftheday.org/unreached-email.php" class="upgotd-link"&gt;&lt;b&gt;by email&lt;/b&gt;&lt;/a&gt;.&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you can see in the code above,  we will use Python's Template strings (<a href="http://docs.python.org/3.3/library/string.html#template-strings" target="_blank">Python Docs</a>) to replace <code>$Population</code> with <code>unreached['Population']</code> in our <code>generate_widget.py</code> script.  The first step is to retrieve the template file using Python's built-in <code>open()</code> function (<a href="http://docs.python.org/3.3/library/functions.html#open" target="_blank">Python Docs</a>) which will open the file.  After opening the file,  we want to use Python's file object <code>.read()</code> function (<a href="http://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files" target="_blank">Python Docs</a>) to read the file contents into a variable.  here is the code:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    # load the JSON
+    data = json.loads(response)
+    unreached = data[0]
+    # format population to be a comma seperated integer
+    unreached['Population'] = format(int(unreached['Population']), ',d')
+    # check if percent of Evangelicals is None
+    if unreached['PercentEvangelical'] is None:
+        unreached['PercentEvangelical'] = '0'
+    # format percent of Evangelicals to percent
+    unreached['PercentEvangelical'] = float(unreached['PercentEvangelical'])
+    <span class="code_highlight"># get the template file
+    index_file = open('templates/index.html').read()</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that we have the template file's content,  we can feed that to Python's <code>string.Template</code> function (<a href="http://docs.python.org/3.3/library/string.html#string.Template" target="_blank">Python Docs</a>) to initialize a new template.  Here is the code:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    # load the JSON
+    data = json.loads(response)
+    unreached = data[0]
+    # format population to be a comma seperated integer
+    unreached['Population'] = format(int(unreached['Population']), ',d')
+    # check if percent of Evangelicals is None
+    if unreached['PercentEvangelical'] is None:
+        unreached['PercentEvangelical'] = '0'
+    # format percent of Evangelicals to percent
+    unreached['PercentEvangelical'] = float(unreached['PercentEvangelical'])
+    # get the template file
+    index_file = open('templates/index.html').read()
+    <span class="code_highlight"># initialize a new template
+    template = string.Template(index_file)</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let's trigger the substitution of the $-based variables using Python's string.Template <code>.substitute()</code> function (<a href="http://docs.python.org/3.3/library/string.html#string.Template.substitute" target="_blank">Python Docs</a>) on the new template object we created.  We will pass into it the <code>unreached</code> variable for replacement.</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    # load the JSON
+    data = json.loads(response)
+    unreached = data[0]
+    # format population to be a comma seperated integer
+    unreached['Population'] = format(int(unreached['Population']), ',d')
+    # check if percent of Evangelicals is None
+    if unreached['PercentEvangelical'] is None:
+        unreached['PercentEvangelical'] = '0'
+    # format percent of Evangelicals to percent
+    unreached['PercentEvangelical'] = float(unreached['PercentEvangelical'])
+    # get the template file
+    index_file = open('templates/index.html').read()
+    # initialize a new template
+    template = string.Template(index_file)
+    <span class="code_highlight"># make the substitution
+    final_code = template.substitute(unreached)</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The variable <code>final_code</code> now holds the final code we need to write into our <code>generated_code/widget.html</code> file.  We will use Python's built-in <code>open()</code> function (<a href="http://docs.python.org/3.3/library/functions.html#open" target="_blank">Python Docs</a>) to open the new file.  You will notice that we added a second parameter (<code>'w'</code>) to make the file writable.  We will finally write the file using Python's file object <code>.write()</code> function (<a href="http://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files" target="_blank">Python Docs</a>) passing it the <code>final_code</code> variable.</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    # load the JSON
+    data = json.loads(response)
+    unreached = data[0]
+    # format population to be a comma seperated integer
+    unreached['Population'] = format(int(unreached['Population']), ',d')
+    # check if percent of Evangelicals is None
+    if unreached['PercentEvangelical'] is None:
+        unreached['PercentEvangelical'] = '0'
+    # format percent of Evangelicals to percent
+    unreached['PercentEvangelical'] = float(unreached['PercentEvangelical'])
+    # get the template file
+    index_file = open('templates/index.html').read()
+    # initialize a new template
+    template = string.Template(index_file)
+    # make the substitution
+    final_code = template.substitute(unreached)
+    <span class="code_highlight"># create the widget.html file
+    widget_file = open('generated_code/widget.html','w')
+    widget_file.write(final_code)</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you run this script from your command line utility,  you will see that it generates the <code>generated_code/widget.html</code> file.  Now open that file in your favorite web browser.  This is what you should see:</p>
+                    <img src="img/getting_started/final_python.png" alt="Snapshot of Final Widget" class="img-responsive">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congratulations!  You have completed the Python tutorial.  If you would like to download the sample code,  you can visit our <a href="https://github.com/MissionalDigerati/joshua_project_api_sample_code" target="_blank">Github Account</a>.</p>
                 </div>
             </div>
         </div>
