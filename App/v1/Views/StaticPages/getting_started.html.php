@@ -101,7 +101,14 @@
                                     <li><a href="#python-creating-the-widget">Creating the Widget</a></li>
                                 </ul>
                             </li>
-                            <!-- <li><a href="#ruby">Ruby Example</a></li> -->
+                            <li>
+                                <a href="#ruby">Ruby Example</a>
+                                <ul class="nav">
+                                    <li><a href="#ruby-setup">Setup</a></li>
+                                    <li><a href="#ruby-calling-the-api">Calling the API</a></li>
+                                    <li><a href="#ruby-creating-the-widget">Creating the Widget</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -2343,6 +2350,151 @@ else:
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you run this script from your command line utility,  you will see that it generates the <code>generated_code/widget.html</code> file.  Now open that file in your favorite web browser.  This is what you should see:</p>
                     <img src="img/getting_started/final_python.png" alt="Snapshot of Final Widget" class="img-responsive">
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congratulations!  You have completed the Python tutorial.  If you would like to download the sample code,  you can visit our <a href="https://github.com/MissionalDigerati/joshua_project_api_sample_code" target="_blank">Github Account</a>.</p>
+                    <div class="page-header">
+                        <h3 id="ruby">Ruby Example</h3>
+                    </div>
+                    <h4 id="ruby-setup">Setup</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before starting this tutorial,  you will need to have a basic understanding of the <a href="https://www.ruby-lang.org/" target="_blank" title="Find out more about Ruby">Ruby programming language</a>.  We will be using Ruby version 2.0 in this tutorial.  You will also need to be able to run ruby scripts in your command line utility.  This tutorial does not discuss how to install Ruby.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In this tutorial,  we will build a generator that creates the necessary HTML & CSS for the widget.  Everytime you run the script from the command line,  it will create the widget with the latest people group data.  Once you have downloaded and unzipped the <a href="files/starting_code/ruby.zip">Ruby starting code</a>, open it up and look around.  Here is the basic code structure:</p>
+                    <p>
+                        <ul>
+                            <li>
+                                <code>css</code> - directory for CSS Stylesheets
+                                <ul>
+                                    <li><code>styles.css</code> - the basic styles for the widget</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <code>generated_code</code> - directory for the code created by our generator
+                            </li>
+                            <li>
+                                <code>templates</code> - directory for the HTML/ERB templates
+                                <ul>
+                                    <li><code>index.html.erb</code> - the HTML/ERB template for the widget</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <code>generate_widget.rb</code> - the generator script we will build
+                            </li>
+                        </ul>
+                    </p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Go ahead and open the <code>generate_widget.rb</code> file in your favorite text editor.  We will begin by including any modules/gems we will need for the script.  We will use Ruby's <code>require</code> method (<a href="http://www.ruby-doc.org/core-2.0.0/Kernel.html#method-i-require" target="_blank">Ruby Docs</a>) to include the Net/HTTP module (<a href="http://ruby-doc.org/stdlib-2.0.0/libdoc/net/http/rdoc/Net/HTTP.html" target="_blank">Ruby Docs</a>), and JSON module (<a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/json/rdoc/JSON.html" target="_blank">Ruby Docs</a>).  We will also need the <a href="http://www.kuwata-lab.com/erubis/" target="_blank">Erubis</a> gem.  <em>You will need to install Erubis using to command <code>gem install erubis</code>.</em>  Here is the start of our code:</p>
+                    <pre>
+<span class="code_highlight"># We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"</span>
+                    </pre>
+                    <h4 id="ruby-calling-the-api">Calling the API</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that we have required the necessary gems/modules,  we need to generated the API request.  We will start by creating 3 variables for the API domain, API key, and the API path for the request. <strong>Remember to add your API key!</strong>  Here is the code:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+<span class="code_highlight"># set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will call the API in a Ruby <code>begin...end</code> block. (<a href="http://www.ruby-doc.org/core-2.0.0/doc/syntax/exceptions_rdoc.html" target="_blank">Ruby Docs</a>)  This will allow us the opportunity to rescue from a failed request, and print out the error.  Here is the block:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+<span class="code_highlight">begin
+    # Make the request to the Joshua Project API
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will now use the Net/HTTP module (<a href="http://ruby-doc.org/stdlib-2.0.0/libdoc/net/http/rdoc/Net/HTTP.html" target="_blank">Ruby Docs</a>) to send the <code>GET</code> request to the API.  We will use it's <code>.get()</code> method for this. (<a href="http://ruby-doc.org/stdlib-2.0.0/libdoc/net/http/rdoc/Net/HTTP.html#method-c-get" target="_blank">Ruby Docs</a>).  We will then set the response to the variable <code>response</code>.  Here is the code to accomplish this:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    <span class="code_highlight">response = Net::HTTP.get(domain, api_path)</span>
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that we have a response,  we need to parse the JSON into a Ruby object.  This is where the JSON module (<a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/json/rdoc/JSON.html" target="_blank">Ruby Docs</a>) comes in handy.  Weill use it's <code>.parse()</code> method (<a href="http://www.ruby-doc.org/stdlib-2.0/libdoc/json/rdoc/JSON.html#method-i-parse" target="_blank">Ruby Docs</a>) to accomplish this.  Let us also add some temporary code to display what we receive back.  Here is the code:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    <span class="code_highlight"># Parse the response
+    data = JSON.parse(response)
+    puts data</span>
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now run this code in your command line utility, and you should see something very similar to the <a href="#api-response">API response</a> we showed you up top.  The <code>.parse()</code> method (<a href="http://www.ruby-doc.org/stdlib-2.0/libdoc/json/rdoc/JSON.html#method-i-parse" target="_blank">Ruby Docs</a>) converted the JSON to a Ruby Array (<a href="http://ruby-doc.org/core-2.0.0/Array.html" target="_blank">Ruby Docs</a>) of Hashes (<a href="http://ruby-doc.org/core-2.0.0/Hash.html" target="_blank">Ruby Docs</a>).  To access the first Hash,  we can use the Array index of the first object 0 like this: <code>data[0]</code>.</p> 
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    # Parse the response
+    data = JSON.parse(response)
+    <span class="code_highlight">unreached = data[0]</span>
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+                    </pre>
+                    <h4 id="ruby-creating-the-widget">Creating the Widget</h4>
                 </div>
             </div>
         </div>
