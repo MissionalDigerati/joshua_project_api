@@ -1802,10 +1802,232 @@ if ($unreached['PercentEvangelical'] == null) {
                         <h3 id="python">Python Example</h3>
                     </div>
                     <h4 id="python-setup">Setup</h4>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before starting this tutorial,  you will need to have some understanding of the <a href="http://www.python.org/" target="_blank" title="Learn More About Python">Python programming language</a>.  You will also need Python running in your command line utility.</p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In this tutorial,  we will build a script that will generate the necessary HTML & CSS for the widget.  Everytime you run the script from the command line,  it will create the widget with the latest people group data.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before starting this tutorial,  you will need to have some understanding of the <a href="http://www.python.org/" target="_blank" title="Learn More About Python">Python programming language</a>.  We will be using Python version 3.3.  You will also need Python running in your command line utility.  This tutorial does not show how to install Python.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In this tutorial,  we will build a generator that creates the necessary HTML & CSS for the widget.  Everytime you run the script from the command line,  it will create the widget with the latest people group data.  Once you have downloaded and unzipped the <a href="files/starting_code/python.zip">Python starting code</a>, open it up and look around.  Here is the basic code structure:</p>
+                    <p>
+                        <ul>
+                            <li>
+                                <code>css</code> - directory for CSS Stylesheets
+                                <ul>
+                                    <li><code>styles.css</code> - the basic styles for the widget</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <code>generated_code</code> - directory for the code created by our generator
+                            </li>
+                            <li>
+                                <code>templates</code> - directory for the HTML templates
+                                <ul>
+                                    <li><code>index.html</code> - the HTML template for the widget</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <code>generate_widget.py</code> - the generator script we will build
+                            </li>
+                        </ul>
+                    </p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Go ahead and open the <code>generate_widget.py</code> file in your favorite text editor.  We will begin by including several Python modules using the <code>import</code> statement (<a href="http://docs.python.org/dev/reference/import.html" target="_blank">Python Docs</a>).  We will need the following modules: json (<a href="http://docs.python.org/3.3/library/json.html" target="_blank">Python Docs</a>), urllib.request (<a href="http://docs.python.org/3.3/library/urllib.request.html?highlight=urllib2" target="_blank">Python Docs</a>), urllib.error (<a href="http://docs.python.org/3/library/urllib.error.html" target="_blank">Python Docs</a>), string (<a href="http://docs.python.org/3.3/library/string.html" target="_blank">Python Docs</a>), and sys (<a href="http://docs.python.org/3.3/library/sys.html" target="_blank">Python Docs</a>). The code looks like this:</p>
+                    <pre>
+#!/usr/bin/python
+<span class="code_highlight"># import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys</span>
+                    </pre>
                     <h4 id="python-calling-the-api">Calling the API</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that we have imported the necessary modules,  we will need to generate the API request.  We will start by creating 3 variables for the API domain, API key, and the API URL for the request.  Here is the code:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+<span class="code_highlight"># set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will call the API within a <code>try...except</code> block. (<a href="http://docs.python.org/3/tutorial/errors.html#handling-exceptions" target="_blank">Python Docs</a>)  Using Python's urllib.error module (<a href="http://docs.python.org/3/library/urllib.error.html" target="_blank">Python Docs</a>),  we will be warned if the API request returns a<code>HTTPError</code> or <code>URLError</code>.  Here is the block:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+<span class="code_highlight">try:
+    # request the API for the Daily Unreached People Group
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now if there is a <code>HTTPError</code> or <code>URLError</code>, we will be able to see what happened.  Now we need to make the request using the urllib.request module (<a href="http://docs.python.org/3.3/library/urllib.request.html?highlight=urllib2" target="_blank">Python Docs</a>) by calling the <code>urlopen()</code> function (<a href="http://docs.python.org/3.3/library/urllib.request.html#urllib.request.urlopen" target="_blank">Python Docs</a>).  Here is the code:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    <span class="code_highlight">request = urllib.request.urlopen(api_url)</span>
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If everything is done correctly,  we should be able to run the code from your command line utility, and see no errors.  Let's add some temporary code to see if we got a response.  Add the following code:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    <span class="code_highlight">response = request.read()
+    print(response)</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If everything went according to plan,  you should see something similar to the <a href="#overview-response">API response</a> shown above.  Using the response of the request, which is set to the <code>request</code> variable,  we need to use the <code>.read()</code> function of the urllib.request module (<a href="http://docs.python.org/3.3/library/urllib.request.html?highlight=urllib2" target="_blank">Python Docs</a>).  We will also need to use the <code>decode()</code> function of the module to decode it to UTF-8.  Here is how it should be written:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    <span class="code_highlight"># decode the response
+    response = request.read().decode("utf8")</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next we need to convert the JSON to a Python object using the json module's (<a href="http://docs.python.org/3.3/library/json.html" target="_blank">Python Docs</a>) <code>loads()</code> function (<a href="http://docs.python.org/3.3/library/json.html#json.loads" target="_blank">Python Docs</a>).  We will also print out the result temporarily so we can look at it.  Here is how you will acoomplish this:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    <span class="code_highlight"># load the JSON
+    data = json.loads(response)
+    print(data)</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you look at the response,  you can see that we have a Python list (<a href="http://docs.python.org/3.3/library/stdtypes.html?highlight=list#list" target="_blank">Python Docs</a>) containing a single Python dict (<a href="http://docs.python.org/3.3/library/stdtypes.html?highlight=dict#dict" target="_blank">Python Docs</a>).  To access the first dict, we can refer to it using the index of 0 similar to <code>data[0]</code>.  So let's set a variable to the first dict:</p>
+                    <pre>
+#!/usr/bin/python
+# import the necessary libraries
+import json
+import urllib.request
+import urllib.error
+import string
+import sys
+# set some important variables
+domain = "http://jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
+try:
+    # request the API for the Daily Unreached People Group
+    request = urllib.request.urlopen(api_url)
+except urllib.error.HTTPError as e:
+    print('The server couldn\'t fulfill the request.')
+    print('Error code: ', e.code)
+    exit
+except urllib.error.URLError as e:
+    print('We failed to reach a server.')
+    print('Reason: ', e.reason)
+    exit
+else:
+    # Everything worked
+    # decode the response
+    response = request.read().decode("utf8")
+    <span class="code_highlight"># load the JSON
+    data = json.loads(response)
+    <span class="code_highlight">unreached = data[0]</span>
+                    </pre>
                     <h4 id="python-creating-the-widget">Creating the Widget</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we can access any of the supplied attributes of that dict object using it's key. So if we want to get the people group's name, we can access it like this: <code>unreached['PeopNameInCountry']</code>.</p>
                 </div>
             </div>
         </div>
