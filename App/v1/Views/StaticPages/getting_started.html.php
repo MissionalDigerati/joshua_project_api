@@ -57,8 +57,8 @@
         </div>
         <div class="container">
             <div class="row">
-                <div id="sidebar" class="col-sm-3">
-                    <div class="hidden-print affix" role="complementary">
+                <div id="sidebar" class="col-md-3">
+                    <div class="hidden-print visible-desktop affix" role="complementary">
                         <ul class="nav sidenav">
                             <li class="active">
                                 <a href="#overview">Overview</a>
@@ -101,11 +101,21 @@
                                     <li><a href="#python-creating-the-widget">Creating the Widget</a></li>
                                 </ul>
                             </li>
-                            <!-- <li><a href="#ruby">Ruby Example</a></li> -->
+                            <li>
+                                <a href="#ruby">Ruby Example</a>
+                                <ul class="nav">
+                                    <li><a href="#ruby-setup">Setup</a></li>
+                                    <li><a href="#ruby-calling-the-api">Calling the API</a></li>
+                                    <li><a href="#ruby-creating-the-widget">Creating the Widget</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#reporting-tutorial-errors">Errors In These Tutorials?</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-sm-9">
+                <div class="col-md-9">
                     <div class="page-header">
                         <h2>Getting Started</h2>
                     </div>
@@ -593,11 +603,11 @@ a#progress-scale-image img {
     });</span>
 &lt;/script&gt;
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We should also declare two variables to hold the API's domain name, and your API key.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We should also declare two variables to hold the API's domain name, and your API key.  <strong>Remember to add your API key!</strong></p>
                     <pre>
 &lt;script type="text/javascript"&gt;
     <span class="code_highlight">var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;</span>
+    var API_KEY = "YOUR_API_KEY";</span>
     jQuery(document).ready(function($) {    
 
     });
@@ -607,11 +617,11 @@ a#progress-scale-image img {
                     <blockquote cite="http://en.wikipedia.org/wiki/Ajax_(programming)">
                         <p>With Ajax, web applications can send data to, and retrieve data from, a server asynchronously (in the background) without interfering with the display and behavior of the existing page.<br><br><em><a href="http://en.wikipedia.org/wiki/Ajax_(programming)" target="_blank">Wikipedia</a></em></p>
                     </blockquote>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is the code to run the Ajax request after the dom has loaded:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is the code to run the Ajax request after the DOM has loaded:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         <span class="code_highlight">$.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -664,7 +674,7 @@ a#progress-scale-image img {
                                         <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -695,7 +705,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -719,7 +729,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -858,7 +868,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -886,7 +896,7 @@ a#progress-scale-image img {
                     </pre>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you refresh the webpage, you should see something like this with different data:</p>
                     <img src="img/getting_started/jquery_text_example.png" alt="Snapshot of the Adding text() method" class="img-responsive">
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;But why different data!  If you do not supply a month or day parameter,  the API will return today's unreached people group of the day by default.  Most likely you are not doing this tutorial the same day as I was.  This now leaves us with the following tasks:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mine looks different!  If you do not supply a month or day parameter,  the API will return today's unreached people group of the day by default.  Most likely you are not doing this tutorial the same day as I was.  This now leaves us with the following tasks:</p>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -935,7 +945,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -1003,7 +1013,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -1069,7 +1079,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -1137,7 +1147,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -1187,7 +1197,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -1283,7 +1293,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -1340,11 +1350,11 @@ a#progress-scale-image img {
                     <h4 id="php-setup">Setup</h4>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before you start this tutorial,  you will need some understanding of the <a href="http://www.w3schools.com/php/" target="_blank" title="Learn More About PHP">PHP programming language</a>.  You will also need a PHP environment setup on your local machine, or be able to upload your code to a PHP web server.  This tutorial does not cover how to accomplish that.  Once you have an environment setup,  you will need to download the <a href="files/starting_code/php.zip">starting code</a>.</p>
                     <h4 id="php-calling-the-api">Calling the API</h4>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let us start by creating 3 variables to hold the API domain, API key, and the URL to get the unreached of the day information.  Here is the code:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Open the <code>index.php</code> file in your favorite text editor.  Let us start by creating 3 variables to hold the API domain, API key, and the URL to get the unreached of the day information.  <strong>Remember to add your API key!</strong>  Add the following code to the top of the <code>index.php</code> file:</p>
                     <pre>
 &lt;?php
 <span class="code_highlight">$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;</span>
 ?&gt;
                     </pre>
@@ -1356,7 +1366,7 @@ $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;</
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 <span class="code_highlight">/**
  * open connection
@@ -1370,7 +1380,7 @@ $ch = curl_init();</span>
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1425,7 +1435,7 @@ curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');</span>
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1454,7 +1464,7 @@ $result = curl_exec($ch) or die(curl_error($ch));</span>
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1489,7 +1499,7 @@ curl_close($ch);</span>
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1531,7 +1541,7 @@ exit();</span>
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1568,11 +1578,11 @@ curl_close($ch);
 $decoded_json = json_decode($result, true);</span>
 ?&gt;
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We should also add error checking.  If the <a href="http://www.w3schools.com/php/php_arrays_multi.asp" target="_blank" title="Learn More About Multidimensional Arrays">multidimensional array</a> is not an array, we will stop executing the code with a message.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We should also add error checking.  If the <a href="http://www.w3schools.com/php/php_arrays_multi.asp" target="_blank" title="Learn More About Multidimensional Arrays">multidimensional array</a> is not an array, we will stop executing the code with a message.  We will use PHP's <code>is_array()</code> function (<a href="http://us1.php.net/manual/en/function.is-array.php" target="_blank">PHP Docs</a>) to do the check.</p>
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1617,7 +1627,7 @@ $decoded_json = json_decode($result, true);
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1666,11 +1676,11 @@ $unreached = $decoded_json[0];</span>
                     </pre>
                     <h4 id="php-creating-the-widget">Creating the Widget</h4>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we can access any of the supplied attributes of that JSON object using it's key.  So if we want to get the people group's name,  we can access it like this: <code>$unreached['PeopNameInCountry']</code>.</p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The attribute percentage of Evangelicals in the people group can be set to null,  if so then we should display 0.00.  So let's add a check to evaluate the value, and set it to 0 if it is null.  Here is the code:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There are a few attributes that need to be formatted correctly.  The attribute percentage of Evangelicals in the people group can be set to null,  if so then we should display 0.00.  So let's add a check to evaluate the value, and set it to 0 if it is null.  Here is the code:</p>
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1725,7 +1735,7 @@ if ($unreached['PercentEvangelical'] == null) {
 }</span>
 ?&gt;
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we just need to add the data to the HTML widget code for displaying.  We will use PHP's <code>echo()</code> function (<a href="http://www.php.net/manual/en/function.echo.php" target="_blank">PHP DOCS</a>) to display the data in the appropriate place.  We will also use PHP's  <code>number_format()</code> function (<a href="http://www.php.net/manual/en/function.number-format.php" target="_blank">PHP DOCS</a>) to format the people group's population, and percent of Evangelicals.  In the <code>index.php</code> file that you have been working on,  update the code to what is below:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we just need to add the data to the HTML widget code for displaying.  We will use PHP's <code>echo()</code> function (<a href="http://www.php.net/manual/en/function.echo.php" target="_blank">PHP DOCS</a>) to display the data in the appropriate place.  We will also use PHP's  <code>number_format()</code> function (<a href="http://www.php.net/manual/en/function.number-format.php" target="_blank">PHP DOCS</a>) to format the people group's population, and percent of Evangelicals.  In the HTML portion of the <code>index.php</code> file,  update the code to what is below:</p>
                     <pre>
 &lt;div id="jp_widget"&gt;
     &lt;div class="upgotd upgotd-title"&gt;
@@ -1795,8 +1805,9 @@ if ($unreached['PercentEvangelical'] == null) {
     &lt;/div&gt;
 &lt;/div&gt;
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you reload the webpage, you should see the widget with all the API data.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you reload the webpage, you should see the widget with all the API data.  Your data might be different.</p>
                     <img src="img/getting_started/final_php.png" alt="Snapshot of Final Widget" class="img-responsive">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mine looks different! If you do not supply a month or day parameter, the API will return today's unreached people group of the day by default. Most likely you are not doing this tutorial the same day as I was.</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congratulations!  You have completed the PHP tutorial.  If you would like to download the sample code,  you can visit our <a href="https://github.com/MissionalDigerati/joshua_project_api_sample_code" target="_blank">Github Account</a>.</p>
                     <div class="page-header">
                         <h3 id="python">Python Example</h3>
@@ -1837,7 +1848,7 @@ import string
 import sys</span>
                     </pre>
                     <h4 id="python-calling-the-api">Calling the API</h4>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that we have imported the necessary modules,  we will need to generate the API request.  We will start by creating 3 variables for the API domain, API key, and the API URL for the request.  Here is the code:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that we have imported the necessary modules,  we will need to generate the API request.  We will start by creating 3 variables for the API domain, API key, and the API URL for the request.  <strong>Remember to add your API key!</strong>  Here is the code:</p>
                     <pre>
 #!/usr/bin/python
 # import the necessary libraries
@@ -1847,8 +1858,8 @@ import urllib.error
 import string
 import sys
 <span class="code_highlight"># set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key</span>
                     </pre>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will call the API within a <code>try...except</code> block. (<a href="http://docs.python.org/3/tutorial/errors.html#handling-exceptions" target="_blank">Python Docs</a>)  Using Python's urllib.error module (<a href="http://docs.python.org/3/library/urllib.error.html" target="_blank">Python Docs</a>),  we will be warned if the API request returns a<code>HTTPError</code> or <code>URLError</code>.  Here is the block:</p>
@@ -1861,8 +1872,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 <span class="code_highlight">try:
     # request the API for the Daily Unreached People Group
@@ -1887,8 +1898,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -1914,8 +1925,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -1943,8 +1954,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -1972,8 +1983,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2004,8 +2015,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2038,8 +2049,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2072,8 +2083,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2173,8 +2184,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2214,8 +2225,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2257,8 +2268,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2302,8 +2313,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2340,9 +2351,451 @@ else:
     widget_file = open('generated_code/widget.html','w')
     widget_file.write(final_code)</span>
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you run this script from your command line utility,  you will see that it generates the <code>generated_code/widget.html</code> file.  Now open that file in your favorite web browser.  This is what you should see:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you run this script from your command line utility,  you will see that it generates the <code>generated_code/widget.html</code> file.  Now open that file in your favorite web browser.  You should see something similar to this:</p>
                     <img src="img/getting_started/final_python.png" alt="Snapshot of Final Widget" class="img-responsive">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mine looks different! If you do not supply a month or day parameter, the API will return today's unreached people group of the day by default. Most likely you are not doing this tutorial the same day as I was.</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congratulations!  You have completed the Python tutorial.  If you would like to download the sample code,  you can visit our <a href="https://github.com/MissionalDigerati/joshua_project_api_sample_code" target="_blank">Github Account</a>.</p>
+                    <div class="page-header">
+                        <h3 id="ruby">Ruby Example</h3>
+                    </div>
+                    <h4 id="ruby-setup">Setup</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before starting this tutorial,  you will need to have a basic understanding of the <a href="https://www.ruby-lang.org/" target="_blank" title="Find out more about Ruby">Ruby programming language</a>.  We will be using Ruby version 2.0 in this tutorial.  You will also need to be able to run ruby scripts in your command line utility.  This tutorial does not discuss how to install Ruby.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In this tutorial,  we will build a generator that creates the necessary HTML & CSS for the widget.  Everytime you run the script from the command line,  it will create the widget with the latest people group data.  Once you have downloaded and unzipped the <a href="files/starting_code/ruby.zip">Ruby starting code</a>, open it up and look around.  Here is the basic code structure:</p>
+                    <p>
+                        <ul>
+                            <li>
+                                <code>css</code> - directory for CSS Stylesheets
+                                <ul>
+                                    <li><code>styles.css</code> - the basic styles for the widget</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <code>generated_code</code> - directory for the code created by our generator
+                            </li>
+                            <li>
+                                <code>templates</code> - directory for the HTML/ERB templates
+                                <ul>
+                                    <li><code>index.html.erb</code> - the HTML/ERB template for the widget</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <code>generate_widget.rb</code> - the generator script we will build
+                            </li>
+                        </ul>
+                    </p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Go ahead and open the <code>generate_widget.rb</code> file in your favorite text editor.  We will begin by including any modules/gems we will need for the script.  We will use Ruby's <code>require</code> method (<a href="http://www.ruby-doc.org/core-2.0.0/Kernel.html#method-i-require" target="_blank">Ruby Docs</a>) to include the Net/HTTP module (<a href="http://ruby-doc.org/stdlib-2.0.0/libdoc/net/http/rdoc/Net/HTTP.html" target="_blank">Ruby Docs</a>), and JSON module (<a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/json/rdoc/JSON.html" target="_blank">Ruby Docs</a>).  We will also need the <a href="http://www.kuwata-lab.com/erubis/" target="_blank">Erubis</a> gem.  <em>You will need to install Erubis using to command <code>gem install erubis</code>.</em>  Here is the start of our code:</p>
+                    <pre>
+<span class="code_highlight"># We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"</span>
+                    </pre>
+                    <h4 id="ruby-calling-the-api">Calling the API</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that we have required the necessary gems/modules,  we need to generated the API request.  We will start by creating 3 variables for the API domain, API key, and the API path for the request. <strong>Remember to add your API key!</strong>  Here is the code:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+<span class="code_highlight"># set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = "YOUR_API_KEY"
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will call the API in a Ruby <code>begin...end</code> block. (<a href="http://www.ruby-doc.org/core-2.0.0/doc/syntax/exceptions_rdoc.html" target="_blank">Ruby Docs</a>)  This will allow us the opportunity to rescue from a failed request, and print out the error.  Here is the block:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = "YOUR_API_KEY"
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+<span class="code_highlight">begin
+    # Make the request to the Joshua Project API
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will now use the Net/HTTP module (<a href="http://ruby-doc.org/stdlib-2.0.0/libdoc/net/http/rdoc/Net/HTTP.html" target="_blank">Ruby Docs</a>) to send the <code>GET</code> request to the API.  We will use it's <code>.get()</code> method for this. (<a href="http://ruby-doc.org/stdlib-2.0.0/libdoc/net/http/rdoc/Net/HTTP.html#method-c-get" target="_blank">Ruby Docs</a>).  We will then set the response to the variable <code>response</code>.  Here is the code to accomplish this:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = "YOUR_API_KEY"
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    <span class="code_highlight">response = Net::HTTP.get(domain, api_path)</span>
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that we have a response,  we need to parse the JSON into a Ruby object.  This is where the JSON module (<a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/json/rdoc/JSON.html" target="_blank">Ruby Docs</a>) comes in handy.  Weill use it's <code>.parse()</code> method (<a href="http://www.ruby-doc.org/stdlib-2.0/libdoc/json/rdoc/JSON.html#method-i-parse" target="_blank">Ruby Docs</a>) to accomplish this.  Let us also add some temporary code to display what we receive back.  Here is the code:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = "YOUR_API_KEY"
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    <span class="code_highlight"># Parse the response
+    data = JSON.parse(response)
+    puts data</span>
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now run this code in your command line utility, and you should see something very similar to the <a href="#api-response">API response</a> we showed you up top.  The <code>.parse()</code> method (<a href="http://www.ruby-doc.org/stdlib-2.0/libdoc/json/rdoc/JSON.html#method-i-parse" target="_blank">Ruby Docs</a>) converted the JSON to a Ruby Array (<a href="http://ruby-doc.org/core-2.0.0/Array.html" target="_blank">Ruby Docs</a>) of Hashes (<a href="http://ruby-doc.org/core-2.0.0/Hash.html" target="_blank">Ruby Docs</a>).  To access the first Hash,  we can use the Array index of the first object 0 like this: <code>data[0]</code>.</p> 
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = "YOUR_API_KEY"
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    # Parse the response
+    data = JSON.parse(response)
+    <span class="code_highlight">unreached = data[0]</span>
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+                    </pre>
+                    <h4 id="ruby-creating-the-widget">Creating the Widget</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we can access any of the supplied attributes of that Hash object using it's key. So if we want to get the people group's name, we can access it like this: <code>unreached['PeopNameInCountry']</code>.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In order to display the information properly,  we need to format the population and percent of Evangelicals.  For the population,  we want to format it as a comma seperated number.  To do this,  we will convert the population to a string using Ruby's <code>.to_s</code> method. (<a href="http://ruby-doc.org/core-2.0.0/Object.html#method-i-to_s" target="_blank">Ruby Docs</a>)  After converting it to a string,  we will use Ruby's String <code>.gsub()</code> method (<a href="http://ruby-doc.org/core-2.0.0/String.html#method-i-gsub" target="_blank">Ruby Docs</a>) to use a <a href="http://en.wikipedia.org/wiki/Regular_expression" target="_blank">Regular Expression</a> to format the string.  Here is the code to format the population:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = "YOUR_API_KEY"
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    # Parse the response
+    data = JSON.parse(response)
+    unreached = data[0]
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+<span class="code_highlight"># format the population to a comma seperated value
+unreached['Population'] = unreached['Population'].to_s.gsub(/(\d)(?=(\d{3})+$)/,'\1,')</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sometimes the percent of Evangelicals can be nil.  I would prefer to display 0.00 rather then nil.  To do this,  we will use Ruby's <code>if...end</code> block and the <code>.nil?</code> method (<a href="http://www.ruby-doc.org/core-2.0.0/NilClass.html#method-i-nil-3F" target="_blank">Ruby Docs</a>) to check it's value.</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = "YOUR_API_KEY"
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    # Parse the response
+    data = JSON.parse(response)
+    unreached = data[0]
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+# format the population to a comma seperated value
+unreached['Population'] = unreached['Population'].to_s.gsub(/(\d)(?=(\d{3})+$)/,'\1,')
+<span class="code_highlight"># Lets handle the evangelical number since it can be nil
+if unreached['PercentEvangelical'].nil?
+    unreached['PercentEvangelical'] = "0.00"
+else
+    # format the percent to a floating point (decimal)
+end</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If the percent of Evangelicals is not nil, then we want to convert it to a floating point (decimal).</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = "YOUR_API_KEY"
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    # Parse the response
+    data = JSON.parse(response)
+    unreached = data[0]
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+# format the population to a comma seperated value
+unreached['Population'] = unreached['Population'].to_s.gsub(/(\d)(?=(\d{3})+$)/,'\1,')
+# Lets handle the evangelical number since it can be nil
+if unreached['PercentEvangelical'].nil?
+    unreached['PercentEvangelical'] = "0.00"
+else
+    # format the percent to a floating point (decimal)
+    <span class="code_highlight">unreached['PercentEvangelical'] = '%.2f' % unreached['PercentEvangelical']</span>
+end
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that all the attributes have been formatted, we are ready to create the <code>generated_code/widget.html</code> file.  We will use a common Ruby templating gem called <a href="http://www.kuwata-lab.com/erubis/" target="_blank">Erubis</a>.  This templating engine gives us the ability to embed Ruby in a HTML template file.  All Ruby is wrapped with a <code><% %></code> tag.  Any ruby within those tags will be run when the template is processed.  Open the <code>templates/index.html.erb</code> file and update with the following Erubis code:</p>
+                    <pre>
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Joshua Project&lt;/title&gt;
+        &lt;link rel="stylesheet" type="text/css" href="../css/styles.css"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id="jp_widget"&gt;
+            &lt;div class="upgotd upgotd-title"&gt;
+                &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="upgotd-image"&gt;
+                &lt;a href="<span class="code_highlight">&lt;%= unreached['PeopleGroupURL'] %&gt;</span>" class="upgotd-link pg-link" id="people-group-image"&gt;
+                    &lt;img src="<span class="code_highlight">&lt;%= unreached['PeopleGroupPhotoURL'] %&gt;</span>" height="160" width="128" alt="Unreached of the Day Photo"&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="upgotd upgotd-pray"&gt;Please pray for the ...&lt;/div&gt;
+            &lt;div class="upgotd upgotd-people"&gt;
+                &lt;a href="<span class="code_highlight">&lt;%= unreached['PeopleGroupURL'] %&gt;</span>" class="upgotd-link pg-link pg-name"&gt;<span class="code_highlight">&lt;%= unreached['PeopNameInCountry'] %&gt;</span>&lt;/a&gt; of &lt;a href="<span class="code_highlight">&lt;%= unreached['CountryURL'] %&gt;</span>" class="upgotd-link country-link country-name"&gt;<span class="code_highlight">&lt;%= unreached['Ctry'] %&gt;</span>&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;table align="center" class="upgotd-table" cellpadding="0" cellspacing="0"&gt;
+                &lt;tbody&gt;&lt;tr&gt;
+                    &lt;td width="65"&gt;Population:&lt;/td&gt;
+                    &lt;td width="135" class="pg-population"&gt;<span class="code_highlight">&lt;%= unreached['Population'] %&gt;</span>&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Language:&lt;/td&gt;
+                    &lt;td class="pg-language"&gt;<span class="code_highlight">&lt;%= unreached['PrimaryLanguageName'] %&gt;</span>&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Religion:&lt;/td&gt;
+                    &lt;td class="pg-religion"&gt;<span class="code_highlight">&lt;%= unreached['PrimaryReligion'] %&gt;</span>&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Evangelical:&lt;/td&gt;
+                    &lt;td class="pg-evangelical"&gt;<span class="code_highlight">&lt;%= unreached['PercentEvangelical'] %&gt;</span>%&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Status:&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;a href="http://www.joshuaproject.net/definitions.php?term=25" class="upgotd-link pg-scale-text"&gt;
+                            <span class="code_highlight">&lt;%= unreached['JPScaleText'] %&gt;</span>
+                        &lt;/a&gt; (
+                        &lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link pg-scale"&gt;
+                            <span class="code_highlight">&lt;%= unreached['JPScale'] %&gt;</span>
+                        &lt;/a&gt;
+                        &lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link" id="progress-scale-image"&gt;
+                            &lt;img src="<span class="code_highlight">&lt;%= unreached['JPScaleImageURL'] %&gt;</span>" alt="Progress Scale"&gt;
+                        &lt;/a&gt;)
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;&lt;/table&gt;
+            &lt;div class="upgotd upgotd-footer"&gt;Add this daily global vision feature to &lt;br&gt;&lt;a href="/upgotdfeed.php" class="upgotd-link"&gt;&lt;b&gt;your website&lt;/b&gt;&lt;/a&gt; or get it &lt;a href="http://www.unreachedoftheday.org/unreached-email.php" class="upgotd-link"&gt;&lt;b&gt;by email&lt;/b&gt;&lt;/a&gt;.&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you can see in the code above, we will use Erubis to replace <code><% unreached['Population'] %></code> with <code>unreached['Population']</code> in our <code>generate_widget.rb</code> script.  So why does the Erubis code start with <code>&lt;%=</code>?  The equal (=) sign tells Erubis to print out the variable.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We now need to read the templating file code into a variable using Ruby's File <code>.read()</code> method. (<a href="http://www.ruby-doc.org/core-2.0.0/IO.html#method-c-read" target="_blank">Ruby Docs</a>) After we have the content in the variable,  we need to pass it to a new instance of Erubis.  We will finally use Erubis' <code>.result()</code> method to replace all the tags with the appropriate variables. Go back to the <code>generate_widget.rb</code> file and add the following code:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = "YOUR_API_KEY"
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    # Parse the response
+    data = JSON.parse(response)
+    unreached = data[0]
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+# format the population to a comma seperated value
+unreached['Population'] = unreached['Population'].to_s.gsub(/(\d)(?=(\d{3})+$)/,'\1,')
+# Lets handle the evangelical number since it can be nil
+if unreached['PercentEvangelical'].nil?
+    unreached['PercentEvangelical'] = "0.00"
+else
+    # format the percent to a floating point (decimal)
+    unreached['PercentEvangelical'] = '%.2f' % unreached['PercentEvangelical']
+end
+<span class="code_highlight"># Generate the template
+template_file = File.read("templates/index.html.erb")
+template = Erubis::Eruby.new(template_file)
+# run the Erubis substitution
+widget_code = template.result({unreached: unreached})
+</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We can now write the new templated code to the <code>generated_code/widget.html</code> file.  In order to ensure that the file is written correctly, we will use Ruby's <code>begin...rescue...ensure</code> block.  This will ensure that the file is closed in case something goes wrong.  Add the following code:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = "YOUR_API_KEY"
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    # Parse the response
+    data = JSON.parse(response)
+    unreached = data[0]
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+# format the population to a comma seperated value
+unreached['Population'] = unreached['Population'].to_s.gsub(/(\d)(?=(\d{3})+$)/,'\1,')
+# Lets handle the evangelical number since it can be nil
+if unreached['PercentEvangelical'].nil?
+    unreached['PercentEvangelical'] = "0.00"
+else
+    # format the percent to a floating point (decimal)
+    unreached['PercentEvangelical'] = '%.2f' % unreached['PercentEvangelical']
+end
+<span class="code_highlight"># We will write the final HTML file
+begin
+    # write the new file
+rescue IOError => e
+    # We had an error
+    puts "Unable to write the HTML file"
+    puts e.message
+    abort
+ensure
+    # ensure the file closes happens if this fails
+end</span>
+                    </pre>       
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you can see in the code,  if an error occurs it will display on the screen.  We now need to open the new file <code>generated_code/widget.html</code> for writing using Ruby's File <code>.open()</code> method. (<a href="http://www.ruby-doc.org/core-2.0.0/File.html#method-c-open" target="_blank">Ruby Docs</a>)  We will pass it the <code>'w'</code> option to make it writable.  We will also use Ruby's File <code>.close()</code> method (<a href="http://www.ruby-doc.org/core-2.0.0/IO.html#method-i-close" target="_blank">Ruby Docs</a>) in the ensure block to close the file.  Here is the code:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = "YOUR_API_KEY"
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    # Parse the response
+    data = JSON.parse(response)
+    unreached = data[0]
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+# format the population to a comma seperated value
+unreached['Population'] = unreached['Population'].to_s.gsub(/(\d)(?=(\d{3})+$)/,'\1,')
+# Lets handle the evangelical number since it can be nil
+if unreached['PercentEvangelical'].nil?
+    unreached['PercentEvangelical'] = "0.00"
+else
+    # format the percent to a floating point (decimal)
+    unreached['PercentEvangelical'] = '%.2f' % unreached['PercentEvangelical']
+end
+# We will write the final HTML file
+begin
+    # write the new file
+    <span class="code_highlight"># open the final file
+    file = File.open("generated_code/widget.html", "w")
+    file.write(widget_code)</span>
+rescue IOError => e
+    # We had an error
+    puts "Unable to write the HTML file"
+    puts e.message
+    abort
+ensure
+    # ensure the file closes happens if this fails
+    <span class="code_highlight">file.close unless file == nil</span>
+end
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now run the script from your command line utility.  Everytime you run it, it should generate a new <code>generated_code/widget.html</code> file with the latest people group.  Open the <code>generated_code/widget.html</code> file in your favorite web browser, and you should see something similar to this:</p>
+                    <img src="img/getting_started/final_ruby.png" alt="Snapshot of Final Widget" class="img-responsive">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;But why different data! If you do not supply a month or day parameter, the API will return today's unreached people group of the day by default. Most likely you are not doing this tutorial the same day as I was.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congratulations!  You have completed the Ruby tutorial.  If you would like to download the sample code,  you can visit our <a href="https://github.com/MissionalDigerati/joshua_project_api_sample_code" target="_blank">Github Account</a>.</p>
+                    <div class="page-header">
+                        <h2 id="reporting-tutorial-errors">Errors In These Tutorials?</h2>
+                    </div>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you find any errors within these tutorials, or would like to suggest a new language/approach, please submit your request at our <a href="https://github.com/MissionalDigerati/joshua_project_api/issues" target="_blank">Github issue tracker</a>.</p>
                 </div>
             </div>
         </div>
