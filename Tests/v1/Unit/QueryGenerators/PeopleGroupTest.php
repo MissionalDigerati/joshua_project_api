@@ -330,7 +330,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testQueryShouldReturnCorrectJPScaleTextEqualToNominalChurch()
     {
-        $paramData = array('id' => '16153', 'country' => 'IN');
+        $paramData = array('id' => '19007', 'country' => 'AE');
         $expectedText = "nominal church";
         $peopleGroup = new \QueryGenerators\PeopleGroup($paramData);
         $peopleGroup->findByIdAndCountry();
