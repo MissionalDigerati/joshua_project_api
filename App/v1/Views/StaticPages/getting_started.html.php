@@ -57,8 +57,8 @@
         </div>
         <div class="container">
             <div class="row">
-                <div id="sidebar" class="col-sm-3">
-                    <div class="hidden-print affix" role="complementary">
+                <div id="sidebar" class="col-md-3">
+                    <div class="hidden-print visible-desktop affix" role="complementary">
                         <ul class="nav sidenav">
                             <li class="active">
                                 <a href="#overview">Overview</a>
@@ -109,10 +109,13 @@
                                     <li><a href="#ruby-creating-the-widget">Creating the Widget</a></li>
                                 </ul>
                             </li>
+                            <li>
+                                <a href="#reporting-tutorial-errors">Errors In These Tutorials?</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-sm-9">
+                <div class="col-md-9">
                     <div class="page-header">
                         <h2>Getting Started</h2>
                     </div>
@@ -2495,6 +2498,300 @@ rescue Exception => e
 end
                     </pre>
                     <h4 id="ruby-creating-the-widget">Creating the Widget</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we can access any of the supplied attributes of that Hash object using it's key. So if we want to get the people group's name, we can access it like this: <code>unreached['PeopNameInCountry']</code>.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In order to display the information properly,  we need to format the population and percent of Evangelicals.  For the population,  we want to format it as a comma seperated number.  To do this,  we will convert the population to a string using Ruby's <code>.to_s</code> method. (<a href="http://ruby-doc.org/core-2.0.0/Object.html#method-i-to_s" target="_blank">Ruby Docs</a>)  After converting it to a string,  we will use Ruby's String <code>.gsub()</code> method (<a href="http://ruby-doc.org/core-2.0.0/String.html#method-i-gsub" target="_blank">Ruby Docs</a>) to use a <a href="http://en.wikipedia.org/wiki/Regular_expression" target="_blank">Regular Expression</a> to format the string.  Here is the code to format the population:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    # Parse the response
+    data = JSON.parse(response)
+    unreached = data[0]
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+<span class="code_highlight"># format the population to a comma seperated value
+unreached['Population'] = unreached['Population'].to_s.gsub(/(\d)(?=(\d{3})+$)/,'\1,')</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sometimes the percent of Evangelicals can be nil.  I would prefer to display 0.00 rather then nil.  To do this,  we will use Ruby's <code>if...end</code> block and the <code>.nil?</code> method (<a href="http://www.ruby-doc.org/core-2.0.0/NilClass.html#method-i-nil-3F" target="_blank">Ruby Docs</a>) to check it's value.</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    # Parse the response
+    data = JSON.parse(response)
+    unreached = data[0]
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+# format the population to a comma seperated value
+unreached['Population'] = unreached['Population'].to_s.gsub(/(\d)(?=(\d{3})+$)/,'\1,')
+<span class="code_highlight"># Lets handle the evangelical number since it can be nil
+if unreached['PercentEvangelical'].nil?
+    unreached['PercentEvangelical'] = "0.00"
+else
+    # format the percent to a floating point (decimal)
+end</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If the percent of Evangelicals is not nil, then we want to convert it to a floating point (decimal).</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    # Parse the response
+    data = JSON.parse(response)
+    unreached = data[0]
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+# format the population to a comma seperated value
+unreached['Population'] = unreached['Population'].to_s.gsub(/(\d)(?=(\d{3})+$)/,'\1,')
+# Lets handle the evangelical number since it can be nil
+if unreached['PercentEvangelical'].nil?
+    unreached['PercentEvangelical'] = "0.00"
+else
+    # format the percent to a floating point (decimal)
+    <span class="code_highlight">unreached['PercentEvangelical'] = '%.2f' % unreached['PercentEvangelical']</span>
+end
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that all the attributes have been formatted, we are ready to create the <code>generated_code/widget.html</code> file.  We will use a common Ruby templating gem called <a href="http://www.kuwata-lab.com/erubis/" target="_blank">Erubis</a>.  This templating engine gives us the ability to embed Ruby in a HTML template file.  All Ruby is wrapped with a <code><% %></code> tag.  Any ruby within those tags will be run when the template is processed.  Open the <code>templates/index.html.erb</code> file and update with the following Erubis code:</p>
+                    <pre>
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Joshua Project&lt;/title&gt;
+        &lt;link rel="stylesheet" type="text/css" href="../css/styles.css"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id="jp_widget"&gt;
+            &lt;div class="upgotd upgotd-title"&gt;
+                &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="upgotd-image"&gt;
+                &lt;a href="<span class="code_highlight">&lt;%= unreached['PeopleGroupURL'] %&gt;</span>" class="upgotd-link pg-link" id="people-group-image"&gt;
+                    &lt;img src="<span class="code_highlight">&lt;%= unreached['PeopleGroupPhotoURL'] %&gt;</span>" height="160" width="128" alt="Unreached of the Day Photo"&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="upgotd upgotd-pray"&gt;Please pray for the ...&lt;/div&gt;
+            &lt;div class="upgotd upgotd-people"&gt;
+                &lt;a href="<span class="code_highlight">&lt;%= unreached['PeopleGroupURL'] %&gt;</span>" class="upgotd-link pg-link pg-name"&gt;<span class="code_highlight">&lt;%= unreached['PeopNameInCountry'] %&gt;</span>&lt;/a&gt; of &lt;a href="<span class="code_highlight">&lt;%= unreached['CountryURL'] %&gt;</span>" class="upgotd-link country-link country-name"&gt;<span class="code_highlight">&lt;%= unreached['Ctry'] %&gt;</span>&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;table align="center" class="upgotd-table" cellpadding="0" cellspacing="0"&gt;
+                &lt;tbody&gt;&lt;tr&gt;
+                    &lt;td width="65"&gt;Population:&lt;/td&gt;
+                    &lt;td width="135" class="pg-population"&gt;<span class="code_highlight">&lt;%= unreached['Population'] %&gt;</span>&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Language:&lt;/td&gt;
+                    &lt;td class="pg-language"&gt;<span class="code_highlight">&lt;%= unreached['PrimaryLanguageName'] %&gt;</span>&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Religion:&lt;/td&gt;
+                    &lt;td class="pg-religion"&gt;<span class="code_highlight">&lt;%= unreached['PrimaryReligion'] %&gt;</span>&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Evangelical:&lt;/td&gt;
+                    &lt;td class="pg-evangelical"&gt;<span class="code_highlight">&lt;%= unreached['PercentEvangelical'] %&gt;</span>%&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Status:&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;a href="http://www.joshuaproject.net/definitions.php?term=25" class="upgotd-link pg-scale-text"&gt;
+                            <span class="code_highlight">&lt;%= unreached['JPScaleText'] %&gt;</span>
+                        &lt;/a&gt; (
+                        &lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link pg-scale"&gt;
+                            <span class="code_highlight">&lt;%= unreached['JPScale'] %&gt;</span>
+                        &lt;/a&gt;
+                        &lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link" id="progress-scale-image"&gt;
+                            &lt;img src="<span class="code_highlight">&lt;%= unreached['JPScaleImageURL'] %&gt;</span>" alt="Progress Scale"&gt;
+                        &lt;/a&gt;)
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;&lt;/table&gt;
+            &lt;div class="upgotd upgotd-footer"&gt;Add this daily global vision feature to &lt;br&gt;&lt;a href="/upgotdfeed.php" class="upgotd-link"&gt;&lt;b&gt;your website&lt;/b&gt;&lt;/a&gt; or get it &lt;a href="http://www.unreachedoftheday.org/unreached-email.php" class="upgotd-link"&gt;&lt;b&gt;by email&lt;/b&gt;&lt;/a&gt;.&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you can see in the code above, we will use Erubis to replace <code><% unreached['Population'] %></code> with <code>unreached['Population']</code> in our <code>generate_widget.rb</code> script.  We now need to read the templating file code into a variable using Ruby's File <code>.read()</code> method. (<a href="http://www.ruby-doc.org/core-2.0.0/IO.html#method-c-read" target="_blank">Ruby Docs</a>) After we have the content in the variable,  we need to pass it to a new instance of Erubis.  We will finally use Erubis' <code>.result()</code> method to replace all the tags with the appropriate variables. Go back to the <code>generate_widget.rb</code> file and add the following code:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    # Parse the response
+    data = JSON.parse(response)
+    unreached = data[0]
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+# format the population to a comma seperated value
+unreached['Population'] = unreached['Population'].to_s.gsub(/(\d)(?=(\d{3})+$)/,'\1,')
+# Lets handle the evangelical number since it can be nil
+if unreached['PercentEvangelical'].nil?
+    unreached['PercentEvangelical'] = "0.00"
+else
+    # format the percent to a floating point (decimal)
+    unreached['PercentEvangelical'] = '%.2f' % unreached['PercentEvangelical']
+end
+<span class="code_highlight"># Generate the template
+template_file = File.read("templates/index.html.erb")
+template = Erubis::Eruby.new(template_file)
+# run the Erubis substitution
+widget_code = template.result({unreached: unreached})
+</span>
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We can now write the new templated code to the <code>generated_code/widget.html</code> file.  In order to ensure that the file is written correctly, we will use Ruby's <code>begin...rescue...ensure</code> block.  This will ensure that the file is closed in case something goes wrong.  Add the following code:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    # Parse the response
+    data = JSON.parse(response)
+    unreached = data[0]
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+# format the population to a comma seperated value
+unreached['Population'] = unreached['Population'].to_s.gsub(/(\d)(?=(\d{3})+$)/,'\1,')
+# Lets handle the evangelical number since it can be nil
+if unreached['PercentEvangelical'].nil?
+    unreached['PercentEvangelical'] = "0.00"
+else
+    # format the percent to a floating point (decimal)
+    unreached['PercentEvangelical'] = '%.2f' % unreached['PercentEvangelical']
+end
+<span class="code_highlight"># We will write the final HTML file
+begin
+    # write the new file
+rescue IOError => e
+    # We had an error
+    puts "Unable to write the HTML file"
+    puts e.message
+    abort
+ensure
+    # ensure the file closes happens if this fails
+end</span>
+                    </pre>       
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you can see in the code,  if an error occurs it will display on the screen.  We now need to open the new file <code>generated_code/widget.html</code> for writing using Ruby's File <code>.open()</code> method. (<a href="http://www.ruby-doc.org/core-2.0.0/File.html#method-c-open" target="_blank">Ruby Docs</a>)  We will pass it the <code>'w'</code> option to make it writable.  We will also use Ruby's File <code>.close()</code> method (<a href="http://www.ruby-doc.org/core-2.0.0/IO.html#method-i-close" target="_blank">Ruby Docs</a>) in the ensure block to close the file.  Here is the code:</p>
+                    <pre>
+# We will use Erubis for the templating
+require "erubis"
+# We need net/http to handle the request to the API
+require "net/http"
+# We will need to parse the JSON response
+require "json"
+# set some important variables
+domain = "jpapi.codingstudio.org"
+api_key = YOUR_API_KEY
+api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
+begin
+    # Make the request to the Joshua Project API
+    response = Net::HTTP.get(domain, api_path)
+    # Parse the response
+    data = JSON.parse(response)
+    unreached = data[0]
+rescue Exception => e
+    # We had an error
+    puts "Unable to get the API data"
+    puts e.message
+    abort
+end
+# format the population to a comma seperated value
+unreached['Population'] = unreached['Population'].to_s.gsub(/(\d)(?=(\d{3})+$)/,'\1,')
+# Lets handle the evangelical number since it can be nil
+if unreached['PercentEvangelical'].nil?
+    unreached['PercentEvangelical'] = "0.00"
+else
+    # format the percent to a floating point (decimal)
+    unreached['PercentEvangelical'] = '%.2f' % unreached['PercentEvangelical']
+end
+# We will write the final HTML file
+begin
+    # write the new file
+    <span class="code_highlight"># open the final file
+    file = File.open("generated_code/widget.html", "w")
+    file.write(widget_code)</span>
+rescue IOError => e
+    # We had an error
+    puts "Unable to write the HTML file"
+    puts e.message
+    abort
+ensure
+    # ensure the file closes happens if this fails
+    <span class="code_highlight">file.close unless file == nil</span>
+end
+                    </pre>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now run the script from your command line utility.  Everytime you run it, it should generate a new <code>generated_code/widget.html</code> file with the latest people group.  Open the <code>generated_code/widget.html</code> file in your favorite web browser, and you should see this:</p>
+                    <img src="img/getting_started/final_ruby.png" alt="Snapshot of Final Widget" class="img-responsive">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congratulations!  You have completed the Ruby tutorial.  If you would like to download the sample code,  you can visit our <a href="https://github.com/MissionalDigerati/joshua_project_api_sample_code" target="_blank">Github Account</a>.</p>
+                    <div class="page-header">
+                        <h2 id="reporting-tutorial-errors">Errors In These Tutorials?</h2>
+                    </div>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you find any errors within these tutorials, or would like to suggest a new language/approach, please submit your request at our <a href="https://github.com/MissionalDigerati/joshua_project_api/issues" target="_blank">Github issue tracker</a>.</p>
                 </div>
             </div>
         </div>
