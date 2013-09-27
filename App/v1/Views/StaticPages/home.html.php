@@ -68,7 +68,7 @@
                             <h3 class="panel-title"><img src="img/compass.png" alt="compass"> Getting Started</h3>
                           </div>
                           <div class="panel-body">
-                            If you are new to API development,  this tutorial will walk you through the basics of using the Joshua Project API.  We offer the tutorial in PHP, Javascript, Ruby, and Python.  So buckle up and prepare to learn API development.
+                            <p>If you are new to API development,  this tutorial will walk you through the basics of using the Joshua Project API.  We offer the tutorial in PHP, Javascript, Ruby, and Python.  So buckle up and prepare to learn API development.</p>
                           </div>
                           <div class="panel-footer">
                             <a href="/getting_started" class="btn btn-success pull-right">Start Now >></a>
@@ -82,7 +82,7 @@
                             <h3 class="panel-title"><img src="img/computer.png" alt="computer"> Sample Code</h3>
                           </div>
                           <div class="panel-body">
-                            If you need to see working examples of the Joshua Project API,  you can visit our <a href="/docs/v1/sample_code">Sample Code</a> section.  Here you can browse the repository of sample code, and find examples written in PHP, Javascript, Ruby, and Python.
+                            <p>If you need to see working examples of the Joshua Project API,  you can visit our <a href="/docs/v1/sample_code">Sample Code</a> section.  Here you can browse the repository of sample code, and find examples written in PHP, Javascript, Ruby, and Python.</p>
                           </div>
                           <div class="panel-footer">
                             <a href="/docs/v1/sample_code" class="btn btn-success pull-right">View Sample Code >></a>
@@ -98,7 +98,7 @@
                             <h3 class="panel-title"><img src="img/documents.png" alt="documents"> Documentation</h3>
                           </div>
                           <div class="panel-body">
-                            To get a better understanding of the API, we highly encourage you to look over the documentation.  The documentation will show you all the resources available to you.  Make sure you have an API Key to use the interactive documentation.
+                            <p>To get a better understanding of the API, we highly encourage you to look over the documentation.  The documentation will show you all the resources available to you.  Make sure you have an API Key to use the interactive documentation.</p>
                           </div>
                             <div class="panel-footer">
                                 <a href="/docs/v1/#!/people_groups" class="btn btn-success pull-right">View Documentation >></a>
@@ -109,10 +109,10 @@
                     <div class="col-sm-6">
                         <div class="panel panel-default">
                           <div class="panel-heading">
-                            <h3 class="panel-title"><img src="img/people.png" alt="people"> Learn More About Us</h3>
+                            <h3 class="panel-title"><img src="img/people.png" alt="people"> Learn More</h3>
                           </div>
                           <div class="panel-body">
-                            <p>Joshua Project is a research initiative seeking to highlight the ethnic people groups of the world with the fewest followers of Christ. Accurate, regularly updated ethnic people group information is critical for understanding and completing the Great Commission. To learn more, please <a href="http://www.joshuaproject.net" target="_blank">visit our website</a>!</p>
+                            <p>Joshua Project is a research initiative seeking to highlight the ethnic people groups of the world with the fewest followers of Christ. Accurate, regularly updated ethnic people group information is critical for understanding and completing the Great Commission.</p>
                           </div>
                           <div class="panel-footer">
                             <a href="http://www.joshuaproject.net/" target="_blank" class="btn btn-success pull-right">Visit Website >></a>
@@ -296,5 +296,24 @@ if ((!empty($errors)) && (in_array('usage', $errors))) {
         </div>
         <script src="http://code.jquery.com/jquery.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                equalHeight($('div.beginner_panel div.panel-body'));
+                $(window).resize(function() {
+                    $('div.beginner_panel div.panel-body').height('auto');
+                });
+            });
+            function equalHeight(group) {
+                var tallest = 0;
+                group.each(function() {
+                    var thisHeight = $(this).height();
+                    console.log('Current Height: '+thisHeight);
+                    if(thisHeight > tallest) {
+                        tallest = thisHeight;
+                    }
+                });
+                group.height(tallest);
+            };
+        </script>
     </body>
 </html>
