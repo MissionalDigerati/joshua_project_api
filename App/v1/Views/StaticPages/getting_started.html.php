@@ -603,11 +603,11 @@ a#progress-scale-image img {
     });</span>
 &lt;/script&gt;
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We should also declare two variables to hold the API's domain name, and your API key.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We should also declare two variables to hold the API's domain name, and your API key.  <strong>Remember to add your API key!</strong></p>
                     <pre>
 &lt;script type="text/javascript"&gt;
     <span class="code_highlight">var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;</span>
+    var API_KEY = "YOUR_API_KEY";</span>
     jQuery(document).ready(function($) {    
 
     });
@@ -617,11 +617,11 @@ a#progress-scale-image img {
                     <blockquote cite="http://en.wikipedia.org/wiki/Ajax_(programming)">
                         <p>With Ajax, web applications can send data to, and retrieve data from, a server asynchronously (in the background) without interfering with the display and behavior of the existing page.<br><br><em><a href="http://en.wikipedia.org/wiki/Ajax_(programming)" target="_blank">Wikipedia</a></em></p>
                     </blockquote>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is the code to run the Ajax request after the dom has loaded:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is the code to run the Ajax request after the DOM has loaded:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         <span class="code_highlight">$.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -674,7 +674,7 @@ a#progress-scale-image img {
                                         <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -705,7 +705,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -729,7 +729,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -868,7 +868,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -896,7 +896,7 @@ a#progress-scale-image img {
                     </pre>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you refresh the webpage, you should see something like this with different data:</p>
                     <img src="img/getting_started/jquery_text_example.png" alt="Snapshot of the Adding text() method" class="img-responsive">
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;But why different data!  If you do not supply a month or day parameter,  the API will return today's unreached people group of the day by default.  Most likely you are not doing this tutorial the same day as I was.  This now leaves us with the following tasks:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mine looks different!  If you do not supply a month or day parameter,  the API will return today's unreached people group of the day by default.  Most likely you are not doing this tutorial the same day as I was.  This now leaves us with the following tasks:</p>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -945,7 +945,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -1013,7 +1013,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -1079,7 +1079,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -1147,7 +1147,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -1197,7 +1197,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -1293,7 +1293,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;script type="text/javascript"&gt;
     var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
-    var API_KEY = YOUR_API_KEY;
+    var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {    
         $.ajax({
             url: DOMAIN+'/v1/people_groups/daily_unreached.json',
@@ -1350,11 +1350,11 @@ a#progress-scale-image img {
                     <h4 id="php-setup">Setup</h4>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before you start this tutorial,  you will need some understanding of the <a href="http://www.w3schools.com/php/" target="_blank" title="Learn More About PHP">PHP programming language</a>.  You will also need a PHP environment setup on your local machine, or be able to upload your code to a PHP web server.  This tutorial does not cover how to accomplish that.  Once you have an environment setup,  you will need to download the <a href="files/starting_code/php.zip">starting code</a>.</p>
                     <h4 id="php-calling-the-api">Calling the API</h4>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let us start by creating 3 variables to hold the API domain, API key, and the URL to get the unreached of the day information.  Here is the code:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Open the <code>index.php</code> file in your favorite text editor.  Let us start by creating 3 variables to hold the API domain, API key, and the URL to get the unreached of the day information.  <strong>Remember to add your API key!</strong>  Add the following code to the top of the <code>index.php</code> file:</p>
                     <pre>
 &lt;?php
 <span class="code_highlight">$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;</span>
 ?&gt;
                     </pre>
@@ -1366,7 +1366,7 @@ $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;</
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 <span class="code_highlight">/**
  * open connection
@@ -1380,7 +1380,7 @@ $ch = curl_init();</span>
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1435,7 +1435,7 @@ curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');</span>
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1464,7 +1464,7 @@ $result = curl_exec($ch) or die(curl_error($ch));</span>
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1499,7 +1499,7 @@ curl_close($ch);</span>
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1541,7 +1541,7 @@ exit();</span>
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1578,11 +1578,11 @@ curl_close($ch);
 $decoded_json = json_decode($result, true);</span>
 ?&gt;
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We should also add error checking.  If the <a href="http://www.w3schools.com/php/php_arrays_multi.asp" target="_blank" title="Learn More About Multidimensional Arrays">multidimensional array</a> is not an array, we will stop executing the code with a message.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We should also add error checking.  If the <a href="http://www.w3schools.com/php/php_arrays_multi.asp" target="_blank" title="Learn More About Multidimensional Arrays">multidimensional array</a> is not an array, we will stop executing the code with a message.  We will use PHP's <code>is_array()</code> function (<a href="http://us1.php.net/manual/en/function.is-array.php" target="_blank">PHP Docs</a>) to do the check.</p>
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1627,7 +1627,7 @@ $decoded_json = json_decode($result, true);
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1676,11 +1676,11 @@ $unreached = $decoded_json[0];</span>
                     </pre>
                     <h4 id="php-creating-the-widget">Creating the Widget</h4>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we can access any of the supplied attributes of that JSON object using it's key.  So if we want to get the people group's name,  we can access it like this: <code>$unreached['PeopNameInCountry']</code>.</p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The attribute percentage of Evangelicals in the people group can be set to null,  if so then we should display 0.00.  So let's add a check to evaluate the value, and set it to 0 if it is null.  Here is the code:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There are a few attributes that need to be formatted correctly.  The attribute percentage of Evangelicals in the people group can be set to null,  if so then we should display 0.00.  So let's add a check to evaluate the value, and set it to 0 if it is null.  Here is the code:</p>
                     <pre>
 &lt;?php
 $domain = "<?php echo $DOMAIN_ADDRESS; ?>";
-$api_key = YOUR_API_KEY;
+$api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
  * open connection
@@ -1735,7 +1735,7 @@ if ($unreached['PercentEvangelical'] == null) {
 }</span>
 ?&gt;
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we just need to add the data to the HTML widget code for displaying.  We will use PHP's <code>echo()</code> function (<a href="http://www.php.net/manual/en/function.echo.php" target="_blank">PHP DOCS</a>) to display the data in the appropriate place.  We will also use PHP's  <code>number_format()</code> function (<a href="http://www.php.net/manual/en/function.number-format.php" target="_blank">PHP DOCS</a>) to format the people group's population, and percent of Evangelicals.  In the <code>index.php</code> file that you have been working on,  update the code to what is below:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now we just need to add the data to the HTML widget code for displaying.  We will use PHP's <code>echo()</code> function (<a href="http://www.php.net/manual/en/function.echo.php" target="_blank">PHP DOCS</a>) to display the data in the appropriate place.  We will also use PHP's  <code>number_format()</code> function (<a href="http://www.php.net/manual/en/function.number-format.php" target="_blank">PHP DOCS</a>) to format the people group's population, and percent of Evangelicals.  In the HTML portion of the <code>index.php</code> file,  update the code to what is below:</p>
                     <pre>
 &lt;div id="jp_widget"&gt;
     &lt;div class="upgotd upgotd-title"&gt;
@@ -1805,8 +1805,9 @@ if ($unreached['PercentEvangelical'] == null) {
     &lt;/div&gt;
 &lt;/div&gt;
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you reload the webpage, you should see the widget with all the API data.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you reload the webpage, you should see the widget with all the API data.  Your data might be different.</p>
                     <img src="img/getting_started/final_php.png" alt="Snapshot of Final Widget" class="img-responsive">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mine looks different! If you do not supply a month or day parameter, the API will return today's unreached people group of the day by default. Most likely you are not doing this tutorial the same day as I was.</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congratulations!  You have completed the PHP tutorial.  If you would like to download the sample code,  you can visit our <a href="https://github.com/MissionalDigerati/joshua_project_api_sample_code" target="_blank">Github Account</a>.</p>
                     <div class="page-header">
                         <h3 id="python">Python Example</h3>
@@ -1847,7 +1848,7 @@ import string
 import sys</span>
                     </pre>
                     <h4 id="python-calling-the-api">Calling the API</h4>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that we have imported the necessary modules,  we will need to generate the API request.  We will start by creating 3 variables for the API domain, API key, and the API URL for the request.  Here is the code:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now that we have imported the necessary modules,  we will need to generate the API request.  We will start by creating 3 variables for the API domain, API key, and the API URL for the request.  <strong>Remember to add your API key!</strong>  Here is the code:</p>
                     <pre>
 #!/usr/bin/python
 # import the necessary libraries
@@ -1857,8 +1858,8 @@ import urllib.error
 import string
 import sys
 <span class="code_highlight"># set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key</span>
                     </pre>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will call the API within a <code>try...except</code> block. (<a href="http://docs.python.org/3/tutorial/errors.html#handling-exceptions" target="_blank">Python Docs</a>)  Using Python's urllib.error module (<a href="http://docs.python.org/3/library/urllib.error.html" target="_blank">Python Docs</a>),  we will be warned if the API request returns a<code>HTTPError</code> or <code>URLError</code>.  Here is the block:</p>
@@ -1871,8 +1872,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 <span class="code_highlight">try:
     # request the API for the Daily Unreached People Group
@@ -1897,8 +1898,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -1924,8 +1925,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -1953,8 +1954,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -1982,8 +1983,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2014,8 +2015,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2048,8 +2049,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2082,8 +2083,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2183,8 +2184,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2224,8 +2225,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2267,8 +2268,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2312,8 +2313,8 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "http://jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
     # request the API for the Daily Unreached People Group
@@ -2350,8 +2351,9 @@ else:
     widget_file = open('generated_code/widget.html','w')
     widget_file.write(final_code)</span>
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you run this script from your command line utility,  you will see that it generates the <code>generated_code/widget.html</code> file.  Now open that file in your favorite web browser.  This is what you should see:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you run this script from your command line utility,  you will see that it generates the <code>generated_code/widget.html</code> file.  Now open that file in your favorite web browser.  You should see something similar to this:</p>
                     <img src="img/getting_started/final_python.png" alt="Snapshot of Final Widget" class="img-responsive">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mine looks different! If you do not supply a month or day parameter, the API will return today's unreached people group of the day by default. Most likely you are not doing this tutorial the same day as I was.</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congratulations!  You have completed the Python tutorial.  If you would like to download the sample code,  you can visit our <a href="https://github.com/MissionalDigerati/joshua_project_api_sample_code" target="_blank">Github Account</a>.</p>
                     <div class="page-header">
                         <h3 id="ruby">Ruby Example</h3>
@@ -2401,7 +2403,7 @@ require "net/http"
 require "json"
 <span class="code_highlight"># set some important variables
 domain = "jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+api_key = "YOUR_API_KEY"
 api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"</span>
                     </pre>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will call the API in a Ruby <code>begin...end</code> block. (<a href="http://www.ruby-doc.org/core-2.0.0/doc/syntax/exceptions_rdoc.html" target="_blank">Ruby Docs</a>)  This will allow us the opportunity to rescue from a failed request, and print out the error.  Here is the block:</p>
@@ -2414,7 +2416,7 @@ require "net/http"
 require "json"
 # set some important variables
 domain = "jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+api_key = "YOUR_API_KEY"
 api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
 <span class="code_highlight">begin
     # Make the request to the Joshua Project API
@@ -2435,7 +2437,7 @@ require "net/http"
 require "json"
 # set some important variables
 domain = "jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+api_key = "YOUR_API_KEY"
 api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
 begin
     # Make the request to the Joshua Project API
@@ -2457,7 +2459,7 @@ require "net/http"
 require "json"
 # set some important variables
 domain = "jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+api_key = "YOUR_API_KEY"
 api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
 begin
     # Make the request to the Joshua Project API
@@ -2482,7 +2484,7 @@ require "net/http"
 require "json"
 # set some important variables
 domain = "jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+api_key = "YOUR_API_KEY"
 api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
 begin
     # Make the request to the Joshua Project API
@@ -2509,7 +2511,7 @@ require "net/http"
 require "json"
 # set some important variables
 domain = "jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+api_key = "YOUR_API_KEY"
 api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
 begin
     # Make the request to the Joshua Project API
@@ -2536,7 +2538,7 @@ require "net/http"
 require "json"
 # set some important variables
 domain = "jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+api_key = "YOUR_API_KEY"
 api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
 begin
     # Make the request to the Joshua Project API
@@ -2569,7 +2571,7 @@ require "net/http"
 require "json"
 # set some important variables
 domain = "jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+api_key = "YOUR_API_KEY"
 api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
 begin
     # Make the request to the Joshua Project API
@@ -2651,7 +2653,8 @@ end
     &lt;/body&gt;
 &lt;/html&gt;
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you can see in the code above, we will use Erubis to replace <code><% unreached['Population'] %></code> with <code>unreached['Population']</code> in our <code>generate_widget.rb</code> script.  We now need to read the templating file code into a variable using Ruby's File <code>.read()</code> method. (<a href="http://www.ruby-doc.org/core-2.0.0/IO.html#method-c-read" target="_blank">Ruby Docs</a>) After we have the content in the variable,  we need to pass it to a new instance of Erubis.  We will finally use Erubis' <code>.result()</code> method to replace all the tags with the appropriate variables. Go back to the <code>generate_widget.rb</code> file and add the following code:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As you can see in the code above, we will use Erubis to replace <code><% unreached['Population'] %></code> with <code>unreached['Population']</code> in our <code>generate_widget.rb</code> script.  So why does the Erubis code start with <code>&lt;%=</code>?  The equal (=) sign tells Erubis to print out the variable.</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We now need to read the templating file code into a variable using Ruby's File <code>.read()</code> method. (<a href="http://www.ruby-doc.org/core-2.0.0/IO.html#method-c-read" target="_blank">Ruby Docs</a>) After we have the content in the variable,  we need to pass it to a new instance of Erubis.  We will finally use Erubis' <code>.result()</code> method to replace all the tags with the appropriate variables. Go back to the <code>generate_widget.rb</code> file and add the following code:</p>
                     <pre>
 # We will use Erubis for the templating
 require "erubis"
@@ -2661,7 +2664,7 @@ require "net/http"
 require "json"
 # set some important variables
 domain = "jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+api_key = "YOUR_API_KEY"
 api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
 begin
     # Make the request to the Joshua Project API
@@ -2701,7 +2704,7 @@ require "net/http"
 require "json"
 # set some important variables
 domain = "jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+api_key = "YOUR_API_KEY"
 api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
 begin
     # Make the request to the Joshua Project API
@@ -2746,7 +2749,7 @@ require "net/http"
 require "json"
 # set some important variables
 domain = "jpapi.codingstudio.org"
-api_key = YOUR_API_KEY
+api_key = "YOUR_API_KEY"
 api_path = "/v1/people_groups/daily_unreached.json?api_key=#{api_key}"
 begin
     # Make the request to the Joshua Project API
@@ -2785,8 +2788,9 @@ ensure
     <span class="code_highlight">file.close unless file == nil</span>
 end
                     </pre>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now run the script from your command line utility.  Everytime you run it, it should generate a new <code>generated_code/widget.html</code> file with the latest people group.  Open the <code>generated_code/widget.html</code> file in your favorite web browser, and you should see this:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now run the script from your command line utility.  Everytime you run it, it should generate a new <code>generated_code/widget.html</code> file with the latest people group.  Open the <code>generated_code/widget.html</code> file in your favorite web browser, and you should see something similar to this:</p>
                     <img src="img/getting_started/final_ruby.png" alt="Snapshot of Final Widget" class="img-responsive">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;But why different data! If you do not supply a month or day parameter, the API will return today's unreached people group of the day by default. Most likely you are not doing this tutorial the same day as I was.</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congratulations!  You have completed the Ruby tutorial.  If you would like to download the sample code,  you can visit our <a href="https://github.com/MissionalDigerati/joshua_project_api_sample_code" target="_blank">Github Account</a>.</p>
                     <div class="page-header">
                         <h2 id="reporting-tutorial-errors">Errors In These Tutorials?</h2>
