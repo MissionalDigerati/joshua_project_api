@@ -307,7 +307,6 @@ if ((!empty($errors)) && (in_array('usage', $errors))) {
                 var tallest = 0;
                 group.each(function() {
                     var thisHeight = $(this).height();
-                    console.log('Current Height: '+thisHeight);
                     if(thisHeight > tallest) {
                         tallest = thisHeight;
                     }
