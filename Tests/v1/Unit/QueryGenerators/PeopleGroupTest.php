@@ -399,7 +399,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     public function testFindByIdShouldReturnTheCorrectPeopleGroups()
     {
         $expected = array('id' => '12662');
-        $expectedPeopleGroups = 10;
+        $expectedPeopleGroups = 11;
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findById();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
