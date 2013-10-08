@@ -11,6 +11,12 @@ This tool uses [Composer](http://getcomposer.org/) to install the project specif
 
 Questions or problems? Please post them on the [issue tracker](https://github.com/MissionalDigerati/vts_cakephp_plugin/issues). You can contribute changes by forking the project and submitting a pull request.
 
+PHP Settings
+------------
+In your `php.ini` file you will need to set the following values equal to or greater than the value provided:
+
+1. max_execution_time = 90
+
 Sample Code
 -----------
 
