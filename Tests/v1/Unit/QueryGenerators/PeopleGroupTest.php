@@ -1235,6 +1235,17 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array(floatval($peopleGroup['JPScale']), $expectedJPScalesArray));
         }
     }
+    public function testFindAllWithFiltersShouldReturnTheMaxNumberOfPeopleGroupsIfLimitIsOverMaxRowsAvailable()
+    {
+        $expectedTotalGroups = $this->db->query("SELECT count(*) FROM jppeoples")->fetchColumn();
+        $requestedLimit = $expectedTotalGroups+15;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('limit' => $requestedLimit));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($expectedTotalGroups, count($data));
+    }
     /**
       * Tests that findAllWithFilters() throws the correct error if one of the jpscale parameters is not a required numbers
       *
