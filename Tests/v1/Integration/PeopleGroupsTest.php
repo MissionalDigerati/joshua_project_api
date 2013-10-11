@@ -210,7 +210,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $expectedDay = Date('j');
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/people_groups/daily_unreached.json",
-            array('api_key' => $this->APIKey, 'month' => $expectedMonth),
+            array('api_key' => $this->APIKey, 'month' => $expectedMonth, 'day' => $expectedDay),
             "up_month"
         );
         $decodedResponse = json_decode($response, true);
