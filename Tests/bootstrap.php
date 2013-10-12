@@ -73,7 +73,14 @@ $loader->add("JPAPI\DatabaseSettings", __DIR__ . $DS . ".." . $DS . "Config");
  * @author Johnathan Pulos
  */
 $loader->add("PHPToolbox\PDODatabase\PDODatabaseConnect", $PHPToolboxDirectory);
+/**
+ * AutoLoad the Query Generators
+ *
+ * @return void
+ * @author Johnathan Pulos
+ */
 $loader->add("QueryGenerators\PeopleGroup", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+$loader->add("QueryGenerators\ProfileText", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
 /**
  * preload source files
  *
