@@ -48,7 +48,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings);
         $this->db = $pdoDb->getDatabaseInstance();
     }
-    
     /**
      * Test that we get back the right query for unreached of the day
      *
