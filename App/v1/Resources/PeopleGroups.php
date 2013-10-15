@@ -113,7 +113,7 @@ $app->get(
             exit;
         }
         /**
-         * Get the ProfileText for the People Group
+         * Get the ProfileText for each of the People Group
          *
          * @return void
          * @author Johnathan Pulos
@@ -126,8 +126,7 @@ $app->get(
                 $statement->execute($profileText->preparedVariables);
                 $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
             } catch (Exception $e) {
-                $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
-                exit;
+                $data[$key]['ProfileText'] = '';
             }
         }
         /**
