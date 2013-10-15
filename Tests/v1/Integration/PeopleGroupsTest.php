@@ -313,6 +313,49 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedName, $decodedResponse[0]['PeopNameInCountry']);
     }
     /**
+      * GET /people_groups/[ID].json?country=CB
+      * test page is available, and delivers the People Group's ProfileText
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testShouldGetPeopleGroupsProfileTextFromShowWhenIDAndCountryProvided()
+    {
+        $expectedID = "12662";
+        $expectedCountry = "CB";
+        $expectedName = "Khmer, Central";
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/people_groups/12662.json",
+            array('api_key' => $this->APIKey, 'country' => 'CB'),
+            "show_in_country_gets_profile_text_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertTrue(isset($decodedResponse[0]['ProfileText']));
+        $this->assertTrue(is_array($decodedResponse[0]['ProfileText']));
+    }
+    /**
+      * GET /people_groups/[ID].json?country=CB
+      * test page is available, and delivers the People Group's ProfileText When Only ID is Provided
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testShouldGetPeopleGroupsProfileTextFromShowWhenIDIsProvided()
+    {
+        $expectedID = "12662";
+        $expectedName = "Khmer, Central";
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/people_groups/12662.json",
+            array('api_key' => $this->APIKey),
+            "show_get_proper_profile_text_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $peopleGroupData) {
+            $this->assertTrue(isset($peopleGroupData['ProfileText']));
+            $this->assertTrue(is_array($peopleGroupData['ProfileText']));
+        }
+    }
+    /**
      * GET /people_groups/[ID].json
      * test page is available, and delivers the correct number of people groups
      *
