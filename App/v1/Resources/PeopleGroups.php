@@ -204,6 +204,7 @@ $app->get(
     "/:version/people_groups/:id\.:format",
     function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
         $data = array();
+        $gotCachedData = false;
         /**
          * Make sure we have an ID, else crash
          *
@@ -229,6 +230,9 @@ $app->get(
                  */
                 $cacheKey = md5("PeopleGroupShowId_".$peopleId."_InCountry_".$country);
                 $data = $cache->get($cacheKey);
+                if ((is_array($data)) && (!empty($data))) {
+                    $gotCachedData = true;
+                }
             }
             if (empty($data)) {
                 /**
@@ -268,6 +272,9 @@ $app->get(
             if ($useCaching === true) {
                 $cacheKey = md5("PeopleGroupShowId_".$peopleId);
                 $data = $cache->get($cacheKey);
+                if ((is_array($data)) && (!empty($data))) {
+                    $gotCachedData = true;
+                }
             }
             if (empty($data)) {
                 /**
@@ -308,7 +315,7 @@ $app->get(
             $app->render("/errors/404." . $format . ".php");
             exit;
         }
-        if ($useCaching === true) {
+        if (($useCaching === true) && ($gotCachedData === false)) {
             /**
              * Set the data to the cache using it's cache key, and expire it in 1 day
              *
@@ -644,6 +651,7 @@ $app->get(
     "/:version/people_groups\.:format",
     function ($version, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
         $data = array();
+        $gotCachedData = false;
         if ($useCaching === true) {
             /**
              * Check the cache
@@ -652,6 +660,9 @@ $app->get(
              */
             $cacheKey = md5("PeopleGroupIndex");
             $data = $cache->get($cacheKey);
+            if ((is_array($data)) && (!empty($data))) {
+                $gotCachedData = true;
+            }
         }
         if (empty($data)) {
             try {
@@ -682,7 +693,7 @@ $app->get(
                 }
             }
         }
-        if ($useCaching === true) {
+        if (($useCaching === true) && ($gotCachedData === false)) {
             /**
              * Set the data to the cache using it's cache key, and expire it in 1 day
              *
