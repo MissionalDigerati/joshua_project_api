@@ -242,14 +242,6 @@ $app->get(
                     $statement = $db->prepare($peopleGroup->preparedStatement);
                     $statement->execute($peopleGroup->preparedVariables);
                     $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-                    if ($useCaching === true) {
-                        /**
-                         * Set the data to the cache using it's cache key, and expire it in 1 day
-                         *
-                         * @author Johnathan Pulos
-                         */
-                        $cache->set($cacheKey, $data, 86400);
-                    }
                 } catch (Exception $e) {
                     $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
                     exit;
@@ -289,14 +281,6 @@ $app->get(
                     $statement = $db->prepare($peopleGroup->preparedStatement);
                     $statement->execute($peopleGroup->preparedVariables);
                     $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-                    if ($useCaching === true) {
-                        /**
-                         * Set the data to the cache using it's cache key, and expire it in 1 day
-                         *
-                         * @author Johnathan Pulos
-                         */
-                        $cache->set($cacheKey, $data, 86400);
-                    }
                 } catch (Exception $e) {
                     $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
                     exit;
@@ -319,6 +303,14 @@ $app->get(
                     }
                 }
             }
+        }
+        if ($useCaching === true) {
+            /**
+             * Set the data to the cache using it's cache key, and expire it in 1 day
+             *
+             * @author Johnathan Pulos
+             */
+            $cache->set($cacheKey, $data, 86400);
         }
         if (empty($data)) {
             $app->render("/errors/404." . $format . ".php");
@@ -668,14 +660,6 @@ $app->get(
                 $statement = $db->prepare($peopleGroup->preparedStatement);
                 $statement->execute($peopleGroup->preparedVariables);
                 $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-                if ($useCaching === true) {
-                    /**
-                     * Set the data to the cache using it's cache key, and expire it in 1 day
-                     *
-                     * @author Johnathan Pulos
-                     */
-                    $cache->set($cacheKey, $data, 86400);
-                }
             } catch (Exception $e) {
                 $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
                 exit;
@@ -697,6 +681,14 @@ $app->get(
                     $data[$key]['ProfileText'] = '';
                 }
             }
+        }
+        if ($useCaching === true) {
+            /**
+             * Set the data to the cache using it's cache key, and expire it in 1 day
+             *
+             * @author Johnathan Pulos
+             */
+            $cache->set($cacheKey, $data, 86400);
         }
         /**
          * Render the final data
