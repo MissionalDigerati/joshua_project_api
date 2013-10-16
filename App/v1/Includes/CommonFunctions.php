@@ -37,10 +37,38 @@ function arrayToXML($data, $parentWrap = "items", $individualWrap = "item")
     foreach ($data as $item) {
         $individualTag = $parentTag->addChild($individualWrap);
         foreach ($item as $key => $val) {
-            $individualTag->addChild($key, $val);
+            addChildXMLElement($individualTag, $key, $val);
         }
     }
     return stripReturns($xml->asXML());
+}
+/**
+ * Recursive function for handing array children
+ *
+ * @param object $parentElement a SimpleXMLElement which the children will be appended
+ * @param string $childLabel the name for the child element
+ * @param mixed $childVal the value of the child element.  If it is an array, we call this method again.
+ * @return void
+ * @author Johnathan Pulos
+ */
+function addChildXMLElement($parentElement, $childLabel, $childVal)
+{
+    if (is_array($childVal)) {
+        $newParentElement = $parentElement->addChild($childLabel);
+        foreach ($childVal as $key => $val) {
+            if (is_int($key)) {
+                /**
+                 * Must create a string label
+                 *
+                 * @author Johnathan Pulos
+                 */
+                $key = $childLabel . "_" . $key;
+            }
+            addChildXMLElement($newParentElement, $key, $val);
+        }
+    } else {
+        $parentElement->addChild($childLabel, $childVal);
+    }
 }
 /**
  * Checks if $variable is false, if so it returns $variable, else it returns $default

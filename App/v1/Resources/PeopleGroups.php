@@ -113,6 +113,23 @@ $app->get(
             exit;
         }
         /**
+         * Get the ProfileText for each of the People Group
+         *
+         * @return void
+         * @author Johnathan Pulos
+         */
+        foreach ($data as $key => $peopleGroupData) {
+            try {
+                $profileText = new \QueryGenerators\ProfileText(array('id' => $peopleGroupData['PeopleID3'], 'country' => $peopleGroupData['ROG3']));
+                $profileText->findAllByIdAndCountry();
+                $statement = $db->prepare($profileText->preparedStatement);
+                $statement->execute($profileText->preparedVariables);
+                $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                $data[$key]['ProfileText'] = '';
+            }
+        }
+        /**
          * Render the final data
          *
          * @author Johnathan Pulos
@@ -187,6 +204,7 @@ $app->get(
     "/:version/people_groups/:id\.:format",
     function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
         $data = array();
+        $gotCachedData = false;
         /**
          * Make sure we have an ID, else crash
          *
@@ -212,6 +230,9 @@ $app->get(
                  */
                 $cacheKey = md5("PeopleGroupShowId_".$peopleId."_InCountry_".$country);
                 $data = $cache->get($cacheKey);
+                if ((is_array($data)) && (!empty($data))) {
+                    $gotCachedData = true;
+                }
             }
             if (empty($data)) {
                 /**
@@ -225,23 +246,35 @@ $app->get(
                     $statement = $db->prepare($peopleGroup->preparedStatement);
                     $statement->execute($peopleGroup->preparedVariables);
                     $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-                    if ($useCaching === true) {
-                        /**
-                         * Set the data to the cache using it's cache key, and expire it in 1 day
-                         *
-                         * @author Johnathan Pulos
-                         */
-                        $cache->set($cacheKey, $data, 86400);
-                    }
                 } catch (Exception $e) {
                     $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
                     exit;
+                }
+                /**
+                 * Get the ProfileText for each of the People Group
+                 *
+                 * @return void
+                 * @author Johnathan Pulos
+                 */
+                foreach ($data as $key => $peopleGroupData) {
+                    try {
+                        $profileText = new \QueryGenerators\ProfileText(array('id' => $peopleGroupData['PeopleID3'], 'country' => $peopleGroupData['ROG3']));
+                        $profileText->findAllByIdAndCountry();
+                        $statement = $db->prepare($profileText->preparedStatement);
+                        $statement->execute($profileText->preparedVariables);
+                        $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    } catch (Exception $e) {
+                        $data[$key]['ProfileText'] = '';
+                    }
                 }
             }
         } else {
             if ($useCaching === true) {
                 $cacheKey = md5("PeopleGroupShowId_".$peopleId);
                 $data = $cache->get($cacheKey);
+                if ((is_array($data)) && (!empty($data))) {
+                    $gotCachedData = true;
+                }
             }
             if (empty($data)) {
                 /**
@@ -255,23 +288,40 @@ $app->get(
                     $statement = $db->prepare($peopleGroup->preparedStatement);
                     $statement->execute($peopleGroup->preparedVariables);
                     $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-                    if ($useCaching === true) {
-                        /**
-                         * Set the data to the cache using it's cache key, and expire it in 1 day
-                         *
-                         * @author Johnathan Pulos
-                         */
-                        $cache->set($cacheKey, $data, 86400);
-                    }
                 } catch (Exception $e) {
                     $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
                     exit;
+                }
+                /**
+                 * Get the ProfileText for each of the People Group
+                 *
+                 * @return void
+                 * @author Johnathan Pulos
+                 */
+                foreach ($data as $key => $peopleGroupData) {
+                    try {
+                        $profileText = new \QueryGenerators\ProfileText(array('id' => $peopleGroupData['PeopleID3'], 'country' => $peopleGroupData['ROG3']));
+                        $profileText->findAllByIdAndCountry();
+                        $statement = $db->prepare($profileText->preparedStatement);
+                        $statement->execute($profileText->preparedVariables);
+                        $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    } catch (Exception $e) {
+                        $data[$key]['ProfileText'] = '';
+                    }
                 }
             }
         }
         if (empty($data)) {
             $app->render("/errors/404." . $format . ".php");
             exit;
+        }
+        if (($useCaching === true) && ($gotCachedData === false)) {
+            /**
+             * Set the data to the cache using it's cache key, and expire it in 1 day
+             *
+             * @author Johnathan Pulos
+             */
+            $cache->set($cacheKey, $data, 86400);
         }
         /**
          * Render the final data
@@ -601,6 +651,7 @@ $app->get(
     "/:version/people_groups\.:format",
     function ($version, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
         $data = array();
+        $gotCachedData = false;
         if ($useCaching === true) {
             /**
              * Check the cache
@@ -609,6 +660,9 @@ $app->get(
              */
             $cacheKey = md5("PeopleGroupIndex");
             $data = $cache->get($cacheKey);
+            if ((is_array($data)) && (!empty($data))) {
+                $gotCachedData = true;
+            }
         }
         if (empty($data)) {
             try {
@@ -617,18 +671,35 @@ $app->get(
                 $statement = $db->prepare($peopleGroup->preparedStatement);
                 $statement->execute($peopleGroup->preparedVariables);
                 $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-                if ($useCaching === true) {
-                    /**
-                     * Set the data to the cache using it's cache key, and expire it in 1 day
-                     *
-                     * @author Johnathan Pulos
-                     */
-                    $cache->set($cacheKey, $data, 86400);
-                }
             } catch (Exception $e) {
                 $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
                 exit;
             }
+            /**
+             * Get the ProfileText for each of the People Group
+             *
+             * @return void
+             * @author Johnathan Pulos
+             */
+            foreach ($data as $key => $peopleGroupData) {
+                try {
+                    $profileText = new \QueryGenerators\ProfileText(array('id' => $peopleGroupData['PeopleID3'], 'country' => $peopleGroupData['ROG3']));
+                    $profileText->findAllByIdAndCountry();
+                    $statement = $db->prepare($profileText->preparedStatement);
+                    $statement->execute($profileText->preparedVariables);
+                    $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+                } catch (Exception $e) {
+                    $data[$key]['ProfileText'] = '';
+                }
+            }
+        }
+        if (($useCaching === true) && ($gotCachedData === false)) {
+            /**
+             * Set the data to the cache using it's cache key, and expire it in 1 day
+             *
+             * @author Johnathan Pulos
+             */
+            $cache->set($cacheKey, $data, 86400);
         }
         /**
          * Render the final data

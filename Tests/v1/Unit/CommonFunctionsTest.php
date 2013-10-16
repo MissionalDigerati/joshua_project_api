@@ -59,6 +59,22 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * addChildXMLElement should generate the proper XML with array children
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testAddChildXMLElementGeneratesProperXMLWithArrayChildren()
+    {
+        $expected = "<?xml version=\"1.0\"?><api><items><item><item_0><name>frog</name><title>Prince and Frog</title></item_0></item></items></api>";
+        $xml = new \SimpleXMLElement('<api/>');
+        $parentElement = $xml->addChild('items');
+        addChildXMLElement($parentElement, 'item', array(0 => array('name' => 'frog', 'title' => 'Prince and Frog')));
+        $this->assertEquals($expected, stripReturns($xml->asXML()));
+    }
+
+    /**
      * Test that returnPresentOrDefault returns the passed variable
      *
      * @return void
