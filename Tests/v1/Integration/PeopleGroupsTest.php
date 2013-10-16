@@ -416,6 +416,28 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedNumberOfResults, count($decodedResponse));
     }
     /**
+     * GET /people_groups.json
+     * test page returns Profile Text for all the people groups
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnProfileTextForAllPeopleGroupsOnIndex()
+    {
+        $expectedNumberOfResults = 100;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/people_groups.json",
+            array('api_key' => $this->APIKey),
+            "profile_text_for_all_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $peopleGroupData) {
+            $this->assertTrue(isset($peopleGroupData['ProfileText']));
+            $this->assertTrue(is_array($peopleGroupData['ProfileText']));
+        }
+    }
+    /**
      * GET /people_groups.json?people_id1=17
      * test page filters by people_id1
      *

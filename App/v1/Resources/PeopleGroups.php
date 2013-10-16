@@ -663,6 +663,23 @@ $app->get(
                 $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
                 exit;
             }
+            /**
+             * Get the ProfileText for each of the People Group
+             *
+             * @return void
+             * @author Johnathan Pulos
+             */
+            foreach ($data as $key => $peopleGroupData) {
+                try {
+                    $profileText = new \QueryGenerators\ProfileText(array('id' => $peopleGroupData['PeopleID3'], 'country' => $peopleGroupData['ROG3']));
+                    $profileText->findAllByIdAndCountry();
+                    $statement = $db->prepare($profileText->preparedStatement);
+                    $statement->execute($profileText->preparedVariables);
+                    $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+                } catch (Exception $e) {
+                    $data[$key]['ProfileText'] = '';
+                }
+            }
         }
         /**
          * Render the final data
