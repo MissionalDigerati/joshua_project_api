@@ -304,6 +304,10 @@ $app->get(
                 }
             }
         }
+        if (empty($data)) {
+            $app->render("/errors/404." . $format . ".php");
+            exit;
+        }
         if ($useCaching === true) {
             /**
              * Set the data to the cache using it's cache key, and expire it in 1 day
@@ -311,10 +315,6 @@ $app->get(
              * @author Johnathan Pulos
              */
             $cache->set($cacheKey, $data, 86400);
-        }
-        if (empty($data)) {
-            $app->render("/errors/404." . $format . ".php");
-            exit;
         }
         /**
          * Render the final data
