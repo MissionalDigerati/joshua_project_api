@@ -272,6 +272,23 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isset($decodedResponse[0]['ProfileText']));
         $this->assertTrue(is_array($decodedResponse[0]['ProfileText']));
     }
+    /**
+     * A request for Daily Unreached should provide the Resources
+     *
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testShouldGetDailyUnreachedWithResources()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/people_groups/daily_unreached.json",
+            array('api_key' => $this->APIKey),
+            "daily_unreached_returns_resources"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertTrue(isset($decodedResponse[0]['Resources']));
+        $this->assertTrue(is_array($decodedResponse[0]['Resources']));
+    }
      /**
       * GET /people_groups/[ID].json 
       * test page is available, and delivers JSON
@@ -323,7 +340,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedID = "12662";
         $expectedCountry = "CB";
-        $expectedName = "Khmer, Central";
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/people_groups/12662.json",
             array('api_key' => $this->APIKey, 'country' => 'CB'),
@@ -332,6 +348,27 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $decodedResponse = json_decode($response, true);
         $this->assertTrue(isset($decodedResponse[0]['ProfileText']));
         $this->assertTrue(is_array($decodedResponse[0]['ProfileText']));
+    }
+    /**
+     * GET /people_groups/[ID].json?country=BA
+     * test page is available, and delivers the PeopleGroups Resources
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testShouldGetPeopleGroupsWithResourcesFromShowWhenIDAndCountryProvided()
+    {
+        $expectedId = "10572";
+        $expectedCountry = "BA";
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/people_groups/" . $expectedId . ".json",
+            array('api_key' => $this->APIKey, 'country' => $expectedCountry),
+            "show_in_country_gets_resources_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertTrue(isset($decodedResponse[0]['Resources']));
+        $this->assertTrue(is_array($decodedResponse[0]['Resources']));
     }
     /**
       * GET /people_groups/[ID].json?country=CB
@@ -343,7 +380,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     public function testShouldGetPeopleGroupsProfileTextFromShowWhenIDIsProvided()
     {
         $expectedID = "12662";
-        $expectedName = "Khmer, Central";
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/people_groups/12662.json",
             array('api_key' => $this->APIKey),
@@ -353,6 +389,28 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         foreach ($decodedResponse as $peopleGroupData) {
             $this->assertTrue(isset($peopleGroupData['ProfileText']));
             $this->assertTrue(is_array($peopleGroupData['ProfileText']));
+        }
+    }
+    /**
+     * GET /people_groups/[ID].json?country=BA
+     * test page is available, and delivers the People Group's Resources when only an id is provided
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testShouldGetPeopleGroupsWithResourcesFromShowWhenIDIsProvided()
+    {
+        $expectedID = "10572";
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/people_groups/" . $expectedID . ".json",
+            array('api_key' => $this->APIKey),
+            "show_get_proper_resources_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $peopleGroupData) {
+            $this->assertTrue(isset($peopleGroupData['Resources']));
+            $this->assertTrue(is_array($peopleGroupData['Resources']));
         }
     }
     /**
@@ -425,7 +483,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      */
     public function testIndexShouldReturnProfileTextForAllPeopleGroupsOnIndex()
     {
-        $expectedNumberOfResults = 100;
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey),
@@ -435,6 +492,27 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         foreach ($decodedResponse as $peopleGroupData) {
             $this->assertTrue(isset($peopleGroupData['ProfileText']));
             $this->assertTrue(is_array($peopleGroupData['ProfileText']));
+        }
+    }
+    /**
+     * GET /people_groups.json
+     * test page returns Resources for all people groups
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testIndexShouldReturnResourcesForAllPeopleGroups()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/people_groups.json",
+            array('api_key' => $this->APIKey),
+            "resources_for_all_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $peopleGroupData) {
+            $this->assertTrue(isset($peopleGroupData['Resources']));
+            $this->assertTrue(is_array($peopleGroupData['Resources']));
         }
     }
     /**
