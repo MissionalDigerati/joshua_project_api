@@ -483,7 +483,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      */
     public function testIndexShouldReturnProfileTextForAllPeopleGroupsOnIndex()
     {
-        $expectedNumberOfResults = 100;
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/people_groups.json",
             array('api_key' => $this->APIKey),
@@ -493,6 +492,27 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         foreach ($decodedResponse as $peopleGroupData) {
             $this->assertTrue(isset($peopleGroupData['ProfileText']));
             $this->assertTrue(is_array($peopleGroupData['ProfileText']));
+        }
+    }
+    /**
+     * GET /people_groups.json
+     * test page returns Resources for all people groups
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testIndexShouldReturnResourcesForAllPeopleGroups()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/people_groups.json",
+            array('api_key' => $this->APIKey),
+            "resources_for_all_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $peopleGroupData) {
+            $this->assertTrue(isset($peopleGroupData['Resources']));
+            $this->assertTrue(is_array($peopleGroupData['Resources']));
         }
     }
     /**
