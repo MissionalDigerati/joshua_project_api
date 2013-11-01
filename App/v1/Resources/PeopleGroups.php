@@ -275,6 +275,15 @@ $app->get(
                     } catch (Exception $e) {
                         $data[$key]['ProfileText'] = '';
                     }
+                    try {
+                        $resource = new \QueryGenerators\Resource(array('id' => $peopleGroupData['ROL3']));
+                        $resource->findAllByLanguageId();
+                        $statement = $db->prepare($resource->preparedStatement);
+                        $statement->execute($resource->preparedVariables);
+                        $data[$key]['Resources'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    } catch (Exception $e) {
+                        $data[$key]['Resources'] = '';
+                    }
                 }
             }
         } else {
