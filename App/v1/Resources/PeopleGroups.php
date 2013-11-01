@@ -126,7 +126,7 @@ $app->get(
                 $statement->execute($profileText->preparedVariables);
                 $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
             } catch (Exception $e) {
-                $data[$key]['ProfileText'] = '';
+                $data[$key]['ProfileText'] = array();
             }
             try {
                 $resource = new \QueryGenerators\Resource(array('id' => $peopleGroupData['ROL3']));
@@ -135,7 +135,7 @@ $app->get(
                 $statement->execute($resource->preparedVariables);
                 $data[$key]['Resources'] = $statement->fetchAll(PDO::FETCH_ASSOC);
             } catch (Exception $e) {
-                $data[$key]['Resources'] = '';
+                $data[$key]['Resources'] = array();
             }
         }
         /**
@@ -273,7 +273,7 @@ $app->get(
                         $statement->execute($profileText->preparedVariables);
                         $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
                     } catch (Exception $e) {
-                        $data[$key]['ProfileText'] = '';
+                        $data[$key]['ProfileText'] = array();
                     }
                     try {
                         $resource = new \QueryGenerators\Resource(array('id' => $peopleGroupData['ROL3']));
@@ -282,7 +282,7 @@ $app->get(
                         $statement->execute($resource->preparedVariables);
                         $data[$key]['Resources'] = $statement->fetchAll(PDO::FETCH_ASSOC);
                     } catch (Exception $e) {
-                        $data[$key]['Resources'] = '';
+                        $data[$key]['Resources'] = array();
                     }
                 }
             }
@@ -324,7 +324,7 @@ $app->get(
                         $statement->execute($profileText->preparedVariables);
                         $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
                     } catch (Exception $e) {
-                        $data[$key]['ProfileText'] = '';
+                        $data[$key]['ProfileText'] = array();
                     }
                     try {
                         $resource = new \QueryGenerators\Resource(array('id' => $peopleGroupData['ROL3']));
@@ -333,7 +333,7 @@ $app->get(
                         $statement->execute($resource->preparedVariables);
                         $data[$key]['Resources'] = $statement->fetchAll(PDO::FETCH_ASSOC);
                     } catch (Exception $e) {
-                        $data[$key]['Resources'] = '';
+                        $data[$key]['Resources'] = array();
                     }
                 }
             }
@@ -716,7 +716,7 @@ $app->get(
                     $statement->execute($profileText->preparedVariables);
                     $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
                 } catch (Exception $e) {
-                    $data[$key]['ProfileText'] = '';
+                    $data[$key]['ProfileText'] = array();
                 }
                 try {
                     $resource = new \QueryGenerators\Resource(array('id' => $peopleGroupData['ROL3']));
@@ -725,7 +725,7 @@ $app->get(
                     $statement->execute($resource->preparedVariables);
                     $data[$key]['Resources'] = $statement->fetchAll(PDO::FETCH_ASSOC);
                 } catch (Exception $e) {
-                    $data[$key]['Resources'] = '';
+                    $data[$key]['Resources'] = array();
                 }
             }
         }
