@@ -196,44 +196,44 @@
                     <pre>
 [
     {
-        "ROG3": "CH",
-        "Ctry": "China",
-        "PeopleID3": "15603",
-        "ROP3": "110227",
-        "PeopNameInCountry": "Tu",
+        "ROG3": "LA",
+        "Ctry": "Laos",
+        "PeopleID3": "14966",
+        "ROP3": "109364",
+        "PeopNameInCountry": "So",
         "ROG2": "ASI",
         "Continent": "Asia",
-        "RegionCode": "3",
-        "RegionName": "Northeast Asia",
-        "ISO3": "CHN",
-        "LocationInCountry": "Most live in north-west China, especially in Huzhu Tu Autonomous County in Qinghai Province. Others are scattered throughout other parts of Qinghai, as well as in neighboring areas of Gansu Province.",
-        "PeopleID1": "11",
-        "ROP1": "A002",
-        "AffinityBloc": "East Asian Peoples",
-        "PeopleID2": "238",
-        "ROP2": "C0146",
-        "PeopleCluster": "Mongolian",
-        "PeopNameAcrossCountries": "Tu",
-        "Population": "247000",
-        "PopulationPercentUN": "0.0181533",
-        "Category": "3",
-        "ROL3": "mjg",
-        "PrimaryLanguageName": "Tu",
-        "ROL4": "17709",
-        "PrimaryLanguageDialect": "Huzhu",
-        "NumberLanguagesSpoken": "3",
-        "ROL3OfficialLanguage": "cmn",
-        "OfficialLang": "Chinese, Mandarin",
+        "RegionCode": "2",
+        "RegionName": "Southeast Asia",
+        "ISO3": "LAO",
+        "LocationInCountry": "They live on both sides of the Laos-Thailand border, especially in northern Savannakhet Province and southern Khammouan Province in Laos. An additional group of So people inhabit 53 villages in north-east Thailand.",
+        "PeopleID1": "20",
+        "ROP1": "A011",
+        "AffinityBloc": "Southeast Asian Peoples",
+        "PeopleID2": "239",
+        "ROP2": "C0147",
+        "PeopleCluster": "Mon-Khmer",
+        "PeopNameAcrossCountries": "So",
+        "Population": "138000",
+        "PopulationPercentUN": "2.15989",
+        "Category": "2",
+        "ROL3": "sss",
+        "PrimaryLanguageName": "So",
+        "ROL4": "0",
+        "PrimaryLanguageDialect": null,
+        "NumberLanguagesSpoken": "1",
+        "ROL3OfficialLanguage": "lao",
+        "OfficialLang": "Lao",
         "SpeakNationalLang": null,
-        "BibleStatus": "1",
+        "BibleStatus": "2",
         "BibleYear": null,
         "NTYear": null,
-        "PortionsYear": null,
+        "PortionsYear": "1980-2004",
         "TranslationNeedQuestionable": null,
-        "JPScale": "1.1",
+        "JPScale": "1.2",
         "LeastReached": "Y",
         "LeastReachedBasis": "2",
-        "GSEC": "3",
+        "GSEC": "2",
         "Unengaged": "",
         "JF": "",
         "AudioRecordings": "Y",
@@ -241,43 +241,43 @@
         "GospelRadio": "",
         "RLG3": "2",
         "PrimaryReligion": "Buddhism",
-        "RLG4": "11",
-        "ReligionSubdivision": "Tibetan",
-        "PercentAdherents": "0.01",
-        "PercentEvangelical": "0.01",
-        "PCBuddhism": "98",
+        "RLG4": null,
+        "ReligionSubdivision": null,
+        "PercentAdherents": "0.2",
+        "PercentEvangelical": "0.0500834733247757",
+        "PCBuddhism": "90",
         "PCDblyProfessing": "0",
-        "PCEthnicReligions": "1.99",
+        "PCEthnicReligions": "9.8",
         "PCHinduism": "0",
         "PCIslam": "0",
         "PCNonReligious": "0",
         "PCOtherSmall": "0",
         "PCUnknown": "0",
         "PCAnglican": "0",
-        "PCIndependent": "100",
-        "PCProtestant": "0",
+        "PCIndependent": "0",
+        "PCProtestant": "70",
         "PCOrthodox": "0",
         "PCOtherChristian": "0",
-        "PCRomanCatholic": "0",
+        "PCRomanCatholic": "30",
         "StonyGround": "Y",
         "SecurityLevel": "2",
-        "OriginalJPL": "A",
-        "RaceCode": "MSY41y",
+        "OriginalJPL": null,
+        "RaceCode": "AUG03z",
         "IndigenousCode": "Y",
         "LRWebProfile": "Y",
-        "LRofTheDayMonth": "10",
-        "LRofTheDayDay": "15",
+        "LRofTheDayMonth": "1",
+        "LRofTheDayDay": "11",
         "LRTop100": "",
-        "PhotoAddress": "p15603.jpg",
-        "PhotoWidth": "148",
-        "PhotoHeight": "206",
+        "PhotoAddress": "p14966.jpg",
+        "PhotoWidth": "200",
+        "PhotoHeight": "249",
         "PhotoAddressExpanded": null,
-        "PhotoCredits": "Operation China, Paul Hattaway",
-        "PhotoCreditURL": "http://www.asiaharvest.org",
+        "PhotoCredits": "Ray Mason",
+        "PhotoCreditURL": null,
         "PhotoCreativeCommons": null,
-        "PhotoCopyright": "Y",
-        "PhotoPermission": "Y",
-        "MapAddress": "m15603_ch.png",
+        "PhotoCopyright": null,
+        "PhotoPermission": null,
+        "MapAddress": "m14966_la.png",
         "MapAddressExpanded": null,
         "MapCredits": "Bethany World Prayer Center",
         "MapCreditURL": null,
@@ -291,39 +291,39 @@
         "FileCopyright": "",
         "FilePermission": "",
         "Top10Ranking": null,
-        "RankOverall": "74",
-        "RankProgress": "30",
+        "RankOverall": "73",
+        "RankProgress": "26",
         "RankPopulation": "19",
-        "RankLocation": "13",
-        "RankMinistryTools": "12",
-        "CountOfCountries": "1",
-        "CountOfProvinces": null,
-        "EthnolinguisticMap": "http://www.lib.utexas.edu/maps/middle_east_and_asia/china_ethnolinguistic_83.jpg",
-        "MapID": "mjg-CH",
-        "V59Country": "Y",
+        "RankLocation": "18",
+        "RankMinistryTools": "10",
+        "CountOfCountries": "2",
+        "CountOfProvinces": "2",
+        "EthnolinguisticMap": "http://www.lib.utexas.edu/maps/middle_east_and_asia/indochina_eth_1970.jpg",
+        "MapID": "sss-LA",
+        "V59Country": null,
         "MegablocPC": "Y",
         "LargeSouthAsianLanguageROL3": null,
-        "Longitude": "102.183697000016",
-        "Latitude": "36.8561559998994",
+        "Longitude": "105.427040000396",
+        "Latitude": "17.0162099995918",
         "Window10_40": "Y",
-        "PeopleGroupURL": "http://www.joshuaproject.net/people-profile.php?peo3=15603&rog3=CH",
-        "PeopleGroupPhotoURL": "http://www.joshuaproject.net/profiles/photos/p15603.jpg",
-        "CountryURL": "http://www.joshuaproject.net/countries.php?rog3=CH",
+        "PeopleGroupURL": "http://www.joshuaproject.net/people-profile.php?peo3=14966&rog3=LA",
+        "PeopleGroupPhotoURL": "http://www.joshuaproject.net/profiles/photos/p14966.jpg",
+        "CountryURL": "http://www.joshuaproject.net/countries.php?rog3=LA",
         "JPScaleText": "Unreached",
         "JPScaleImageURL": "http://www.joshuaproject.net/images/scale1.jpg",
         "ProfileText": [
             {
-                "ProfileID": "2630",
+                "ProfileID": "2445",
                 "ROL3": "eng",
                 "Active": "1",
-                "Format": "OC",
-                "FileName": "t15603.txt",
-                "IntroductionHistory": null,
+                "Format": "GB",
+                "FileName": "t14966_la.txt",
+                "IntroductionHistory": "The So live along both banks of the Mekong River in Thailand and Laos. This is a rugged mountain region with many dense tropical forests. The Lao-Thai name So (\"elder brother\") refers to the fact that the So were present in this area long before their \"younger brothers,\" the Lao. The So are bilingual, speaking So (a Mon-Khmer language) in their homes and Lao in social settings. \r\n\r\nIt is said that the Mon Khmer-speaking tribes were the original settlers of this region. However, they were pushed out of the best lands in the early centuries A.D. by Thai-speaking peoples. About 400 years ago, the Thai-speakers forced the So to leave their homes and re-settle on the banks of the Mekong River. They gradually adapted to the lifestyles of the Thai and the Lao. In recent years, Laos has been the location of numerous battles. It has also been the object of political competition among China, Russia, and Vietnam. Recurring warfare and forced relocation has disrupted the lives of the So.",
                 "WhereLocated": null,
-                "LivesLike": null,
-                "Beliefs": null,
-                "Needs": null,
-                "Prayer": null,
+                "LivesLike": "The So of Laos are primarily farmers. They cultivate a wide variety of crops, such as rice, fruit, and vegetables, for both consumption and trade. They are poorer than most of the surrounding ethnic groups and are therefore dependent on the Lao for many goods and services. The villagers also frequently meet with the Thai to trade meat and vegetables for necessary items such as clothing and salt.\r\n\r\nOver the years, the So began adopting the practices of the surrounding peoples, especially the Thai and Lao. This brought on many significant changes within their culture. For example, they no longer use their traditional farming methods of burning and clearing plots. Instead, they grow wet-rice on terraced plots, which is the agricultural method of the Thai. They also raise their cattle and till their fields much like the Lao. The fields are prepared with plows drawn by buffalo or oxen. In addition, fishing and hunting have become important activities.\r\n\r\nSuch things as traditional dress, language, educational methods, housing, and public administration have also changed over the years. Only a few distinctive, cultural characteristics have remained, such as the silk scarves worn by the So women around a bun of hair at their necks.\r\n\r\nAmong the So, the village is considered the most significant political unit of society. Each village is led by a headman, and each family is led by the father. A young married couple may live with the bride's family until they are able to establish their own home. The So typically live in thatch roof bamboo houses built on stilts. They are not known to be clean people, but rather dirty and disorderly.",
+                "Beliefs": "Buddhism was introduced into Thailand in 329 B.C.; and today, most of the So profess to be Buddhist. However, most of them have mixed elements of Buddhism with their traditional animistic beliefs (belief that non-living objects have spirits). They often seek help through supernatural spirits and objects. Ancestor worship (praying to deceased ancestors for provision and guidance) is also common. The ancestral spirits are thought to cause illnesses if they are not appeased. Families usually have small altars near their homes where sacrifices and offerings are made to the spirits. The people also believe that each village has a \"guardian spirit,\" as well as various spirits that are linked to the elements of nature.",
+                "Needs": "The area where the So live is often affected by destructive floods. Due to the crop losses in 1996, there is a projected food shortage that will greatly affect the rural population. Food aid and basic relief items are needed.\r\n\r\nMany of the fields in this area are laden with cluster bomblets that were dropped by U.S. warplanes during Vietnam War. The villagers need God's protection over them as they work daily in the fields. Medical help, especially with prosthesis and physical therapy, is needed. Perhaps these needs will provide opportunities for Christian medical missionaries to gain access to the So.",
+                "Prayer": "* Pray that God will give the missions agencies in Laos fresh strategies for reaching the So with the Gospel. \r\n* Ask the Lord to call Christian medical teams and humanitarian aid workers to go to Laos and live among the So. \r\n* Pray that God will protect the So from the destructive floods in their region. \r\n* Ask God to strengthen, encourage, and protect the few known So Christians. \r\n* Pray that the So believers will have opportunities to share the Gospel with their own people. \r\n* Ask God to call forth prayer teams who will begin breaking up the soil through worship and intercession. \r\n* Ask the Lord to raise up strong local churches among the So.",
                 "Reference": null,
                 "Summary": null,
                 "ScriptureFocus": null,
@@ -331,20 +331,20 @@
                 "HowReach": null,
                 "PrayForChurch": null,
                 "PrayForPG": null,
-                "Identity": "The Tu - who are one of China's official minorities - believe they are descended from white feathers that were left behind by a flock of cranes. The Tibetans consider the Tu to be a part of the Tibetan nationality and accuse the Chinese of trying to weaken the unity of the Tibetan world by granting the Tu a separate identity. However, there is no doubt that the Tu are distinct from the Tibetans historically, culturally, and linguistically. There are two distinct languages spoken among the Tu: Huzhu, which is profiled here, and Mongour, which is covered separately.\r\n\r\nSixty percent of Tu vocabulary is still Mongolian in nature after 800 years of isolation. In 1979 a Tu script based on the Roman alphabet was created. It soon became popular among the Tu. The script is taught in local Tu schools today. A massive 70,000-entry Tu-Chinese dictionary was published in 1988. There are 11 different dialects within the Tu language. The Tu living in Datong County can now only speak Chinese. In addition, more than 4,000 ethnic Tu people speak Bonan as their mother tongue.",
-                "History": "The Tu were first recorded in AD 1227, when a Mongol garrison was dispatched to control the area that the Tu still inhabit today. The troops remained there and later married women from local tribes. A bronze statue of the first Mongol general still stands in the Youning Monastery. Another historian states, \"Their ancestors are believed to be the Tuguhuns who moved in the third and fourth centuries to Gansu and Qinghai provinces and mingled with local people of different nationalities. Places where the Tu people live in compact communities are still called Tuhun in the Tu language.\"",
-                "Customs": "Until recently Tu girls were expected to be married by the age of 15. After that age, the girl was considered \"married to heaven.\" If a Tu woman is still single by her mid-20s, she is allowed to sleep around, thus saving herself from disgrace in the eyes of the community. Any resulting children are raised by the entire Tu village. Unmarried Tu women wear a single ponytail to advertise their status to prospective partners.",
-                "Religion": "The Tu are ardent followers of Tibetan Buddhism. Their main religious center is the Youning Monastery, founded in 1604. Shamans and mediums are also active among the Tu. The annual Nadun Festival focuses around the fala, a Tu medium who \"impales himself with as many as 12 iron nails and is possessed by the spirit of the Erlang god.\"",
-                "Christianity": "Prior to the forced deportation of missionaries from China in the early 1950s, a handful of Tu Christians attended Han Chinese churches in the area. Although there are no known Christians among the Tu today, there are about 400 Han Chinese believers living in the mountains 25 kilometers from Huzhu. They interact with the Tu and even speak the Tu language.",
+                "Identity": null,
+                "History": null,
+                "Customs": null,
+                "Religion": null,
+                "Christianity": null,
                 "Comments": null,
                 "Copyright": "Y",
                 "Permission": "Y",
                 "CreativeCommons": null,
-                "Credits": "Operation China, Paul Hattaway",
-                "CreditsURL": "http://www.asiaharvest.org"
+                "Credits": "Bethany World Prayer Center",
+                "CreditsURL": null
             },
             {
-                "ProfileID": "4459",
+                "ProfileID": "4453",
                 "ROL3": "eng",
                 "Active": "1",
                 "Format": "M",
@@ -356,12 +356,12 @@
                 "Needs": null,
                 "Prayer": null,
                 "Reference": null,
-                "Summary": "The Tu were first recorded in AD 1227, when a Mongol garrison was dispatched to control the area that the Tu still inhabit today. The troops remained there and later married women from local tribes. Until recently Tu girls were expected to be married by the age of 15. After that age, the girl was considered \"married to heaven.\" Unmarried Tu women wear a single ponytail to advertise their status to prospective partners. The Tu are ardent followers of Tibetan Buddhism. Their main religious center is the Youning Monastery, founded in 1604. Shamans and mediums are also active among the Tu. The annual Nadun Festival focuses around the fala, a Tu medium who \"impales himself with as many as 12 iron nails and is possessed by the spirit of the Erlang god.\"",
-                "ScriptureFocus": "\"...that all the peoples of the earth may know that the Lord is God; there is no one else.\" 1 Kings 8:60",
-                "Obstacles": "Spiritual opposition will surely be encountered when Jesus is presented to the Tu. Workers need to be prepared for this, but not intimidated.",
-                "HowReach": "Although there are no known Christians among the Tu today, there are about 400 Han Chinese believers living in the mountains 25 kilometers from Huzhu. They interact with the Tu and even speak the Tu language. Pray these Han believers will be given a desire to share Christ with the Tu.",
-                "PrayForChurch": "Please pray for those Tu who will soon come to Christ. Pray for friendships to develop with Han Christians, who will be able to disciple them.",
-                "PrayForPG": "Pray the Tu will be given the gift of conviction of sin, that they may know they need a Savior. Pray the Lord will be preparing them for the Gospel message when it comes.",
+                "Summary": "The So of Laos are primarily farmers. They cultivate a wide variety of crops, such as rice, fruit, and vegetables, for both consumption and trade. They are poorer than most of the surrounding ethnic groups and are therefore dependent on the Lao for many goods and services. Among the So, the village is considered the most significant political unit of society. Each village is led by a headman, and each family is led by the father. \"Although the So often show an intense interest in scripture, they have not yet overcome the spiritual barriers that keep them from embracing the King of Kings. Their families and relatives all fear that if any one of them abandons worship of the spirits, the entire family will be punished.\"",
+                "ScriptureFocus": "\"And you shall be my witnesses, both in Jerusalem, and in all Judea and Samaria, and even to the remotest part of the earth.\" Acts 1:8",
+                "Obstacles": "Fear is one of the obstacles to the Gospel experienced by the So. Please pray they will be set free from fear.",
+                "HowReach": "Pray for spiritually mature, indigenous workers to take the liberating news of Christ to the So tribe. Laos has a number of evangelical churches, and people in these churches can take the Gospel to unreached tribes in their own country.",
+                "PrayForChurch": "Please pray for the few individuals in the So tribe who identify themselves as Christians. They need to be taught how to quickly confess sin, and then trust God's Spirit to fill them and give them the fruit of the Spirit: love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control.",
+                "PrayForPG": "Pray the poor So tribe will be able to improve their standard of living, and will care for those unable to care for themselves.",
                 "Identity": null,
                 "History": null,
                 "Customs": null,
@@ -374,13 +374,21 @@
                 "Credits": "Joshua Project",
                 "CreditsURL": null
             }
+        ],
+        "Resources": [
+            {
+                "ROL3": "sss",
+                "Category": "Audio Recordings",
+                "WebText": "Global Recordings",
+                "URL": "http://www.globalrecordings.net/langcode/sss"
+            }
         ]
     }
 ]
                     </pre>
                     <p>And here is the XML response:</p>
                     <pre>
-&lt;?xml version="1.0" ?&gt;
+&lt;?xml version="1.0"?&gt;
 &lt;api&gt;
   &lt;people_groups&gt;
     &lt;people_group&gt;
@@ -394,9 +402,7 @@
       &lt;RegionCode&gt;2&lt;/RegionCode&gt;
       &lt;RegionName&gt;Southeast Asia&lt;/RegionName&gt;
       &lt;ISO3&gt;LAO&lt;/ISO3&gt;
-      &lt;LocationInCountry&gt;
-        They live on both sides of the Laos-Thailand border, especially in northern Savannakhet Province and southern Khammouan Province in Laos.  An additional group of So people inhabit 53 villages in north-east Thailand.
-      &lt;/LocationInCountry&gt;
+      &lt;LocationInCountry&gt;They live on both sides of the Laos-Thailand border, especially in northern Savannakhet Province and southern Khammouan Province in Laos.  An additional group of So people inhabit 53 villages in north-east Thailand.&lt;/LocationInCountry&gt;
       &lt;PeopleID1&gt;20&lt;/PeopleID1&gt;
       &lt;ROP1&gt;A011&lt;/ROP1&gt;
       &lt;AffinityBloc&gt;Southeast Asian Peoples&lt;/AffinityBloc&gt;
@@ -501,9 +507,82 @@
       &lt;CountryURL&gt;http://www.joshuaproject.net/countries.php?rog3=LA&lt;/CountryURL&gt;
       &lt;JPScaleText&gt;Unreached&lt;/JPScaleText&gt;
       &lt;JPScaleImageURL&gt;http://www.joshuaproject.net/images/scale1.jpg&lt;/JPScaleImageURL&gt;
+      &lt;ProfileText&gt;
+        &lt;ProfileText_0&gt;
+          &lt;ProfileID&gt;2445&lt;/ProfileID&gt;
+          &lt;ROL3&gt;eng&lt;/ROL3&gt;
+          &lt;Active&gt;1&lt;/Active&gt;
+          &lt;Format&gt;GB&lt;/Format&gt;
+          &lt;FileName&gt;t14966_la.txt&lt;/FileName&gt;
+          &lt;IntroductionHistory&gt;The So live along both banks of the Mekong River in Thailand and Laos. This is a rugged mountain region with many dense tropical forests. The Lao-Thai name So ("elder brother") refers to the fact that the So were present in this area long before their "younger brothers," the Lao. The So are bilingual, speaking So (a Mon-Khmer language) in their homes and Lao in social settings. &#xD;&#xD;It is said that the Mon Khmer-speaking tribes were the original settlers of this region. However, they were pushed out of the best lands in the early centuries A.D. by Thai-speaking peoples. About 400 years ago, the Thai-speakers forced the So to leave their homes and re-settle on the banks of the Mekong River. They gradually adapted to the lifestyles of the Thai and the Lao. In recent years, Laos has been the location of numerous battles. It has also been the object of political competition among China, Russia, and Vietnam. Recurring warfare and forced relocation has disrupted the lives of the So.&lt;/IntroductionHistory&gt;
+          &lt;WhereLocated/&gt;
+          &lt;LivesLike&gt;The So of Laos are primarily farmers. They cultivate a wide variety of crops, such as rice, fruit, and vegetables, for both consumption and trade. They are poorer than most of the surrounding ethnic groups and are therefore dependent on the Lao for many goods and services. The villagers also frequently meet with the Thai to trade meat and vegetables for necessary items such as clothing and salt.&#xD;&#xD;Over the years, the So began adopting the practices of the surrounding peoples, especially the Thai and Lao. This brought on many significant changes within their culture. For example, they no longer use their traditional farming methods of burning and clearing plots. Instead, they grow wet-rice on terraced plots, which is the agricultural method of the Thai. They also raise their cattle and till their fields much like the Lao. The fields are prepared with plows drawn by buffalo or oxen. In addition, fishing and hunting have become important activities.&#xD;&#xD;Such things as traditional dress, language, educational methods, housing, and public administration have also changed over the years. Only a few distinctive, cultural characteristics have remained, such as the silk scarves worn by the So women around a bun of hair at their necks.&#xD;&#xD;Among the So, the village is considered the most significant political unit of society. Each village is led by a headman, and each family is led by the father. A young married couple may live with the bride's family until they are able to establish their own home. The So typically live in thatch roof bamboo houses built on stilts. They are not known to be clean people, but rather dirty and disorderly.&lt;/LivesLike&gt;
+          &lt;Beliefs&gt;Buddhism was introduced into Thailand in 329 B.C.; and today, most of the So profess to be Buddhist. However, most of them have mixed elements of Buddhism with their traditional animistic beliefs (belief that non-living objects have spirits). They often seek help through supernatural spirits and objects. Ancestor worship (praying to deceased ancestors for provision and guidance) is also common. The ancestral spirits are thought to cause illnesses if they are not appeased. Families usually have small altars near their homes where sacrifices and offerings are made to the spirits. The people also believe that each village has a "guardian spirit," as well as various spirits that are linked to the elements of nature.&lt;/Beliefs&gt;
+          &lt;Needs&gt;The area where the So live is often affected by destructive floods. Due to the crop losses in 1996, there is a projected food shortage that will greatly affect the rural population. Food aid and basic relief items are needed.&#xD;&#xD;Many of the fields in this area are laden with cluster bomblets that were dropped by U.S. warplanes during Vietnam War. The villagers need God's protection over them as they work daily in the fields. Medical help, especially with prosthesis and physical therapy, is needed. Perhaps these needs will provide opportunities for Christian medical missionaries to gain access to the So.&lt;/Needs&gt;
+          &lt;Prayer&gt;* Pray that God will give the missions agencies in Laos fresh strategies for reaching the So with the Gospel. &#xD;* Ask the Lord to call Christian medical teams and humanitarian aid workers to go to Laos and live among the So. &#xD;* Pray that God will protect the So from the destructive floods in their region. &#xD;* Ask God to strengthen, encourage, and protect the few known So Christians. &#xD;* Pray that the So believers will have opportunities to share the Gospel with their own people. &#xD;* Ask God to call forth prayer teams who will begin breaking up the soil through worship and intercession. &#xD;* Ask the Lord to raise up strong local churches among the So.&lt;/Prayer&gt;
+          &lt;Reference/&gt;
+          &lt;Summary/&gt;
+          &lt;ScriptureFocus/&gt;
+          &lt;Obstacles/&gt;
+          &lt;HowReach/&gt;
+          &lt;PrayForChurch/&gt;
+          &lt;PrayForPG/&gt;
+          &lt;Identity/&gt;
+          &lt;History/&gt;
+          &lt;Customs/&gt;
+          &lt;Religion/&gt;
+          &lt;Christianity/&gt;
+          &lt;Comments/&gt;
+          &lt;Copyright&gt;Y&lt;/Copyright&gt;
+          &lt;Permission&gt;Y&lt;/Permission&gt;
+          &lt;CreativeCommons/&gt;
+          &lt;Credits&gt;Bethany World Prayer Center&lt;/Credits&gt;
+          &lt;CreditsURL/&gt;
+        &lt;/ProfileText_0&gt;
+        &lt;ProfileText_1&gt;
+          &lt;ProfileID&gt;4453&lt;/ProfileID&gt;
+          &lt;ROL3&gt;eng&lt;/ROL3&gt;
+          &lt;Active&gt;1&lt;/Active&gt;
+          &lt;Format&gt;M&lt;/Format&gt;
+          &lt;FileName/&gt;
+          &lt;IntroductionHistory/&gt;
+          &lt;WhereLocated/&gt;
+          &lt;LivesLike/&gt;
+          &lt;Beliefs/&gt;
+          &lt;Needs/&gt;
+          &lt;Prayer/&gt;
+          &lt;Reference/&gt;
+          &lt;Summary&gt;The So of Laos are primarily farmers. They cultivate a wide variety of crops, such as rice, fruit, and vegetables, for both consumption and trade. They are poorer than most of the surrounding ethnic groups and are therefore dependent on the Lao for many goods and services. Among the So, the village is considered the most significant political unit of society. Each village is led by a headman, and each family is led by the father. "Although the So often show an intense interest in scripture, they have not yet overcome the spiritual barriers that keep them from embracing the King of Kings. Their families and relatives all fear that if any one of them abandons worship of the spirits, the entire family will be punished."&lt;/Summary&gt;
+          &lt;ScriptureFocus&gt;"And you shall be my witnesses, both in Jerusalem, and in all Judea and Samaria, and even to the remotest part of the earth." Acts 1:8&lt;/ScriptureFocus&gt;
+          &lt;Obstacles&gt;Fear is one of the obstacles to the Gospel experienced by the So. Please pray they will be set free from fear.&lt;/Obstacles&gt;
+          &lt;HowReach&gt;Pray for spiritually mature, indigenous workers to take the liberating news of Christ to the So tribe. Laos has a number of evangelical churches, and people in these churches can take the Gospel to unreached tribes in their own country.&lt;/HowReach&gt;
+          &lt;PrayForChurch&gt;Please pray for the few individuals in the So tribe who identify themselves as Christians. They need to be taught how to quickly confess sin, and then trust God's Spirit to fill them and give them the fruit of the Spirit: love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control.&lt;/PrayForChurch&gt;
+          &lt;PrayForPG&gt;Pray the poor So tribe will be able to improve their standard of living, and will care for those unable to care for themselves.&lt;/PrayForPG&gt;
+          &lt;Identity/&gt;
+          &lt;History/&gt;
+          &lt;Customs/&gt;
+          &lt;Religion/&gt;
+          &lt;Christianity/&gt;
+          &lt;Comments/&gt;
+          &lt;Copyright/&gt;
+          &lt;Permission/&gt;
+          &lt;CreativeCommons/&gt;
+          &lt;Credits&gt;Joshua Project&lt;/Credits&gt;
+          &lt;CreditsURL/&gt;
+        &lt;/ProfileText_1&gt;
+      &lt;/ProfileText&gt;
+      &lt;Resources&gt;
+        &lt;Resources_0&gt;
+          &lt;ROL3&gt;sss&lt;/ROL3&gt;
+          &lt;Category&gt;Audio Recordings&lt;/Category&gt;
+          &lt;WebText&gt;Global Recordings&lt;/WebText&gt;
+          &lt;URL&gt;http://www.globalrecordings.net/langcode/sss&lt;/URL&gt;
+        &lt;/Resources_0&gt;
+      &lt;/Resources&gt;
     &lt;/people_group&gt;
   &lt;/people_groups&gt;
 &lt;/api&gt;
+
                     </pre>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once you have a response,  you can use and manipulate the provided data.</p>
                     <h3 id="getting-started">Getting Started (All Tutorials)</h3>
