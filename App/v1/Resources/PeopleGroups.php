@@ -113,7 +113,7 @@ $app->get(
             exit;
         }
         /**
-         * Get the ProfileText for each of the People Group
+         * Get the ProfileText and Resources for each of the People Group
          *
          * @return void
          * @author Johnathan Pulos
@@ -127,6 +127,15 @@ $app->get(
                 $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
             } catch (Exception $e) {
                 $data[$key]['ProfileText'] = '';
+            }
+            try {
+                $resource = new \QueryGenerators\Resource(array('id' => $peopleGroupData['ROL3']));
+                $resource->findAllByLanguageId();
+                $statement = $db->prepare($resource->preparedStatement);
+                $statement->execute($resource->preparedVariables);
+                $data[$key]['Resources'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                $data[$key]['Resources'] = '';
             }
         }
         /**

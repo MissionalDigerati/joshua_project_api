@@ -272,6 +272,23 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isset($decodedResponse[0]['ProfileText']));
         $this->assertTrue(is_array($decodedResponse[0]['ProfileText']));
     }
+    /**
+     * A request for Daily Unreached should provide the Resources
+     *
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testShouldGetDailyUnreachedWithResources()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/people_groups/daily_unreached.json",
+            array('api_key' => $this->APIKey),
+            "daily_unreached_returns_resources"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertTrue(isset($decodedResponse[0]['Resources']));
+        $this->assertTrue(is_array($decodedResponse[0]['Resources']));
+    }
      /**
       * GET /people_groups/[ID].json 
       * test page is available, and delivers JSON
