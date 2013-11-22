@@ -36,6 +36,18 @@ $app->get(
             $app->render("/errors/404." . $format . ".php");
             exit;
         }
+        if ($useCaching === true) {
+            /**
+             * Check the cache
+             *
+             * @author Johnathan Pulos
+             */
+            $cacheKey = md5("CountryShowId_".$countryId);
+            $data = $cache->get($cacheKey);
+            if ((is_array($data)) && (!empty($data))) {
+                $gotCachedData = true;
+            }
+        }
         if (empty($data)) {
             try {
                 $country = new \QueryGenerators\Country(array('id' => $countryId));
@@ -47,6 +59,14 @@ $app->get(
                 $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
                 exit;
             }
+        }
+        if (($useCaching === true) && ($gotCachedData === false)) {
+            /**
+             * Set the data to the cache using it's cache key, and expire it in 1 day
+             *
+             * @author Johnathan Pulos
+             */
+            $cache->set($cacheKey, $data, 86400);
         }
         /**
          * Render the final data
