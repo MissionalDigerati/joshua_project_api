@@ -216,6 +216,20 @@ if (strpos($requestedUrl, 'people_groups') !== false) {
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/PeopleGroups.php");
 }
 /**
+ * Are we searching API for Countries?
+ *
+ * @author Johnathan Pulos
+ */
+if (strpos($requestedUrl, 'countries') !== false) {
+    /**
+     * Load the Query Generator for People Groups
+     *
+     * @author Johnathan Pulos
+     */
+    // $loader->add("QueryGenerators", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/Countries.php");
+}
+/**
  * Now run the Slim Framework rendering
  *
  * @author Johnathan Pulos
