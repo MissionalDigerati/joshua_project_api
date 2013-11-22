@@ -103,6 +103,64 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(404, $this->cachedRequest->responseCode);
     }
     /**
+      * GET /countries/usa.json 
+      * test page is available, and delivers JSON
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testCountryShowShouldBeAccessableByJSON()
+    {
+        $expectedCountry = "US";
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries/" . $expectedCountry . ".json",
+            array('api_key' => $this->APIKey),
+            "should_return_country_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /countries/usa.xml 
+      * test page is available, and delivers XML
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testCountryShowShouldBeAccessableByXML()
+    {
+        $expectedCountry = "US";
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries/" . $expectedCountry . ".xml",
+            array('api_key' => $this->APIKey),
+            "should_return_country_xml"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isXML($response));
+    }
+    /**
+      * GET /countries/usa.json
+      * Country Show should return the correct country data
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testCountryShowShouldReturnCountryInJSON()
+    {
+        $expectedCountry = "US";
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries/" . $expectedCountry . ".json",
+            array('api_key' => $this->APIKey),
+            "should_return_country_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        $this->assertTrue(is_array($decodedResponse));
+        $this->assertFalse(empty($decodedResponse));
+        $this->assertEquals($expectedCountry, $decodedResponse[0]['ISO2']);
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string

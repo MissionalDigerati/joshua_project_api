@@ -226,7 +226,7 @@ if (strpos($requestedUrl, 'countries') !== false) {
      *
      * @author Johnathan Pulos
      */
-    // $loader->add("QueryGenerators", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    $loader->add("QueryGenerators", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Countries.php");
 }
 /**

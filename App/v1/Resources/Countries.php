@@ -36,6 +36,18 @@ $app->get(
             $app->render("/errors/404." . $format . ".php");
             exit;
         }
+        if (empty($data)) {
+            try {
+                $country = new \QueryGenerators\Country(array('id' => $countryId));
+                $country->findById();
+                $statement = $db->prepare($country->preparedStatement);
+                $statement->execute($country->preparedVariables);
+                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
+                exit;
+            }
+        }
         /**
          * Render the final data
          *
