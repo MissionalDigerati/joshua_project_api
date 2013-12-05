@@ -44,7 +44,7 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">Home</a></li>
-                <li><a href="/docs/v1/#!/people_groups">Documentation</a></li>
+                <li><a href="/docs/v1/#!/countries">Documentation</a></li>
                 <li><a href="/docs/v1/sample_code">Sample Code</a></li>
                 <li><a href="http://www.joshuaproject.net/">Joshua Project</a></li>
                 <li><a href="http://www.missionaldigerati.org">Missional Digerati</a></li>

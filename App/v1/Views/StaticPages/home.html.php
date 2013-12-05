@@ -46,7 +46,7 @@
                     <li class="active"><a href="/">Home</a></li>
                     <li><a href="/getting_started">Getting Started</a></li>
                     <li><a href="/docs/v1/sample_code">Sample Code</a></li>
-                    <li><a href="/docs/v1/#!/people_groups">Documentation</a></li>
+                    <li><a href="/docs/v1/#!/countries">Documentation</a></li>
                     <li><a href="http://www.joshuaproject.net/">Joshua Project</a></li>
                     <li><a href="http://www.missionaldigerati.org">Missional Digerati</a></li>
                 </ul>
@@ -101,7 +101,7 @@
                             <p>To get a better understanding of the API, we highly encourage you to look over the documentation.  The documentation will show you all the resources available to you.  Make sure you have an API Key to use the interactive documentation.</p>
                           </div>
                             <div class="panel-footer">
-                                <a href="/docs/v1/#!/people_groups" class="btn btn-success pull-right">View Documentation >></a>
+                                <a href="/docs/v1/#!/countries" class="btn btn-success pull-right">View Documentation >></a>
                                 <span class="clearfix"></span>
                             </div>
                         </div>
