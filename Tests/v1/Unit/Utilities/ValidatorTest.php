@@ -30,12 +30,6 @@ namespace Tests\v1\Unit\Utilities;
 class ValidatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * The PDO database connection object
-     *
-     * @var object
-     */
-    private $db;
-    /**
      * The Validator object
      *
      * @var object
@@ -50,9 +44,6 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $pdoDb = \PHPToolbox\PDODatabase\PDODatabaseConnect::getInstance();
-        $pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings);
-        $this->db = $pdoDb->getDatabaseInstance();
         $this->validator = new \Utilities\Validator();
     }
     /**
