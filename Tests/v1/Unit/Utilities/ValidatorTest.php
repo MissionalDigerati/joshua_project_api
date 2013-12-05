@@ -182,4 +182,51 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $requiredLength = 5;
         $this->validator->stringLengthValuesBarSeperatedString($testString, $requiredLength);
     }
+    /**
+     * integerInRange() should error if the integer is not in range
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testIntegerInRangeShouldThrowErrorIfOutOfRange()
+    {
+        $testInteger = 5;
+        $rangeStart = 1;
+        $rangeEnd = 4;
+        $this->validator->integerInRange($testInteger, $rangeStart, $rangeEnd);
+    }
+    /**
+     * integerInRange() should not error if the integer is in range
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIntegerInRangeShouldNotThrowErrorIfInRange()
+    {
+        $testInteger = 5;
+        $rangeStart = 1;
+        $rangeEnd = 10;
+        $this->validator->integerInRange($testInteger, $rangeStart, $rangeEnd);
+    }
+    /**
+     * integerInRange() should error if the integer is in range but is an exception
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testIntegerInRangeShouldThrowErrorIfInRangeButIsAnException()
+    {
+        $testInteger = 5;
+        $rangeStart = 1;
+        $rangeEnd = 7;
+        $exceptions = array(3, 5);
+        $this->validator->integerInRange($testInteger, $rangeStart, $rangeEnd, $exceptions);
+    }
 }

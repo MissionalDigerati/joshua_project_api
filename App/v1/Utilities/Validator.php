@@ -103,4 +103,25 @@ class Validator
             throw new \InvalidArgumentException("One of your parameters are not the correct length.");
         }
     }
+    /**
+     * Checks if the given integer ($int) is within the given range ($start - $end)
+     *
+     * @param integer $int the integer to check
+     * @param integer $start the starting integer for the range
+     * @param integer $end the ending integer for the range
+     * @param array $exceptions an array of integers in the range that should not be accepted
+     * @return void
+     * @throws InvalidArgumentException if the integer is not in range, or it is an exception
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function integerInRange($int, $start, $end, $exceptions = array())
+    {
+        if ((($int >= $start) && ($int <= $end)) == false) {
+            throw new \InvalidArgumentException("One of the provided integers are out of range.");
+        }
+        if (in_array($int, $exceptions) === true) {
+            throw new \InvalidArgumentException("One of the provided integers is not allowed.");
+        }
+    }
 }

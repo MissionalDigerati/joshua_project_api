@@ -155,40 +155,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected['my_string'], $actual['my_string']);
     }
     /**
-     * Validate that validateVariableInRange() throws error if it is not in range
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     * @expectedException InvalidArgumentException
-     */
-    public function testValidateVariableInRangeShouldThrowErrorIfVariableIsOutOfRange()
-    {
-        $data = array('out_range' => 10);
-        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        $method = $reflectionOfPeopleGroup->getMethod('validateVariableInRange');
-        $method->setAccessible(true);
-        $actual = $method->invoke($peopleGroup, 'out_range', 1, 7);
-    }
-    /**
-     * Validate that validateVariableInRange() throws an error in the integer is in the $exceptions
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     * @expectedException InvalidArgumentException
-     */
-    public function testValidateVariableInRangeShouldThrowErrorIfVariableIsAnException()
-    {
-        $data = array('exception' => 5);
-        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        $method = $reflectionOfPeopleGroup->getMethod('validateVariableInRange');
-        $method->setAccessible(true);
-        $actual = $method->invoke($peopleGroup, 'exception', 1, 7, array(5));
-    }
-    /**
      * findByIdAndCountry() should return the correct people group, based on the supplied ID, and country.
      *
      * @return void

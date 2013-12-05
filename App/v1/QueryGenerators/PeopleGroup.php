@@ -150,8 +150,8 @@ class PeopleGroup
         $this->validator->providedRequiredParams($this->providedParams, array('month', 'day'));
         $month = intval($this->providedParams['month']);
         $day = intval($this->providedParams['day']);
-        $this->validateVariableInRange($month, 1, 12);
-        $this->validateVariableInRange($day, 1, 31);
+        $this->validator->integerInRange($month, 1, 12);
+        $this->validator->integerInRange($day, 1, 31);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
         $this->preparedVariables = array('month' => $month, 'day' => $day);
     }
@@ -389,7 +389,7 @@ class PeopleGroup
         if ($this->paramExists('primary_religions')) {
             $religions = explode('|', $this->providedParams['primary_religions']);
             foreach ($religions as $religion) {
-                $this->validateVariableInRange($religion, 1, 9, array(3));
+                $this->validator->integerInRange($religion, 1, 9, array(3));
             }
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -400,7 +400,7 @@ class PeopleGroup
         if ($this->paramExists('regions')) {
             $regions = explode('|', $this->providedParams['regions']);
             foreach ($regions as $region) {
-                $this->validateVariableInRange($region, 1, 12);
+                $this->validator->integerInRange($region, 1, 12);
             }
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -555,26 +555,6 @@ class PeopleGroup
     private function paramExists($paramName)
     {
         return array_key_exists($paramName, $this->providedParams);
-    }
-    /**
-     * validates a integer is in range
-     *
-     * @param integer $var the variable to check
-     * @param integer $start the start of the range
-     * @param integer $end the end of the range
-     * @return void
-     * @throws InvalidArgumentException if the variable is out of range
-     * @access public
-     * @author Johnathan Pulos
-     */
-    private function validateVariableInRange($var, $start, $end, $except = array())
-    {
-        if ((($var >= $start) && ($var <= $end)) == false) {
-            throw new \InvalidArgumentException("One of the provided variables are out of range.");
-        }
-        if (in_array($var, $except)) {
-            throw new \InvalidArgumentException("One of the provided variables is not allowed.");
-        }
     }
     /**
      * Cleans the parameters passed to $this->providedParams variable.
