@@ -49,6 +49,23 @@ class ProfileTextTest extends \PHPUnit_Framework_TestCase
         $this->db = $pdoDb->getDatabaseInstance();
     }
     /**
+     * Test that the provided params are sanitized upon intializing the class
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testShouldSanitizeProvidedDataOnInitializing()
+    {
+        $data = array('country' => 'AZXTE#%', 'state' => 'MA%$');
+        $expected = array('country' => 'AZXTE', 'state' => 'MA');
+        $reflectionOfProfileText = new \ReflectionClass('\QueryGenerators\ProfileText');
+        $providedParams = $reflectionOfProfileText->getProperty('providedParams');
+        $providedParams->setAccessible(true);
+        $result = $providedParams->getValue(new \QueryGenerators\ProfileText($data));
+        $this->assertEquals($expected, $result);
+    }
+    /**
      * We should throw an InvalidArgumentException if I do not send the ID to find
      *
      * @return void

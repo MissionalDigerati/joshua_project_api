@@ -207,6 +207,7 @@ if ($bypassExtTest === false) {
  * @author Johnathan Pulos
  */
 $loader->add("Utilities\Validator", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+$loader->add("Utilities\Sanitizer", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
 /**
  * Are we searching API for People Groups?
  *

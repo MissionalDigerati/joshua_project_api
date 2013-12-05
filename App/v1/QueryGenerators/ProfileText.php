@@ -53,6 +53,13 @@ class ProfileText
      */
     private $validator;
     /**
+     * The Sanitizer class for sanitizing data
+     *
+     * @var object
+     * @access private
+     */
+    private $sanitizer;
+    /**
      * The provided parameters passed in from the $_GET params
      *
      * @var array
@@ -85,9 +92,9 @@ class ProfileText
     public function __construct($getParams)
     {
         $this->validator = new \Utilities\Validator();
-        $this->providedParams = $getParams;
+        $this->sanitizer = new \Utilities\Sanitizer();
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
-        $this->cleanParams();
+        $this->providedParams = $this->sanitizer->cleanArrayValues($getParams);
     }
     /**
      * Find the People Group ProfileTexts using the id (PeopleID3), and the country (ROG3)
@@ -103,20 +110,5 @@ class ProfileText
         $country = strtoupper($this->providedParams['country']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jpprofiletopeople JOIN jpprofiletext ON jpprofiletopeople.ProfileID = jpprofiletext.ProfileID WHERE jpprofiletopeople.PeopleID3 = :id AND jpprofiletopeople.ROG3 = :country";
         $this->preparedVariables = array('id' => $id, 'country' => $country);
-    }
-    /**
-     * Cleans the parameters passed to $this->providedParams variable.
-     *
-     * @return void
-     * @access private
-     * @author Johnathan Pulos
-     */
-    private function cleanParams()
-    {
-        $newValue = array();
-        foreach ($this->providedParams as $key => $value) {
-            $newValue[$key] = preg_replace('/[^a-z\d\-|\.]/i', '', strip_tags($value));
-        }
-        $this->providedParams = $newValue;
     }
 }

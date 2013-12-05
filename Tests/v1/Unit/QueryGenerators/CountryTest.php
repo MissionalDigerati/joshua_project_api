@@ -49,6 +49,23 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $this->db = $pdoDb->getDatabaseInstance();
     }
     /**
+     * Test that the provided params are sanitized upon intializing the class
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testShouldSanitizeProvidedDataOnInitializing()
+    {
+        $data = array('country' => 'HORSE#%', 'state' => 'CA%$');
+        $expected = array('country' => 'HORSE', 'state' => 'CA');
+        $reflectionOfCountry = new \ReflectionClass('\QueryGenerators\Country');
+        $providedParams = $reflectionOfCountry->getProperty('providedParams');
+        $providedParams->setAccessible(true);
+        $result = $providedParams->getValue(new \QueryGenerators\Country($data));
+        $this->assertEquals($expected, $result);
+    }
+    /**
      * findById() should return the correct country, based on the supplied ID.
      *
      * @return void

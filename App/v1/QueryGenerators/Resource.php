@@ -53,6 +53,13 @@ class Resource
      */
     private $validator;
     /**
+     * The Sanitizer class for sanitizing data
+     *
+     * @var object
+     * @access private
+     */
+    private $sanitizer;
+    /**
      * The provided parameters passed in from the $_GET params
      *
      * @var array
@@ -85,9 +92,9 @@ class Resource
     public function __construct($getParams)
     {
         $this->validator = new \Utilities\Validator();
-        $this->providedParams = $getParams;
+        $this->sanitizer = new \Utilities\Sanitizer();
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
-        $this->cleanParams();
+        $this->providedParams = $this->sanitizer->cleanArrayValues($getParams);
     }
     /**
      * Find the People Group Resources using the language_id (ROL3)
@@ -102,20 +109,5 @@ class Resource
         $id = strtolower($this->providedParams['id']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jpresources WHERE ROL3 = :id ORDER BY DisplaySeq ASC";
         $this->preparedVariables = array('id' => $id);
-    }
-    /**
-     * Cleans the parameters passed to $this->providedParams variable.
-     *
-     * @return void
-     * @access private
-     * @author Johnathan Pulos
-     */
-    private function cleanParams()
-    {
-        $newValue = array();
-        foreach ($this->providedParams as $key => $value) {
-            $newValue[$key] = preg_replace('/[^a-z\d\-|\.]/i', '', strip_tags($value));
-        }
-        $this->providedParams = $newValue;
     }
 }

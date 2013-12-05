@@ -49,6 +49,23 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->db = $pdoDb->getDatabaseInstance();
     }
     /**
+     * Test that the provided params are sanitized upon intializing the class
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testShouldSanitizeProvidedDataOnInitializing()
+    {
+        $data = array('country' => 'AZX#%', 'state' => 'AZ%$');
+        $expected = array('country' => 'AZX', 'state' => 'AZ');
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $providedParams = $reflectionOfPeopleGroup->getProperty('providedParams');
+        $providedParams->setAccessible(true);
+        $result = $providedParams->getValue(new \QueryGenerators\PeopleGroup($data));
+        $this->assertEquals($expected, $result);
+    }
+    /**
      * Test that we get back the right query for unreached of the day
      *
      * @return void
@@ -125,34 +142,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $getVars = array('month' => 12, 'day' => 32);
         $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
         $peopleGroup->dailyUnreached();
-    }
-    /**
-     * cleanParams() should return safe variables
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testShouldReturnCleanedVariableFromCleanParams()
-    {
-        $var = "<html>1223 Fresh Cake <a href='hello'>Boo</a></html>";
-        $expected = array("my_string" => "1223 Fresh Cake Boo");
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        /**
-         * We need to reset $this->providedParams, since it is cleaned during the construction of the class
-         *
-         * @package default
-         * @author Johnathan Pulos
-         */
-        $property = $reflectionOfPeopleGroup->getProperty('providedParams');
-        $property->setAccessible(true);
-        $property->setValue($reflectionOfPeopleGroup, $expected);
-        $method = $reflectionOfPeopleGroup->getMethod('cleanParams');
-        $method->setAccessible(true);
-        $method->invoke($peopleGroup);
-        $actual = $property->getValue($reflectionOfPeopleGroup);
-        $this->assertEquals($expected['my_string'], $actual['my_string']);
     }
     /**
      * findByIdAndCountry() should return the correct people group, based on the supplied ID, and country.

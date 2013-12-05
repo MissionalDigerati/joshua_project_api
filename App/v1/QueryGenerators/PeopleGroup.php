@@ -53,6 +53,13 @@ class PeopleGroup
      */
     private $validator;
     /**
+     * The Sanitizer class for sanitizing data
+     *
+     * @var object
+     * @access private
+     */
+    private $sanitizer;
+    /**
      * The provided parameters passed in from the $_GET params
      *
      * @var array
@@ -128,14 +135,14 @@ class PeopleGroup
     public function __construct($getParams)
     {
         $this->validator = new \Utilities\Validator();
-        $this->providedParams = $getParams;
+        $this->sanitizer = new \Utilities\Sanitizer();
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", 10_40Window as Window10_40";
         $this->selectFieldsStatement .= ", " . $this->peopleGroupURLSelect . " as PeopleGroupURL";
         $this->selectFieldsStatement .= ", " . $this->peopleGroupPhotoURLSelect . " as PeopleGroupPhotoURL";
         $this->selectFieldsStatement .= ", " . $this->countryURLSelect . " as CountryURL";
         $this->selectFieldsStatement .= ", " . $this->JPScaleTextSelect . " as JPScaleText";
         $this->selectFieldsStatement .= ", " . $this->JPScaleImageURLSelect . " as JPScaleImageURL";
-        $this->cleanParams();
+        $this->providedParams = $this->sanitizer->cleanArrayValues($getParams);
     }
     /**
      * Get the unreached of the day query statement.  Requires a month and day param in the given params.
@@ -555,20 +562,5 @@ class PeopleGroup
     private function paramExists($paramName)
     {
         return array_key_exists($paramName, $this->providedParams);
-    }
-    /**
-     * Cleans the parameters passed to $this->providedParams variable.
-     *
-     * @return void
-     * @access private
-     * @author Johnathan Pulos
-     */
-    private function cleanParams()
-    {
-        $newValue = array();
-        foreach ($this->providedParams as $key => $value) {
-            $newValue[$key] = preg_replace('/[^a-z\d\-|\.]/i', '', strip_tags($value));
-        }
-        $this->providedParams = $newValue;
     }
 }
