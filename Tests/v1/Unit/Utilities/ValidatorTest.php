@@ -154,4 +154,32 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $requiredLength = 17;
         $this->validator->stringLength($testString, $requiredLength);
     }
+    /**
+     * stringLengthValuesBarSeperatedString() should error if the character length is incorrect
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testStringLengthValuesBarSeperatedStringShouldThrowErrorIfLengthIsIncorrect()
+    {
+        $testString = 'Freee|Treee|Key';
+        $requiredLength = 5;
+        $this->validator->stringLengthValuesBarSeperatedString($testString, $requiredLength);
+    }
+    /**
+     * stringLengthValuesBarSeperatedString() should not error if the character length is correct
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testStringLengthValuesBarSeperatedStringShouldNotThrowErrorIfLengthIsCorrect()
+    {
+        $testString = 'Freee|Treee|Keyee';
+        $requiredLength = 5;
+        $this->validator->stringLengthValuesBarSeperatedString($testString, $requiredLength);
+    }
 }

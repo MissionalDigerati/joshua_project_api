@@ -52,7 +52,7 @@ class Validator
         }
     }
     /**
-     * Checks a bar seperated string ($barSeperatedString) has values that are acceptable ($acceptableValues)
+     * Checks the values of a bar seperated string ($barSeperatedString) that they are acceptable ($acceptableValues)
      *
      * @param string $barSeperatedString the bar seperated string to evaluate
      * @param array $acceptableValues an array of values that are acceptable
@@ -68,6 +68,23 @@ class Validator
             if (in_array(strtolower($barValue), $acceptableValues) === false) {
                 throw new \InvalidArgumentException("A bar seperated parameter has the wrong permitted value.");
             }
+        }
+    }
+    /**
+     * Checks the values of a bar seperated string ($barSeperatedString) that they are the correct length ($length)
+     *
+     * @param string $barSeperatedString the bar seperate string to test
+     * @param integer $length the length they are expecting
+     * @return void
+     * @throws InvalidArgumentException if a value is not the correct length
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function stringLengthValuesBarSeperatedString($barSeperatedString, $length)
+    {
+        $barSeperatedValues = explode('|', $barSeperatedString);
+        foreach ($barSeperatedValues as $barValue) {
+            $this->stringLength($barValue, $length);
         }
     }
     /**

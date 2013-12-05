@@ -205,7 +205,7 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('continents')) {
-            $this->validateBarSeperatedStringValueLength($this->providedParams['continents'], 3);
+            $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['continents'], 3);
             $this->validator->barSeperatedStringProvidesAcceptableValues($this->providedParams['continents'], array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam'));
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -214,7 +214,7 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('countries')) {
-            $this->validateBarSeperatedStringValueLength($this->providedParams['countries'], 2);
+            $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['countries'], 2);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -238,7 +238,7 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('languages')) {
-            $this->validateBarSeperatedStringValueLength($this->providedParams['languages'], 3);
+            $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['languages'], 3);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -555,23 +555,6 @@ class PeopleGroup
     private function paramExists($paramName)
     {
         return array_key_exists($paramName, $this->providedParams);
-    }
-    /**
-     * Separates a bar separated string and iterates over each element.  Then it validates the length of each element
-     *
-     * @param string $str the bar separated string
-     * @param string $length the length desired
-     * @return void
-     * @access private
-     * @throws InvalidArgumentException if the param is the wrong length
-     * @author Johnathan Pulos
-     */
-    private function validateBarSeperatedStringValueLength($str, $length)
-    {
-        $elements = explode('|', $str);
-        foreach ($elements as $element) {
-            $this->validator->stringLength($element, $length);
-        }
     }
     /**
      * validates a integer is in range
