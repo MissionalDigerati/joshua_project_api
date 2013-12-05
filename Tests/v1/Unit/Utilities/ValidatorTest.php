@@ -36,6 +36,12 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      */
     private $db;
     /**
+     * The Validator object
+     *
+     * @var object
+     */
+    private $validator;
+    /**
      * Setup the test methods
      *
      * @return void
@@ -47,6 +53,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $pdoDb = \PHPToolbox\PDODatabase\PDODatabaseConnect::getInstance();
         $pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings);
         $this->db = $pdoDb->getDatabaseInstance();
+        $this->validator = new \Utilities\Validator();
     }
     /**
      * Tests that validateProvidedFields throws the correct error if a param is missing
@@ -61,8 +68,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $suppliedParams = array('name' => 'John');
         $requiredKeys = array('name', 'address');
-        $validator = new \Utilities\Validator();
-        $validator->providedRequiredParams($suppliedParams, $requiredKeys);
+        $this->validator->providedRequiredParams($suppliedParams, $requiredKeys);
     }
     /**
      * Tests that validateProvidedFields throws the correct error if a param is not set
@@ -77,8 +83,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $suppliedParams = array('name' => 'John', 'address' => null);
         $requiredKeys = array('name', 'address');
-        $validator = new \Utilities\Validator();
-        $validator->providedRequiredParams($suppliedParams, $requiredKeys);
+        $this->validator->providedRequiredParams($suppliedParams, $requiredKeys);
     }
     /**
      * Tests that validateProvidedFields does not throw error if all required fields are passed
@@ -91,8 +96,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $suppliedParams = array('name' => 'John', 'address' => '122 East West');
         $requiredKeys = array('name', 'address');
-        $validator = new \Utilities\Validator();
-        $validator->providedRequiredParams($suppliedParams, $requiredKeys);
+        $this->validator->providedRequiredParams($suppliedParams, $requiredKeys);
     }
     /**
      * Tests that validateBarSeperatedStringValueInArray() throws error if not in the given array
@@ -107,8 +111,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $suppliedBarSeperatedParam = '2.3|34.4';
         $acceptableValues = array('1.1', '5.4');
-        $validator = new \Utilities\Validator();
-        $validator->barSeperatedStringProvidesAcceptableValues($suppliedBarSeperatedParam, $acceptableValues);
+        $this->validator->barSeperatedStringProvidesAcceptableValues($suppliedBarSeperatedParam, $acceptableValues);
     }
     /**
      * Tests that validateBarSeperatedStringValueInArray() returns succesfully if all values are acceptable
@@ -121,7 +124,6 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $suppliedBarSeperatedParam = '2.3|34.4';
         $acceptableValues = array('2.3', '34.4');
-        $validator = new \Utilities\Validator();
-        $validator->barSeperatedStringProvidesAcceptableValues($suppliedBarSeperatedParam, $acceptableValues);
+        $this->validator->barSeperatedStringProvidesAcceptableValues($suppliedBarSeperatedParam, $acceptableValues);
     }
 }
