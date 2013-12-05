@@ -57,7 +57,7 @@ class Validator
      * @param string $barSeperatedString the bar seperated string to evaluate
      * @param array $acceptableValues an array of values that are acceptable
      * @return void
-     * @throws InvalidArgumentException if the param does not exist
+     * @throws InvalidArgumentException if a value is not acceptable
      * @access public
      * @author Johnathan Pulos
      **/
@@ -68,6 +68,22 @@ class Validator
             if (in_array(strtolower($barValue), $acceptableValues) === false) {
                 throw new \InvalidArgumentException("A bar seperated parameter has the wrong permitted value.");
             }
+        }
+    }
+    /**
+     * Validates the given string ($str) is the given length ($length)
+     *
+     * @param string $str the string to test
+     * @param integer $length the required length of the string
+     * @return void
+     * @throws InvalidArgumentException if the length is incorrect
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function stringLength($str, $length)
+    {
+        if (strlen($str) != $length) {
+            throw new \InvalidArgumentException("One of your parameters are not the correct length.");
         }
     }
 }

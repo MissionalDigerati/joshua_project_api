@@ -155,25 +155,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected['my_string'], $actual['my_string']);
     }
     /**
-     * validateStringLength() should error if the character length is incorrect
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     * 
-     * @expectedException InvalidArgumentException
-     */
-    public function testValidateVariableLengthShouldThrowErrorIfLengthIsIncorrect()
-    {
-        $data = array();
-        $testString = "iloveicecream";
-        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        $method = $reflectionOfPeopleGroup->getMethod('validateStringLength');
-        $method->setAccessible(true);
-        $method->invoke($peopleGroup, $testString, 20);
-    }
-    /**
      * Validate that validateVariableInRange() throws error if it is not in range
      *
      * @return void

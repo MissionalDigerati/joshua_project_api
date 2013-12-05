@@ -197,7 +197,7 @@ class PeopleGroup
         $appendAndOnWhere = false;
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples";
         if ($this->paramExists('window1040')) {
-            $this->validateStringLength($this->providedParams['window1040'], 1);
+            $this->validator->stringLength($this->providedParams['window1040'], 1);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -222,7 +222,7 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('indigenous')) {
-            $this->validateStringLength($this->providedParams['indigenous'], 1);
+            $this->validator->stringLength($this->providedParams['indigenous'], 1);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -246,7 +246,7 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('least_reached')) {
-            $this->validateStringLength($this->providedParams['least_reached'], 1);
+            $this->validator->stringLength($this->providedParams['least_reached'], 1);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -430,7 +430,7 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('unengaged')) {
-            $this->validateStringLength($this->providedParams['unengaged'], 1);
+            $this->validator->stringLength($this->providedParams['unengaged'], 1);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -570,23 +570,7 @@ class PeopleGroup
     {
         $elements = explode('|', $str);
         foreach ($elements as $element) {
-            $this->validateStringLength($element, $length);
-        }
-    }
-    /**
-     * Validates that the string is the correct length
-     *
-     * @param string $var the string to check
-     * @param integer $length the number of characters to test against
-     * @return void
-     * @throws InvalidArgumentException if the param is the wrong length
-     * @access private
-     * @author Johnathan Pulos
-     */
-    private function validateStringLength($var, $length)
-    {
-        if (strlen($var) !== $length) {
-            throw new \InvalidArgumentException("One of your parameters are not the correct length.");
+            $this->validator->stringLength($element, $length);
         }
     }
     /**

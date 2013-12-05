@@ -56,7 +56,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator = new \Utilities\Validator();
     }
     /**
-     * Tests that validateProvidedFields throws the correct error if a param is missing
+     * Tests that providedRequiredParams throws the correct error if a param is missing
      *
      * @return void
      * @access public
@@ -71,7 +71,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->providedRequiredParams($suppliedParams, $requiredKeys);
     }
     /**
-     * Tests that validateProvidedFields throws the correct error if a param is not set
+     * Tests that providedRequiredParams throws the correct error if a param is not set
      *
      * @return void
      * @access public
@@ -86,7 +86,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->providedRequiredParams($suppliedParams, $requiredKeys);
     }
     /**
-     * Tests that validateProvidedFields does not throw error if all required fields are passed
+     * Tests that providedRequiredParams does not throw error if all required fields are passed
      *
      * @return void
      * @access public
@@ -99,7 +99,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->providedRequiredParams($suppliedParams, $requiredKeys);
     }
     /**
-     * Tests that validateBarSeperatedStringValueInArray() throws error if not in the given array
+     * Tests that barSeperatedStringProvidesAcceptableValues() throws error if not in the given array
      *
      * @return void
      * @access public
@@ -114,7 +114,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->barSeperatedStringProvidesAcceptableValues($suppliedBarSeperatedParam, $acceptableValues);
     }
     /**
-     * Tests that validateBarSeperatedStringValueInArray() returns succesfully if all values are acceptable
+     * Tests that barSeperatedStringProvidesAcceptableValues() returns succesfully if all values are acceptable
      *
      * @return void
      * @access public
@@ -125,5 +125,33 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $suppliedBarSeperatedParam = '2.3|34.4';
         $acceptableValues = array('2.3', '34.4');
         $this->validator->barSeperatedStringProvidesAcceptableValues($suppliedBarSeperatedParam, $acceptableValues);
+    }
+    /**
+     * stringLength() should error if the character length is incorrect
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testStringLengthShouldThrowErrorIfLengthIsIncorrect()
+    {
+        $testString = 'I Love Ice Cream!';
+        $requiredLength = 5;
+        $this->validator->stringLength($testString, $requiredLength);
+    }
+    /**
+     * stringLength() should not throw an error if the character length is correct
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testStringLengthShouldNotThrowErrorIfLengthIsCorrect()
+    {
+        $testString = 'I Love Ice Cream!';
+        $requiredLength = 17;
+        $this->validator->stringLength($testString, $requiredLength);
     }
 }
