@@ -202,6 +202,12 @@ if ($bypassExtTest === false) {
     }
 }
 /**
+ * Load the Utilities
+ *
+ * @author Johnathan Pulos
+ */
+$loader->add("Utilities\Validator", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+/**
  * Are we searching API for People Groups?
  *
  * @author Johnathan Pulos

@@ -46,6 +46,13 @@ class Resource
      */
     public $preparedVariables = array();
     /**
+     * The Validator class for checking validations
+     *
+     * @var object
+     * @access private
+     */
+    private $validator;
+    /**
      * The provided parameters passed in from the $_GET params
      *
      * @var array
@@ -77,6 +84,7 @@ class Resource
      */
     public function __construct($getParams)
     {
+        $this->validator = new \Utilities\Validator();
         $this->providedParams = $getParams;
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
         $this->cleanParams();
@@ -90,27 +98,10 @@ class Resource
      */
     public function findAllByLanguageId()
     {
-        $this->validateProvidedParams(array('id'));
+        $this->validator->providedRequiredParams($this->providedParams, array('id'));
         $id = strtolower($this->providedParams['id']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jpresources WHERE ROL3 = :id ORDER BY DisplaySeq ASC";
         $this->preparedVariables = array('id' => $id);
-    }
-    /**
-     * Checks if the params were set in the __construct() method of this class on providedParams. If not, then throw an error.
-     *
-     * @param array $params the keys of the required params
-     * @return void
-     * @throws InvalidArgumentException if the param does not exist
-     * @access private
-     * @author Johnathan Pulos
-     */
-    private function validateProvidedParams($params)
-    {
-        foreach ($params as $key) {
-            if (array_key_exists($key, $this->providedParams) === false) {
-                throw new \InvalidArgumentException("Missing the required parameter " . $key);
-            }
-        }
     }
     /**
      * Cleans the parameters passed to $this->providedParams variable.

@@ -46,6 +46,13 @@ class ProfileText
      */
     public $preparedVariables = array();
     /**
+     * The Validator class for checking validations
+     *
+     * @var object
+     * @access private
+     */
+    private $validator;
+    /**
      * The provided parameters passed in from the $_GET params
      *
      * @var array
@@ -77,6 +84,7 @@ class ProfileText
      */
     public function __construct($getParams)
     {
+        $this->validator = new \Utilities\Validator();
         $this->providedParams = $getParams;
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
         $this->cleanParams();
@@ -90,28 +98,11 @@ class ProfileText
      */
     public function findAllByIdAndCountry()
     {
-        $this->validateProvidedParams(array('id', 'country'));
+        $this->validator->providedRequiredParams($this->providedParams, array('id', 'country'));
         $id = intval($this->providedParams['id']);
         $country = strtoupper($this->providedParams['country']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jpprofiletopeople JOIN jpprofiletext ON jpprofiletopeople.ProfileID = jpprofiletext.ProfileID WHERE jpprofiletopeople.PeopleID3 = :id AND jpprofiletopeople.ROG3 = :country";
         $this->preparedVariables = array('id' => $id, 'country' => $country);
-    }
-    /**
-     * Checks if the params were set in the __construct() method of this class on providedParams. If not, then throw an error.
-     *
-     * @param array $params the keys of the required params
-     * @return void
-     * @throws InvalidArgumentException if the param does not exist
-     * @access private
-     * @author Johnathan Pulos
-     */
-    private function validateProvidedParams($params)
-    {
-        foreach ($params as $key) {
-            if (array_key_exists($key, $this->providedParams) === false) {
-                throw new \InvalidArgumentException("Missing the required parameter " . $key);
-            }
-        }
     }
     /**
      * Cleans the parameters passed to $this->providedParams variable.

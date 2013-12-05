@@ -127,24 +127,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $peopleGroup->dailyUnreached();
     }
     /**
-     * Tests that validateProvidedFields throws the correct error if a param is missing
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     * 
-     * @expectedException InvalidArgumentException
-     */
-    public function testShouldErrorIfValidateProvidedParamsFindsMissingParam()
-    {
-        $getVars = array();
-        $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        $method = $reflectionOfPeopleGroup->getMethod('validateProvidedParams');
-        $method->setAccessible(true);
-        $method->invoke($peopleGroup, array('name'));
-    }
-    /**
      * cleanParams() should return safe variables
      *
      * @return void

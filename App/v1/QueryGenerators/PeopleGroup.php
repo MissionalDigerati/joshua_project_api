@@ -46,6 +46,13 @@ class PeopleGroup
      */
     public $preparedVariables = array();
     /**
+     * The Validator class for checking validations
+     *
+     * @var object
+     * @access private
+     */
+    private $validator;
+    /**
      * The provided parameters passed in from the $_GET params
      *
      * @var array
@@ -120,6 +127,7 @@ class PeopleGroup
      */
     public function __construct($getParams)
     {
+        $this->validator = new \Utilities\Validator();
         $this->providedParams = $getParams;
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", 10_40Window as Window10_40";
         $this->selectFieldsStatement .= ", " . $this->peopleGroupURLSelect . " as PeopleGroupURL";
@@ -139,7 +147,7 @@ class PeopleGroup
      */
     public function dailyUnreached()
     {
-        $this->validateProvidedParams(array('month', 'day'));
+        $this->validator->providedRequiredParams($this->providedParams, array('month', 'day'));
         $month = intval($this->providedParams['month']);
         $day = intval($this->providedParams['day']);
         $this->validateVariableInRange($month, 1, 12);
@@ -156,7 +164,7 @@ class PeopleGroup
      */
     public function findByIdAndCountry()
     {
-        $this->validateProvidedParams(array('id', 'country'));
+        $this->validator->providedRequiredParams($this->providedParams, array('id', 'country'));
         $id = intval($this->providedParams['id']);
         $country = strtoupper($this->providedParams['country']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples WHERE PeopleID3 = :id AND ROG3 = :country LIMIT 1";
@@ -171,7 +179,7 @@ class PeopleGroup
      */
     public function findById()
     {
-        $this->validateProvidedParams(array('id'));
+        $this->validator->providedRequiredParams($this->providedParams, array('id'));
         $id = intval($this->providedParams['id']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples WHERE PeopleID3 = :id";
         $this->preparedVariables = array('id' => $id);
@@ -547,23 +555,6 @@ class PeopleGroup
     private function paramExists($paramName)
     {
         return array_key_exists($paramName, $this->providedParams);
-    }
-    /**
-     * Checks if the params were set in the __construct() method of this class on providedParams. If not, then throw an error.
-     *
-     * @param array $params the keys of the required params
-     * @return void
-     * @throws InvalidArgumentException if the param does not exist
-     * @access private
-     * @author Johnathan Pulos
-     */
-    private function validateProvidedParams($params)
-    {
-        foreach ($params as $key) {
-            if (array_key_exists($key, $this->providedParams) === false) {
-                throw new \InvalidArgumentException("Missing the required parameter " . $key);
-            }
-        }
     }
     /**
      * Validates all parameters in a bar seperated string are in the approvedValues array
