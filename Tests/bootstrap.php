@@ -74,6 +74,14 @@ $loader->add("JPAPI\DatabaseSettings", __DIR__ . $DS . ".." . $DS . "Config");
  */
 $loader->add("PHPToolbox\PDODatabase\PDODatabaseConnect", $PHPToolboxDirectory);
 /**
+ * AutoLoad the Utilities
+ *
+ * @return void
+ * @author Johnathan Pulos
+ */
+$loader->add("Utilities\Validator", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+$loader->add("Utilities\Sanitizer", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+/**
  * AutoLoad the Query Generators
  *
  * @return void
@@ -82,6 +90,7 @@ $loader->add("PHPToolbox\PDODatabase\PDODatabaseConnect", $PHPToolboxDirectory);
 $loader->add("QueryGenerators\PeopleGroup", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
 $loader->add("QueryGenerators\ProfileText", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
 $loader->add("QueryGenerators\Resource", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+$loader->add("QueryGenerators\Country", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
 /**
  * preload source files
  *
