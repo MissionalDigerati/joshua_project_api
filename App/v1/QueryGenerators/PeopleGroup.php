@@ -206,7 +206,7 @@ class PeopleGroup
         }
         if ($this->paramExists('continents')) {
             $this->validateBarSeperatedStringValueLength($this->providedParams['continents'], 3);
-            $this->validateBarSeperatedStringValuesInArray($this->providedParams['continents'], array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam'));
+            $this->validator->barSeperatedStringProvidesAcceptableValues($this->providedParams['continents'], array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam'));
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -230,7 +230,7 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('jpscale')) {
-            $this->validateBarSeperatedStringValuesInArray($this->providedParams['jpscale'], array('1.1', '1.2', '2.1', '2.2', '3.1', '3.2'));
+            $this->validator->barSeperatedStringProvidesAcceptableValues($this->providedParams['jpscale'], array('1.1', '1.2', '2.1', '2.2', '3.1', '3.2'));
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -555,25 +555,6 @@ class PeopleGroup
     private function paramExists($paramName)
     {
         return array_key_exists($paramName, $this->providedParams);
-    }
-    /**
-     * Validates all parameters in a bar seperated string are in the approvedValues array
-     *
-     * @param string $str the bar seperated value
-     * @param array $approvedValues an array of valid values
-     * @return void
-     * @access private
-     * @throws InvalidArgumentException if a value is not in the array
-     * @author Johnathan Pulos
-     */
-    private function validateBarSeperatedStringValuesInArray($str, $approvedValues)
-    {
-        $providedValues = explode('|', $str);
-        foreach ($providedValues as $pv) {
-            if (!in_array(strtolower($pv), $approvedValues)) {
-                throw new \InvalidArgumentException("A bar seperated parameter has the wrong permitted value.");
-            }
-        }
     }
     /**
      * Separates a bar separated string and iterates over each element.  Then it validates the length of each element

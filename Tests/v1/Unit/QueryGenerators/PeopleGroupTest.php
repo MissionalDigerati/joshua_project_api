@@ -1528,21 +1528,4 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $method->setAccessible(true);
         $actualString = $method->invoke($peopleGroup, 'p', 'Population', 'population');
     }
-    /**
-     * Tests that validateBarSeperatedStringValueInArray() throws error if not in the given array
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     * 
-     * @expectedException InvalidArgumentException
-     */
-    public function testValidateBarSeperatedStringValueInArrayShouldThrowErrorIfNotInexpectedValues()
-    {
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        $method = $reflectionOfPeopleGroup->getMethod('validateBarSeperatedStringValuesInArray');
-        $method->setAccessible(true);
-        $actualString = $method->invoke($peopleGroup, '2.3|34.4', array('1.1', '5.4'));
-    }
 }

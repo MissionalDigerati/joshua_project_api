@@ -37,6 +37,7 @@ class Validator
      * @param array $requiredKeys An array of the required keys to check
      * @return void
      * @throws InvalidArgumentException if the param does not exist
+     * @access public
      * @author Johnathan Pulos
      **/
     public function providedRequiredParams($providedParams, $requiredKeys)
@@ -47,6 +48,25 @@ class Validator
             }
             if (!isset($providedParams[$key])) {
                 throw new \InvalidArgumentException("The required parameter " . $key . " is not set!");
+            }
+        }
+    }
+    /**
+     * Checks a bar seperated string ($barSeperatedString) has values that are acceptable ($acceptableValues)
+     *
+     * @param string $barSeperatedString the bar seperated string to evaluate
+     * @param array $acceptableValues an array of values that are acceptable
+     * @return void
+     * @throws InvalidArgumentException if the param does not exist
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function barSeperatedStringProvidesAcceptableValues($barSeperatedString, $acceptableValues)
+    {
+        $barSeperatedValues = explode('|', $barSeperatedString);
+        foreach ($barSeperatedValues as $barValue) {
+            if (in_array(strtolower($barValue), $acceptableValues) === false) {
+                throw new \InvalidArgumentException("A bar seperated parameter has the wrong permitted value.");
             }
         }
     }

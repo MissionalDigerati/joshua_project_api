@@ -94,4 +94,34 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new \Utilities\Validator();
         $validator->providedRequiredParams($suppliedParams, $requiredKeys);
     }
+    /**
+     * Tests that validateBarSeperatedStringValueInArray() throws error if not in the given array
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testBarSeperatedStringProvidesAcceptableValuesShouldThrowErrorIfNotAcceptableValues()
+    {
+        $suppliedBarSeperatedParam = '2.3|34.4';
+        $acceptableValues = array('1.1', '5.4');
+        $validator = new \Utilities\Validator();
+        $validator->barSeperatedStringProvidesAcceptableValues($suppliedBarSeperatedParam, $acceptableValues);
+    }
+    /**
+     * Tests that validateBarSeperatedStringValueInArray() returns succesfully if all values are acceptable
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testBarSeperatedStringProvidesAcceptableValuesShouldReturnIfAllAcceptableValues()
+    {
+        $suppliedBarSeperatedParam = '2.3|34.4';
+        $acceptableValues = array('2.3', '34.4');
+        $validator = new \Utilities\Validator();
+        $validator->barSeperatedStringProvidesAcceptableValues($suppliedBarSeperatedParam, $acceptableValues);
+    }
 }
