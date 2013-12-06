@@ -115,7 +115,7 @@ class PeopleGroup extends QueryGenerator
         $day = intval($this->providedParams['day']);
         $this->validator->integerInRange($month, 1, 12);
         $this->validator->integerInRange($day, 1, 31);
-        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
         $this->preparedVariables = array('month' => $month, 'day' => $day);
     }
     /**
@@ -130,7 +130,7 @@ class PeopleGroup extends QueryGenerator
         $this->validator->providedRequiredParams($this->providedParams, array('id', 'country'));
         $id = intval($this->providedParams['id']);
         $country = strtoupper($this->providedParams['country']);
-        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples WHERE PeopleID3 = :id AND ROG3 = :country LIMIT 1";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE PeopleID3 = :id AND ROG3 = :country LIMIT 1";
         $this->preparedVariables = array('id' => $id, 'country' => $country);
     }
     /**
@@ -144,7 +144,7 @@ class PeopleGroup extends QueryGenerator
     {
         $this->validator->providedRequiredParams($this->providedParams, array('id'));
         $id = intval($this->providedParams['id']);
-        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples WHERE PeopleID3 = :id";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE PeopleID3 = :id";
         $this->preparedVariables = array('id' => $id);
     }
     /**
@@ -158,7 +158,7 @@ class PeopleGroup extends QueryGenerator
     {
         $where = "";
         $appendAndOnWhere = false;
-        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName;
         if ($this->paramExists('window1040')) {
             $this->validator->stringLength($this->providedParams['window1040'], 1);
             if ($appendAndOnWhere === true) {
