@@ -195,6 +195,30 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isXML($response));
     }
     /**
+      * GET /countries.json
+      * Country Index should return the correct data
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testCountryIndexShouldReturnCountryDataInJSON()
+    {
+        $expectedCountryCount = 100;
+        $expectedFirstCountry = 'Afghanistan';
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey),
+            "should_return_country_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        $this->assertTrue(is_array($decodedResponse));
+        $this->assertFalse(empty($decodedResponse));
+        $this->assertEquals($expectedCountryCount, count($decodedResponse));
+        $this->assertEquals($expectedFirstCountry, $decodedResponse[0]['Country']);
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string

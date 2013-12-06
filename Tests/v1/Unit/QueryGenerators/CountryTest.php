@@ -82,6 +82,25 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $statement->execute($country->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertEquals($expected['id'], $data[0]['ROG3']);
-        $this->assertEquals($expectedCountryName, $data[0]['Ctry']);
+        $this->assertEquals($expectedCountryName, $data[0]['Country']);
+    }
+    /**
+     * findAllWithFilters() should return all countries if there are no filters added
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldReturnAllCountriesWithoutFilters()
+    {
+        $expectedCount = 100;
+        $expectedFirstCountry = 'Afghanistan';
+        $country = new \QueryGenerators\Country(array());
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($expectedCount, count($data));
+        $this->assertEquals($expectedFirstCountry, $data[0]['Country']);
     }
 }

@@ -139,7 +139,19 @@ $app->get(
 $app->get(
     "/:version/countries\.:format",
     function ($version, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
-        $data = array('country' => array('new' => 'all'));
+        $data = array();
+        if (empty($data)) {
+            try {
+                $country = new \QueryGenerators\Country(array());
+                $country->findAllWithFilters();
+                $statement = $db->prepare($country->preparedStatement);
+                $statement->execute($country->preparedVariables);
+                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
+                exit;
+            }
+        }
         /**
          * Render the final data
          *

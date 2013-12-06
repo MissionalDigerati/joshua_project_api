@@ -65,7 +65,7 @@ class Country
      * @var array
      * @access private
      */
-    private $fieldsToSelectArray = array('ROG3','ISO3','ISO2','ROG2','RegionCode','RegionName','Ctry','Ctry_id','AltName','Capital','Population','PopulationSource','PoplGrowthRate','AreaSquareMiles','AreaSquareKilometers','PopulationPerSquareMile','CountryPhoneCode','SecurityLevel','LibraryCongressReportExists','IsCountry','BJMFocusCountry','StonyGround','USAPostalSystem','ROL3OfficialLanguage','OfficialLang','ROL3SecondaryLanguage','SecondLang','RLG3Primary','ReligionPrimary','RLG4Primary','ReligionSubdivision','ReligionDataYear','LiteracyCategory','LiteracyRate','LiteracyRange','LiteracySource','CountryNotes','NSMMissionArticles','EthnolinguisticMap','PercentPopulationDifference','PercentChristianity','PercentEvangelical','PercentBuddhism','PercentDoublyProfessing','PercentEthnicReligions','PercentHinduism','PercentIslam','PercentNonReligious','PercentOtherSmall','PercentUnknown','PercentAnglican','PercentIndependent','PercentProtestant','PercentOrthodox','PercentOther','PercentRomanCatholic','CntPeoples','PoplPeoples','CntPeoplesLR','PoplPeoplesLR','JPScaleCtry','HDIYear','HDIValue','HDIRank','StateDeptReligiousFreedom','Source','EditName','EditDate','V59Country','EthnologueCountryCode','EthnologueMapExists','UNMap','PersecutionRankingOD','InternetCtryCode','PercentUrbanized','PrayercastVideo','PrayercastBlipTVCode','WINCountryProfile');
+    private $fieldsToSelectArray = array('ROG3','ISO3','ISO2','ROG2','RegionCode','RegionName','AltName','Capital','Population','PopulationSource','PoplGrowthRate','AreaSquareMiles','AreaSquareKilometers','PopulationPerSquareMile','CountryPhoneCode','SecurityLevel','LibraryCongressReportExists','IsCountry','BJMFocusCountry','StonyGround','USAPostalSystem','ROL3OfficialLanguage','OfficialLang','ROL3SecondaryLanguage','SecondLang','RLG3Primary','ReligionPrimary','RLG4Primary','ReligionSubdivision','ReligionDataYear','LiteracyCategory','LiteracyRate','LiteracyRange','LiteracySource','CountryNotes','NSMMissionArticles','EthnolinguisticMap','PercentPopulationDifference','PercentChristianity','PercentEvangelical','PercentBuddhism','PercentDoublyProfessing','PercentEthnicReligions','PercentHinduism','PercentIslam','PercentNonReligious','PercentOtherSmall','PercentUnknown','PercentAnglican','PercentIndependent','PercentProtestant','PercentOrthodox','PercentOther','PercentRomanCatholic','CntPeoples','PoplPeoples','CntPeoplesLR','PoplPeoplesLR','JPScaleCtry','HDIYear','HDIValue','HDIRank','StateDeptReligiousFreedom','Source','EditName','EditDate','V59Country','EthnologueCountryCode','EthnologueMapExists','UNMap','PersecutionRankingOD','InternetCtryCode','PercentUrbanized','PrayercastVideo','PrayercastBlipTVCode','WINCountryProfile');
     /**
      * A string that will hold the fields for the Select statement
      *
@@ -81,6 +81,13 @@ class Country
      */
     private $tableName = "jpcountries";
     /**
+     * A string that will hold the default order by for the Select statement
+     *
+     * @var string
+     * @access private
+     */
+    private $defaultOrderByStatement = "ORDER BY Country ASC";
+    /**
      * Construct the class
      *
      * @param array $getParams the params to use for the query.  Each message has required fields, and will throw error
@@ -93,7 +100,8 @@ class Country
     {
         $this->sanitizer = new \Utilities\Sanitizer();
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", 10_40Window as Window10_40";
-        $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", 10_40WindowOriginal as Window10_40Original";
+        $this->selectFieldsStatement .= ", 10_40WindowOriginal as Window10_40Original";
+        $this->selectFieldsStatement .= ", Ctry as Country, Ctry_id as Country_ID";
         $this->providedParams = $this->sanitizer->cleanArrayValues($getParams);
     }
     /**
@@ -108,5 +116,17 @@ class Country
         $id = strtoupper($this->providedParams['id']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE ROG3 = :id LIMIT 1";
         $this->preparedVariables = array('id' => $id);
+    }
+    /**
+     * Find all countries using the provided filters
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function findAllWithFilters()
+    {
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " " . $this->defaultOrderByStatement . " LIMIT 100";
+        $this->preparedVariables = array();
     }
 }
