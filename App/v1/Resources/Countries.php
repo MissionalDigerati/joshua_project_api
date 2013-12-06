@@ -136,3 +136,19 @@ $app->get(
         }
     }
 );
+$app->get(
+    "/:version/countries\.:format",
+    function ($version, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
+        $data = array('country' => array('new' => 'all'));
+        /**
+         * Render the final data
+         *
+         * @author Johnathan Pulos
+         */
+        if ($format == 'json') {
+            echo json_encode($data);
+        } else {
+            echo arrayToXML($data, "countries", "country");
+        }
+    }
+);

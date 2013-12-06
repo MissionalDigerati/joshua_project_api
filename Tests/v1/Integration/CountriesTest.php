@@ -161,6 +161,40 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCountry, $decodedResponse[0]['ISO2']);
     }
     /**
+      * GET /countries.json 
+      * test page is available, and delivers JSON
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testCountryIndexShouldBeAccessableByJSON()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey),
+            "should_return_country_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /countries.xml 
+      * test page is available, and delivers XML
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testCountryIndexShouldBeAccessableByXML()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.xml",
+            array('api_key' => $this->APIKey),
+            "should_return_country_index_xml"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isXML($response));
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string
