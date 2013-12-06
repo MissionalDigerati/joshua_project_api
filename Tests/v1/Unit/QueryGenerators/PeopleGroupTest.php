@@ -49,6 +49,23 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->db = $pdoDb->getDatabaseInstance();
     }
     /**
+     * Test that the provided params are sanitized upon intializing the class
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testShouldSanitizeProvidedDataOnInitializing()
+    {
+        $data = array('country' => 'AZX#%', 'state' => 'AZ%$');
+        $expected = array('country' => 'AZX', 'state' => 'AZ');
+        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $providedParams = $reflectionOfPeopleGroup->getProperty('providedParams');
+        $providedParams->setAccessible(true);
+        $result = $providedParams->getValue(new \QueryGenerators\PeopleGroup($data));
+        $this->assertEquals($expected, $result);
+    }
+    /**
      * Test that we get back the right query for unreached of the day
      *
      * @return void
@@ -125,105 +142,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $getVars = array('month' => 12, 'day' => 32);
         $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
         $peopleGroup->dailyUnreached();
-    }
-    /**
-     * Tests that validateProvidedFields throws the correct error if a param is missing
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     * 
-     * @expectedException InvalidArgumentException
-     */
-    public function testShouldErrorIfValidateProvidedParamsFindsMissingParam()
-    {
-        $getVars = array();
-        $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        $method = $reflectionOfPeopleGroup->getMethod('validateProvidedParams');
-        $method->setAccessible(true);
-        $method->invoke($peopleGroup, array('name'));
-    }
-    /**
-     * cleanParams() should return safe variables
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testShouldReturnCleanedVariableFromCleanParams()
-    {
-        $var = "<html>1223 Fresh Cake <a href='hello'>Boo</a></html>";
-        $expected = array("my_string" => "1223 Fresh Cake Boo");
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        /**
-         * We need to reset $this->providedParams, since it is cleaned during the construction of the class
-         *
-         * @package default
-         * @author Johnathan Pulos
-         */
-        $property = $reflectionOfPeopleGroup->getProperty('providedParams');
-        $property->setAccessible(true);
-        $property->setValue($reflectionOfPeopleGroup, $expected);
-        $method = $reflectionOfPeopleGroup->getMethod('cleanParams');
-        $method->setAccessible(true);
-        $method->invoke($peopleGroup);
-        $actual = $property->getValue($reflectionOfPeopleGroup);
-        $this->assertEquals($expected['my_string'], $actual['my_string']);
-    }
-    /**
-     * validateStringLength() should error if the character length is incorrect
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     * 
-     * @expectedException InvalidArgumentException
-     */
-    public function testValidateVariableLengthShouldThrowErrorIfLengthIsIncorrect()
-    {
-        $data = array();
-        $testString = "iloveicecream";
-        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        $method = $reflectionOfPeopleGroup->getMethod('validateStringLength');
-        $method->setAccessible(true);
-        $method->invoke($peopleGroup, $testString, 20);
-    }
-    /**
-     * Validate that validateVariableInRange() throws error if it is not in range
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     * @expectedException InvalidArgumentException
-     */
-    public function testValidateVariableInRangeShouldThrowErrorIfVariableIsOutOfRange()
-    {
-        $data = array('out_range' => 10);
-        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        $method = $reflectionOfPeopleGroup->getMethod('validateVariableInRange');
-        $method->setAccessible(true);
-        $actual = $method->invoke($peopleGroup, 'out_range', 1, 7);
-    }
-    /**
-     * Validate that validateVariableInRange() throws an error in the integer is in the $exceptions
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     * @expectedException InvalidArgumentException
-     */
-    public function testValidateVariableInRangeShouldThrowErrorIfVariableIsAnException()
-    {
-        $data = array('exception' => 5);
-        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        $method = $reflectionOfPeopleGroup->getMethod('validateVariableInRange');
-        $method->setAccessible(true);
-        $actual = $method->invoke($peopleGroup, 'exception', 1, 7, array(5));
     }
     /**
      * findByIdAndCountry() should return the correct people group, based on the supplied ID, and country.
@@ -1545,22 +1463,5 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $method = $reflectionOfPeopleGroup->getMethod('generateWhereStatementForBoolean');
         $method->setAccessible(true);
         $actualString = $method->invoke($peopleGroup, 'p', 'Population', 'population');
-    }
-    /**
-     * Tests that validateBarSeperatedStringValueInArray() throws error if not in the given array
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     * 
-     * @expectedException InvalidArgumentException
-     */
-    public function testValidateBarSeperatedStringValueInArrayShouldThrowErrorIfNotInexpectedValues()
-    {
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
-        $method = $reflectionOfPeopleGroup->getMethod('validateBarSeperatedStringValuesInArray');
-        $method->setAccessible(true);
-        $actualString = $method->invoke($peopleGroup, '2.3|34.4', array('1.1', '5.4'));
     }
 }

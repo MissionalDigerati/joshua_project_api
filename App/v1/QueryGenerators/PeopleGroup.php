@@ -46,6 +46,20 @@ class PeopleGroup
      */
     public $preparedVariables = array();
     /**
+     * The Validator class for checking validations
+     *
+     * @var object
+     * @access private
+     */
+    private $validator;
+    /**
+     * The Sanitizer class for sanitizing data
+     *
+     * @var object
+     * @access private
+     */
+    private $sanitizer;
+    /**
      * The provided parameters passed in from the $_GET params
      *
      * @var array
@@ -120,14 +134,15 @@ class PeopleGroup
      */
     public function __construct($getParams)
     {
-        $this->providedParams = $getParams;
+        $this->validator = new \Utilities\Validator();
+        $this->sanitizer = new \Utilities\Sanitizer();
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", 10_40Window as Window10_40";
         $this->selectFieldsStatement .= ", " . $this->peopleGroupURLSelect . " as PeopleGroupURL";
         $this->selectFieldsStatement .= ", " . $this->peopleGroupPhotoURLSelect . " as PeopleGroupPhotoURL";
         $this->selectFieldsStatement .= ", " . $this->countryURLSelect . " as CountryURL";
         $this->selectFieldsStatement .= ", " . $this->JPScaleTextSelect . " as JPScaleText";
         $this->selectFieldsStatement .= ", " . $this->JPScaleImageURLSelect . " as JPScaleImageURL";
-        $this->cleanParams();
+        $this->providedParams = $this->sanitizer->cleanArrayValues($getParams);
     }
     /**
      * Get the unreached of the day query statement.  Requires a month and day param in the given params.
@@ -139,11 +154,11 @@ class PeopleGroup
      */
     public function dailyUnreached()
     {
-        $this->validateProvidedParams(array('month', 'day'));
+        $this->validator->providedRequiredParams($this->providedParams, array('month', 'day'));
         $month = intval($this->providedParams['month']);
         $day = intval($this->providedParams['day']);
-        $this->validateVariableInRange($month, 1, 12);
-        $this->validateVariableInRange($day, 1, 31);
+        $this->validator->integerInRange($month, 1, 12);
+        $this->validator->integerInRange($day, 1, 31);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
         $this->preparedVariables = array('month' => $month, 'day' => $day);
     }
@@ -156,7 +171,7 @@ class PeopleGroup
      */
     public function findByIdAndCountry()
     {
-        $this->validateProvidedParams(array('id', 'country'));
+        $this->validator->providedRequiredParams($this->providedParams, array('id', 'country'));
         $id = intval($this->providedParams['id']);
         $country = strtoupper($this->providedParams['country']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples WHERE PeopleID3 = :id AND ROG3 = :country LIMIT 1";
@@ -171,7 +186,7 @@ class PeopleGroup
      */
     public function findById()
     {
-        $this->validateProvidedParams(array('id'));
+        $this->validator->providedRequiredParams($this->providedParams, array('id'));
         $id = intval($this->providedParams['id']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples WHERE PeopleID3 = :id";
         $this->preparedVariables = array('id' => $id);
@@ -189,7 +204,7 @@ class PeopleGroup
         $appendAndOnWhere = false;
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jppeoples";
         if ($this->paramExists('window1040')) {
-            $this->validateStringLength($this->providedParams['window1040'], 1);
+            $this->validator->stringLength($this->providedParams['window1040'], 1);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -197,8 +212,8 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('continents')) {
-            $this->validateBarSeperatedStringValueLength($this->providedParams['continents'], 3);
-            $this->validateBarSeperatedStringValuesInArray($this->providedParams['continents'], array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam'));
+            $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['continents'], 3);
+            $this->validator->barSeperatedStringProvidesAcceptableValues($this->providedParams['continents'], array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam'));
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -206,7 +221,7 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('countries')) {
-            $this->validateBarSeperatedStringValueLength($this->providedParams['countries'], 2);
+            $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['countries'], 2);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -214,7 +229,7 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('indigenous')) {
-            $this->validateStringLength($this->providedParams['indigenous'], 1);
+            $this->validator->stringLength($this->providedParams['indigenous'], 1);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -222,7 +237,7 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('jpscale')) {
-            $this->validateBarSeperatedStringValuesInArray($this->providedParams['jpscale'], array('1.1', '1.2', '2.1', '2.2', '3.1', '3.2'));
+            $this->validator->barSeperatedStringProvidesAcceptableValues($this->providedParams['jpscale'], array('1.1', '1.2', '2.1', '2.2', '3.1', '3.2'));
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -230,7 +245,7 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('languages')) {
-            $this->validateBarSeperatedStringValueLength($this->providedParams['languages'], 3);
+            $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['languages'], 3);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -238,7 +253,7 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('least_reached')) {
-            $this->validateStringLength($this->providedParams['least_reached'], 1);
+            $this->validator->stringLength($this->providedParams['least_reached'], 1);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -381,7 +396,7 @@ class PeopleGroup
         if ($this->paramExists('primary_religions')) {
             $religions = explode('|', $this->providedParams['primary_religions']);
             foreach ($religions as $religion) {
-                $this->validateVariableInRange($religion, 1, 9, array(3));
+                $this->validator->integerInRange($religion, 1, 9, array(3));
             }
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -392,7 +407,7 @@ class PeopleGroup
         if ($this->paramExists('regions')) {
             $regions = explode('|', $this->providedParams['regions']);
             foreach ($regions as $region) {
-                $this->validateVariableInRange($region, 1, 12);
+                $this->validator->integerInRange($region, 1, 12);
             }
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -422,7 +437,7 @@ class PeopleGroup
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('unengaged')) {
-            $this->validateStringLength($this->providedParams['unengaged'], 1);
+            $this->validator->stringLength($this->providedParams['unengaged'], 1);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -547,109 +562,5 @@ class PeopleGroup
     private function paramExists($paramName)
     {
         return array_key_exists($paramName, $this->providedParams);
-    }
-    /**
-     * Checks if the params were set in the __construct() method of this class on providedParams. If not, then throw an error.
-     *
-     * @param array $params the keys of the required params
-     * @return void
-     * @throws InvalidArgumentException if the param does not exist
-     * @access private
-     * @author Johnathan Pulos
-     */
-    private function validateProvidedParams($params)
-    {
-        foreach ($params as $key) {
-            if (array_key_exists($key, $this->providedParams) === false) {
-                throw new \InvalidArgumentException("Missing the required parameter " . $key);
-            }
-        }
-    }
-    /**
-     * Validates all parameters in a bar seperated string are in the approvedValues array
-     *
-     * @param string $str the bar seperated value
-     * @param array $approvedValues an array of valid values
-     * @return void
-     * @access private
-     * @throws InvalidArgumentException if a value is not in the array
-     * @author Johnathan Pulos
-     */
-    private function validateBarSeperatedStringValuesInArray($str, $approvedValues)
-    {
-        $providedValues = explode('|', $str);
-        foreach ($providedValues as $pv) {
-            if (!in_array(strtolower($pv), $approvedValues)) {
-                throw new \InvalidArgumentException("A bar seperated parameter has the wrong permitted value.");
-            }
-        }
-    }
-    /**
-     * Separates a bar separated string and iterates over each element.  Then it validates the length of each element
-     *
-     * @param string $str the bar separated string
-     * @param string $length the length desired
-     * @return void
-     * @access private
-     * @throws InvalidArgumentException if the param is the wrong length
-     * @author Johnathan Pulos
-     */
-    private function validateBarSeperatedStringValueLength($str, $length)
-    {
-        $elements = explode('|', $str);
-        foreach ($elements as $element) {
-            $this->validateStringLength($element, $length);
-        }
-    }
-    /**
-     * Validates that the string is the correct length
-     *
-     * @param string $var the string to check
-     * @param integer $length the number of characters to test against
-     * @return void
-     * @throws InvalidArgumentException if the param is the wrong length
-     * @access private
-     * @author Johnathan Pulos
-     */
-    private function validateStringLength($var, $length)
-    {
-        if (strlen($var) !== $length) {
-            throw new \InvalidArgumentException("One of your parameters are not the correct length.");
-        }
-    }
-    /**
-     * validates a integer is in range
-     *
-     * @param integer $var the variable to check
-     * @param integer $start the start of the range
-     * @param integer $end the end of the range
-     * @return void
-     * @throws InvalidArgumentException if the variable is out of range
-     * @access public
-     * @author Johnathan Pulos
-     */
-    private function validateVariableInRange($var, $start, $end, $except = array())
-    {
-        if ((($var >= $start) && ($var <= $end)) == false) {
-            throw new \InvalidArgumentException("One of the provided variables are out of range.");
-        }
-        if (in_array($var, $except)) {
-            throw new \InvalidArgumentException("One of the provided variables is not allowed.");
-        }
-    }
-    /**
-     * Cleans the parameters passed to $this->providedParams variable.
-     *
-     * @return void
-     * @access private
-     * @author Johnathan Pulos
-     */
-    private function cleanParams()
-    {
-        $newValue = array();
-        foreach ($this->providedParams as $key => $value) {
-            $newValue[$key] = preg_replace('/[^a-z\d\-|\.]/i', '', strip_tags($value));
-        }
-        $this->providedParams = $newValue;
     }
 }

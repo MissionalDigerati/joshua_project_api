@@ -49,6 +49,23 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
         $this->db = $pdoDb->getDatabaseInstance();
     }
     /**
+     * Test that the provided params are sanitized upon intializing the class
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testShouldSanitizeProvidedDataOnInitializing()
+    {
+        $data = array('country' => 'TYE#%', 'state' => 'YU%$');
+        $expected = array('country' => 'TYE', 'state' => 'YU');
+        $reflectionOfResource = new \ReflectionClass('\QueryGenerators\Resource');
+        $providedParams = $reflectionOfResource->getProperty('providedParams');
+        $providedParams->setAccessible(true);
+        $result = $providedParams->getValue(new \QueryGenerators\Resource($data));
+        $this->assertEquals($expected, $result);
+    }
+    /**
      * We should throw an InvalidArgumentException if I do not send the ID to find
      *
      * @return void

@@ -1,1 +1,1 @@
-{"apiVersion":"1","swaggerVersion":"1.1","apis":[{"path":"/resources/people_groups.{format}","description":"Find all People Groups that match your filter criteria."}]}
+{"apiVersion":"1","swaggerVersion":"1.1","apis":[{"path":"/resources/countries.{format}","description":"Retrieve the details of a specific Country."},{"path":"/resources/people_groups.{format}","description":"Find all People Groups that match your filter criteria."}]}

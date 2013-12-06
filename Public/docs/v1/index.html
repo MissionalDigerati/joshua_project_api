@@ -3,7 +3,7 @@
   <head>
       <title>Joshua Project API - Version 1 Documentation</title>
       <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-      <link href="css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
+      <link href="/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
       <link href="/css/styles.css" rel="stylesheet" media="screen">
       <link href='css/hightlight.default.css' media='screen' rel='stylesheet' type='text/css'/>
       <link href='css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
@@ -22,7 +22,7 @@
       <script type="text/javascript">
   	$(function () {
   	    window.swaggerUi = new SwaggerUi({
-                  discoveryUrl:"http://jpapi.codingstudio.org/swagger/v1/api-docs.json",
+                  discoveryUrl:"http://"+document.domain+"/docs/v1/api-docs.json",
                   apiKey:"",
                   dom_id:"swagger-ui-container",
                   supportHeaderParams: false,
@@ -65,7 +65,7 @@
               <li><a href="/">Home</a></li>
               <li><a href="/getting_started">Getting Started</a></li>
               <li><a href="/docs/v1/sample_code">Sample Code</a></li>
-              <li class="active"><a href="/docs/v1/#!/people_groups">Documentation</a></li>
+              <li class="active"><a href="/docs/v1/#!/countries">Documentation</a></li>
               <li><a href="http://www.joshuaproject.net/">Joshua Project</a></li>
               <li><a href="http://www.missionaldigerati.org">Missional Digerati</a></li>
           </ul>
