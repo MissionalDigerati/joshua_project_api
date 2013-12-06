@@ -209,17 +209,25 @@ if ($bypassExtTest === false) {
 $loader->add("Utilities\Validator", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
 $loader->add("Utilities\Sanitizer", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
 /**
+ * Load the Parent QueryGenerator class
+ *
+ * @author Johnathan Pulos
+ */
+$loader->add("QueryGenerators\QueryGenerator", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+/**
  * Are we searching API for People Groups?
  *
  * @author Johnathan Pulos
  */
 if (strpos($requestedUrl, 'people_groups') !== false) {
     /**
-     * Load the Query Generator for People Groups
+     * Load the Query Generator for People Groups, ProfileText, and Resources
      *
      * @author Johnathan Pulos
      */
-    $loader->add("QueryGenerators", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    $loader->add("QueryGenerators\PeopleGroup", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    $loader->add("QueryGenerators\ProfileText", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    $loader->add("QueryGenerators\Resource", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/PeopleGroups.php");
 }
 /**
@@ -233,7 +241,7 @@ if (strpos($requestedUrl, 'countries') !== false) {
      *
      * @author Johnathan Pulos
      */
-    $loader->add("QueryGenerators", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    $loader->add("QueryGenerators\Country", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Countries.php");
 }
 /**
