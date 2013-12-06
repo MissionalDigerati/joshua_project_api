@@ -105,4 +105,117 @@ class QueryGenerator
         $this->sanitizer = new \Utilities\Sanitizer();
         $this->providedParams = $this->sanitizer->cleanArrayValues($getParams);
     }
+    /**
+     * A shorter method for checking if the array_key_exists
+     *
+     * @param string $paramName the name of the param your looking for
+     * @return void
+     * @access protected
+     * @author Johnathan Pulos
+     */
+    protected function paramExists($paramName)
+    {
+        return array_key_exists($paramName, $this->providedParams);
+    }
+    /**
+     * Set the limit and starting variables based on the given limit and page variables
+     *
+     * @return void
+     * @access protected
+     * @author Johnathan Pulos
+     */
+    protected function addLimitFilter()
+    {
+        if (($this->paramExists('limit')) && intval($this->providedParams['limit']) > 0) {
+            $this->preparedVariables['limit'] = intval($this->providedParams['limit']);
+        } else {
+            $this->preparedVariables['limit'] = 100;
+        }
+        if (($this->paramExists('page')) && intval($this->providedParams['page']) > 0) {
+            $this->preparedVariables['starting'] = (intval($this->providedParams['page'])*$this->preparedVariables['limit'])-1;
+        } else {
+            $this->preparedVariables['starting'] = 0;
+        }
+        $this->preparedStatement .= "LIMIT :starting, :limit";
+    }
+    /**
+     * Generates an IN () statement from a piped string.  It writes the prepared version, and adds the variables to the preparedVariables params.
+     * @example 17|23|12 -> IN (17, 23, 12)
+     *
+     * @param string $str The piped string
+     * @param string $columnName the column name that you want to search
+     * @return string
+     * @access protected
+     * @author Johnathan Pulos
+     */
+    protected function generateInStatementFromPipedString($str, $columnName)
+    {
+        $preparedInVars = array();
+        $i = 0;
+        $stringParts = explode("|", $str);
+        foreach ($stringParts as $element) {
+            $preparedParamName = str_replace(' ', '', strtolower($columnName)) . '_' . $i;
+            array_push($preparedInVars, ':' . $preparedParamName);
+            $this->preparedVariables[$preparedParamName] = $element;
+            $i = $i+1;
+        }
+        return $columnName . " IN (" . join(", ", $preparedInVars) . ")";
+    }
+    /**
+     * Generates a BETWEEN statement using a dash separated string.  The string should have either a single integer with no dash, or
+     * a min and max separated by a dash.  This will throw an error if you supply too many parameters, or if you minimum is greater
+     * then your max.
+     *
+     * @param string $str The dash separated string min-max
+     * @param string $columnName the name of the table column to search
+     * @param string $suffix a suffix to be appended to the variable name (Please do not separate with spaces)
+     * @return string
+     * @throws InvalidArgumentException if the param has too many variables, or the min is greater than the max
+     * @access protected
+     * @author Johnathan Pulos
+     */
+    protected function generateBetweenStatementFromDashSeperatedString($str, $columnName, $suffix)
+    {
+        $stringValues = explode('-', $str);
+        $stringValuesLength = count($stringValues);
+        if ($stringValuesLength == 2) {
+            $min = floatval($stringValues[0]);
+            $max = floatval($stringValues[1]);
+            if ($min >= $max) {
+                throw new \InvalidArgumentException("A dashed parameter has a minimum greater than it's maximum.");
+            }
+            $this->preparedVariables["min_" . $suffix] = $min;
+            $this->preparedVariables["max_" . $suffix] = $max;
+            return $columnName . " BETWEEN :min_" . $suffix . " AND :max_" . $suffix;
+        } else if ($stringValuesLength == 1) {
+            $this->preparedVariables["total_" . $suffix] = floatval($stringValues[0]);
+            return $columnName . " = :total_" . $suffix;
+        } else {
+            throw new \InvalidArgumentException("A dashed parameter has too many values.");
+        }
+    }
+    /**
+     * Generates the where statement for a boolean.  If the value is Y,  it looks for a value of Y.  If it is N, it looks for
+     * a value of NULL.
+     *
+     * @param string $str The value the user is looking for
+     * @param string $columnName the name of the table column to search
+     * @param string $suffix a suffix to be appended to the variable name (Please do not separate with spaces)
+     * @return string
+     * @throws InvalidArgumentException if the param has too many variables, or the min is greater than the max
+     * @access protected
+     * @author Johnathan Pulos
+     */
+    protected function generateWhereStatementForBoolean($str, $columnName, $suffix)
+    {
+        $val = strtoupper($str);
+        if ($val == 'Y') {
+            $this->preparedVariables[$suffix] = $val;
+            return $columnName . " = :" . $suffix;
+        } else if ($val == 'N') {
+            return "(" . $columnName . " IS NULL OR " . $columnName . " = '')";
+        } else {
+            throw new \InvalidArgumentException("A boolean was set with the wrong value.");
+        }
+    }
 }
