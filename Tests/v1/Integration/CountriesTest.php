@@ -243,7 +243,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testCountryIndexShouldReturnCountriesWithASpecificID()
+    public function testCountryIndexShouldReturnCountriesFilteredByIDs()
     {
         $expectedIDs = array('us', 'af', 'al');
         $response = $this->cachedRequest->get(
