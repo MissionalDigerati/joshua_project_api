@@ -32,6 +32,20 @@ namespace QueryGenerators;
 class Resource extends QueryGenerator
 {
     /**
+     * The table to pull the data from
+     *
+     * @var string
+     * @access protected
+     */
+    protected $tableName = 'jpresources';
+    /**
+     * A string that will hold the default order by for the Select statement
+     *
+     * @var string
+     * @access protected
+     */
+    protected $defaultOrderByStatement = 'ORDER BY DisplaySeq ASC';
+    /**
      * An array of column names for this database table that we want to select in searches.  Simply remove fields you do not want to expose.
      *
      * @var array
@@ -63,7 +77,7 @@ class Resource extends QueryGenerator
     {
         $this->validator->providedRequiredParams($this->providedParams, array('id'));
         $id = strtolower($this->providedParams['id']);
-        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jpresources WHERE ROL3 = :id ORDER BY DisplaySeq ASC";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE ROL3 = :id " . $this->defaultOrderByStatement;
         $this->preparedVariables = array('id' => $id);
     }
 }
