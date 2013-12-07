@@ -120,4 +120,23 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertEquals($expectedCount, count($data));
     }
+    /**
+     * findAllWithFilters() should return only countries in the ids param
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldFilterByIDs()
+    {
+        $expectedIDs = array('re', 'qa', 'qo');
+        $country = new \QueryGenerators\Country(array('ids' => join('|', $expectedIDs)));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($data as $country) {
+            $this->assertTrue(in_array(strtolower($country['ROG3']), $expectedIDs));
+        }
+    }
 }

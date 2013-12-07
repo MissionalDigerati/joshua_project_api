@@ -219,7 +219,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedFirstCountry, $decodedResponse[0]['Country']);
     }
     /**
-      * GET /countries.json
+      * GET /countries.json?limit=10
       * Country Index should return the correct data with a limit
       *
       * @access public
@@ -235,6 +235,26 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         );
         $decodedResponse = json_decode($response, true);
         $this->assertEquals($expectedCountryCount, count($decodedResponse));
+    }
+    /**
+      * GET /countries.json?ids=US|AF|AL
+      * Country Index should return the correct data when setting the ids parameter
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testCountryIndexShouldReturnCountriesWithASpecificID()
+    {
+        $expectedIDs = array('us', 'af', 'al');
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'ids' => join('|', $expectedIDs)),
+            "should_return_country_index_with_ids_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $country) {
+            $this->assertTrue(in_array(strtolower($country['ROG3']), $expectedIDs));
+        }
     }
     /**
      * gets an APIKey by sending a request to the /api_keys url
