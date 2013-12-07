@@ -219,6 +219,24 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedFirstCountry, $decodedResponse[0]['Country']);
     }
     /**
+      * GET /countries.json
+      * Country Index should return the correct data with a limit
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testCountryIndexShouldReturnASetLimitOfCountryData()
+    {
+        $expectedCountryCount = 10;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'limit' => $expectedCountryCount),
+            "should_return_country_index_with_limit_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals($expectedCountryCount, count($decodedResponse));
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string

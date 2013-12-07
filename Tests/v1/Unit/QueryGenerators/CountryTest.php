@@ -85,7 +85,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCountryName, $data[0]['Country']);
     }
     /**
-     * findAllWithFilters() should return all countries if there are no filters added
+     * findAllWithFilters() should return all countries with limit if there are no filters added
      *
      * @return void
      * @access public
@@ -102,5 +102,22 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertEquals($expectedCount, count($data));
         $this->assertEquals($expectedFirstCountry, $data[0]['Country']);
+    }
+    /**
+     * findAllWithFilters() should return the set number of countries
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldLimitResults()
+    {
+        $expectedCount = 10;
+        $country = new \QueryGenerators\Country(array('limit' => $expectedCount));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($expectedCount, count($data));
     }
 }

@@ -142,7 +142,7 @@ $app->get(
         $data = array();
         if (empty($data)) {
             try {
-                $country = new \QueryGenerators\Country(array());
+                $country = new \QueryGenerators\Country($appRequest->params());
                 $country->findAllWithFilters();
                 $statement = $db->prepare($country->preparedStatement);
                 $statement->execute($country->preparedVariables);

@@ -90,7 +90,8 @@ class Country extends QueryGenerator
      **/
     public function findAllWithFilters()
     {
-        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " " . $this->defaultOrderByStatement . " LIMIT 100";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " " . $this->defaultOrderByStatement . " ";
         $this->preparedVariables = array();
+        $this->addLimitFilter();
     }
 }
