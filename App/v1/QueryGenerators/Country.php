@@ -109,6 +109,17 @@ class Country extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['ids'], 'ROG3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('regions')) {
+            $regions = explode('|', $this->providedParams['regions']);
+            foreach ($regions as $region) {
+                $this->validator->integerInRange($region, 1, 12);
+            }
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['regions'], 'RegionCode');
+            $appendAndOnWhere = true;
+        }
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }

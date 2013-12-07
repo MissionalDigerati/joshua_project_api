@@ -277,6 +277,26 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+      * GET /countries.json?regions=1|5
+      * Country Index should return the correct data when filtering by regions
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testCountryIndexShouldReturnCountriesFilteredByRegions()
+    {
+        $expectedRegions = array(1, 5);
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'regions' => join('|', $expectedRegions)),
+            "should_return_country_index_with_regions_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $country) {
+            $this->assertTrue(in_array(strtolower($country['RegionCode']), $expectedRegions));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string
