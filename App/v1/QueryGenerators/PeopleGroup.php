@@ -46,6 +46,13 @@ class PeopleGroup extends QueryGenerator
      */
     protected $tableName = "jppeoples";
     /**
+     * A string that will hold the default order by for the Select statement
+     *
+     * @var string
+     * @access protected
+     */
+    protected $defaultOrderByStatement = "ORDER BY PeopleID1 ASC";
+    /**
      * The CONCAT statement for generating the PeopleGroupURL
      *
      * @var string
@@ -403,7 +410,7 @@ class PeopleGroup extends QueryGenerator
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }
-        $this->preparedStatement .= " ORDER BY PeopleID1 ASC ";
+        $this->preparedStatement .= " " . $this->defaultOrderByStatement . " ";
         $this->addLimitFilter();
     }
 }
