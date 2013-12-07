@@ -317,6 +317,26 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+      * GET /countries.json?primary_languages=por
+      * Country Index should return the correct data when filtering by primary_languages
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testCountryIndexShouldReturnCountriesFilteredByPrimaryLanguages()
+    {
+        $expectedPrimaryLanguages = array('por');
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'primary_languages' => join('|', $expectedPrimaryLanguages)),
+            "should_return_country_index_with_primary_languages_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $country) {
+            $this->assertTrue(in_array(strtolower($country['ROL3OfficialLanguage']), $expectedPrimaryLanguages));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string

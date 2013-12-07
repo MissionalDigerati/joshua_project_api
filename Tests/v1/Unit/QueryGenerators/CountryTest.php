@@ -196,4 +196,23 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(strtolower($country['Window10_40']), $expectedWindow1040);
         }
     }
+    /**
+     * findAllWithFilters() should filter countries by primary_languages
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldFilterByPrimaryLanguages()
+    {
+        $expectedPrimaryLanguages = array('por', 'eng');
+        $country = new \QueryGenerators\Country(array('primary_languages' => join('|', $expectedPrimaryLanguages)));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($data as $country) {
+            $this->assertTrue(in_array(strtolower($country['ROL3OfficialLanguage']), $expectedPrimaryLanguages));
+        }
+    }
 }
