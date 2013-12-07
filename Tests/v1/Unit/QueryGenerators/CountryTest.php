@@ -139,4 +139,23 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array(strtolower($country['ROG3']), $expectedIDs));
         }
     }
+    /**
+     * findAllWithFilters() should filter countries by continents
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldFilterByContinents()
+    {
+        $expectedContinents = array('lam', 'sop');
+        $country = new \QueryGenerators\Country(array('continents' => join('|', $expectedContinents)));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($data as $country) {
+            $this->assertTrue(in_array(strtolower($country['ROG2']), $expectedContinents));
+        }
+    }
 }

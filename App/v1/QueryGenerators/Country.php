@@ -93,6 +93,15 @@ class Country extends QueryGenerator
         $where = "";
         $appendAndOnWhere = false;
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName;
+        if ($this->paramExists('continents')) {
+            $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['continents'], 3);
+            $this->validator->barSeperatedStringProvidesAcceptableValues($this->providedParams['continents'], array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam'));
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['continents'], 'ROG2');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('ids')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";

@@ -257,6 +257,26 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+      * GET /countries.json?continents=EUR|NAR
+      * Country Index should return the correct data when filtering by continents
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testCountryIndexShouldReturnCountriesFilteredByContinents()
+    {
+        $expectedContinents = array('eur', 'nar');
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'continents' => join('|', $expectedContinents)),
+            "should_return_country_index_with_continents_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $country) {
+            $this->assertTrue(in_array(strtolower($country['ROG2']), $expectedContinents));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string
