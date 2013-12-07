@@ -135,8 +135,8 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        foreach ($data as $country) {
-            $this->assertTrue(in_array(strtolower($country['ROG3']), $expectedIDs));
+        foreach ($data as $countryData) {
+            $this->assertTrue(in_array(strtolower($countryData['ROG3']), $expectedIDs));
         }
     }
     /**
@@ -154,8 +154,8 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        foreach ($data as $country) {
-            $this->assertTrue(in_array(strtolower($country['ROG2']), $expectedContinents));
+        foreach ($data as $countryData) {
+            $this->assertTrue(in_array(strtolower($countryData['ROG2']), $expectedContinents));
         }
     }
     /**
@@ -173,8 +173,8 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        foreach ($data as $country) {
-            $this->assertTrue(in_array(strtolower($country['RegionCode']), $expectedRegions));
+        foreach ($data as $countryData) {
+            $this->assertTrue(in_array(strtolower($countryData['RegionCode']), $expectedRegions));
         }
     }
     /**
@@ -192,8 +192,8 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        foreach ($data as $country) {
-            $this->assertEquals(strtolower($country['Window10_40']), $expectedWindow1040);
+        foreach ($data as $countryData) {
+            $this->assertEquals(strtolower($countryData['Window10_40']), $expectedWindow1040);
         }
     }
     /**
@@ -211,8 +211,50 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        foreach ($data as $country) {
-            $this->assertTrue(in_array(strtolower($country['ROL3OfficialLanguage']), $expectedPrimaryLanguages));
+        foreach ($data as $countryData) {
+            $this->assertTrue(in_array(strtolower($countryData['ROL3OfficialLanguage']), $expectedPrimaryLanguages));
+        }
+    }
+    /**
+     * findAllWithFilters() should filter countries by population range
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldFilterByPopulationRange()
+    {
+        $expectedMin = 0;
+        $expectedMax = 1000;
+        $country = new \QueryGenerators\Country(array('population' => $expectedMin."-".$expectedMax));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, intval($countryData['Population']));
+            $this->assertGreaterThanOrEqual($expectedMin, intval($countryData['Population']));
+        }
+    }
+    /**
+     * findAllWithFilters() should filter countries by exact population
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldFilterByExactPopulation()
+    {
+        $expectedPopulation = 1000;
+        $country = new \QueryGenerators\Country(array('population' => $expectedPopulation));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertEquals($expectedPopulation, intval($countryData['Population']));
         }
     }
 }

@@ -337,6 +337,54 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * GET /countries.json?population=10000-20000
+     * test page filters by a set range of population
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnCountriesFliteredByAMinAndMaxPopulation()
+    {
+        $expectedMin = 10000;
+        $expectedMax = 20000;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'population' => $expectedMin."-".$expectedMax),
+            "filter_by_pop_in_range_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $country) {
+            $this->assertLessThanOrEqual($expectedMax, intval($country['Population']));
+            $this->assertGreaterThanOrEqual($expectedMin, intval($country['Population']));
+        }
+    }
+    /**
+     * GET /countries.json?population=600
+     * test page filters by an exact population
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnCountriesFliteredByAnExactPopulation()
+    {
+        $expectedPopulation = 600;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'population' => $expectedPopulation),
+            "filter_by_pop_exact_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $country) {
+            $this->assertEquals($expectedPopulation, intval($country['Population']));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string

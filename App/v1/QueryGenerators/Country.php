@@ -109,6 +109,13 @@ class Country extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['ids'], 'ROG3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('population')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['population'], 'Population', 'pop');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('primary_languages')) {
             $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['primary_languages'], 3);
             if ($appendAndOnWhere === true) {
