@@ -297,6 +297,26 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+      * GET /countries.json?window1040=n
+      * Country Index should return the correct data when filtering by window1040
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testCountryIndexShouldReturnCountriesFilteredByWindow1040()
+    {
+        $expectedWindow1040 = 'y';
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'window1040' => $expectedWindow1040),
+            "should_return_country_index_with_window_1040_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $country) {
+            $this->assertEquals(strtolower($country['Window10_40']), $expectedWindow1040);
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string

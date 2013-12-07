@@ -177,4 +177,23 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array(strtolower($country['RegionCode']), $expectedRegions));
         }
     }
+    /**
+     * findAllWithFilters() should filter countries by window1040
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldFilterByWindow1040()
+    {
+        $expectedWindow1040 = 'y';
+        $country = new \QueryGenerators\Country(array('window1040' => $expectedWindow1040));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($data as $country) {
+            $this->assertEquals(strtolower($country['Window10_40']), $expectedWindow1040);
+        }
+    }
 }

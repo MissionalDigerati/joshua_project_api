@@ -120,6 +120,14 @@ class Country extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['regions'], 'RegionCode');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('window1040')) {
+            $this->validator->stringLength($this->providedParams['window1040'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean($this->providedParams['window1040'], '10_40Window', 'window_10_40');
+            $appendAndOnWhere = true;
+        }
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }
