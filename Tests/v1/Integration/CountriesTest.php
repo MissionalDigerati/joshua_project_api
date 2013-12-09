@@ -386,7 +386,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     }
     /**
      * GET /countries.json?primary_religions=1|7
-     * test page filters by an exact population
+     * test page filters by primary religions
      *
      * @return void
      * @access public
@@ -406,6 +406,55 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         foreach ($decodedResponse as $countryData) {
             $this->assertTrue(in_array(strtolower($countryData['PrimaryReligion']), array_values($expectedReligions)));
             $this->assertTrue(in_array($countryData['RLG3'], array_keys($expectedReligions)));
+        }
+    }
+    /**
+     * GET /countries.json?primary_religions=7
+     * test page filters by an exact primary religion
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnCountriesFliteredByASinglePrimaryReligion()
+    {
+        $expectedReligions = array(7 => 'non-religious');
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'primary_religions' => join('|', array_keys($expectedReligions))),
+            "filter_by_exact_primary_religion_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(in_array(strtolower($countryData['PrimaryReligion']), array_values($expectedReligions)));
+            $this->assertTrue(in_array($countryData['RLG3'], array_keys($expectedReligions)));
+        }
+    }
+    /**
+     * GET /countries.json?pc_christianity=10-20
+     * test page filters by a range of percentage of christianity
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnCountriesFliteredByRangeOfPCChristianity()
+    {
+        $expectedMin = 10;
+        $expectedMax = 20;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'pc_christianity' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_percent_christianity_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentChristianity']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentChristianity']));
         }
     }
     /**
