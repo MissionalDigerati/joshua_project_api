@@ -508,7 +508,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-     * GET /countries.json?pc_ethnic_religion=10-25
+     * GET /countries.json?pc_ethnic_religion=1-10
      * test page filters by a range of percentage of ethnic religions
      *
      * @return void
@@ -530,6 +530,31 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         foreach ($decodedResponse as $countryData) {
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentEthnicReligions']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentEthnicReligions']));
+        }
+    }
+    /**
+     * GET /countries.json?pc_hindu=15-35
+     * test page filters by a range of percentage of hindu
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnCountriesFliteredByRangeOfPCHindu()
+    {
+        $expectedMin = 15;
+        $expectedMax = 35;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'pc_hindu' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_pc_hindu_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentHinduism']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentHinduism']));
         }
     }
     /**
