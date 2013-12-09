@@ -123,6 +123,13 @@ class Country extends QueryGenerator
             $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_christianity'], 'PercentChristianity', 'pc_christianity');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('pc_ethnic_religion')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_ethnic_religion'], 'PercentEthnicReligions', 'pc_ethnic_religion');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('pc_evangelical')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
