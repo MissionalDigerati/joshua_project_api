@@ -558,6 +558,31 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * GET /countries.json?pc_islam=85-100
+     * test page filters by a range of percentage of Islam
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnCountriesFliteredByRangeOfPCIslam()
+    {
+        $expectedMin = 85;
+        $expectedMax = 100;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'pc_islam' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_pc_islam_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentIslam']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentIslam']));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string
