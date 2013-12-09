@@ -458,7 +458,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-     * GET /countries.json?pc_evangelical=70-80
+     * GET /countries.json?pc_evangelical=0-20
      * test page filters by a range of percentage of christianity
      *
      * @return void
@@ -472,7 +472,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/countries.json",
             array('api_key' => $this->APIKey, 'pc_evangelical' => $expectedMin . '-' . $expectedMax),
-            "filter_by_range_percent_christianity_on_index_json"
+            "filter_by_range_percent_evangelical_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
@@ -480,6 +480,31 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         foreach ($decodedResponse as $countryData) {
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentEvangelical']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentEvangelical']));
+        }
+    }
+    /**
+     * GET /countries.json?pc_buddhist=10-25
+     * test page filters by a range of percentage of buddhist
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnCountriesFliteredByRangeOfPCBuddhist()
+    {
+        $expectedMin = 10;
+        $expectedMax = 25;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'pc_buddhist' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_pc_buddhist_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentBuddhism']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentBuddhism']));
         }
     }
     /**
