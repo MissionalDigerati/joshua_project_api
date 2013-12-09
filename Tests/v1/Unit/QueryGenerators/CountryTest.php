@@ -66,6 +66,27 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result);
     }
     /**
+     * Several fields need to be renamed for easier use
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testQueryGeneratorShouldRenameTheCorrectFields()
+    {
+        $country = new \QueryGenerators\Country(array('id'  =>  'BE'));
+        $country->findById();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertTrue(array_key_exists('Window10_40', $data[0]));
+        $this->assertTrue(array_key_exists('Window10_40Original', $data[0]));
+        $this->assertTrue(array_key_exists('Country', $data[0]));
+        $this->assertTrue(array_key_exists('Country_ID', $data[0]));
+        $this->assertTrue(array_key_exists('PrimaryReligion', $data[0]));
+        $this->assertTrue(array_key_exists('RLG3', $data[0]));
+    }
+    /**
      * findById() should return the correct country, based on the supplied ID.
      *
      * @return void
@@ -255,6 +276,27 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertEquals($expectedPopulation, intval($countryData['Population']));
+        }
+    }
+    /**
+     * findAllWithFilters() should filter countries by primary religions
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldFilterByPrimaryReligions()
+    {
+        $expectedReligions = array(2 => 'buddhism', 6 => 'islam');
+        $country = new \QueryGenerators\Country(array('primary_religions' => join('|', array_keys($expectedReligions))));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertTrue(in_array(strtolower($countryData['PrimaryReligion']), array_values($expectedReligions)));
+            $this->assertTrue(in_array($countryData['RLG3'], array_keys($expectedReligions)));
         }
     }
 }

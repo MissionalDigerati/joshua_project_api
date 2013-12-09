@@ -37,7 +37,7 @@ class Country extends QueryGenerator
      * @var array
      * @access protected
      */
-    protected $fieldsToSelectArray = array('ROG3','ISO3','ISO2','ROG2','RegionCode','RegionName','AltName','Capital','Population','PopulationSource','PoplGrowthRate','AreaSquareMiles','AreaSquareKilometers','PopulationPerSquareMile','CountryPhoneCode','SecurityLevel','LibraryCongressReportExists','IsCountry','BJMFocusCountry','StonyGround','USAPostalSystem','ROL3OfficialLanguage','OfficialLang','ROL3SecondaryLanguage','SecondLang','RLG3Primary','ReligionPrimary','RLG4Primary','ReligionSubdivision','ReligionDataYear','LiteracyCategory','LiteracyRate','LiteracyRange','LiteracySource','CountryNotes','NSMMissionArticles','EthnolinguisticMap','PercentPopulationDifference','PercentChristianity','PercentEvangelical','PercentBuddhism','PercentDoublyProfessing','PercentEthnicReligions','PercentHinduism','PercentIslam','PercentNonReligious','PercentOtherSmall','PercentUnknown','PercentAnglican','PercentIndependent','PercentProtestant','PercentOrthodox','PercentOther','PercentRomanCatholic','CntPeoples','PoplPeoples','CntPeoplesLR','PoplPeoplesLR','JPScaleCtry','HDIYear','HDIValue','HDIRank','StateDeptReligiousFreedom','Source','EditName','EditDate','V59Country','EthnologueCountryCode','EthnologueMapExists','UNMap','PersecutionRankingOD','InternetCtryCode','PercentUrbanized','PrayercastVideo','PrayercastBlipTVCode','WINCountryProfile');
+    protected $fieldsToSelectArray = array('ROG3','ISO3','ISO2','ROG2','RegionCode','RegionName','AltName','Capital','Population','PopulationSource','PoplGrowthRate','AreaSquareMiles','AreaSquareKilometers','PopulationPerSquareMile','CountryPhoneCode','SecurityLevel','LibraryCongressReportExists','IsCountry','BJMFocusCountry','StonyGround','USAPostalSystem','ROL3OfficialLanguage','OfficialLang','ROL3SecondaryLanguage','SecondLang','RLG4Primary','ReligionSubdivision','ReligionDataYear','LiteracyCategory','LiteracyRate','LiteracyRange','LiteracySource','CountryNotes','NSMMissionArticles','EthnolinguisticMap','PercentPopulationDifference','PercentChristianity','PercentEvangelical','PercentBuddhism','PercentDoublyProfessing','PercentEthnicReligions','PercentHinduism','PercentIslam','PercentNonReligious','PercentOtherSmall','PercentUnknown','PercentAnglican','PercentIndependent','PercentProtestant','PercentOrthodox','PercentOther','PercentRomanCatholic','CntPeoples','PoplPeoples','CntPeoplesLR','PoplPeoplesLR','JPScaleCtry','HDIYear','HDIValue','HDIRank','StateDeptReligiousFreedom','Source','EditName','EditDate','V59Country','EthnologueCountryCode','EthnologueMapExists','UNMap','PersecutionRankingOD','InternetCtryCode','PercentUrbanized','PrayercastVideo','PrayercastBlipTVCode','WINCountryProfile');
     /**
      * The table to pull the data from
      *
@@ -66,7 +66,7 @@ class Country extends QueryGenerator
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", 10_40Window as Window10_40";
         $this->selectFieldsStatement .= ", 10_40WindowOriginal as Window10_40Original";
-        $this->selectFieldsStatement .= ", Ctry as Country, Ctry_id as Country_ID";
+        $this->selectFieldsStatement .= ", Ctry as Country, Ctry_id as Country_ID, ReligionPrimary as PrimaryReligion, RLG3Primary as RLG3";
     }
     /**
      * Find the Country by it's ID (ROG3) or ISO2
@@ -122,6 +122,17 @@ class Country extends QueryGenerator
                 $where .= " AND ";
             }
             $where .= $this->generateInStatementFromPipedString($this->providedParams['primary_languages'], 'ROL3OfficialLanguage');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('primary_religions')) {
+            $religions = explode('|', $this->providedParams['primary_religions']);
+            foreach ($religions as $religion) {
+                $this->validator->integerInRange($religion, 1, 9, array(3));
+            }
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['primary_religions'], 'RLG3Primary');
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('regions')) {

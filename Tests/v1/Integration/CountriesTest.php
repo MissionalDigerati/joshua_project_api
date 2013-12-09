@@ -385,6 +385,30 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * GET /countries.json?primary_religions=1|7
+     * test page filters by an exact population
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnCountriesFliteredByPrimaryReligions()
+    {
+        $expectedReligions = array(1 => 'christianity', 7 => 'non-religious');
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'primary_religions' => join('|', array_keys($expectedReligions))),
+            "filter_by_primary_religion_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(in_array(strtolower($countryData['PrimaryReligion']), array_values($expectedReligions)));
+            $this->assertTrue(in_array($countryData['RLG3'], array_keys($expectedReligions)));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string
