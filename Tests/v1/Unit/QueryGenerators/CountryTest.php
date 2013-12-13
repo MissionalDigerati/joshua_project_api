@@ -475,4 +475,26 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentOtherSmall']));
         }
     }
+    /**
+     * findAllWithFilters() should filter countries by percent of Unknown
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldFilterByPercentUnknown()
+    {
+        $expectedMin = 0;
+        $expectedMax = 0.004;
+        $country = new \QueryGenerators\Country(array('pc_unknown' => $expectedMin . '-' . $expectedMax));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentUnknown']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentUnknown']));
+        }
+    }
 }
