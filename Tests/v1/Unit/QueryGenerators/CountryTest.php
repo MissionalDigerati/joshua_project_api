@@ -585,4 +585,26 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentOrthodox']));
         }
     }
+    /**
+     * findAllWithFilters() should filter countries by percent of Roman Catholic
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldFilterByPercentRomanCatholic()
+    {
+        $expectedMin = 84;
+        $expectedMax = 87;
+        $country = new \QueryGenerators\Country(array('pc_rcatholic' => $expectedMin . '-' . $expectedMax));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentRomanCatholic']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentRomanCatholic']));
+        }
+    }
 }

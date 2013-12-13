@@ -758,6 +758,31 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * GET /countries.json?pc_rcatholic=20-25
+     * test page filters by a range of percentage of Roman Catholic
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnCountriesFliteredByRangeOfPCRomanCatholic()
+    {
+        $expectedMin = 20;
+        $expectedMax = 25;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'pc_rcatholic' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_pc_rcatholic_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentRomanCatholic']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentRomanCatholic']));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string
