@@ -608,6 +608,31 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * GET /countries.json?pc_other_religions=2-3
+     * test page filters by a range of percentage of Other Religions
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnCountriesFliteredByRangeOfPCOtherReligions()
+    {
+        $expectedMin = 2;
+        $expectedMax = 3;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'pc_other_religions' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_pc_other_religions_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentOtherSmall']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentOtherSmall']));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string
