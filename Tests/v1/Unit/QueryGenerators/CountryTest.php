@@ -519,4 +519,26 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentAnglican']));
         }
     }
+    /**
+     * findAllWithFilters() should filter countries by percent of Independent
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldFilterByPercentIndependent()
+    {
+        $expectedMin = 83;
+        $expectedMax = 90.1;
+        $country = new \QueryGenerators\Country(array('pc_independent' => $expectedMin . '-' . $expectedMax));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentIndependent']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentIndependent']));
+        }
+    }
 }
