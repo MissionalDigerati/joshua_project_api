@@ -504,7 +504,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindAllWithFiltersShouldFilterByPJPScale()
+    public function testFindAllWithFiltersShouldFilterByJPScale()
     {
         $expectedJPScales = "1.2|2.1";
         $expectedJPScalesArray = array(1.2, 2.1);
@@ -515,7 +515,67 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
-            $this->assertTrue(in_array(floatval($countryData['JPScaleCtry']), $expectedJPScalesArray));
+            $this->assertTrue(in_array(floatval($countryData['JPScale']), $expectedJPScalesArray));
+        }
+    }
+    /**
+     * Country Query Generator should set the JPScaleText to Unreached
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testCountryQueryGeneratorShouldSetJPScaleTextToUnreached()
+    {
+        $expectedJPScaleText = "unreached";
+        $country = new \QueryGenerators\Country(array('jpscale' => '1.2'));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertEquals(strtolower($countryData['JPScaleText']), $expectedJPScaleText);
+        }
+    }
+    /**
+     * Country Query Generator should set the JPScaleText to Nominal Church
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testCountryQueryGeneratorShouldSetJPScaleTextToNominalChurch()
+    {
+        $expectedJPScaleText = "nominal church";
+        $country = new \QueryGenerators\Country(array('jpscale' => '2.1'));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertEquals(strtolower($countryData['JPScaleText']), $expectedJPScaleText);
+        }
+    }
+    /**
+     * Country Query Generator should set the JPScaleText to Established Church
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testCountryQueryGeneratorShouldSetJPScaleTextToEstablishedChurch()
+    {
+        $expectedJPScaleText = "established church";
+        $country = new \QueryGenerators\Country(array('jpscale' => '3.2'));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertEquals(strtolower($countryData['JPScaleText']), $expectedJPScaleText);
         }
     }
     /**

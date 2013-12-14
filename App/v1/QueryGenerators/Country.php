@@ -65,8 +65,9 @@ class Country extends QueryGenerator
     {
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", 10_40Window as Window10_40";
-        $this->selectFieldsStatement .= ", 10_40WindowOriginal as Window10_40Original";
+        $this->selectFieldsStatement .= ", 10_40WindowOriginal as Window10_40Original, JPScaleCtry as JPScale";
         $this->selectFieldsStatement .= ", Ctry as Country, Ctry_id as Country_ID, ReligionPrimary as PrimaryReligion, RLG3Primary as RLG3";
+        $this->selectFieldsStatement .= ", " . str_replace('JPScale', 'JPScaleCtry', $this->JPScaleTextSelectStatement) . " as JPScaleText";
     }
     /**
      * Find the Country by it's ID (ROG3) or ISO2

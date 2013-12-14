@@ -94,6 +94,13 @@ class QueryGenerator
      */
     protected $defaultOrderByStatement = '';
     /**
+     * The CASE statement for generating the JPScaleText
+     *
+     * @var string
+     * @access protected
+     */
+    protected $JPScaleTextSelectStatement = "CASE  WHEN JPScale = 1.0 OR JPScale = 2.0 THEN 'Status Unavailable' WHEN JPScale = 1.1 OR JPScale = 1.2 THEN 'Unreached' WHEN JPScale = 2.1 OR JPScale = 2.2 THEN 'Nominal Church' ELSE 'Established Church' END";
+    /**
      * Construct the class
      * 
      * @access public
