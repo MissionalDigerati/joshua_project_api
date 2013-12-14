@@ -136,6 +136,246 @@ $app->get(
         }
     }
 );
+/**
+ * 
+ * @SWG\API(
+ *  path="/countries.{format}",
+ *  description="Find all Countries that match your filter criteria.",
+ *  @SWG\Operations(
+ *      @SWG\Operation(
+ *          httpMethod="GET",
+ *          nickname="getAllCountryWithFilters",
+ *          summary="Search all Countries with diverse filters (JSON or XML)",
+ *          notes="Retrieve a list of Countries that match your filter settings.",
+ *          @SWG\Parameters(
+ *              @SWG\Parameter(
+ *                  name="api_key",
+ *                  description="Your Joshua Project API key.",
+ *                  paramType="query",
+ *                  required="true",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="continents",
+ *                  description="A bar separated list of one or more continents to filter by.Use the following codes:<br><ul><li>AFR - Africa</li><li>ASI - Asia</li><li>AUS - Australia</li><li>EUR - Europe</li><li>NAR - North America</li><li>SOP - Oceania (South Pacific)</li><li>LAM - South America</li></ul>",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="ids",
+ *                  description="A bar separated list of one or more ISO 2 Letter Country Codes to filter by. See <a href='http://www.joshuaproject.net/global-countries.php' target='_blank'>http://www.joshuaproject.net/global-countries.php</a>.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="jpscale",
+ *                  description="A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1.1, 1.2, 2.1, 2.2, 3.1, 3.2.  For more information check out <a href='http://joshuaproject.net/progress-scale-definition.php' target='_blank'>http://joshuaproject.net/progress-scale-definition.php</a>.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="limit",
+ *                  description="The maximum results to return. (Defaults to 100)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="page",
+ *                  description="The page of results to display  (Defaults to 1)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_anglican",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Anglicans.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_buddhist",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Buddhist.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_christianity",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Christians.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_ethnic_religion",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Ethnic Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_evangelical",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_hindu",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Hindus.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_independent",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Independents.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_islam",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_non_religious",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Non-Religious.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_other_religion",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Other Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_orthodox",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Orthodox.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_other_christian",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Other Christian Denominations.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_protestant",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Protestants.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_rcatholic",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Roman Catholic.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_unknown",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Unkown Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="population",
+ *                  description="A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get People Groups matching that number.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="primary_languages",
+ *                  description="A bar seperated list of ISO 3 Letter Codes.  For more information check out <a href='http://www.loc.gov/standards/iso639-2/php/code_list.php' target='_blank'>http://www.loc.gov/standards/iso639-2/php/code_list.php</a>.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="primary_religions",
+ *                  description="A bar separated list of one or more primary religions to filter by. Use the following numbers:<br><ul><li>1 - Christianity</li><li>2 - Buddhism</li><li>4 - Ethnic Religions</li><li>5 - Hinduism</li><li>6 - Islam</li><li>7 - Non-Religious</li><li>8 - Other/Small</li><li>9 - Unknown</li></ul>",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="regions",
+ *                  description="A bar separated list of one or more regions to filter by. Use the following numbers:<br><ul><li>1 - South Pacific</li><li>2 - Southeast Asia</li><li>3 - Northeast Asia</li><li>4 - South Asia</li><li>5 - Central Asia</li><li>6 - Middle East and North Africa</li><li>7 - East and Southern Africa</li><li>8 - West and Central Africa</li><li>9 - Eastern Europe and Eurasia</li><li>10 - Western Europe</li><li>11 - Central and South America</li><li>12 - North America and Caribbean</li></ul>",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="window1040",
+ *                  description="A boolean that states whether you want People Groups in the 1040 Window. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              )
+ *          ),
+ *          @SWG\ErrorResponses(
+ *              @SWG\ErrorResponse(
+ *                  code="400",
+ *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
+ *              ),
+ *              @SWG\ErrorResponse(
+ *                  code="401",
+ *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
+ *              ),
+ *              @SWG\ErrorResponse(
+ *                  code="404",
+ *                  reason="Not found.  Your search ended up with no results."
+ *              )
+ *          )
+ *      )
+ *  )
+ * )
+ * 
+ */
 $app->get(
     "/:version/countries\.:format",
     function ($version, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
