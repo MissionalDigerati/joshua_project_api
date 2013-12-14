@@ -53,6 +53,21 @@ class Country extends QueryGenerator
      */
     protected $defaultOrderByStatement = "ORDER BY Country ASC";
     /**
+     * An array of table columns (key) and their alias (value)
+     *
+     * @var array
+     * @access protected
+     **/
+    protected $aliasFields = array(
+                                    '10_40Window'           =>  'Window10_40',
+                                    '10_40WindowOriginal'   =>  'Window10_40Original',
+                                    'JPScaleCtry'           =>  'JPScale',
+                                    'Ctry'                  =>  'Country',
+                                    'Ctry_id'               =>  'Country_ID',
+                                    'ReligionPrimary'       =>  'PrimaryReligion',
+                                    'RLG3Primary'           =>  'RLG3'
+                                    );
+    /**
      * Construct the class
      *
      * @param array $getParams the params to use for the query.  Each message has required fields, and will throw error
@@ -64,9 +79,7 @@ class Country extends QueryGenerator
     public function __construct($getParams)
     {
         parent::__construct($getParams);
-        $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", 10_40Window as Window10_40";
-        $this->selectFieldsStatement .= ", 10_40WindowOriginal as Window10_40Original, JPScaleCtry as JPScale";
-        $this->selectFieldsStatement .= ", Ctry as Country, Ctry_id as Country_ID, ReligionPrimary as PrimaryReligion, RLG3Primary as RLG3";
+        $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " . $this->generateAliasSelectStatement();
         $this->selectFieldsStatement .= ", " . str_replace('JPScale', 'JPScaleCtry', $this->JPScaleTextSelectStatement) . " as JPScaleText";
         $this->selectFieldsStatement .= ", " . str_replace('JPScale', 'JPScaleCtry', $this->JPScaleImageURLSelectStatement) . " as JPScaleImageURL";
     }

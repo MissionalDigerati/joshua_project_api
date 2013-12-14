@@ -311,4 +311,25 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
         $method->setAccessible(true);
         $actualString = $method->invoke($queryGenerator, 'p', 'Population', 'population');
     }
+    /**
+     * Tests that generateAliasSelectStatement() generates the correct statement
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testGenerateAliasSelectStatementShouldGenerateTheCorrectStatement()
+    {
+        $aliasFieldsData = array('bob' => 'tom', 'sue' => 'sam');
+        $expectedStatement = "bob AS tom, sue AS sam";
+        $queryGenerator = new \QueryGenerators\QueryGenerator(array());
+        $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
+        $aliasFields = $reflectionOfQueryGenerator->getProperty('aliasFields');
+        $aliasFields->setAccessible(true);
+        $aliasFields->setValue($queryGenerator, $aliasFieldsData);
+        $method = $reflectionOfQueryGenerator->getMethod('generateAliasSelectStatement');
+        $method->setAccessible(true);
+        $actualStatement = $method->invoke($queryGenerator);
+        $this->assertEquals($expectedStatement, $actualStatement);
+    }
 }

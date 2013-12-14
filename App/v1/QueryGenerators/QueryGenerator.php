@@ -108,6 +108,13 @@ class QueryGenerator
      */
     protected $JPScaleImageURLSelectStatement = "CONCAT('http://www.joshuaproject.net/images/scale', ROUND(JPScale), '.jpg')";
     /**
+     * An array of table columns (key) and their alias (value)
+     *
+     * @var array
+     * @access protected
+     **/
+    protected $aliasFields = array();
+    /**
      * Construct the class
      * 
      * @access public
@@ -231,5 +238,20 @@ class QueryGenerator
         } else {
             throw new \InvalidArgumentException("A boolean was set with the wrong value.");
         }
+    }
+    /**
+     * Takes the aliasFields array and generates the alias select statements (jppeoples AS jp_peoples)
+     *
+     * @return string
+     * @access protected
+     * @author Johnathan Pulos
+     **/
+    protected function generateAliasSelectStatement()
+    {
+        $statementArray = array();
+        foreach ($this->aliasFields as $key => $value) {
+            $statementArray[] = $key . " AS " . $value;
+        }
+        return join(', ', $statementArray);
     }
 }

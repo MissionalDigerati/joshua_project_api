@@ -74,6 +74,13 @@ class PeopleGroup extends QueryGenerator
      */
     private $countryURLSelect = "CONCAT('http://www.joshuaproject.net/countries.php?rog3=', ROG3)";
     /**
+     * An array of table columns (key) and their alias (value)
+     *
+     * @var array
+     * @access protected
+     **/
+    protected $aliasFields = array('10_40Window' => 'Window10_40');
+    /**
      * Construct the class
      *
      * @param array $getParams the params to use for the query.  Each message has required fields, and will throw error
@@ -85,7 +92,7 @@ class PeopleGroup extends QueryGenerator
     public function __construct($getParams)
     {
         parent::__construct($getParams);
-        $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", 10_40Window as Window10_40";
+        $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " . $this->generateAliasSelectStatement();
         $this->selectFieldsStatement .= ", " . $this->peopleGroupURLSelect . " as PeopleGroupURL";
         $this->selectFieldsStatement .= ", " . $this->peopleGroupPhotoURLSelect . " as PeopleGroupPhotoURL";
         $this->selectFieldsStatement .= ", " . $this->countryURLSelect . " as CountryURL";
