@@ -498,6 +498,27 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * findAllWithFilters() should filter countries by JPScale
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldFilterByPJPScale()
+    {
+        $expectedJPScales = "1.2|2.1";
+        $expectedJPScalesArray = array(1.2, 2.1);
+        $country = new \QueryGenerators\Country(array('jpscale' => $expectedJPScales));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertTrue(in_array(floatval($countryData['JPScaleCtry']), $expectedJPScalesArray));
+        }
+    }
+    /**
      * findAllWithFilters() should filter countries by percent of Anglican
      *
      * @return void

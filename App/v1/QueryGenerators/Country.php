@@ -109,6 +109,14 @@ class Country extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['ids'], 'ROG3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('jpscale')) {
+            $this->validator->barSeperatedStringProvidesAcceptableValues($this->providedParams['jpscale'], array('1.1', '1.2', '2.1', '2.2', '3.1', '3.2'));
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['jpscale'], 'JPScaleCtry');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('pc_anglican')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";

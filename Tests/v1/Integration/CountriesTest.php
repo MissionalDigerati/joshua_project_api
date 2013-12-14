@@ -633,6 +633,30 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * GET /countries.json?jpscale=2.1
+     * test page filters by JPScale
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexShouldReturnCountriesFliteredByJPScale()
+    {
+        $expectedJPScale = "2.1";
+        $expectedJPScalesArray = array(2.1);
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/countries.json",
+            array('api_key' => $this->APIKey, 'jpscale' => $expectedJPScale),
+            "filter_by_jpscale_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(in_array(floatval($countryData['JPScaleCtry']), $expectedJPScalesArray));
+        }
+    }
+    /**
      * GET /countries.json?pc_unknown=0-0.14
      * test page filters by a range of percentage of Unknown
      *
