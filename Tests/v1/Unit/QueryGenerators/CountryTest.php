@@ -464,7 +464,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
     {
         $expectedMin = 3;
         $expectedMax = 5;
-        $country = new \QueryGenerators\Country(array('pc_other_religions' => $expectedMin . '-' . $expectedMax));
+        $country = new \QueryGenerators\Country(array('pc_other_religion' => $expectedMin . '-' . $expectedMax));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
