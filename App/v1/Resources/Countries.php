@@ -198,7 +198,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="pc_anglican",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Anglicans.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Anglicans.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -206,7 +206,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="pc_buddhist",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Buddhist.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Buddhist.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -222,7 +222,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="pc_ethnic_religion",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Ethnic Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Ethnic Religions.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -230,7 +230,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="pc_evangelical",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -238,7 +238,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="pc_hindu",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Hindus.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Hindus.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -246,7 +246,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="pc_independent",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Independents.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Independents.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -254,7 +254,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="pc_islam",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -262,7 +262,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="pc_non_religious",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Non-Religious.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Non-Religious.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -270,7 +270,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="pc_other_religion",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Other Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Other Religions.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -278,7 +278,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="pc_orthodox",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Orthodox.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Orthodox.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -286,7 +286,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="pc_other_christian",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Other Christian Denominations.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Other Christian Denominations.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -294,7 +294,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="pc_protestant",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Protestants.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Protestants.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -302,7 +302,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="pc_rcatholic",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Roman Catholic.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Roman Catholic.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -310,7 +310,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="pc_unknown",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Unkown Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Unkown Religions.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -318,7 +318,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="population",
- *                  description="A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get People Groups matching that number.",
+ *                  description="A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get Countries matching that number.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -350,7 +350,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="window1040",
- *                  description="A boolean that states whether you want People Groups in the 1040 Window. (y or n)",
+ *                  description="A boolean that states whether you want Countries in the 1040 Window. (y or n)",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
