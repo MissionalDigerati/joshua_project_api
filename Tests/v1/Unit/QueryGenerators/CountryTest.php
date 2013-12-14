@@ -579,6 +579,27 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+     * Country Query Generator should set the JPScaleImageURL
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testCountryQueryGeneratorShouldSetJPScaleImageURL()
+    {
+        $expectedJPScaleText = "established church";
+        $country = new \QueryGenerators\Country(array('jpscale' => '3.2'));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $expectedImageURL = "http://www.joshuaproject.net/images/scale".round($countryData['JPScale']).".jpg";
+            $this->assertEquals(strtolower($countryData['JPScaleImageURL']), $expectedImageURL);
+        }
+    }
+    /**
      * findAllWithFilters() should filter countries by percent of Anglican
      *
      * @return void

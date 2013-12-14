@@ -68,6 +68,7 @@ class Country extends QueryGenerator
         $this->selectFieldsStatement .= ", 10_40WindowOriginal as Window10_40Original, JPScaleCtry as JPScale";
         $this->selectFieldsStatement .= ", Ctry as Country, Ctry_id as Country_ID, ReligionPrimary as PrimaryReligion, RLG3Primary as RLG3";
         $this->selectFieldsStatement .= ", " . str_replace('JPScale', 'JPScaleCtry', $this->JPScaleTextSelectStatement) . " as JPScaleText";
+        $this->selectFieldsStatement .= ", " . str_replace('JPScale', 'JPScaleCtry', $this->JPScaleImageURLSelectStatement) . " as JPScaleImageURL";
     }
     /**
      * Find the Country by it's ID (ROG3) or ISO2

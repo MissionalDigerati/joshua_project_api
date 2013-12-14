@@ -101,6 +101,13 @@ class QueryGenerator
      */
     protected $JPScaleTextSelectStatement = "CASE  WHEN JPScale = 1.0 OR JPScale = 2.0 THEN 'Status Unavailable' WHEN JPScale = 1.1 OR JPScale = 1.2 THEN 'Unreached' WHEN JPScale = 2.1 OR JPScale = 2.2 THEN 'Nominal Church' ELSE 'Established Church' END";
     /**
+     * The CONCAT statement for generating the JPScaleImageURL
+     *
+     * @var string
+     * @access protected
+     */
+    protected $JPScaleImageURLSelectStatement = "CONCAT('http://www.joshuaproject.net/images/scale', ROUND(JPScale), '.jpg')";
+    /**
      * Construct the class
      * 
      * @access public
