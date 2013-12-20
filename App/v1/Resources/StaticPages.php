@@ -115,8 +115,8 @@ $app->get(
  */
 $app->get(
     "/resend_activation_links",
-    function () use ($app, $db, $appRequest) {
-        $app->render('StaticPages/resend_activation_links.html.php', array());
+    function () use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
+        $app->render('StaticPages/resend_activation_links.html.php', array('PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
     }
 );
 /**
