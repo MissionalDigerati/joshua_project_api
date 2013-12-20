@@ -37,7 +37,7 @@ class Country extends QueryGenerator
      * @var array
      * @access protected
      */
-    protected $fieldsToSelectArray = array('ROG3','ISO3','ISO2','ROG2','RegionCode','RegionName','AltName','Capital','Population','PopulationSource','PoplGrowthRate','AreaSquareMiles','AreaSquareKilometers','PopulationPerSquareMile','CountryPhoneCode','SecurityLevel','LibraryCongressReportExists','IsCountry','BJMFocusCountry','StonyGround','USAPostalSystem','ROL3OfficialLanguage','OfficialLang','ROL3SecondaryLanguage','SecondLang','RLG4Primary','ReligionSubdivision','ReligionDataYear','LiteracyCategory','LiteracyRate','LiteracyRange','LiteracySource','CountryNotes','NSMMissionArticles','EthnolinguisticMap','PercentPopulationDifference','PercentChristianity','PercentEvangelical','PercentBuddhism','PercentDoublyProfessing','PercentEthnicReligions','PercentHinduism','PercentIslam','PercentNonReligious','PercentOtherSmall','PercentUnknown','PercentAnglican','PercentIndependent','PercentProtestant','PercentOrthodox','PercentOther','PercentRomanCatholic','CntPeoples','PoplPeoples','CntPeoplesLR','PoplPeoplesLR','JPScaleCtry','HDIYear','HDIValue','HDIRank','StateDeptReligiousFreedom','Source','EditName','EditDate','V59Country','EthnologueCountryCode','EthnologueMapExists','UNMap','PersecutionRankingOD','InternetCtryCode','PercentUrbanized','PrayercastVideo','PrayercastBlipTVCode','WINCountryProfile');
+    protected $fieldsToSelectArray = array('ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'AltName', 'Capital', 'Population', 'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles', 'AreaSquareKilometers', 'PopulationPerSquareMile', 'CountryPhoneCode', 'SecurityLevel', 'LibraryCongressReportExists', 'IsCountry', 'StonyGround', 'USAPostalSystem', 'ReligionDataYear', 'LiteracyCategory', 'LiteracyRate', 'LiteracyRange', 'LiteracySource', 'CountryNotes', 'PercentDoublyProfessing', 'HDIYear', 'HDIValue', 'HDIRank', 'StateDeptReligiousFreedom', 'Source', 'UNMap', 'PercentUrbanized', 'PrayercastVideo', 'WINCountryProfile');
     /**
      * The table to pull the data from
      *
@@ -59,13 +59,34 @@ class Country extends QueryGenerator
      * @access protected
      **/
     protected $aliasFields = array(
-                                    '10_40Window'           =>  'Window10_40',
-                                    '10_40WindowOriginal'   =>  'Window10_40Original',
-                                    'JPScaleCtry'           =>  'JPScale',
-                                    'Ctry'                  =>  'Country',
-                                    'Ctry_id'               =>  'Country_ID',
-                                    'ReligionPrimary'       =>  'PrimaryReligion',
-                                    'RLG3Primary'           =>  'RLG3'
+                                    '10_40Window'               =>  'Window1040',
+                                    'JPScaleCtry'               =>  'JPScale',
+                                    'Ctry'                      =>  'Country',
+                                    'ReligionPrimary'           =>  'PrimaryReligionText',
+                                    'RLG3Primary'               =>  'RLG3',
+                                    'RLG4Primary'               =>  'RLG4',
+                                    'ROG2'                      =>  'Continent',
+                                    'ROG3'                      =>  'ID',
+                                    'PercentAnglican'           =>  'PCAnglican',
+                                    'PercentBuddhism'           =>  'PCBuddhist',
+                                    'PercentChristianity'       =>  'PCChristianity',
+                                    'PercentEthnicReligions'    =>  'PCEthnicReligion',
+                                    'PercentEvangelical'        =>  'PCEvangelical',
+                                    'PercentHinduism'           =>  'PCHindu',
+                                    'PercentIndependent'        =>  'PCIndependent',
+                                    'PercentIslam'              =>  'PCIslam',
+                                    'PercentNonReligious'       =>  'PCNonReligious',
+                                    'PercentOtherSmall'         =>  'PCOtherReligion',
+                                    'PercentOrthodox'           =>  'PCOrthodox',
+                                    'PercentOther'              =>  'PCOtherChristian',
+                                    'PercentProtestant'         =>  'PCProtestant',
+                                    'PercentRomanCatholic'      =>  'PCRCatholic',
+                                    'PercentUnknown'            =>  'PCUnknown',
+                                    'ROL3OfficialLanguage'      =>  'PrimaryLanguage',
+                                    'ROL3SecondaryLanguage'     =>  'SecondaryLanguage',
+                                    'RLG3Primary'               =>  'PrimaryReligion',
+                                    'RegionCode'                =>  'Region',
+                                    'InternetCtryCode'          =>  'InternetCountryCode'
                                     );
     /**
      * Construct the class
