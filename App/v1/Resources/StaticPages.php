@@ -49,8 +49,8 @@ $app->get(
  */
 $app->get(
     "/getting_started",
-    function () use ($app, $db, $appRequest, $DOMAIN_ADDRESS) {
-        $app->render('StaticPages/getting_started.html.php', array('DOMAIN_ADDRESS' => $DOMAIN_ADDRESS));
+    function () use ($app, $db, $appRequest, $DOMAIN_ADDRESS, $PUBLIC_DIRECTORY) {
+        $app->render('StaticPages/getting_started.html.php', array('DOMAIN_ADDRESS' => $DOMAIN_ADDRESS, 'PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
     }
 );
 /**
