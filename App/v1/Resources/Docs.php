@@ -62,3 +62,17 @@ $app->get(
         $app->render('Docs/sample_code.html.php', array('PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
     }
 );
+/**
+ * Get the sample code documentation
+ *
+ * GET /:version/docs/available_api_requests
+ * Available Formats HTML
+ * 
+ * @author Johnathan Pulos
+ */
+$app->get(
+    "/:version/docs/available_api_requests",
+    function ($version) use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
+        $app->render('Docs/available_api_requests.html.php', array('PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
+    }
+);
