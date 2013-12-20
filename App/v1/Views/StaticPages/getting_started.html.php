@@ -2937,9 +2937,6 @@ end
                 </div>
             </div>
         </div>
-        <div class="container" id="footer">
-            <a href="http://www.joshuaproject.net/" target="_blank">Joshua Project</a> is a ministry of the  <a href="http://www.uscwm.org/" target="_blank">U.S. Center for World Mission</a>. API created by <a href="http://www.missionaldigerati.org" target="_blank">Missional Digerati</a>.  Icons provided by <a href="http://gemicon.net/" target="_blank">Gem Icon</a>.
-        </div>
 <?php
     include($PUBLIC_DIRECTORY . '/partials/footer.html');
     include($PUBLIC_DIRECTORY . '/partials/site_wide_footer_js.html');
