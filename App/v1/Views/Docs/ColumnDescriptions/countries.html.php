@@ -3,12 +3,12 @@
   <head>
       <title>Joshua Project API - Version 1 Documentation</title>
 <?php
-    include('../../../partials/site_wide_css_meta.html');
+    include($VIEW_DIRECTORY . '/Partials/site_wide_css_meta.html');
 ?>
   </head>
 <body>
 <?php
-    include('../../../partials/nav.html');
+    include($VIEW_DIRECTORY . '/Partials/nav.html');
 ?>
   <div class="container">
     <div class="page-header">
@@ -274,8 +274,8 @@
     </div>
   </div>
 <?php
-    include('../../../partials/footer.html');
-    include('../../../partials/site_wide_footer_js.html');
+    include($VIEW_DIRECTORY . '/Partials/footer.html');
+    include($VIEW_DIRECTORY . '/Partials/site_wide_footer_js.html');
 ?>
         <script type="text/javascript">
             $(document).ready(function() {

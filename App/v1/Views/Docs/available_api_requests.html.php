@@ -3,14 +3,14 @@
   <head>
       <title>Joshua Project API - Version 1 Documentation</title>
 <?php
-    include('../../partials/site_wide_css_meta.html');
+    include($VIEW_DIRECTORY . '/Partials/site_wide_css_meta.html');
 ?>
       <link href='/css/hightlight.default.css' media='screen' rel='stylesheet' type='text/css'/>
       <link href='/css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
   </head>
 <body>
 <?php
-    include('../../partials/nav.html');
+    include($VIEW_DIRECTORY . '/Partials/nav.html');
 ?>
   <div class="container">
     <div class="page-header">
@@ -23,8 +23,8 @@
     </div>
   </div>
 <?php
-    include('../../partials/footer.html');
-    include('../../partials/site_wide_footer_js.html');
+    include($VIEW_DIRECTORY . '/Partials/footer.html');
+    include($VIEW_DIRECTORY . '/Partials/site_wide_footer_js.html');
 ?>
     <script src='/js/jquery.slideto.min.js' type='text/javascript'></script>
     <script src='/js/jquery.wiggle.min.js' type='text/javascript'></script>
@@ -39,7 +39,7 @@
     $(function () {
         $('li.documentation-nav, li.available-api-requests-nav').addClass('active');
         window.swaggerUi = new SwaggerUi({
-              discoveryUrl:"http://"+document.domain+"/docs/v1/api-docs.json",
+              discoveryUrl:"http://"+document.domain+"/api-docs.json",
               apiKey:"",
               dom_id:"swagger-ui-container",
               supportHeaderParams: false,
@@ -63,7 +63,6 @@
 
           window.swaggerUi.load();
     });
-
     </script>
 </body>
 </html>

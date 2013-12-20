@@ -70,13 +70,20 @@ if ($useCaching === true) {
     $cache = '';
 }
 /**
+ * Set the Template View directory path
+ *
+ * @var string
+ * @author Johnathan Pulos
+ */
+$VIEW_DIRECTORY = $PUBLIC_DIRECTORY . "/../App/" . $API_VERSION . "/Views/";
+/**
  * Get the Slim Framework, and instantiate the class
  *
  * @author Johnathan Pulos
  */
 require(__DIR__ . $DS . ".." . $DS . "Slim" . $DS . "Slim.php");
 \Slim\Slim::registerAutoloader();
-$app = new \Slim\Slim(array('templates.path' => "../App/" . $API_VERSION . "/Views/"));
+$app = new \Slim\Slim(array('templates.path' => $VIEW_DIRECTORY));
 /**
  * Load up the Aura Auto Loader
  *
@@ -136,6 +143,15 @@ require(__DIR__."/../App/" . $API_VERSION . "/Includes/EmailFunctions.php");
 $staticPages = array("/", "/get_my_api_key", "/resend_activation_links", "/getting_started");
 if (in_array($requestedUrl, $staticPages)) {
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/StaticPages.php");
+    $bypassExtTest = true;
+}
+/**
+ * Are we on a documentation page?
+ *
+ * @author Johnathan Pulos
+ */
+if (strpos($requestedUrl, '/docs') !== false) {
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/Docs.php");
     $bypassExtTest = true;
 }
 /**
