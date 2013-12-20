@@ -65,7 +65,14 @@
               <li><a href="/">Home</a></li>
               <li><a href="/getting_started">Getting Started</a></li>
               <li><a href="/docs/v1/sample_code">Sample Code</a></li>
-              <li class="active"><a href="/docs/v1/#!/countries">Documentation</a></li>
+              <li class="active dropdown">
+                    <a href="#" data-toggle="dropdown">Documentation <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="active"><a href="/docs/v1/#!/countries">Available API Requests</a></li>
+                        <li><a href="/docs/v1/column_descriptions/countries">Country Column Descriptions</a></li>
+                        <li><a href="/docs/v1/column_descriptions/people_groups">People Group Column Descriptions</a></li>
+                    </ul>
+              </li>
               <li><a href="http://www.joshuaproject.net/">Joshua Project</a></li>
               <li><a href="http://www.missionaldigerati.org">Missional Digerati</a></li>
           </ul>
@@ -76,7 +83,7 @@
   </div>
   <div class="container">
     <div class="page-header">
-        <h2>Documentation <span class="label label-primary pull-right">Version 1</span></h2>
+        <h2>Available API Requests <span class="label label-primary pull-right">Version 1</span></h2>
     </div>
     <div id="message-bar" class="swagger-ui-wrap">
         &nbsp;
@@ -88,5 +95,6 @@
   <div class="container" id="footer">
     <a href="http://www.joshuaproject.net/" target="_blank">Joshua Project</a> is a ministry of the  <a href="http://www.uscwm.org/" target="_blank">U.S. Center for World Mission</a>. API created by <a href="http://www.missionaldigerati.org" target="_blank">Missional Digerati</a>.
   </div>
+    <script src="/js/bootstrap.min.js"></script>
 </body>
 </html>

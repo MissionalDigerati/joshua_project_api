@@ -46,7 +46,14 @@
                     <li><a href="/">Home</a></li>
                     <li class="active"><a href="/getting_started">Getting Started</a></li>
                     <li><a href="/docs/v1/sample_code">Sample Code</a></li>
-                    <li><a href="/docs/v1/#!/countries">Documentation</a></li>
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown">Documentation <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/docs/v1/#!/countries">Available API Requests</a></li>
+                            <li><a href="/docs/v1/column_descriptions/countries">Country Column Descriptions</a></li>
+                            <li><a href="/docs/v1/column_descriptions/people_groups">People Group Column Descriptions</a></li>
+                        </ul>
+                    </li>
                     <li><a href="http://www.joshuaproject.net/">Joshua Project</a></li>
                     <li><a href="http://www.missionaldigerati.org">Missional Digerati</a></li>
                 </ul>
