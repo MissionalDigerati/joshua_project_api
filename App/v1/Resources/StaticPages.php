@@ -30,13 +30,13 @@
  */
 $app->get(
     "/",
-    function () use ($app, $db, $appRequest) {
+    function () use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
         $data = $appRequest->get();
         $errors = array();
         if ((isset($data['required_fields'])) && ($data['required_fields'] !="")) {
             $errors = explode("|", $data['required_fields']);
         }
-        $app->render('StaticPages/home.html.php', array('data' => $data, 'errors' => $errors));
+        $app->render('StaticPages/home.html.php', array('data' => $data, 'errors' => $errors, 'PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
     }
 );
 /**
