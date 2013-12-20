@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteRule ^countries$ countries.html [L]
+RewriteRule ^people_groups$ people_groups.html [L]

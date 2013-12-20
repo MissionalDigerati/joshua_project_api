@@ -37,7 +37,7 @@ class PeopleGroup extends QueryGenerator
      * @var array
      * @access protected
      */
-    protected $fieldsToSelectArray = array('ROG3', 'Ctry', 'PeopleID3', 'ROP3', 'PeopNameInCountry', 'ROG2', 'Continent', 'RegionCode', 'RegionName', 'ISO3', 'LocationInCountry', 'PeopleID1', 'ROP1', 'AffinityBloc', 'PeopleID2', 'ROP2', 'PeopleCluster', 'PeopNameAcrossCountries', 'Population', 'PopulationPercentUN', 'Category', 'ROL3', 'PrimaryLanguageName', 'ROL4', 'PrimaryLanguageDialect', 'NumberLanguagesSpoken', 'ROL3OfficialLanguage', 'OfficialLang', 'SpeakNationalLang', 'BibleStatus', 'BibleYear', 'NTYear', 'PortionsYear', 'TranslationNeedQuestionable', 'JPScale', 'LeastReached', 'LeastReachedBasis', 'GSEC', 'Unengaged', 'JF', 'AudioRecordings', 'NTOnline', 'GospelRadio', 'RLG3', 'PrimaryReligion', 'RLG4', 'ReligionSubdivision', 'PercentAdherents', 'PercentEvangelical', 'PCBuddhism', 'PCDblyProfessing', 'PCEthnicReligions', 'PCHinduism', 'PCIslam', 'PCNonReligious', 'PCOtherSmall', 'PCUnknown', 'PCAnglican', 'PCIndependent', 'PCProtestant', 'PCOrthodox', 'PCOtherChristian', 'PCRomanCatholic', 'StonyGround', 'SecurityLevel', 'OriginalJPL', 'RaceCode', 'IndigenousCode', 'LRWebProfile', 'LRofTheDayMonth', 'LRofTheDayDay', 'LRTop100', 'PhotoAddress', 'PhotoWidth', 'PhotoHeight', 'PhotoAddressExpanded', 'PhotoCredits', 'PhotoCreditURL', 'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission', 'MapAddress', 'MapAddressExpanded', 'MapCredits', 'MapCreditURL', 'MapCopyright', 'MapPermission', 'ProfileTextExists', 'FileAddress', 'FileAddressExpanded', 'FileCredits', 'FileCreditURL', 'FileCopyright', 'FilePermission', 'Top10Ranking', 'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation', 'RankMinistryTools', 'CountOfCountries', 'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'V59Country', 'MegablocPC', 'LargeSouthAsianLanguageROL3', 'Longitude', 'Latitude');
+    protected $fieldsToSelectArray = array('ROG3', 'PeopleID3', 'ROP3', 'PeopNameInCountry', 'ROG2', 'Continent', 'RegionName', 'ISO3', 'LocationInCountry', 'PeopleID1', 'ROP1', 'AffinityBloc', 'PeopleID2', 'ROP2', 'PeopleCluster', 'PeopNameAcrossCountries', 'Population', 'PopulationPercentUN', 'Category', 'ROL3', 'PrimaryLanguageName', 'ROL4', 'PrimaryLanguageDialect', 'NumberLanguagesSpoken', 'ROL3OfficialLanguage', 'OfficialLang', 'SpeakNationalLang', 'BibleStatus', 'BibleYear', 'NTYear', 'PortionsYear', 'TranslationNeedQuestionable', 'JPScale', 'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedBasis', 'LeastReachedPC', 'LeastReachedPGAC', 'GSEC', 'Unengaged', 'JF', 'AudioRecordings', 'NTOnline', 'GospelRadio', 'RLG3', 'RLG3PC', 'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC', 'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision', 'PCIslam', 'PCNonReligious', 'PCUnknown', 'PCAnglican', 'PCIndependent', 'PCProtestant', 'PCOrthodox', 'PCOtherChristian', 'StonyGround', 'SecurityLevel', 'RaceCode', 'LRWebProfile', 'LRofTheDayMonth', 'LRofTheDayDay', 'LRTop100', 'PhotoAddress', 'PhotoWidth', 'PhotoHeight', 'PhotoCredits', 'PhotoCreditURL', 'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission', 'ProfileTextExists', 'Top10Ranking', 'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation', 'RankMinistryTools', 'CountOfCountries', 'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'V59Country', 'Longitude', 'Latitude', 'UNMap');
     /**
      * The table to pull the data from
      *
@@ -79,7 +79,25 @@ class PeopleGroup extends QueryGenerator
      * @var array
      * @access protected
      **/
-    protected $aliasFields = array('10_40Window' => 'Window10_40');
+    protected $aliasFields = array(
+                                    '10_40Window'               =>  'Window1040',
+                                    'Ctry'                      =>  'Country',
+                                    'IndigenousCode'            =>  'Indigenous',
+                                    'ROL3'                      =>  'Language',
+                                    'PercentAdherents'          =>  'PCAdherent',
+                                    'PercentChristianPC'        =>  'PCAdherentPC',
+                                    'PercentChristianPGAC'      =>  'PCAdherentPGAC',
+                                    'PercentEvangelical'        =>  'PCEvangelical',
+                                    'PercentEvangelicalPC'      =>  'PCEvangelicalPC',
+                                    'PercentEvangelicalPGAC'    =>  'PCEvangelicalPGAC',
+                                    'PCBuddhism'                =>  'PCBuddhist',
+                                    'PCDblyProfessing'          =>  'PCDoublyProfessing',
+                                    'PCEthnicReligions'         =>  'PCEthnicReligion',
+                                    'PCHinduism'                =>  'PCHindu',
+                                    'PCOtherSmall'              =>  'PCOtherReligion',
+                                    'PCRomanCatholic'           =>  'PCRCatholic',
+                                    'RegionCode'                =>  'Region'
+                                );
     /**
      * Construct the class
      *
