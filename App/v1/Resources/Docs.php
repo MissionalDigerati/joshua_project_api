@@ -20,10 +20,10 @@
  * 
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  */
- /**
- * Get the getting_started tutorial page
+/**
+ * Get the column descriptions for the countries
  *
- * GET /getting_started
+ * GET /:version/docs/column_descriptions/countries
  * Available Formats HTML
  * 
  * @author Johnathan Pulos
@@ -32,5 +32,19 @@ $app->get(
     "/:version/docs/column_descriptions/countries",
     function ($version) use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
         $app->render('Docs/ColumnDescriptions/countries.html.php', array('PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
+    }
+);
+/**
+ * Get the column descriptions for the countries
+ *
+ * GET /:version/docs/column_descriptions/countries
+ * Available Formats HTML
+ * 
+ * @author Johnathan Pulos
+ */
+$app->get(
+    "/:version/docs/column_descriptions/people_groups",
+    function ($version) use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
+        $app->render('Docs/ColumnDescriptions/people_groups.html.php', array('PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
     }
 );
