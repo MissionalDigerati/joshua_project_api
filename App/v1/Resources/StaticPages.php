@@ -30,13 +30,13 @@
  */
 $app->get(
     "/",
-    function () use ($app, $db, $appRequest) {
+    function () use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
         $data = $appRequest->get();
         $errors = array();
         if ((isset($data['required_fields'])) && ($data['required_fields'] !="")) {
             $errors = explode("|", $data['required_fields']);
         }
-        $app->render('StaticPages/home.html.php', array('data' => $data, 'errors' => $errors));
+        $app->render('StaticPages/home.html.php', array('data' => $data, 'errors' => $errors, 'PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
     }
 );
 /**
@@ -49,8 +49,8 @@ $app->get(
  */
 $app->get(
     "/getting_started",
-    function () use ($app, $db, $appRequest, $DOMAIN_ADDRESS) {
-        $app->render('StaticPages/getting_started.html.php', array('DOMAIN_ADDRESS' => $DOMAIN_ADDRESS));
+    function () use ($app, $db, $appRequest, $DOMAIN_ADDRESS, $PUBLIC_DIRECTORY) {
+        $app->render('StaticPages/getting_started.html.php', array('DOMAIN_ADDRESS' => $DOMAIN_ADDRESS, 'PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
     }
 );
 /**
@@ -62,7 +62,7 @@ $app->get(
  */
 $app->get(
     "/get_my_api_key",
-    function () use ($app, $db, $appRequest) {
+    function () use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
         $APIKey = "";
         $message = "";
         $error = "";
@@ -103,7 +103,7 @@ $app->get(
             }
         }
         
-        $app->render('StaticPages/get_my_api_key.html.php', array('message' => $message, 'error' => $error, 'APIKey' => $APIKey));
+        $app->render('StaticPages/get_my_api_key.html.php', array('message' => $message, 'error' => $error, 'APIKey' => $APIKey, 'PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
     }
 );
 /**
@@ -115,8 +115,8 @@ $app->get(
  */
 $app->get(
     "/resend_activation_links",
-    function () use ($app, $db, $appRequest) {
-        $app->render('StaticPages/resend_activation_links.html.php', array());
+    function () use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
+        $app->render('StaticPages/resend_activation_links.html.php', array('PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
     }
 );
 /**

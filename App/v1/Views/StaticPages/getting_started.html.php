@@ -25,43 +25,14 @@
 <html>
     <head>
         <title>Joshua Project API</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <link href="css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
-        <link href="css/styles.css" rel="stylesheet" media="screen">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php
+    include($PUBLIC_DIRECTORY . '/partials/site_wide_css_meta.html');
+?>
     </head>
     <body>
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">Joshua Project API</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="/">Home</a></li>
-                    <li class="active"><a href="/getting_started">Getting Started</a></li>
-                    <li><a href="/docs/v1/sample_code">Sample Code</a></li>
-                    <li class="dropdown">
-                        <a href="#" data-toggle="dropdown">Documentation <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/docs/v1/#!/countries">Available API Requests</a></li>
-                            <li><a href="/docs/v1/column_descriptions/countries">Country Column Descriptions</a></li>
-                            <li><a href="/docs/v1/column_descriptions/people_groups">People Group Column Descriptions</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="http://www.joshuaproject.net/">Joshua Project</a></li>
-                    <li><a href="http://www.missionaldigerati.org">Missional Digerati</a></li>
-                </ul>
-                <div id="get-api-holder">
-                    <a href="/" class="btn pull-right btn-info"><span class="glyphicon glyphicon-cog"></span> Get an API Key</a>
-                </div>
-            </div><!--/.nav-collapse -->
-        </div>
+<?php
+    include($PUBLIC_DIRECTORY . '/partials/nav.html');
+?>
         <div class="container">
             <div class="row">
                 <div id="sidebar" class="col-md-3">
@@ -2966,13 +2937,13 @@ end
                 </div>
             </div>
         </div>
-        <div class="container" id="footer">
-            <a href="http://www.joshuaproject.net/" target="_blank">Joshua Project</a> is a ministry of the  <a href="http://www.uscwm.org/" target="_blank">U.S. Center for World Mission</a>. API created by <a href="http://www.missionaldigerati.org" target="_blank">Missional Digerati</a>.  Icons provided by <a href="http://gemicon.net/" target="_blank">Gem Icon</a>.
-        </div>
-        <script src="http://code.jquery.com/jquery.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+<?php
+    include($PUBLIC_DIRECTORY . '/partials/footer.html');
+    include($PUBLIC_DIRECTORY . '/partials/site_wide_footer_js.html');
+?>
         <script type="text/javascript">
             $(document).ready(function() {
+                $('li.getting-started-nav').addClass('active');
                 $('body').scrollspy({
                   target: '#sidebar',
                   offset: 75

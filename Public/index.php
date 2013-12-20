@@ -42,6 +42,13 @@ if ((substr_compare($DOMAIN_ADDRESS, "http://", 0, 7)) !== 0) {
     $DOMAIN_ADDRESS = "http://" . $DOMAIN_ADDRESS;
 }
 /**
+ * Set the Public directory path
+ *
+ * @var string
+ * @author Johnathan Pulos
+ */
+$PUBLIC_DIRECTORY = dirname(__FILE__);
+/**
  * Lets get the version of the API based on the URL (http://joshua.api.local/v12/people_groups/daily_unreached.json?api_key=37e24112caae)
  * It will default to the latest API.  You must provide an API Version if you are accessing the data.  The default is only for
  * static pages
