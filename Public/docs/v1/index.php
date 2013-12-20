@@ -5,8 +5,8 @@
 <?php
     include('../../partials/site_wide_css_meta.html');
 ?>
-      <link href='css/hightlight.default.css' media='screen' rel='stylesheet' type='text/css'/>
-      <link href='css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
+      <link href='/css/hightlight.default.css' media='screen' rel='stylesheet' type='text/css'/>
+      <link href='/css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
   </head>
 <body>
 <?php
@@ -26,15 +26,15 @@
     include('../../partials/footer.html');
     include('../../partials/site_wide_footer_js.html');
 ?>
-    <script src='lib/jquery.slideto.min.js' type='text/javascript'></script>
-    <script src='lib/jquery.wiggle.min.js' type='text/javascript'></script>
-    <script src='lib/jquery.ba-bbq.min.js' type='text/javascript'></script>
-    <script src='lib/handlebars-1.0.rc.1.js' type='text/javascript'></script>
-    <script src='lib/underscore-min.js' type='text/javascript'></script>
-    <script src='lib/backbone-min.js' type='text/javascript'></script>
-    <script src='lib/swagger.js' type='text/javascript'></script>
-    <script src='swagger-ui.js' type='text/javascript'></script>
-    <script src='lib/highlight.7.3.pack.js' type='text/javascript'></script>
+    <script src='/js/jquery.slideto.min.js' type='text/javascript'></script>
+    <script src='/js/jquery.wiggle.min.js' type='text/javascript'></script>
+    <script src='/js/jquery.ba-bbq.min.js' type='text/javascript'></script>
+    <script src='/js/handlebars-1.0.rc.1.js' type='text/javascript'></script>
+    <script src='/js/underscore-min.js' type='text/javascript'></script>
+    <script src='/js/backbone-min.js' type='text/javascript'></script>
+    <script src='/js/swagger.js' type='text/javascript'></script>
+    <script src='/js/swagger-ui.js' type='text/javascript'></script>
+    <script src='/js/highlight.7.3.pack.js' type='text/javascript'></script>
     <script type="text/javascript">
     $(function () {
         $('li.documentation-nav, li.available-api-requests-nav').addClass('active');

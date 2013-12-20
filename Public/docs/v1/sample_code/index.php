@@ -21,7 +21,7 @@
     include('../../../partials/footer.html');
     include('../../../partials/site_wide_footer_js.html');
 ?>
-<script src='../lib/jquery.repo.js' type='text/javascript'></script>
+<script src='/js/jquery.repo.js' type='text/javascript'></script>
 <script type="text/javascript">
 $(function () {
   $('#repo').repo({ user: 'MissionalDigerati', name: 'joshua_project_api_sample_code' });
