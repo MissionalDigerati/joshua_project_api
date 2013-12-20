@@ -9,7 +9,7 @@
 <body>
 <?php
     include('../../../partials/nav.html');
-?>>
+?>
   <div class="container">
     <div class="page-header">
       <h2>Sample Code</h2>
