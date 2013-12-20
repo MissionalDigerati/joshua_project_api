@@ -3,12 +3,12 @@
   <head>
       <title>Joshua Project API - Version 1 Documentation</title>
 <?php
-    include('../../../partials/site_wide_css_meta.html');
+    include($PUBLIC_DIRECTORY . '/partials/site_wide_css_meta.html');
 ?>
   </head>
 <body>
 <?php
-    include('../../../partials/nav.html');
+    include($PUBLIC_DIRECTORY . '/partials/nav.html');
 ?>
   <div class="container">
     <div class="page-header">
@@ -18,8 +18,8 @@
     <div id="repo"></div>
   </div>
 <?php
-    include('../../../partials/footer.html');
-    include('../../../partials/site_wide_footer_js.html');
+    include($PUBLIC_DIRECTORY . '/partials/footer.html');
+    include($PUBLIC_DIRECTORY . '/partials/site_wide_footer_js.html');
 ?>
 <script src='/js/jquery.repo.js' type='text/javascript'></script>
 <script type="text/javascript">

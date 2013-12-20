@@ -37,7 +37,7 @@ $app->get(
 /**
  * Get the column descriptions for the countries
  *
- * GET /:version/docs/column_descriptions/countries
+ * GET /:version/docs/column_descriptions/people_groups
  * Available Formats HTML
  * 
  * @author Johnathan Pulos
@@ -46,5 +46,19 @@ $app->get(
     "/:version/docs/column_descriptions/people_groups",
     function ($version) use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
         $app->render('Docs/ColumnDescriptions/people_groups.html.php', array('PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
+    }
+);
+/**
+ * Get the sample code documentation
+ *
+ * GET /:version/docs/sample_code
+ * Available Formats HTML
+ * 
+ * @author Johnathan Pulos
+ */
+$app->get(
+    "/:version/docs/sample_code",
+    function ($version) use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
+        $app->render('Docs/sample_code.html.php', array('PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
     }
 );
