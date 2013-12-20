@@ -18,8 +18,8 @@
     <div id="repo"></div>
   </div>
 <?php
-    include('../../..//partials/footer.html');
-    include('../../..//partials/site_wide_footer_js.html');
+    include('../../../partials/footer.html');
+    include('../../../partials/site_wide_footer_js.html');
 ?>
 <script src='../lib/jquery.repo.js' type='text/javascript'></script>
 <script type="text/javascript">

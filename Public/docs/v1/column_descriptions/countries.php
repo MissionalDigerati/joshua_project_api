@@ -274,8 +274,8 @@
     </div>
   </div>
 <?php
-    include('../../..//partials/footer.html');
-    include('../../..//partials/site_wide_footer_js.html');
+    include('../../../partials/footer.html');
+    include('../../../partials/site_wide_footer_js.html');
 ?>
         <script type="text/javascript">
             $(document).ready(function() {
