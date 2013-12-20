@@ -62,7 +62,7 @@ $app->get(
  */
 $app->get(
     "/get_my_api_key",
-    function () use ($app, $db, $appRequest) {
+    function () use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
         $APIKey = "";
         $message = "";
         $error = "";
@@ -103,7 +103,7 @@ $app->get(
             }
         }
         
-        $app->render('StaticPages/get_my_api_key.html.php', array('message' => $message, 'error' => $error, 'APIKey' => $APIKey));
+        $app->render('StaticPages/get_my_api_key.html.php', array('message' => $message, 'error' => $error, 'APIKey' => $APIKey, 'PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
     }
 );
 /**
