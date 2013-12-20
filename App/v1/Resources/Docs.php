@@ -30,8 +30,8 @@
  */
 $app->get(
     "/:version/docs/column_descriptions/countries",
-    function ($version) use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
-        $app->render('Docs/ColumnDescriptions/countries.html.php', array('PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
+    function ($version) use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
+        $app->render('Docs/ColumnDescriptions/countries.html.php', array('VIEW_DIRECTORY' => $VIEW_DIRECTORY));
     }
 );
 /**
@@ -44,8 +44,8 @@ $app->get(
  */
 $app->get(
     "/:version/docs/column_descriptions/people_groups",
-    function ($version) use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
-        $app->render('Docs/ColumnDescriptions/people_groups.html.php', array('PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
+    function ($version) use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
+        $app->render('Docs/ColumnDescriptions/people_groups.html.php', array('VIEW_DIRECTORY' => $VIEW_DIRECTORY));
     }
 );
 /**
@@ -58,8 +58,8 @@ $app->get(
  */
 $app->get(
     "/:version/docs/sample_code",
-    function ($version) use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
-        $app->render('Docs/sample_code.html.php', array('PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
+    function ($version) use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
+        $app->render('Docs/sample_code.html.php', array('VIEW_DIRECTORY' => $VIEW_DIRECTORY));
     }
 );
 /**
@@ -72,7 +72,7 @@ $app->get(
  */
 $app->get(
     "/:version/docs/available_api_requests",
-    function ($version) use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
-        $app->render('Docs/available_api_requests.html.php', array('PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
+    function ($version) use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
+        $app->render('Docs/available_api_requests.html.php', array('VIEW_DIRECTORY' => $VIEW_DIRECTORY));
     }
 );

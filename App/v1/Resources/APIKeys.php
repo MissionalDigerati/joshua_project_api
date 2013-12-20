@@ -30,7 +30,7 @@
  **/
 $app->get(
     "/api_keys",
-    function () use ($app, $db, $appRequest, $PUBLIC_DIRECTORY) {
+    function () use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
         $data = $appRequest->get();
         $query = "SELECT * FROM md_api_keys ORDER BY created DESC";
         try {
@@ -41,7 +41,7 @@ $app->get(
             echo $e;
             exit;
         }
-        $app->render('APIKeys/index.html.php', array('api_keys' => $api_keys, 'data' => $data, 'PUBLIC_DIRECTORY' => $PUBLIC_DIRECTORY));
+        $app->render('APIKeys/index.html.php', array('api_keys' => $api_keys, 'data' => $data, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY));
     }
 );
 /**

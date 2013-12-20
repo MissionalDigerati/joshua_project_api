@@ -26,12 +26,12 @@
   <head>
     <title>Joshua Project API</title>
 <?php
-    include($PUBLIC_DIRECTORY . '/partials/site_wide_css_meta.html');
+    include($VIEW_DIRECTORY . '/Partials/site_wide_css_meta.html');
 ?>
   </head>
   <body>
 <?php
-    include($PUBLIC_DIRECTORY . '/partials/nav.html');
+    include($VIEW_DIRECTORY . '/Partials/nav.html');
 ?>
     <div class="container">
         <div class="page-header">
@@ -103,8 +103,8 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
 		</form>
     </div>
 <?php
-    include($PUBLIC_DIRECTORY . '/partials/footer.html');
-    include($PUBLIC_DIRECTORY . '/partials/site_wide_footer_js.html');
+    include($VIEW_DIRECTORY . '/Partials/footer.html');
+    include($VIEW_DIRECTORY . '/Partials/site_wide_footer_js.html');
 ?>
 
         <script type="text/javascript">
