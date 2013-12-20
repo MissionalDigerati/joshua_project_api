@@ -139,6 +139,15 @@ if (in_array($requestedUrl, $staticPages)) {
     $bypassExtTest = true;
 }
 /**
+ * Are we on a documentation page?
+ *
+ * @author Johnathan Pulos
+ */
+if (strpos($requestedUrl, '/docs') !== false) {
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/Docs.php");
+    $bypassExtTest = true;
+}
+/**
  * Are we on a API Key page?
  *
  * @author Johnathan Pulos
