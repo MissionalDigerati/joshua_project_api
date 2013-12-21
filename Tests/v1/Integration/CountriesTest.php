@@ -216,7 +216,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(is_array($decodedResponse));
         $this->assertFalse(empty($decodedResponse));
         $this->assertEquals($expectedCountryCount, count($decodedResponse));
-        $this->assertEquals($expectedFirstCountry, $decodedResponse[0]['Country']);
+        $this->assertEquals($expectedFirstCountry, $decodedResponse[0]['Ctry']);
     }
     /**
       * GET /countries.json?limit=10
@@ -293,7 +293,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         );
         $decodedResponse = json_decode($response, true);
         foreach ($decodedResponse as $country) {
-            $this->assertTrue(in_array(strtolower($country['Region']), $expectedRegions));
+            $this->assertTrue(in_array(strtolower($country['RegionCode']), $expectedRegions));
         }
     }
     /**
@@ -333,7 +333,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         );
         $decodedResponse = json_decode($response, true);
         foreach ($decodedResponse as $country) {
-            $this->assertTrue(in_array(strtolower($country['PrimaryLanguage']), $expectedPrimaryLanguages));
+            $this->assertTrue(in_array(strtolower($country['ROL3OfficialLanguage']), $expectedPrimaryLanguages));
         }
     }
     /**
@@ -404,8 +404,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertTrue(in_array(strtolower($countryData['PrimaryReligionText']), array_values($expectedReligions)));
-            $this->assertTrue(in_array($countryData['PrimaryReligion'], array_keys($expectedReligions)));
+            $this->assertTrue(in_array(strtolower($countryData['ReligionPrimary']), array_values($expectedReligions)));
+            $this->assertTrue(in_array($countryData['RLG3Primary'], array_keys($expectedReligions)));
         }
     }
     /**
@@ -428,8 +428,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertTrue(in_array(strtolower($countryData['PrimaryReligionText']), array_values($expectedReligions)));
-            $this->assertTrue(in_array($countryData['PrimaryReligion'], array_keys($expectedReligions)));
+            $this->assertTrue(in_array(strtolower($countryData['ReligionPrimary']), array_values($expectedReligions)));
+            $this->assertTrue(in_array($countryData['RLG3Primary'], array_keys($expectedReligions)));
         }
     }
     /**
@@ -453,8 +453,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PCChristianity']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PCChristianity']));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentChristianity']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentChristianity']));
         }
     }
     /**
@@ -478,8 +478,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PCEvangelical']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PCEvangelical']));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentEvangelical']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentEvangelical']));
         }
     }
     /**
@@ -503,8 +503,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PCBuddhist']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PCBuddhist']));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentBuddhism']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentBuddhism']));
         }
     }
     /**
@@ -528,8 +528,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PCEthnicReligion']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PCEthnicReligion']));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentEthnicReligions']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentEthnicReligions']));
         }
     }
     /**
@@ -553,8 +553,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PCHindu']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PCHindu']));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentHinduism']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentHinduism']));
         }
     }
     /**
@@ -578,8 +578,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PCIslam']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PCIslam']));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentIslam']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentIslam']));
         }
     }
     /**
@@ -603,8 +603,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PCNonReligious']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PCNonReligious']));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentNonReligious']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentNonReligious']));
         }
     }
     /**
@@ -628,8 +628,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PCOtherReligion']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PCOtherReligion']));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentOtherSmall']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentOtherSmall']));
         }
     }
     /**
@@ -653,7 +653,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertTrue(in_array(floatval($countryData['JPScale']), $expectedJPScalesArray));
+            $this->assertTrue(in_array(floatval($countryData['JPScaleCtry']), $expectedJPScalesArray));
         }
     }
     /**
@@ -677,8 +677,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PCUnknown']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PCUnknown']));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentUnknown']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentUnknown']));
         }
     }
     /**
@@ -702,8 +702,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PCAnglican']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PCAnglican']));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentAnglican']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentAnglican']));
         }
     }
     /**
@@ -727,8 +727,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PCIndependent']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PCIndependent']));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentIndependent']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentIndependent']));
         }
     }
     /**
@@ -752,8 +752,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PCProtestant']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PCProtestant']));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentProtestant']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentProtestant']));
         }
     }
     /**
@@ -777,8 +777,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PCOrthodox']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PCOrthodox']));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentOrthodox']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentOrthodox']));
         }
     }
     /**
@@ -802,8 +802,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PCRCatholic']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PCRCatholic']));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentRomanCatholic']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentRomanCatholic']));
         }
     }
     /**
@@ -827,8 +827,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PCOtherChristian']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PCOtherChristian']));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentOther']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentOther']));
         }
     }
     /**
