@@ -50,7 +50,7 @@
                     <td>Number of provinces (states) of residence within this country</td>
                 </tr>
                 <tr>
-                    <td>Country</td>
+                    <td>Ctry</td>
                     <td>Country name</td>
                 </tr>
                 <tr>
@@ -66,7 +66,7 @@
                     <td>Global Status of Evangelical Christianity, see http://www.joshuaproject.net/definitions.php</td>
                 </tr>
                 <tr>
-                    <td>Indigenous</td>
+                    <td>IndigenousCode</td>
                     <td>Is this group indigenous to this country?</td>
                 </tr>
                 <tr>
@@ -88,10 +88,6 @@
                 <tr>
                     <td>JPScalePGAC</td>
                     <td>JPScale, People-Group-Across-Countries</td>
-                </tr>
-                <tr>
-                    <td>Language</td>
-                    <td>Ethnologue language code, 17th Edition</td>
                 </tr>
                 <tr>
                     <td>Latitude</td>
@@ -154,15 +150,15 @@
                     <td>Official language name</td>
                 </tr>
                 <tr>
-                    <td>PCAdherent</td>
+                    <td>PercentAdherents</td>
                     <td>Percent of people in group who are Christian Adherents</td>
                 </tr>
                 <tr>
-                    <td>PCAdherentPC</td>
+                    <td>PercentAdherentsPC</td>
                     <td>Percent of people in group who are Christian Adherents in this people cluster</td>
                 </tr>
                 <tr>
-                    <td>PCAdherentPGAC</td>
+                    <td>PercentAdherentsPGAC</td>
                     <td>Percent of people in group who are Christian Adherents in all people groups across all countries</td>
                 </tr>
                 <tr>
@@ -170,23 +166,35 @@
                     <td>Percent of people in group who are Anglican</td>
                 </tr>
                 <tr>
-                    <td>PCBuddhist</td>
+                    <td>PCBuddhism</td>
                     <td>Percent of people in group who are Buddhist</td>
                 </tr>
                 <tr>
-                    <td>PCDoublyProfessing</td>
+                    <td>PCDblyProfessing</td>
                     <td>Percent of people in group who are Doubly Professing Christians</td>
                 </tr>
                 <tr>
-                    <td>PCEthnicReligion</td>
+                    <td>PCEthnicReligions</td>
                     <td>Percent of people in group who practice Ethnic Religions</td>
                 </tr>
                 <tr>
-                    <td>PCEvangelical</td>
+                    <td>PercentAdherentsPGAC</td>
+                    <td>Percent of people in group who are Christian Adherents in all people groups across all countries</td>
+                </tr>
+                <tr>
+                    <td>PercentEvangelical</td>
                     <td>Percent of people in group who are Evangelical</td>
                 </tr>
                 <tr>
-                    <td>PCHindu</td>
+                    <td>PercentEvangelicalPC</td>
+                    <td>Percent of people in group who are Evangelicals in this people cluster</td>
+                </tr>
+                <tr>
+                    <td>PercentEvangelicalPGAC</td>
+                    <td>Percent of people in group who are Evangelicals in all people groups across all countries</td>
+                </tr>
+                <tr>
+                    <td>PCHinduism</td>
                     <td>Percent of people in group who are Hindu</td>
                 </tr>
                 <tr>
@@ -210,7 +218,7 @@
                     <td>Percent of people in group who are another form of Christian</td>
                 </tr>
                 <tr>
-                    <td>PCOtherReligion</td>
+                    <td>PCOtherSmall</td>
                     <td>Percent of people in group who practice Other or Smaller Religions</td>
                 </tr>
                 <tr>
@@ -218,7 +226,7 @@
                     <td>Percent of people in group who are Protestant</td>
                 </tr>
                 <tr>
-                    <td>PCRCatholic</td>
+                    <td>PCRomanCatholic</td>
                     <td>Percent of people in group who are Roman Catholic</td>
                 </tr>
                 <tr>
@@ -350,7 +358,7 @@
                     <td>Priority Ranking progress score</td>
                 </tr>
                 <tr>
-                    <td>Region</td>
+                    <td>RegionCode</td>
                     <td>Primary religion of the people group in this country [1 - Christianity, 2 - Buddhism, 4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 9 - Unknown]</td>
                 </tr>
                 <tr>

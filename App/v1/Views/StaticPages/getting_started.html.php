@@ -250,18 +250,7 @@
         "PhotoCreativeCommons": null,
         "PhotoCopyright": null,
         "PhotoPermission": null,
-        "MapAddress": "m14966_la.png",
-        "MapAddressExpanded": null,
-        "MapCredits": "Bethany World Prayer Center",
-        "MapCreditURL": null,
-        "MapCopyright": "Y",
-        "MapPermission": "Y",
         "ProfileTextExists": "Y",
-        "FileAddress": "",
-        "FileCredits": "",
-        "FileCreditURL": "",
-        "FileCopyright": "",
-        "FilePermission": "",
         "Top10Ranking": null,
         "RankOverall": "73",
         "RankProgress": "26",
@@ -276,23 +265,22 @@
         "Longitude": "105.427040000396",
         "Latitude": "17.0162099995918",
         "UNMap": "http://www.un.org/Depts/Cartographic/map/profile/laos.pdf",
+        "Ctry": "Laos",
+        "IndigenousCode": "Y",
+        "PercentAdherents": "0.2",
+        "PercentChristianPC": "9.55",
+        "PercentChristianPGAC": "0.47",
+        "PercentEvangelical": "0.0500834733247757",
+        "PercentEvangelicalPC": "2.77",
+        "PercentEvangelicalPGAC": "0.2",
+        "PCBuddhism": "90",
+        "PCDblyProfessing": "0",
+        "PCEthnicReligions": "9.8",
+        "PCHinduism": "0",
+        "PCOtherSmall": "0",
+        "PCRomanCatholic": "30",
+        "RegionCode": "2",
         "Window1040": "Y",
-        "Country": "Laos",
-        "Indigenous": "Y",
-        "Language": "sss",
-        "PCAdherent": "0.2",
-        "PCAdherentPC": "9.55",
-        "PCAdherentPGAC": "0.47",
-        "PCEvangelical": "0.0500834733247757",
-        "PCEvangelicalPC": "2.77",
-        "PCEvangelicalPGAC": "0.2",
-        "PCBuddhist": "90",
-        "PCDoublyProfessing": "0",
-        "PCEthnicReligion": "9.8",
-        "PCHindu": "0",
-        "PCOtherReligion": "0",
-        "PCRCatholic": "30",
-        "Region": "2",
         "PeopleGroupURL": "http://www.joshuaproject.net/people-profile.php?peo3=14966&rog3=LA",
         "PeopleGroupPhotoURL": "http://www.joshuaproject.net/profiles/photos/p14966.jpg",
         "CountryURL": "http://www.joshuaproject.net/countries.php?rog3=LA",
@@ -377,206 +365,194 @@
                     <pre>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;api&gt;
-  &lt;people_groups&gt;
-    &lt;people_group&gt;
-      &lt;ROG3&gt;LA&lt;/ROG3&gt;
-      &lt;PeopleID3&gt;14966&lt;/PeopleID3&gt;
-      &lt;ROP3&gt;109364&lt;/ROP3&gt;
-      &lt;PeopNameInCountry&gt;So&lt;/PeopNameInCountry&gt;
-      &lt;ROG2&gt;ASI&lt;/ROG2&gt;
-      &lt;Continent&gt;Asia&lt;/Continent&gt;
-      &lt;RegionName&gt;Southeast Asia&lt;/RegionName&gt;
-      &lt;ISO3&gt;LAO&lt;/ISO3&gt;
-      &lt;LocationInCountry&gt;They live on both sides of the Laos-Thailand border, especially in northern Savannakhet Province and southern Khammouan Province in Laos.  An additional group of So people inhabit 53 villages in north-east Thailand.&lt;/LocationInCountry&gt;
-      &lt;PeopleID1&gt;20&lt;/PeopleID1&gt;
-      &lt;ROP1&gt;A011&lt;/ROP1&gt;
-      &lt;AffinityBloc&gt;Southeast Asian Peoples&lt;/AffinityBloc&gt;
-      &lt;PeopleID2&gt;239&lt;/PeopleID2&gt;
-      &lt;ROP2&gt;C0147&lt;/ROP2&gt;
-      &lt;PeopleCluster&gt;Mon-Khmer&lt;/PeopleCluster&gt;
-      &lt;PeopNameAcrossCountries&gt;So&lt;/PeopNameAcrossCountries&gt;
-      &lt;Population&gt;138000&lt;/Population&gt;
-      &lt;PopulationPercentUN&gt;2.15989&lt;/PopulationPercentUN&gt;
-      &lt;Category&gt;2&lt;/Category&gt;
-      &lt;ROL3&gt;sss&lt;/ROL3&gt;
-      &lt;PrimaryLanguageName&gt;So&lt;/PrimaryLanguageName&gt;
-      &lt;ROL4&gt;0&lt;/ROL4&gt;
-      &lt;PrimaryLanguageDialect /&gt;
-      &lt;NumberLanguagesSpoken&gt;1&lt;/NumberLanguagesSpoken&gt;
-      &lt;ROL3OfficialLanguage&gt;lao&lt;/ROL3OfficialLanguage&gt;
-      &lt;OfficialLang&gt;Lao&lt;/OfficialLang&gt;
-      &lt;SpeakNationalLang /&gt;
-      &lt;BibleStatus&gt;2&lt;/BibleStatus&gt;
-      &lt;BibleYear /&gt;
-      &lt;NTYear /&gt;
-      &lt;PortionsYear&gt;1980-2004&lt;/PortionsYear&gt;
-      &lt;TranslationNeedQuestionable /&gt;
-      &lt;JPScale&gt;1.2&lt;/JPScale&gt;
-      &lt;JPScalePC&gt;3.1&lt;/JPScalePC&gt;
-      &lt;JPScalePGAC&gt;1.2&lt;/JPScalePGAC&gt;
-      &lt;LeastReached&gt;Y&lt;/LeastReached&gt;
-      &lt;LeastReachedBasis&gt;2&lt;/LeastReachedBasis&gt;
-      &lt;LeastReachedPC /&gt;
-      &lt;LeastReachedPGAC&gt;Y&lt;/LeastReachedPGAC&gt;
-      &lt;GSEC&gt;2&lt;/GSEC&gt;
-      &lt;Unengaged /&gt;
-      &lt;JF /&gt;
-      &lt;AudioRecordings&gt;Y&lt;/AudioRecordings&gt;
-      &lt;NTOnline /&gt;
-      &lt;GospelRadio /&gt;
-      &lt;RLG3&gt;2&lt;/RLG3&gt;
-      &lt;RLG3PC&gt;2&lt;/RLG3PC&gt;
-      &lt;RLG3PGAC&gt;2&lt;/RLG3PGAC&gt;
-      &lt;PrimaryReligion&gt;Buddhism&lt;/PrimaryReligion&gt;
-      &lt;PrimaryReligionPC&gt;Buddhism&lt;/PrimaryReligionPC&gt;
-      &lt;PrimaryReligionPGAC&gt;Buddhism&lt;/PrimaryReligionPGAC&gt;
-      &lt;RLG4 /&gt;
-      &lt;ReligionSubdivision /&gt;
-      &lt;PCIslam&gt;0&lt;/PCIslam&gt;
-      &lt;PCNonReligious&gt;0&lt;/PCNonReligious&gt;
-      &lt;PCUnknown&gt;0&lt;/PCUnknown&gt;
-      &lt;PCAnglican&gt;0&lt;/PCAnglican&gt;
-      &lt;PCIndependent&gt;0&lt;/PCIndependent&gt;
-      &lt;PCProtestant&gt;70&lt;/PCProtestant&gt;
-      &lt;PCOrthodox&gt;0&lt;/PCOrthodox&gt;
-      &lt;PCOtherChristian&gt;0&lt;/PCOtherChristian&gt;
-      &lt;StonyGround&gt;Y&lt;/StonyGround&gt;
-      &lt;SecurityLevel&gt;2&lt;/SecurityLevel&gt;
-      &lt;RaceCode&gt;AUG03z&lt;/RaceCode&gt;
-      &lt;LRWebProfile&gt;Y&lt;/LRWebProfile&gt;
-      &lt;LRofTheDayMonth&gt;1&lt;/LRofTheDayMonth&gt;
-      &lt;LRofTheDayDay&gt;11&lt;/LRofTheDayDay&gt;
-      &lt;LRTop100 /&gt;
-      &lt;PhotoAddress&gt;p14966.jpg&lt;/PhotoAddress&gt;
-      &lt;PhotoWidth&gt;200&lt;/PhotoWidth&gt;
-      &lt;PhotoHeight&gt;249&lt;/PhotoHeight&gt;
-      &lt;PhotoCredits&gt;Ray Mason&lt;/PhotoCredits&gt;
-      &lt;PhotoCreditURL /&gt;
-      &lt;PhotoCreativeCommons /&gt;
-      &lt;PhotoCopyright /&gt;
-      &lt;PhotoPermission /&gt;
-      &lt;MapAddress&gt;m14966_la.png&lt;/MapAddress&gt;
-      &lt;MapAddressExpanded /&gt;
-      &lt;MapCredits&gt;Bethany World Prayer Center&lt;/MapCredits&gt;
-      &lt;MapCreditURL /&gt;
-      &lt;MapCopyright&gt;Y&lt;/MapCopyright&gt;
-      &lt;MapPermission&gt;Y&lt;/MapPermission&gt;
-      &lt;ProfileTextExists&gt;Y&lt;/ProfileTextExists&gt;
-      &lt;FileAddress /&gt;
-      &lt;FileCredits /&gt;
-      &lt;FileCreditURL /&gt;
-      &lt;FileCopyright /&gt;
-      &lt;FilePermission /&gt;
-      &lt;Top10Ranking /&gt;
-      &lt;RankOverall&gt;73&lt;/RankOverall&gt;
-      &lt;RankProgress&gt;26&lt;/RankProgress&gt;
-      &lt;RankPopulation&gt;19&lt;/RankPopulation&gt;
-      &lt;RankLocation&gt;18&lt;/RankLocation&gt;
-      &lt;RankMinistryTools&gt;10&lt;/RankMinistryTools&gt;
-      &lt;CountOfCountries&gt;2&lt;/CountOfCountries&gt;
-      &lt;CountOfProvinces&gt;2&lt;/CountOfProvinces&gt;
-      &lt;EthnolinguisticMap&gt;http://www.lib.utexas.edu/maps/middle_east_and_asia/indochina_eth_1970.jpg&lt;/EthnolinguisticMap&gt;
-      &lt;MapID&gt;sss-LA&lt;/MapID&gt;
-      &lt;V59Country /&gt;
-      &lt;Longitude&gt;105.427040000396&lt;/Longitude&gt;
-      &lt;Latitude&gt;17.0162099995918&lt;/Latitude&gt;
-      &lt;UNMap&gt;http://www.un.org/Depts/Cartographic/map/profile/laos.pdf&lt;/UNMap&gt;
-      &lt;Window1040&gt;Y&lt;/Window1040&gt;
-      &lt;Country&gt;Laos&lt;/Country&gt;
-      &lt;Indigenous&gt;Y&lt;/Indigenous&gt;
-      &lt;Language&gt;sss&lt;/Language&gt;
-      &lt;PCAdherent&gt;0.2&lt;/PCAdherent&gt;
-      &lt;PCAdherentPC&gt;9.55&lt;/PCAdherentPC&gt;
-      &lt;PCAdherentPGAC&gt;0.47&lt;/PCAdherentPGAC&gt;
-      &lt;PCEvangelical&gt;0.0500834733247757&lt;/PCEvangelical&gt;
-      &lt;PCEvangelicalPC&gt;2.77&lt;/PCEvangelicalPC&gt;
-      &lt;PCEvangelicalPGAC&gt;0.2&lt;/PCEvangelicalPGAC&gt;
-      &lt;PCBuddhist&gt;90&lt;/PCBuddhist&gt;
-      &lt;PCDoublyProfessing&gt;0&lt;/PCDoublyProfessing&gt;
-      &lt;PCEthnicReligion&gt;9.8&lt;/PCEthnicReligion&gt;
-      &lt;PCHindu&gt;0&lt;/PCHindu&gt;
-      &lt;PCOtherReligion&gt;0&lt;/PCOtherReligion&gt;
-      &lt;PCRCatholic&gt;30&lt;/PCRCatholic&gt;
-      &lt;Region&gt;2&lt;/Region&gt;
-      &lt;PeopleGroupURL&gt;http://www.joshuaproject.net/people-profile.php?peo3=14966&amp;rog3=LA&lt;/PeopleGroupURL&gt;
-      &lt;PeopleGroupPhotoURL&gt;http://www.joshuaproject.net/profiles/photos/p14966.jpg&lt;/PeopleGroupPhotoURL&gt;
-      &lt;CountryURL&gt;http://www.joshuaproject.net/countries.php?rog3=LA&lt;/CountryURL&gt;
-      &lt;JPScaleText&gt;Unreached&lt;/JPScaleText&gt;
-      &lt;JPScaleImageURL&gt;http://www.joshuaproject.net/images/scale1.jpg&lt;/JPScaleImageURL&gt;
-      &lt;ProfileText&gt;
-        &lt;ProfileText_0&gt;
-          &lt;ProfileID&gt;2445&lt;/ProfileID&gt;
-          &lt;ROL3&gt;eng&lt;/ROL3&gt;
-          &lt;Active&gt;1&lt;/Active&gt;
-          &lt;Format&gt;GB&lt;/Format&gt;
-          &lt;FileName&gt;t14966_la.txt&lt;/FileName&gt;
-          &lt;IntroductionHistory&gt;The So live along both banks of the Mekong River in Thailand and Laos. This is a rugged mountain region with many dense tropical forests. The Lao-Thai name So ("elder brother") refers to the fact that the So were present in this area long before their "younger brothers," the Lao. The So are bilingual, speaking So (a Mon-Khmer language) in their homes and Lao in social settings. &#xD;&#xD;It is said that the Mon Khmer-speaking tribes were the original settlers of this region. However, they were pushed out of the best lands in the early centuries A.D. by Thai-speaking peoples. About 400 years ago, the Thai-speakers forced the So to leave their homes and re-settle on the banks of the Mekong River. They gradually adapted to the lifestyles of the Thai and the Lao. In recent years, Laos has been the location of numerous battles. It has also been the object of political competition among China, Russia, and Vietnam. Recurring warfare and forced relocation has disrupted the lives of the So.&lt;/IntroductionHistory&gt;
-          &lt;WhereLocated /&gt;
-          &lt;LivesLike&gt;The So of Laos are primarily farmers. They cultivate a wide variety of crops, such as rice, fruit, and vegetables, for both consumption and trade. They are poorer than most of the surrounding ethnic groups and are therefore dependent on the Lao for many goods and services. The villagers also frequently meet with the Thai to trade meat and vegetables for necessary items such as clothing and salt.&#xD;&#xD;Over the years, the So began adopting the practices of the surrounding peoples, especially the Thai and Lao. This brought on many significant changes within their culture. For example, they no longer use their traditional farming methods of burning and clearing plots. Instead, they grow wet-rice on terraced plots, which is the agricultural method of the Thai. They also raise their cattle and till their fields much like the Lao. The fields are prepared with plows drawn by buffalo or oxen. In addition, fishing and hunting have become important activities.&#xD;&#xD;Such things as traditional dress, language, educational methods, housing, and public administration have also changed over the years. Only a few distinctive, cultural characteristics have remained, such as the silk scarves worn by the So women around a bun of hair at their necks.&#xD;&#xD;Among the So, the village is considered the most significant political unit of society. Each village is led by a headman, and each family is led by the father. A young married couple may live with the bride's family until they are able to establish their own home. The So typically live in thatch roof bamboo houses built on stilts. They are not known to be clean people, but rather dirty and disorderly.&lt;/LivesLike&gt;
-          &lt;Beliefs&gt;Buddhism was introduced into Thailand in 329 B.C.; and today, most of the So profess to be Buddhist. However, most of them have mixed elements of Buddhism with their traditional animistic beliefs (belief that non-living objects have spirits). They often seek help through supernatural spirits and objects. Ancestor worship (praying to deceased ancestors for provision and guidance) is also common. The ancestral spirits are thought to cause illnesses if they are not appeased. Families usually have small altars near their homes where sacrifices and offerings are made to the spirits. The people also believe that each village has a "guardian spirit," as well as various spirits that are linked to the elements of nature.&lt;/Beliefs&gt;
-          &lt;Needs&gt;The area where the So live is often affected by destructive floods. Due to the crop losses in 1996, there is a projected food shortage that will greatly affect the rural population. Food aid and basic relief items are needed.&#xD;&#xD;Many of the fields in this area are laden with cluster bomblets that were dropped by U.S. warplanes during Vietnam War. The villagers need God's protection over them as they work daily in the fields. Medical help, especially with prosthesis and physical therapy, is needed. Perhaps these needs will provide opportunities for Christian medical missionaries to gain access to the So.&lt;/Needs&gt;
-          &lt;Prayer&gt;* Pray that God will give the missions agencies in Laos fresh strategies for reaching the So with the Gospel. &#xD;* Ask the Lord to call Christian medical teams and humanitarian aid workers to go to Laos and live among the So. &#xD;* Pray that God will protect the So from the destructive floods in their region. &#xD;* Ask God to strengthen, encourage, and protect the few known So Christians. &#xD;* Pray that the So believers will have opportunities to share the Gospel with their own people. &#xD;* Ask God to call forth prayer teams who will begin breaking up the soil through worship and intercession. &#xD;* Ask the Lord to raise up strong local churches among the So.&lt;/Prayer&gt;
-          &lt;Reference /&gt;
-          &lt;Summary /&gt;
-          &lt;ScriptureFocus /&gt;
-          &lt;Obstacles /&gt;
-          &lt;HowReach /&gt;
-          &lt;PrayForChurch /&gt;
-          &lt;PrayForPG /&gt;
-          &lt;Identity /&gt;
-          &lt;History /&gt;
-          &lt;Customs /&gt;
-          &lt;Religion /&gt;
-          &lt;Christianity /&gt;
-          &lt;Comments /&gt;
-          &lt;Copyright&gt;Y&lt;/Copyright&gt;
-          &lt;Permission&gt;Y&lt;/Permission&gt;
-          &lt;CreativeCommons /&gt;
-          &lt;Credits&gt;Bethany World Prayer Center&lt;/Credits&gt;
-          &lt;CreditsURL /&gt;
-        &lt;/ProfileText_0&gt;
-        &lt;ProfileText_1&gt;
-          &lt;ProfileID&gt;4453&lt;/ProfileID&gt;
-          &lt;ROL3&gt;eng&lt;/ROL3&gt;
-          &lt;Active&gt;1&lt;/Active&gt;
-          &lt;Format&gt;M&lt;/Format&gt;
-          &lt;FileName /&gt;
-          &lt;IntroductionHistory /&gt;
-          &lt;WhereLocated /&gt;
-          &lt;LivesLike /&gt;
-          &lt;Beliefs /&gt;
-          &lt;Needs /&gt;
-          &lt;Prayer /&gt;
-          &lt;Reference /&gt;
-          &lt;Summary&gt;The So of Laos are primarily farmers. They cultivate a wide variety of crops, such as rice, fruit, and vegetables, for both consumption and trade. They are poorer than most of the surrounding ethnic groups and are therefore dependent on the Lao for many goods and services. Among the So, the village is considered the most significant political unit of society. Each village is led by a headman, and each family is led by the father. "Although the So often show an intense interest in scripture, they have not yet overcome the spiritual barriers that keep them from embracing the King of Kings. Their families and relatives all fear that if any one of them abandons worship of the spirits, the entire family will be punished."&lt;/Summary&gt;
-          &lt;ScriptureFocus&gt;"And you shall be my witnesses, both in Jerusalem, and in all Judea and Samaria, and even to the remotest part of the earth." Acts 1:8&lt;/ScriptureFocus&gt;
-          &lt;Obstacles&gt;Fear is one of the obstacles to the Gospel experienced by the So. Please pray they will be set free from fear.&lt;/Obstacles&gt;
-          &lt;HowReach&gt;Pray for spiritually mature, indigenous workers to take the liberating news of Christ to the So tribe. Laos has a number of evangelical churches, and people in these churches can take the Gospel to unreached tribes in their own country.&lt;/HowReach&gt;
-          &lt;PrayForChurch&gt;Please pray for the few individuals in the So tribe who identify themselves as Christians. They need to be taught how to quickly confess sin, and then trust God's Spirit to fill them and give them the fruit of the Spirit: love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control.&lt;/PrayForChurch&gt;
-          &lt;PrayForPG&gt;Pray the poor So tribe will be able to improve their standard of living, and will care for those unable to care for themselves.&lt;/PrayForPG&gt;
-          &lt;Identity /&gt;
-          &lt;History /&gt;
-          &lt;Customs /&gt;
-          &lt;Religion /&gt;
-          &lt;Christianity /&gt;
-          &lt;Comments /&gt;
-          &lt;Copyright /&gt;
-          &lt;Permission /&gt;
-          &lt;CreativeCommons /&gt;
-          &lt;Credits&gt;Joshua Project&lt;/Credits&gt;
-          &lt;CreditsURL /&gt;
-        &lt;/ProfileText_1&gt;
-      &lt;/ProfileText&gt;
-      &lt;Resources&gt;
-        &lt;Resources_0&gt;
-          &lt;ROL3&gt;sss&lt;/ROL3&gt;
-          &lt;Category&gt;Audio Recordings&lt;/Category&gt;
-          &lt;WebText&gt;Global Recordings&lt;/WebText&gt;
-          &lt;URL&gt;http://www.globalrecordings.net/langcode/sss&lt;/URL&gt;
-        &lt;/Resources_0&gt;
-      &lt;/Resources&gt;
-    &lt;/people_group&gt;
-  &lt;/people_groups&gt;
+    &lt;people_groups&gt;
+        &lt;people_group&gt;
+            &lt;ROG3&gt;LA&lt;/ROG3&gt;
+            &lt;PeopleID3&gt;14966&lt;/PeopleID3&gt;
+            &lt;ROP3&gt;109364&lt;/ROP3&gt;
+            &lt;PeopNameInCountry&gt;So&lt;/PeopNameInCountry&gt;
+            &lt;ROG2&gt;ASI&lt;/ROG2&gt;
+            &lt;Continent&gt;Asia&lt;/Continent&gt;
+            &lt;RegionName&gt;Southeast Asia&lt;/RegionName&gt;
+            &lt;ISO3&gt;LAO&lt;/ISO3&gt;
+            &lt;LocationInCountry&gt;They live on both sides of the Laos-Thailand border, especially in northern Savannakhet Province and southern Khammouan Province in Laos.  An additional group of So people inhabit 53 villages in north-east Thailand.&lt;/LocationInCountry&gt;
+            &lt;PeopleID1&gt;20&lt;/PeopleID1&gt;
+            &lt;ROP1&gt;A011&lt;/ROP1&gt;
+            &lt;AffinityBloc&gt;Southeast Asian Peoples&lt;/AffinityBloc&gt;
+            &lt;PeopleID2&gt;239&lt;/PeopleID2&gt;
+            &lt;ROP2&gt;C0147&lt;/ROP2&gt;
+            &lt;PeopleCluster&gt;Mon-Khmer&lt;/PeopleCluster&gt;
+            &lt;PeopNameAcrossCountries&gt;So&lt;/PeopNameAcrossCountries&gt;
+            &lt;Population&gt;138000&lt;/Population&gt;
+            &lt;PopulationPercentUN&gt;2.15989&lt;/PopulationPercentUN&gt;
+            &lt;Category&gt;2&lt;/Category&gt;
+            &lt;ROL3&gt;sss&lt;/ROL3&gt;
+            &lt;PrimaryLanguageName&gt;So&lt;/PrimaryLanguageName&gt;
+            &lt;ROL4&gt;0&lt;/ROL4&gt;
+            &lt;PrimaryLanguageDialect /&gt;
+            &lt;NumberLanguagesSpoken&gt;1&lt;/NumberLanguagesSpoken&gt;
+            &lt;ROL3OfficialLanguage&gt;lao&lt;/ROL3OfficialLanguage&gt;
+            &lt;OfficialLang&gt;Lao&lt;/OfficialLang&gt;
+            &lt;SpeakNationalLang /&gt;
+            &lt;BibleStatus&gt;2&lt;/BibleStatus&gt;
+            &lt;BibleYear /&gt;
+            &lt;NTYear /&gt;
+            &lt;PortionsYear&gt;1980-2004&lt;/PortionsYear&gt;
+            &lt;TranslationNeedQuestionable /&gt;
+            &lt;JPScale&gt;1.2&lt;/JPScale&gt;
+            &lt;JPScalePC&gt;3.1&lt;/JPScalePC&gt;
+            &lt;JPScalePGAC&gt;1.2&lt;/JPScalePGAC&gt;
+            &lt;LeastReached&gt;Y&lt;/LeastReached&gt;
+            &lt;LeastReachedBasis&gt;2&lt;/LeastReachedBasis&gt;
+            &lt;LeastReachedPC /&gt;
+            &lt;LeastReachedPGAC&gt;Y&lt;/LeastReachedPGAC&gt;
+            &lt;GSEC&gt;2&lt;/GSEC&gt;
+            &lt;Unengaged /&gt;
+            &lt;JF /&gt;
+            &lt;AudioRecordings&gt;Y&lt;/AudioRecordings&gt;
+            &lt;NTOnline /&gt;
+            &lt;GospelRadio /&gt;
+            &lt;RLG3&gt;2&lt;/RLG3&gt;
+            &lt;RLG3PC&gt;2&lt;/RLG3PC&gt;
+            &lt;RLG3PGAC&gt;2&lt;/RLG3PGAC&gt;
+            &lt;PrimaryReligion&gt;Buddhism&lt;/PrimaryReligion&gt;
+            &lt;PrimaryReligionPC&gt;Buddhism&lt;/PrimaryReligionPC&gt;
+            &lt;PrimaryReligionPGAC&gt;Buddhism&lt;/PrimaryReligionPGAC&gt;
+            &lt;RLG4 /&gt;
+            &lt;ReligionSubdivision /&gt;
+            &lt;PCIslam&gt;0&lt;/PCIslam&gt;
+            &lt;PCNonReligious&gt;0&lt;/PCNonReligious&gt;
+            &lt;PCUnknown&gt;0&lt;/PCUnknown&gt;
+            &lt;PCAnglican&gt;0&lt;/PCAnglican&gt;
+            &lt;PCIndependent&gt;0&lt;/PCIndependent&gt;
+            &lt;PCProtestant&gt;70&lt;/PCProtestant&gt;
+            &lt;PCOrthodox&gt;0&lt;/PCOrthodox&gt;
+            &lt;PCOtherChristian&gt;0&lt;/PCOtherChristian&gt;
+            &lt;StonyGround&gt;Y&lt;/StonyGround&gt;
+            &lt;SecurityLevel&gt;2&lt;/SecurityLevel&gt;
+            &lt;RaceCode&gt;AUG03z&lt;/RaceCode&gt;
+            &lt;LRWebProfile&gt;Y&lt;/LRWebProfile&gt;
+            &lt;LRofTheDayMonth&gt;1&lt;/LRofTheDayMonth&gt;
+            &lt;LRofTheDayDay&gt;11&lt;/LRofTheDayDay&gt;
+            &lt;LRTop100 /&gt;
+            &lt;PhotoAddress&gt;p14966.jpg&lt;/PhotoAddress&gt;
+            &lt;PhotoWidth&gt;200&lt;/PhotoWidth&gt;
+            &lt;PhotoHeight&gt;249&lt;/PhotoHeight&gt;
+            &lt;PhotoCredits&gt;Ray Mason&lt;/PhotoCredits&gt;
+            &lt;PhotoCreditURL /&gt;
+            &lt;PhotoCreativeCommons /&gt;
+            &lt;PhotoCopyright /&gt;
+            &lt;PhotoPermission /&gt;
+            &lt;ProfileTextExists&gt;Y&lt;/ProfileTextExists&gt;
+            &lt;Top10Ranking /&gt;
+            &lt;RankOverall&gt;73&lt;/RankOverall&gt;
+            &lt;RankProgress&gt;26&lt;/RankProgress&gt;
+            &lt;RankPopulation&gt;19&lt;/RankPopulation&gt;
+            &lt;RankLocation&gt;18&lt;/RankLocation&gt;
+            &lt;RankMinistryTools&gt;10&lt;/RankMinistryTools&gt;
+            &lt;CountOfCountries&gt;2&lt;/CountOfCountries&gt;
+            &lt;CountOfProvinces&gt;2&lt;/CountOfProvinces&gt;
+            &lt;EthnolinguisticMap&gt;http://www.lib.utexas.edu/maps/middle_east_and_asia/indochina_eth_1970.jpg&lt;/EthnolinguisticMap&gt;
+            &lt;MapID&gt;sss-LA&lt;/MapID&gt;
+            &lt;V59Country /&gt;
+            &lt;Longitude&gt;105.427040000396&lt;/Longitude&gt;
+            &lt;Latitude&gt;17.0162099995918&lt;/Latitude&gt;
+            &lt;UNMap&gt;http://www.un.org/Depts/Cartographic/map/profile/laos.pdf&lt;/UNMap&gt;
+            &lt;Ctry&gt;Laos&lt;/Ctry&gt;
+            &lt;IndigenousCode&gt;Y&lt;/IndigenousCode&gt;
+            &lt;PercentAdherents&gt;0.2&lt;/PercentAdherents&gt;
+            &lt;PercentChristianPC&gt;9.55&lt;/PercentChristianPC&gt;
+            &lt;PercentChristianPGAC&gt;0.47&lt;/PercentChristianPGAC&gt;
+            &lt;PercentEvangelical&gt;0.0500834733247757&lt;/PercentEvangelical&gt;
+            &lt;PercentEvangelicalPC&gt;2.77&lt;/PercentEvangelicalPC&gt;
+            &lt;PercentEvangelicalPGAC&gt;0.2&lt;/PercentEvangelicalPGAC&gt;
+            &lt;PCBuddhism&gt;90&lt;/PCBuddhism&gt;
+            &lt;PCDblyProfessing&gt;0&lt;/PCDblyProfessing&gt;
+            &lt;PCEthnicReligions&gt;9.8&lt;/PCEthnicReligions&gt;
+            &lt;PCHinduism&gt;0&lt;/PCHinduism&gt;
+            &lt;PCOtherSmall&gt;0&lt;/PCOtherSmall&gt;
+            &lt;PCRomanCatholic&gt;30&lt;/PCRomanCatholic&gt;
+            &lt;RegionCode&gt;2&lt;/RegionCode&gt;
+            &lt;Window1040&gt;Y&lt;/Window1040&gt;
+            &lt;PeopleGroupURL&gt;http://www.joshuaproject.net/people-profile.php?peo3=14966&amp;rog3=LA&lt;/PeopleGroupURL&gt;
+            &lt;PeopleGroupPhotoURL&gt;http://www.joshuaproject.net/profiles/photos/p14966.jpg&lt;/PeopleGroupPhotoURL&gt;
+            &lt;CountryURL&gt;http://www.joshuaproject.net/countries.php?rog3=LA&lt;/CountryURL&gt;
+            &lt;JPScaleText&gt;Unreached&lt;/JPScaleText&gt;
+            &lt;JPScaleImageURL&gt;http://www.joshuaproject.net/images/scale1.jpg&lt;/JPScaleImageURL&gt;
+            &lt;ProfileText&gt;
+                &lt;ProfileText_0&gt;
+                    &lt;ProfileID&gt;2445&lt;/ProfileID&gt;
+                    &lt;ROL3&gt;eng&lt;/ROL3&gt;
+                    &lt;Active&gt;1&lt;/Active&gt;
+                    &lt;Format&gt;GB&lt;/Format&gt;
+                    &lt;FileName&gt;t14966_la.txt&lt;/FileName&gt;
+                    &lt;IntroductionHistory&gt;The So live along both banks of the Mekong River in Thailand and Laos. This is a rugged mountain region with many dense tropical forests. The Lao-Thai name So ("elder brother") refers to the fact that the So were present in this area long before their "younger brothers," the Lao. The So are bilingual, speaking So (a Mon-Khmer language) in their homes and Lao in social settings. &#xD;&#xD;It is said that the Mon Khmer-speaking tribes were the original settlers of this region. However, they were pushed out of the best lands in the early centuries A.D. by Thai-speaking peoples. About 400 years ago, the Thai-speakers forced the So to leave their homes and re-settle on the banks of the Mekong River. They gradually adapted to the lifestyles of the Thai and the Lao. In recent years, Laos has been the location of numerous battles. It has also been the object of political competition among China, Russia, and Vietnam. Recurring warfare and forced relocation has disrupted the lives of the So.&lt;/IntroductionHistory&gt;
+                    &lt;WhereLocated /&gt;
+                    &lt;LivesLike&gt;The So of Laos are primarily farmers. They cultivate a wide variety of crops, such as rice, fruit, and vegetables, for both consumption and trade. They are poorer than most of the surrounding ethnic groups and are therefore dependent on the Lao for many goods and services. The villagers also frequently meet with the Thai to trade meat and vegetables for necessary items such as clothing and salt.&#xD;&#xD;Over the years, the So began adopting the practices of the surrounding peoples, especially the Thai and Lao. This brought on many significant changes within their culture. For example, they no longer use their traditional farming methods of burning and clearing plots. Instead, they grow wet-rice on terraced plots, which is the agricultural method of the Thai. They also raise their cattle and till their fields much like the Lao. The fields are prepared with plows drawn by buffalo or oxen. In addition, fishing and hunting have become important activities.&#xD;&#xD;Such things as traditional dress, language, educational methods, housing, and public administration have also changed over the years. Only a few distinctive, cultural characteristics have remained, such as the silk scarves worn by the So women around a bun of hair at their necks.&#xD;&#xD;Among the So, the village is considered the most significant political unit of society. Each village is led by a headman, and each family is led by the father. A young married couple may live with the bride's family until they are able to establish their own home. The So typically live in thatch roof bamboo houses built on stilts. They are not known to be clean people, but rather dirty and disorderly.&lt;/LivesLike&gt;
+                    &lt;Beliefs&gt;Buddhism was introduced into Thailand in 329 B.C.; and today, most of the So profess to be Buddhist. However, most of them have mixed elements of Buddhism with their traditional animistic beliefs (belief that non-living objects have spirits). They often seek help through supernatural spirits and objects. Ancestor worship (praying to deceased ancestors for provision and guidance) is also common. The ancestral spirits are thought to cause illnesses if they are not appeased. Families usually have small altars near their homes where sacrifices and offerings are made to the spirits. The people also believe that each village has a "guardian spirit," as well as various spirits that are linked to the elements of nature.&lt;/Beliefs&gt;
+                    &lt;Needs&gt;The area where the So live is often affected by destructive floods. Due to the crop losses in 1996, there is a projected food shortage that will greatly affect the rural population. Food aid and basic relief items are needed.&#xD;&#xD;Many of the fields in this area are laden with cluster bomblets that were dropped by U.S. warplanes during Vietnam War. The villagers need God's protection over them as they work daily in the fields. Medical help, especially with prosthesis and physical therapy, is needed. Perhaps these needs will provide opportunities for Christian medical missionaries to gain access to the So.&lt;/Needs&gt;
+                    &lt;Prayer&gt;* Pray that God will give the missions agencies in Laos fresh strategies for reaching the So with the Gospel. &#xD;* Ask the Lord to call Christian medical teams and humanitarian aid workers to go to Laos and live among the So. &#xD;* Pray that God will protect the So from the destructive floods in their region. &#xD;* Ask God to strengthen, encourage, and protect the few known So Christians. &#xD;* Pray that the So believers will have opportunities to share the Gospel with their own people. &#xD;* Ask God to call forth prayer teams who will begin breaking up the soil through worship and intercession. &#xD;* Ask the Lord to raise up strong local churches among the So.&lt;/Prayer&gt;
+                    &lt;Reference /&gt;
+                    &lt;Summary /&gt;
+                    &lt;ScriptureFocus /&gt;
+                    &lt;Obstacles /&gt;
+                    &lt;HowReach /&gt;
+                    &lt;PrayForChurch /&gt;
+                    &lt;PrayForPG /&gt;
+                    &lt;Identity /&gt;
+                    &lt;History /&gt;
+                    &lt;Customs /&gt;
+                    &lt;Religion /&gt;
+                    &lt;Christianity /&gt;
+                    &lt;Comments /&gt;
+                    &lt;Copyright&gt;Y&lt;/Copyright&gt;
+                    &lt;Permission&gt;Y&lt;/Permission&gt;
+                    &lt;CreativeCommons /&gt;
+                    &lt;Credits&gt;Bethany World Prayer Center&lt;/Credits&gt;
+                    &lt;CreditsURL /&gt;
+                &lt;/ProfileText_0&gt;
+                &lt;ProfileText_1&gt;
+                    &lt;ProfileID&gt;4453&lt;/ProfileID&gt;
+                    &lt;ROL3&gt;eng&lt;/ROL3&gt;
+                    &lt;Active&gt;1&lt;/Active&gt;
+                    &lt;Format&gt;M&lt;/Format&gt;
+                    &lt;FileName /&gt;
+                    &lt;IntroductionHistory /&gt;
+                    &lt;WhereLocated /&gt;
+                    &lt;LivesLike /&gt;
+                    &lt;Beliefs /&gt;
+                    &lt;Needs /&gt;
+                    &lt;Prayer /&gt;
+                    &lt;Reference /&gt;
+                    &lt;Summary&gt;The So of Laos are primarily farmers. They cultivate a wide variety of crops, such as rice, fruit, and vegetables, for both consumption and trade. They are poorer than most of the surrounding ethnic groups and are therefore dependent on the Lao for many goods and services. Among the So, the village is considered the most significant political unit of society. Each village is led by a headman, and each family is led by the father. "Although the So often show an intense interest in scripture, they have not yet overcome the spiritual barriers that keep them from embracing the King of Kings. Their families and relatives all fear that if any one of them abandons worship of the spirits, the entire family will be punished."&lt;/Summary&gt;
+                    &lt;ScriptureFocus&gt;"And you shall be my witnesses, both in Jerusalem, and in all Judea and Samaria, and even to the remotest part of the earth." Acts 1:8&lt;/ScriptureFocus&gt;
+                    &lt;Obstacles&gt;Fear is one of the obstacles to the Gospel experienced by the So. Please pray they will be set free from fear.&lt;/Obstacles&gt;
+                    &lt;HowReach&gt;Pray for spiritually mature, indigenous workers to take the liberating news of Christ to the So tribe. Laos has a number of evangelical churches, and people in these churches can take the Gospel to unreached tribes in their own country.&lt;/HowReach&gt;
+                    &lt;PrayForChurch&gt;Please pray for the few individuals in the So tribe who identify themselves as Christians. They need to be taught how to quickly confess sin, and then trust God's Spirit to fill them and give them the fruit of the Spirit: love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control.&lt;/PrayForChurch&gt;
+                    &lt;PrayForPG&gt;Pray the poor So tribe will be able to improve their standard of living, and will care for those unable to care for themselves.&lt;/PrayForPG&gt;
+                    &lt;Identity /&gt;
+                    &lt;History /&gt;
+                    &lt;Customs /&gt;
+                    &lt;Religion /&gt;
+                    &lt;Christianity /&gt;
+                    &lt;Comments /&gt;
+                    &lt;Copyright /&gt;
+                    &lt;Permission /&gt;
+                    &lt;CreativeCommons /&gt;
+                    &lt;Credits&gt;Joshua Project&lt;/Credits&gt;
+                    &lt;CreditsURL /&gt;
+                &lt;/ProfileText_1&gt;
+            &lt;/ProfileText&gt;
+            &lt;Resources&gt;
+                &lt;Resources_0&gt;
+                    &lt;ROL3&gt;sss&lt;/ROL3&gt;
+                    &lt;Category&gt;Audio Recordings&lt;/Category&gt;
+                    &lt;WebText&gt;Global Recordings&lt;/WebText&gt;
+                    &lt;URL&gt;http://www.globalrecordings.net/langcode/sss&lt;/URL&gt;
+                &lt;/Resources_0&gt;
+            &lt;/Resources&gt;
+        &lt;/people_group&gt;
+    &lt;/people_groups&gt;
 &lt;/api&gt;
                     </pre>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once you have a response,  you can use and manipulate the provided data.</p>
@@ -947,7 +923,7 @@ a#progress-scale-image img {
                             </tr>
                             <tr>
                                 <td><span class="label label-info">class</span>&nbsp;country&#8209;name</td>
-                                <td><code>unreached['Country']</code></td>
+                                <td><code>unreached['Ctry']</code></td>
                                 <td>We will set the text to the people group's country name</td>
                             </tr>
                             <tr>
@@ -1017,7 +993,7 @@ a#progress-scale-image img {
         .done(function(data) {
             var unreached = data[0];
             <span class="code_highlight">/* Set the text of each class to the appropriate data */
-            $('.country-name').text(unreached['Country']);
+            $('.country-name').text(unreached['Ctry']);
             $('.pg-language').text(unreached['PrimaryLanguageName']);
             $('.pg-name').text(unreached['PeopNameInCountry']);
             $('.pg-religion').text(unreached['PrimaryReligion']);
@@ -1059,7 +1035,7 @@ a#progress-scale-image img {
                             </tr>
                             <tr>
                                 <td><span class="label label-info">class</span>&nbsp;pg&#8209;evangelical</td>
-                                <td><code>unreached['PCEvangelical']</code></td>
+                                <td><code>unreached['PercentEvangelical']</code></td>
                                 <td>We will set a percentage formatted number totaling the people group's percentage of Evangelicals</td>
                             </tr>
                             <tr>
@@ -1094,7 +1070,7 @@ a#progress-scale-image img {
         .done(function(data) {
             var unreached = data[0];
             /* Set the text of each class to the appropriate data */
-            $('.country-name').text(unreached['Country']);
+            $('.country-name').text(unreached['Ctry']);
             $('.pg-language').text(unreached['PrimaryLanguageName']);
             $('.pg-name').text(unreached['PeopNameInCountry']);
             $('.pg-religion').text(unreached['PrimaryReligion']);
@@ -1132,7 +1108,7 @@ a#progress-scale-image img {
                             </tr>
                             <tr>
                                 <td><span class="label label-info">class</span>&nbsp;pg&#8209;evangelical</td>
-                                <td><code>unreached['PCEvangelical']</code></td>
+                                <td><code>unreached['PercentEvangelical']</code></td>
                                 <td>We will set a percentage formatted number totaling the people group's percentage of Evangelicals</td>
                             </tr>
                             <tr>
@@ -1162,7 +1138,7 @@ a#progress-scale-image img {
         .done(function(data) {
             var unreached = data[0];
             /* Set the text of each class to the appropriate data */
-            $('.country-name').text(unreached['Country']);
+            $('.country-name').text(unreached['Ctry']);
             $('.pg-language').text(unreached['PrimaryLanguageName']);
             $('.pg-name').text(unreached['PeopNameInCountry']);
             $('.pg-religion').text(unreached['PrimaryReligion']);
@@ -1203,7 +1179,7 @@ a#progress-scale-image img {
                         <tbody>
                             <tr>
                                 <td><span class="label label-info">class</span>&nbsp;pg&#8209;evangelical</td>
-                                <td><code>unreached['PCEvangelical']</code></td>
+                                <td><code>unreached['PercentEvangelical']</code></td>
                                 <td>We will set a percentage formatted number totaling the people group's percentage of Evangelicals</td>
                             </tr>
                             <tr>
@@ -1228,7 +1204,7 @@ a#progress-scale-image img {
         .done(function(data) {
             var unreached = data[0];
             /* Set the text of each class to the appropriate data */
-            $('.country-name').text(unreached['Country']);
+            $('.country-name').text(unreached['Ctry']);
             $('.pg-language').text(unreached['PrimaryLanguageName']);
             $('.pg-name').text(unreached['PeopNameInCountry']);
             $('.pg-religion').text(unreached['PrimaryReligion']);
@@ -1244,7 +1220,7 @@ a#progress-scale-image img {
             var scaleImg = $('&lt;img/&gt;').attr('src', unreached['JPScaleImageURL']);
             $('#progress-scale-image').append(scaleImg);
             <span class="code_highlight">/* Set the Percent Evangelical */
-            if (unreached['PCEvangelical'] == null) {
+            if (unreached['PercentEvangelical'] == null) {
                 percent_evangelical = '0.00';
             } else {
                 percent_evangelical = parseFloat(unreached['PercentEvangelical']).toFixed(2);
@@ -1296,7 +1272,7 @@ a#progress-scale-image img {
         .done(function(data) {
             var unreached = data[0];
             /* Set the text of each class to the appropriate data */
-            $('.country-name').text(unreached['Country']);
+            $('.country-name').text(unreached['Ctry']);
             $('.pg-language').text(unreached['PrimaryLanguageName']);
             $('.pg-name').text(unreached['PeopNameInCountry']);
             $('.pg-religion').text(unreached['PrimaryReligion']);
@@ -1346,7 +1322,7 @@ a#progress-scale-image img {
         .done(function(data) {
             var unreached = data[0];
             /* Set the text of each class to the appropriate data */
-            $('.country-name').text(unreached['Country']);
+            $('.country-name').text(unreached['Ctry']);
             $('.pg-language').text(unreached['PrimaryLanguageName']);
             $('.pg-name').text(unreached['PeopNameInCountry']);
             $('.pg-religion').text(unreached['PrimaryReligion']);
@@ -1442,7 +1418,7 @@ a#progress-scale-image img {
         .done(function(data) {
             var unreached = data[0];
             /* Set the text of each class to the appropriate data */
-            $('.country-name').text(unreached['Country']);
+            $('.country-name').text(unreached['Ctry']);
             $('.pg-language').text(unreached['PrimaryLanguageName']);
             $('.pg-name').text(unreached['PeopNameInCountry']);
             $('.pg-religion').text(unreached['PrimaryReligion']);
@@ -1886,7 +1862,7 @@ if ($unreached['PercentEvangelical'] == null) {
     &lt;/div&gt;
     &lt;div class="upgotd upgotd-pray"&gt;Please pray for the ...&lt;/div&gt;
     &lt;div class="upgotd upgotd-people"&gt;
-        &lt;a href="<span class="code_highlight">&lt;?php echo $unreached['PeopleGroupURL']; ?&gt;</span>" class="upgotd-link pg-link pg-name"&gt;<span class="code_highlight">&lt;?php echo $unreached['PeopNameInCountry']; ?&gt;</span>&lt;/a&gt; of &lt;a href="<span class="code_highlight">&lt;?php echo $unreached['CountryURL']; ?&gt;</span>" class="upgotd-link country-link country-name"&gt;<span class="code_highlight">&lt;?php echo $unreached['Country']; ?&gt;</span>&lt;/a&gt;
+        &lt;a href="<span class="code_highlight">&lt;?php echo $unreached['PeopleGroupURL']; ?&gt;</span>" class="upgotd-link pg-link pg-name"&gt;<span class="code_highlight">&lt;?php echo $unreached['PeopNameInCountry']; ?&gt;</span>&lt;/a&gt; of &lt;a href="<span class="code_highlight">&lt;?php echo $unreached['CountryURL']; ?&gt;</span>" class="upgotd-link country-link country-name"&gt;<span class="code_highlight">&lt;?php echo $unreached['Ctry']; ?&gt;</span>&lt;/a&gt;
     &lt;/div&gt;
     &lt;table align="center" class="upgotd-table" cellpadding="0" cellspacing="0"&gt;
         &lt;tbody&gt;
@@ -2273,7 +2249,7 @@ else:
             &lt;/div&gt;
             &lt;div class="upgotd upgotd-pray"&gt;Please pray for the ...&lt;/div&gt;
             &lt;div class="upgotd upgotd-people"&gt;
-                &lt;a href="<span class="code_highlight">$PeopleGroupURL</span>" class="upgotd-link pg-link pg-name"&gt;<span class="code_highlight">$PeopNameInCountry</span>&lt;/a&gt; of &lt;a href="<span class="code_highlight">$CountryURL</span>" class="upgotd-link country-link country-name"&gt;<span class="code_highlight">$Country</span>&lt;/a&gt;
+                &lt;a href="<span class="code_highlight">$PeopleGroupURL</span>" class="upgotd-link pg-link pg-name"&gt;<span class="code_highlight">$PeopNameInCountry</span>&lt;/a&gt; of &lt;a href="<span class="code_highlight">$CountryURL</span>" class="upgotd-link country-link country-name"&gt;<span class="code_highlight">$Ctry</span>&lt;/a&gt;
             &lt;/div&gt;
             &lt;table align="center" class="upgotd-table" cellpadding="0" cellspacing="0"&gt;
                 &lt;tbody&gt;&lt;tr&gt;
@@ -2752,7 +2728,7 @@ end
             &lt;/div&gt;
             &lt;div class="upgotd upgotd-pray"&gt;Please pray for the ...&lt;/div&gt;
             &lt;div class="upgotd upgotd-people"&gt;
-                &lt;a href="<span class="code_highlight">&lt;%= unreached['PeopleGroupURL'] %&gt;</span>" class="upgotd-link pg-link pg-name"&gt;<span class="code_highlight">&lt;%= unreached['PeopNameInCountry'] %&gt;</span>&lt;/a&gt; of &lt;a href="<span class="code_highlight">&lt;%= unreached['CountryURL'] %&gt;</span>" class="upgotd-link country-link country-name"&gt;<span class="code_highlight">&lt;%= unreached['Country'] %&gt;</span>&lt;/a&gt;
+                &lt;a href="<span class="code_highlight">&lt;%= unreached['PeopleGroupURL'] %&gt;</span>" class="upgotd-link pg-link pg-name"&gt;<span class="code_highlight">&lt;%= unreached['PeopNameInCountry'] %&gt;</span>&lt;/a&gt; of &lt;a href="<span class="code_highlight">&lt;%= unreached['CountryURL'] %&gt;</span>" class="upgotd-link country-link country-name"&gt;<span class="code_highlight">&lt;%= unreached['Ctry'] %&gt;</span>&lt;/a&gt;
             &lt;/div&gt;
             &lt;table align="center" class="upgotd-table" cellpadding="0" cellspacing="0"&gt;
                 &lt;tbody&gt;&lt;tr&gt;

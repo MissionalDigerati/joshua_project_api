@@ -66,44 +66,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result);
     }
     /**
-     * Query Generator should rename column names
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testQueryGeneratorShouldRenameFields()
-    {
-        $renamedFields = array(
-                                '10_40Window'               =>  'Window1040',
-                                'Ctry'                      =>  'Country',
-                                'IndigenousCode'            =>  'Indigenous',
-                                'PercentAdherents'          =>  'PCAdherent',
-                                'PercentChristianPC'        =>  'PCAdherentPC',
-                                'PercentChristianPGAC'      =>  'PCAdherentPGAC',
-                                'PercentEvangelical'        =>  'PCEvangelical',
-                                'PercentEvangelicalPC'      =>  'PCEvangelicalPC',
-                                'PercentEvangelicalPGAC'    =>  'PCEvangelicalPGAC',
-                                'PCBuddhism'                =>  'PCBuddhist',
-                                'PCDblyProfessing'          =>  'PCDoublyProfessing',
-                                'PCEthnicReligions'         =>  'PCEthnicReligion',
-                                'PCHinduism'                =>  'PCHindu',
-                                'PCOtherSmall'              =>  'PCOtherReligion',
-                                'PCRomanCatholic'           =>  'PCRCatholic',
-                                'RegionCode'                =>  'Region'
-                            );
-        $data = array('month' => 1, 'day' => 11);
-        $peopleGroup = new \QueryGenerators\PeopleGroup($data);
-        $peopleGroup->dailyUnreached();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        foreach ($renamedFields as $currentColumn => $renamedColumn) {
-            $this->assertTrue(array_key_exists($renamedColumn, $data[0]));
-            $this->assertFalse(array_key_exists($currentColumn, $data[0]));
-        }
-    }
-    /**
      * Test that we get back the right query for unreached of the day
      *
      * @return void
@@ -624,7 +586,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
-            $this->assertTrue(in_array(intval($peopleGroup['Region']), array_keys($expectedRegions)));
+            $this->assertTrue(in_array(intval($peopleGroup['RegionCode']), array_keys($expectedRegions)));
             $this->assertTrue(in_array(strtolower($peopleGroup['RegionName']), array_values($expectedRegions)));
         }
     }
@@ -777,8 +739,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCAdherent']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCAdherent']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PercentAdherents']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PercentAdherents']));
         }
     }
     /**
@@ -798,7 +760,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
-            $this->assertEquals($expectedPercent, floatval($peopleGroup['PCAdherent']));
+            $this->assertEquals($expectedPercent, floatval($peopleGroup['PercentAdherents']));
         }
     }
     /**
@@ -819,8 +781,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCEvangelical']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCEvangelical']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PercentEvangelical']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PercentEvangelical']));
         }
     }
     /**
@@ -841,8 +803,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCBuddhist']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCBuddhist']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCBuddhism']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCBuddhism']));
         }
     }
     /**
@@ -863,8 +825,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCEthnicReligion']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCEthnicReligion']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCEthnicReligions']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCEthnicReligions']));
         }
     }
     /**
@@ -885,8 +847,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCHindu']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCHindu']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCHinduism']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCHinduism']));
         }
     }
     /**
@@ -951,8 +913,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCOtherReligion']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCOtherReligion']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCOtherSmall']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCOtherSmall']));
         }
     }
     /**
@@ -1083,8 +1045,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCRCatholic']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCRCatholic']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCRomanCatholic']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCRomanCatholic']));
         }
     }
     /**
@@ -1126,7 +1088,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
-            $this->assertNull($peopleGroup['Indigenous']);
+            $this->assertNull($peopleGroup['IndigenousCode']);
         }
     }
     /**
@@ -1190,6 +1152,12 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array(floatval($peopleGroup['JPScale']), $expectedJPScalesArray));
         }
     }
+    /**
+     * Tests that findAllWithFilters() returns the max number of People Groups if over Max rows
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
     public function testFindAllWithFiltersShouldReturnTheMaxNumberOfPeopleGroupsIfLimitIsOverMaxRowsAvailable()
     {
         $expectedTotalGroups = $this->db->query("SELECT count(*) FROM jppeoples")->fetchColumn();
