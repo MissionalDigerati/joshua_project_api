@@ -37,7 +37,7 @@ class Country extends QueryGenerator
      * @var array
      * @access protected
      */
-    protected $fieldsToSelectArray = array('ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'AltName', 'Capital', 'Population', 'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles', 'AreaSquareKilometers', 'PopulationPerSquareMile', 'CountryPhoneCode', 'SecurityLevel', 'LibraryCongressReportExists', 'IsCountry', 'StonyGround', 'USAPostalSystem', 'ReligionDataYear', 'LiteracyCategory', 'LiteracyRate', 'LiteracyRange', 'LiteracySource', 'CountryNotes', 'PercentDoublyProfessing', 'HDIYear', 'HDIValue', 'HDIRank', 'StateDeptReligiousFreedom', 'Source', 'UNMap', 'PercentUrbanized', 'PrayercastVideo', 'WINCountryProfile');
+    protected $fieldsToSelectArray = array('JPScaleCtry', 'Ctry', 'ReligionPrimary', 'RLG3Primary', 'RLG4Primary', 'ROG2', 'ROG3', 'PercentAnglican', 'PercentBuddhism', 'PercentChristianity', 'PercentEthnicReligions', 'PercentEvangelical', 'PercentHinduism', 'PercentIndependent', 'PercentIslam', 'PercentNonReligious', 'PercentOtherSmall', 'PercentOrthodox', 'PercentOther', 'PercentProtestant', 'PercentRomanCatholic', 'PercentUnknown', 'ROL3OfficialLanguage', 'ROL3SecondaryLanguage', 'RLG3Primary', 'RegionCode', 'InternetCtryCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'AltName', 'Capital', 'Population', 'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles', 'AreaSquareKilometers', 'PopulationPerSquareMile', 'CountryPhoneCode', 'SecurityLevel', 'LibraryCongressReportExists', 'IsCountry', 'StonyGround', 'USAPostalSystem', 'ReligionDataYear', 'LiteracyCategory', 'LiteracyRate', 'LiteracyRange', 'LiteracySource', 'CountryNotes', 'PercentDoublyProfessing', 'HDIYear', 'HDIValue', 'HDIRank', 'StateDeptReligiousFreedom', 'Source', 'UNMap', 'PercentUrbanized', 'PrayercastVideo', 'WINCountryProfile');
     /**
      * The table to pull the data from
      *
@@ -51,43 +51,14 @@ class Country extends QueryGenerator
      * @var string
      * @access protected
      */
-    protected $defaultOrderByStatement = "ORDER BY Country ASC";
+    protected $defaultOrderByStatement = "ORDER BY Ctry ASC";
     /**
      * An array of table columns (key) and their alias (value)
      *
      * @var array
      * @access protected
      **/
-    protected $aliasFields = array(
-                                    '10_40Window'               =>  'Window1040',
-                                    'JPScaleCtry'               =>  'JPScale',
-                                    'Ctry'                      =>  'Country',
-                                    'ReligionPrimary'           =>  'PrimaryReligionText',
-                                    'RLG3Primary'               =>  'RLG3',
-                                    'RLG4Primary'               =>  'RLG4',
-                                    'ROG2'                      =>  'Continent',
-                                    'ROG3'                      =>  'ID',
-                                    'PercentAnglican'           =>  'PCAnglican',
-                                    'PercentBuddhism'           =>  'PCBuddhist',
-                                    'PercentChristianity'       =>  'PCChristianity',
-                                    'PercentEthnicReligions'    =>  'PCEthnicReligion',
-                                    'PercentEvangelical'        =>  'PCEvangelical',
-                                    'PercentHinduism'           =>  'PCHindu',
-                                    'PercentIndependent'        =>  'PCIndependent',
-                                    'PercentIslam'              =>  'PCIslam',
-                                    'PercentNonReligious'       =>  'PCNonReligious',
-                                    'PercentOtherSmall'         =>  'PCOtherReligion',
-                                    'PercentOrthodox'           =>  'PCOrthodox',
-                                    'PercentOther'              =>  'PCOtherChristian',
-                                    'PercentProtestant'         =>  'PCProtestant',
-                                    'PercentRomanCatholic'      =>  'PCRCatholic',
-                                    'PercentUnknown'            =>  'PCUnknown',
-                                    'ROL3OfficialLanguage'      =>  'PrimaryLanguage',
-                                    'ROL3SecondaryLanguage'     =>  'SecondaryLanguage',
-                                    'RLG3Primary'               =>  'PrimaryReligion',
-                                    'RegionCode'                =>  'Region',
-                                    'InternetCtryCode'          =>  'InternetCountryCode'
-                                    );
+    protected $aliasFields = array('10_40Window'    =>  'Window1040');
     /**
      * Construct the class
      *

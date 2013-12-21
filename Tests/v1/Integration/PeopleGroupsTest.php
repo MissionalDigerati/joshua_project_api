@@ -721,7 +721,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $peopleGroup) {
-            $this->assertTrue(in_array(intval($peopleGroup['Region']), array_keys($expectedRegions)));
+            $this->assertTrue(in_array(intval($peopleGroup['RegionCode']), array_keys($expectedRegions)));
             $this->assertTrue(in_array(strtolower($peopleGroup['RegionName']), array_values($expectedRegions)));
         }
     }
@@ -887,8 +887,8 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCAdherent']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCAdherent']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PercentAdherents']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PercentAdherents']));
         }
     }
     /**
@@ -912,8 +912,8 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCEvangelical']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCEvangelical']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PercentEvangelical']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PercentEvangelical']));
         }
     }
     /**
@@ -937,8 +937,8 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCBuddhist']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCBuddhist']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCBuddhism']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCBuddhism']));
         }
     }
     /**
@@ -962,8 +962,8 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCEthnicReligion']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCEthnicReligion']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCEthnicReligions']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCEthnicReligions']));
         }
     }
     /**
@@ -987,8 +987,8 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCHindu']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCHindu']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCHinduism']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCHinduism']));
         }
     }
     /**
@@ -1062,8 +1062,8 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCOtherReligion']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCOtherReligion']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCOtherSmall']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCOtherSmall']));
         }
     }
     /**
@@ -1212,8 +1212,8 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCRCatholic']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCRCatholic']));
+            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCRomanCatholic']));
+            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCRomanCatholic']));
         }
     }
     /**
@@ -1285,7 +1285,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $peopleGroup) {
-            $this->assertEquals($expectedIndigenousStatus, strtolower($peopleGroup['Indigenous']));
+            $this->assertEquals($expectedIndigenousStatus, strtolower($peopleGroup['IndigenousCode']));
         }
     }
     /**

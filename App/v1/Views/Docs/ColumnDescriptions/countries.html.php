@@ -34,11 +34,7 @@
                     <td>Name of Capital City</td>
                 </tr>
                 <tr>
-                    <td>Continent</td>
-                    <td>The Continent code [AFR - Africa, ASI - Asia, AUS - Australia, EUR - Europe, NAR - North America, SOP - Oceania (South Pacific), LAM - South America]</td>
-                </tr>
-                <tr>
-                    <td>Country</td>
+                    <td>Ctry</td>
                     <td>Name of Country</td>
                 </tr>
                 <tr>
@@ -62,11 +58,7 @@
                     <td>Human Development Index - year (2003)</td>
                 </tr>
                 <tr>
-                    <td>ID</td>
-                    <td>2 digit ISO Country Code</td>
-                </tr>
-                <tr>
-                    <td>InternetCountryCode</td>
+                    <td>InternetCtryCode</td>
                     <td>Internet Country Code</td>
                 </tr>
                 <tr>
@@ -82,7 +74,7 @@
                     <td>ISO 3 character code for country</td>
                 </tr>
                 <tr>
-                    <td>JPScale</td>
+                    <td>JPScaleCtry</td>
                     <td>Joshua Project Progress Scale</td>
                 </tr>
                 <tr>
@@ -106,59 +98,59 @@
                     <td>Literacy source</td>
                 </tr>
                 <tr>
-                    <td>PCAnglican</td>
+                    <td>PercentAnglican</td>
                     <td>Percent of people in group who are Christian Anglican</td>
                 </tr>
                 <tr>
-                    <td>PCBuddhist</td>
+                    <td>PercentBuddhism</td>
                     <td>Percent of people in group who are Buddhist</td>
                 </tr>
                 <tr>
-                    <td>PCChristianity</td>
+                    <td>PercentChristianity</td>
                     <td>Percent of people in group who are Christians</td>
                 </tr>
                 <tr>
-                    <td>PCEthnicReligion</td>
+                    <td>PercentEthnicReligions</td>
                     <td>Percent of people in group who practice Ethnic Religions</td>
                 </tr>
                 <tr>
-                    <td>PCEvangelical</td>
+                    <td>PercentEvangelical</td>
                     <td>Percent of people in group who are Evangelical</td>
                 </tr>
                 <tr>
-                    <td>PCHindu</td>
+                    <td>PercentHinduism</td>
                     <td>Percent of people in group who are Hindu</td>
                 </tr>
                 <tr>
-                    <td>PCIndependent</td>
+                    <td>PercentIndependent</td>
                     <td>Percent of people in group who are Independent</td>
                 </tr>
                 <tr>
-                    <td>PCIslam</td>
+                    <td>PercentIslam</td>
                     <td>Percent of people in group who are Muslim</td>
                 </tr>
                 <tr>
-                    <td>PCNonReligious</td>
+                    <td>PercentNonReligious</td>
                     <td>Percent of people in group who are Non-Religious</td>
                 </tr>
                 <tr>
-                    <td>PCOrthodox</td>
+                    <td>PercentOrthodox</td>
                     <td>Percent of people in group who are Orthodox</td>
                 </tr>
                 <tr>
-                    <td>PCOtherChristian</td>
+                    <td>PercentOther</td>
                     <td>Percent of people in group who are another forms of Christian</td>
                 </tr>
                 <tr>
-                    <td>PCOtherReligion</td>
+                    <td>PercentOtherSmall</td>
                     <td>Percent of people in group who practice Other or Smaller Religions</td>
                 </tr>
                 <tr>
-                    <td>PCProtestant</td>
+                    <td>PercentProtestant</td>
                     <td>Percent of people in group who are Protestant</td>
                 </tr>
                 <tr>
-                    <td>PCRCatholic</td>
+                    <td>PercentRomanCatholic</td>
                     <td>Percent of people in group who are Roman Catholic</td>
                 </tr>
                 <tr>
@@ -166,7 +158,7 @@
                     <td>Percent of people in group who are Doubly Professing Christians</td>
                 </tr>
                 <tr>
-                    <td>PCUnknown</td>
+                    <td>PercentUnknown</td>
                     <td>Percent of people in group who's religious background is unknown</td>
                 </tr>
                 <tr>
@@ -194,15 +186,11 @@
                     <td>Prayercast URL (Prayercast website)</td>
                 </tr>
                 <tr>
-                    <td>PrimaryLanguage</td>
-                    <td>The ISO 3 Letter Code for the Official language of country</td>
-                </tr>
-                <tr>
                     <td>PrimaryReligion</td>
                     <td>Primary religion of the people group in this country [1 - Christianity, 2 - Buddhism, 4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 9 - Unknown]</td>
                 </tr>
                 <tr>
-                    <td>Region</td>
+                    <td>RegionCode</td>
                     <td>Region code for this country [1 - South Pacific, 2 - Southeast Asia, 3 - Northeast Asia, 4 - South Asia, 5 - Central Asia, 6 - Middle East and North Africa, 7 - East and Southern Africa, 8 - West and Central Africa, 9 - Eastern Europe and Eurasia, 10 - Western Europe, 11 - Central and South America, 12 - North America and Caribbean]</td>
                 </tr>
                 <tr>
@@ -214,15 +202,15 @@
                     <td>Religion Data Year</td>
                 </tr>
                 <tr>
-                    <td>PrimaryReligionText</td>
+                    <td>ReligionPrimary</td>
                     <td>The text of the primary religion</td>
                 </tr>
                 <tr>
-                    <td>RLG3</td>
+                    <td>RLG3Primary</td>
                     <td>Primary religion of the people group in this country [1 - Christianity, 2 - Buddhism, 4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 9 - Unknown]</td>
                 </tr>
                 <tr>
-                    <td>RLG4</td>
+                    <td>RLG4Primary</td>
                     <td>Primary Religion sub-division for this country</td>
                 </tr>
                 <tr>
@@ -234,7 +222,11 @@
                     <td>2 letter ISO country code</td>
                 </tr>
                 <tr>
-                    <td>SecondaryLanguage</td>
+                    <td>ROL3OfficialLanguage</td>
+                    <td>The ISO 3 Letter Code for the Official language of country</td>
+                </tr>
+                <tr>
+                    <td>ROL3SecondaryLanguage</td>
                     <td>The ISO 3 Letter Code for the Secondary language of country</td>
                 </tr>
                 <tr>
