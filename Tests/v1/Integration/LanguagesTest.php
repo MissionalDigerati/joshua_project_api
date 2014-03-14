@@ -176,7 +176,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages/aar.json",
             array('api_key' => $this->APIKey),
-            "accessible_in_json"
+            "show_accessible_in_json"
         );
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
@@ -193,10 +193,28 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages/aar.xml",
             array('api_key' => $this->APIKey),
-            "accessible_in_xml"
+            "show_accessible_in_xml"
         );
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertTrue(isXML($response));
+    }
+    /**
+     * GET /languages/[id].json
+     * test the page throws an error if you send it an invalid id
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testLanguagesShowShouldThrowErrorIfBadId()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages/bad_id.json",
+            array('api_key' => $this->APIKey),
+            "show_with_bad_id"
+        );
+        $this->assertEquals(404, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
     }
     /**
      * gets an APIKey by sending a request to the /api_keys url

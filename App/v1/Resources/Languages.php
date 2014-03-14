@@ -27,6 +27,17 @@ $app->get(
     function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
         $data = array(0 => array('lorem' => 'true'));
         $gotCachedData = false;
+        /**
+         * Make sure we have an ID, else crash
+         * Regex strips numbers from the id
+         *
+         * @author Johnathan Pulos
+         */
+        $languageId = preg_replace("/\PL/u", "", strip_tags($id));
+        if ((empty($languageId)) || (strlen($languageId) != 3)) {
+            $app->render("/errors/404." . $format . ".php");
+            exit;
+        }
         if ($useCaching === true) {
             /**
              * Check the cache
