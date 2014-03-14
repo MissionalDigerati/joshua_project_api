@@ -25,7 +25,7 @@ use Swagger\Annotations as SWG;
 $app->get(
     "/:version/languages/:id\.:format",
     function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
-        $data = array(0 => array('lorem' => 'true'));
+        $data = array();
         $gotCachedData = false;
         /**
          * Make sure we have an ID, else crash
@@ -52,11 +52,11 @@ $app->get(
         }
         if (empty($data)) {
             try {
-                // $lang = new \QueryGenerators\Country(array('id' => $countryId));
-                // $country->findById();
-                // $statement = $db->prepare($country->preparedStatement);
-                // $statement->execute($country->preparedVariables);
-                // $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $lang = new \QueryGenerators\Language(array('id' => $languageId));
+                $lang->findById();
+                $statement = $db->prepare($lang->preparedStatement);
+                $statement->execute($lang->preparedVariables);
+                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
             } catch (Exception $e) {
                 $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
                 exit;
@@ -78,7 +78,7 @@ $app->get(
         if ($format == 'json') {
             echo json_encode($data);
         } else {
-            echo arrayToXML($data, "countries", "country");
+            echo arrayToXML($data, "languages", "language");
         }
     }
 );

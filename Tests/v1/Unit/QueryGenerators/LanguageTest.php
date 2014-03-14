@@ -65,4 +65,25 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $result = $providedParams->getValue(new \QueryGenerators\Language($data));
         $this->assertEquals($expected, $result);
     }
+    /**
+     * findById() should return the correct language
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindByIdShouldReturnCorrectLanguage()
+    {
+        $expected = array('id'  =>  'amx');
+        $expectedLanguage = 'anmatyerre';
+        $expectedHubCountry = 'australia';
+        $language = new \QueryGenerators\Language($expected);
+        $language->findById();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($expected['id'], strtolower($data[0]['ROL3']));
+        $this->assertEquals($expectedLanguage, strtolower($data[0]['Language']));
+        $this->assertEquals($expectedHubCountry, strtolower($data[0]['HubCountry']));
+    }
 }

@@ -37,7 +37,12 @@ class Language extends QueryGenerator
      * @var array
      * @access protected
      */
-    protected $fieldsToSelectArray = array();
+    protected $fieldsToSelectArray = array(
+        'ROL3', 'Language', 'WebLangText', 'Status', 'ROG3', 'HubCountry', 'WorldSpeakers', 'BibleStatus', 'TranslationNeedQuestionable', 'BibleYear',
+        'NTYear', 'PortionsYear', 'ROL3Edition14', 'ROL3Edition14Orig', 'JF', 'JF_URL', 'JF_ID', 'GRN_URL', 'AudioRecordings','GodsStory',
+        'FCBH_ID', 'JPScale', 'PercentAdherents', 'PercentEvangelical', 'LeastReached', 'JPPopulation', 'RLG3', 'PrimaryReligion', 'NbrPGICs',
+        'NbrCountries'
+    );
     /**
      * The table to pull the data from
      *
@@ -58,7 +63,10 @@ class Language extends QueryGenerator
      * @var array
      * @access protected
      **/
-    protected $aliasFields = array();
+    protected $aliasFields = array(
+        '4Laws_URL' => 'FourLaws_URL',
+        '4Laws' => 'FourLaws'
+    );
     /**
      * Construct the class
      *
@@ -71,5 +79,20 @@ class Language extends QueryGenerator
     public function __construct($getParams)
     {
         parent::__construct($getParams);
+        $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " . $this->generateAliasSelectStatement();
+    }
+    /**
+     * Find a Language by it's id (ROL3) 3 letter code
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function findById()
+    {
+        $id = strtoupper($this->providedParams['id']);
+        $this->validator->providedRequiredParams($this->providedParams, array('id'));
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE ROL3 = :id LIMIT 1";
+        $this->preparedVariables = array('id' => $id);
     }
 }
