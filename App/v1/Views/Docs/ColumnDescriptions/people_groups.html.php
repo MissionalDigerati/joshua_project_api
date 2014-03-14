@@ -43,11 +43,11 @@
                 </tr>
                 <tr>
                     <td>CountOfCountries</td>
-                    <td>Number of countries of residence</td>
+                    <td>Number of countries this people group live in.</td>
                 </tr>
                 <tr>
                     <td>CountOfProvinces</td>
-                    <td>Number of provinces (states) of residence within this country</td>
+                    <td>Number of provinces this people group live in.</td>
                 </tr>
                 <tr>
                     <td>Ctry</td>
@@ -79,15 +79,15 @@
                 </tr>
                 <tr>
                     <td>JPScale</td>
-                    <td>Joshua Project Progress Scale</td>
+                    <td>Joshua Project Progress Scale for this people group.</td>
                 </tr>
                 <tr>
                     <td>JPScalePC</td>
-                    <td>JPScale, people cluster</td>
+                    <td>Joshua Project Progress Scale for People Cluster.</td>
                 </tr>
                 <tr>
                     <td>JPScalePGAC</td>
-                    <td>JPScale, People-Group-Across-Countries</td>
+                    <td>Joshua Project Progress Scale for this people group across all countries.</td>
                 </tr>
                 <tr>
                     <td>Latitude</td>
@@ -95,7 +95,7 @@
                 </tr>
                 <tr>
                     <td>LeastReached</td>
-                    <td>Are they the Least Reached?  [JPScale < 2.0]</td>
+                    <td>Is this people group considered least-reached / unreached? [JPScale < 2.0]</td>
                 </tr>
                 <tr>
                     <td>LeastReachedBasis</td>
@@ -103,11 +103,11 @@
                 </tr>
                 <tr>
                     <td>LeastReachedPC</td>
-                    <td>Least Reached, people cluster</td>
+                    <td>Is People Cluster considered least-reached / unreached? [JPScale < 2.0]</td>
                 </tr>
                 <tr>
                     <td>LeastReachedPGAC</td>
-                    <td>Least Reached, People-Group-Across-Countries</td>
+                    <td>Is this people group across all countries considered least-reached / unreached? [JPScale < 2.0]</td>
                 </tr>
                 <tr>
                     <td>LocationInCountry</td>
@@ -171,7 +171,7 @@
                 </tr>
                 <tr>
                     <td>PCDblyProfessing</td>
-                    <td>Percent of people in group who are Doubly Professing Christians</td>
+                    <td>Percent of people in group who are Doubly Professing.</td>
                 </tr>
                 <tr>
                     <td>PCEthnicReligions</td>
@@ -359,7 +359,7 @@
                 </tr>
                 <tr>
                     <td>RegionCode</td>
-                    <td>Primary religion of the people group in this country [1 - Christianity, 2 - Buddhism, 4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 9 - Unknown]</td>
+                    <td>Region code for this people group [1 - South Pacific, 2 - Southeast Asia, 3 - Northeast Asia, 4 - South Asia, 5 - Central Asia, 6 - Middle East and North Africa, 7 - East and Southern Africa, 8 - West and Central Africa, 9 - Eastern Europe and Eurasia, 10 - Western Europe, 11 - Central and South America, 12 - North America and Caribbean]</td>
                 </tr>
                 <tr>
                     <td>RegionName</td>
@@ -387,11 +387,11 @@
                 </tr>
                 <tr>
                     <td>ROG2</td>
-                    <td>Registry of Geographic Places continent code</td>
+                    <td>HIS Registry of Geography (ROG) continent code</td>
                 </tr>
                 <tr>
                     <td>ROG3</td>
-                    <td>2 letter ISO country code</td>
+                    <td>HIS Registry of Geography (ROG) country code, similar to 2 letter ISO country code</td>
                 </tr>
                 <tr>
                     <td>ROL3</td>
@@ -427,7 +427,7 @@
                 </tr>
                 <tr>
                     <td>StonyGround</td>
-                    <td>Is this people group stony ground for evangelism? If "Y" the default for all people groups in this country is "Least-Reached"</td>
+                    <td>Is this country stony ground for evangelism? If If "Y" the default for people groups in this country with unknown % Evangelical and % Christian Adherents is "Unreached"</td>
                 </tr>
                 <tr>
                     <td>Top10Ranking</td>
@@ -435,11 +435,11 @@
                 </tr>
                 <tr>
                     <td>TranslationNeedQuestionable</td>
-                    <td>Is the translation questionable?</td>
+                    <td>Is the need for translation in this language questionable?</td>
                 </tr>
                 <tr>
                     <td>Unengaged</td>
-                    <td>Is this Ppeople group unengaged?</td>
+                    <td>Is this People group unengaged i.e. no known on-site workers or indigenous church?</td>
                 </tr>
                 <tr>
                     <td>UNMap</td>
