@@ -47,15 +47,15 @@
                 </tr>
                 <tr>
                     <td>HDIRank</td>
-                    <td>Human Development Index - ranking (2003)</td>
+                    <td>Human Development Index - ranking</td>
                 </tr>
                 <tr>
                     <td>HDIValue</td>
-                    <td>Human Development Index - composite value: combination of LifeExpectancy, Education and GPD Indexs (2003)</td>
+                    <td>Human Development Index - composite value: combination of LifeExpectancy, Education and GPD Indexs</td>
                 </tr>
                 <tr>
                     <td>HDIYear</td>
-                    <td>Human Development Index - year (2003)</td>
+                    <td>Human Development Index - year</td>
                 </tr>
                 <tr>
                     <td>InternetCtryCode</td>
@@ -75,7 +75,7 @@
                 </tr>
                 <tr>
                     <td>JPScaleCtry</td>
-                    <td>Joshua Project Progress Scale</td>
+                    <td>Joshua Project Progress Scale for this country, derived from the people group data in this country.</td>
                 </tr>
                 <tr>
                     <td>LibraryCongressReportExists</td>
@@ -99,67 +99,67 @@
                 </tr>
                 <tr>
                     <td>PercentAnglican</td>
-                    <td>Percent of people in group who are Christian Anglican</td>
+                    <td>Percent of people in this country who are Christian Anglican</td>
                 </tr>
                 <tr>
                     <td>PercentBuddhism</td>
-                    <td>Percent of people in group who are Buddhist</td>
+                    <td>Percent of people in this country who are Buddhist</td>
                 </tr>
                 <tr>
                     <td>PercentChristianity</td>
-                    <td>Percent of people in group who are Christians</td>
+                    <td>Percent of people in this country who are Christians</td>
                 </tr>
                 <tr>
                     <td>PercentEthnicReligions</td>
-                    <td>Percent of people in group who practice Ethnic Religions</td>
+                    <td>Percent of people in this country who practice Ethnic Religions</td>
                 </tr>
                 <tr>
                     <td>PercentEvangelical</td>
-                    <td>Percent of people in group who are Evangelical</td>
+                    <td>Percent of people in this country who are Evangelical</td>
                 </tr>
                 <tr>
                     <td>PercentHinduism</td>
-                    <td>Percent of people in group who are Hindu</td>
+                    <td>Percent of people in this country who are Hindu</td>
                 </tr>
                 <tr>
                     <td>PercentIndependent</td>
-                    <td>Percent of people in group who are Independent</td>
+                    <td>Percent of people in this country who are Independent</td>
                 </tr>
                 <tr>
                     <td>PercentIslam</td>
-                    <td>Percent of people in group who are Muslim</td>
+                    <td>Percent of people in this country who are Muslim</td>
                 </tr>
                 <tr>
                     <td>PercentNonReligious</td>
-                    <td>Percent of people in group who are Non-Religious</td>
+                    <td>Percent of people in this country who are Non-Religious</td>
                 </tr>
                 <tr>
                     <td>PercentOrthodox</td>
-                    <td>Percent of people in group who are Orthodox</td>
+                    <td>Percent of people in this country who are Orthodox</td>
                 </tr>
                 <tr>
                     <td>PercentOther</td>
-                    <td>Percent of people in group who are another forms of Christian</td>
+                    <td>Percent of people in this country who are another forms of Christian</td>
                 </tr>
                 <tr>
                     <td>PercentOtherSmall</td>
-                    <td>Percent of people in group who practice Other or Smaller Religions</td>
+                    <td>Percent of people in this country who practice Other or Smaller Religions</td>
                 </tr>
                 <tr>
                     <td>PercentProtestant</td>
-                    <td>Percent of people in group who are Protestant</td>
+                    <td>Percent of people in this country who are Protestant</td>
                 </tr>
                 <tr>
                     <td>PercentRomanCatholic</td>
-                    <td>Percent of people in group who are Roman Catholic</td>
+                    <td>Percent of people in this country who are Roman Catholic</td>
                 </tr>
                 <tr>
                     <td>PctChristianDoublyProfessing</td>
-                    <td>Percent of people in group who are Doubly Professing Christians</td>
+                    <td>Percent of people in this country who are Doubly Professing Christians</td>
                 </tr>
                 <tr>
                     <td>PercentUnknown</td>
-                    <td>Percent of people in group who's religious background is unknown</td>
+                    <td>Percent of people in this country who's religious background is unknown</td>
                 </tr>
                 <tr>
                     <td>PercentUrbanized</td>
@@ -187,7 +187,7 @@
                 </tr>
                 <tr>
                     <td>PrimaryReligion</td>
-                    <td>Primary religion of the people group in this country [1 - Christianity, 2 - Buddhism, 4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 9 - Unknown]</td>
+                    <td>Primary religion for this country [1 - Christianity, 2 - Buddhism, 4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 9 - Unknown]</td>
                 </tr>
                 <tr>
                     <td>RegionCode</td>
@@ -215,11 +215,11 @@
                 </tr>
                 <tr>
                     <td>ROG2</td>
-                    <td>Continent code</td>
+                    <td>HIS Registry of Geography (ROG) continent code</td>
                 </tr>
                 <tr>
                     <td>ROG3</td>
-                    <td>2 letter ISO country code</td>
+                    <td>HIS Registry of Geography (ROG) country code, similar to 2 letter ISO country code</td>
                 </tr>
                 <tr>
                     <td>ROL3OfficialLanguage</td>
@@ -243,7 +243,7 @@
                 </tr>
                 <tr>
                     <td>StonyGround</td>
-                    <td>Is this country stony ground for evangelism? If "Y" the default for all people groups in this country is "Least-Reached"</td>
+                    <td>Is this country stony ground for evangelism? If If "Y" the default for people groups in this country with unknown % Evangelical and % Christian Adherents is "Unreached"</td>
                 </tr>
                 <tr>
                     <td>UNMap</td>
