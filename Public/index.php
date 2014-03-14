@@ -278,7 +278,7 @@ if (strpos($requestedUrl, 'languages') !== false) {
      *
      * @author Johnathan Pulos
      */
-    //$loader->add("QueryGenerators\Language", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    $loader->add("QueryGenerators\Language", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Languages.php");
 }
 /**

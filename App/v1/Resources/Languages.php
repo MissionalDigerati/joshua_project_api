@@ -50,6 +50,18 @@ $app->get(
                 $gotCachedData = true;
             }
         }
+        if (empty($data)) {
+            try {
+                // $lang = new \QueryGenerators\Country(array('id' => $countryId));
+                // $country->findById();
+                // $statement = $db->prepare($country->preparedStatement);
+                // $statement->execute($country->preparedVariables);
+                // $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
+                exit;
+            }
+        }
         if (($useCaching === true) && ($gotCachedData === false)) {
             /**
              * Set the data to the cache using it's cache key, and expire it in 1 day

@@ -217,6 +217,29 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
     }
     /**
+     * GET /languages/[id].json
+     * test page returns the language requested
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testLanguagesShowShouldRetrieveALanguage()
+    {
+        $expectedLanguageCode = 'aar';
+        $expectedLanguage = 'afar';
+        $expectedHubCountry = 'ethiopia';
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages/" . $expectedLanguageCode . ".json",
+            array('api_key' => $this->APIKey),
+            "show_returns_appropriate_language"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals($expectedLanguageCode, strtolower($decodedResponse[0]['ROL3']));
+        $this->assertEquals($expectedLanguage, strtolower($decodedResponse[0]['Language']));
+        $this->assertEquals($expectedHubCountry, strtolower($decodedResponse[0]['HubCountry']));
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string
