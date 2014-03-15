@@ -235,6 +235,26 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
     }
     /**
+     * GET /continents/[id].json
+     * test page returns the language requested
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testContinentsShowShouldRetrieveAContinent()
+    {
+        $continentId = 2;
+        $expectedContinent = 'asia';
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/continents/" . $continentId . ".json",
+            array('api_key' => $this->APIKey),
+            "show_returns_appropriate_continent"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals($expectedContinent, strtolower($decodedResponse[0]['Continent']));
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string

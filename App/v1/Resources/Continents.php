@@ -25,7 +25,7 @@ use Swagger\Annotations as SWG;
 $app->get(
     "/:version/continents/:id\.:format",
     function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
-        $data = array('has'=>array('goober' => 'true'));
+        $data = array();
         $gotCachedData = false;
         /**
          * Make sure we have an ID, else crash
@@ -50,6 +50,16 @@ $app->get(
             }
         }
         if (empty($data)) {
+            try {
+                $continent = new \QueryGenerators\Continent(array('id' => $continentId));
+                $continent->findById();
+                $statement = $db->prepare($continent->preparedStatement);
+                $statement->execute($continent->preparedVariables);
+                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
+                exit;
+            }
         }
         if (($useCaching === true) && ($gotCachedData === false)) {
             /**

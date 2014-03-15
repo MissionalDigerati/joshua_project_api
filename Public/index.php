@@ -282,17 +282,17 @@ if (strpos($requestedUrl, 'languages') !== false) {
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Languages.php");
 }
 /**
- * Are we searching API for Languages?
+ * Are we searching API for Continents?
  *
  * @author Johnathan Pulos
  */
 if (strpos($requestedUrl, 'continents') !== false) {
     /**
-     * Load the Query Generator for Languages
+     * Load the Query Generator for Continents
      *
      * @author Johnathan Pulos
      */
-    // $loader->add("QueryGenerators\Language", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    $loader->add("QueryGenerators\Continent", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Continents.php");
 }
 /**
