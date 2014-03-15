@@ -341,6 +341,29 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedFirstLanguage, strtolower($decodedResponse[0]['Language']));
     }
     /**
+      * GET /languages.json
+      * Language Index should return the correct limit
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnALimitOfLanguageDataInJSON()
+    {
+        $expectedLimit = 10;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'   =>  $this->APIKey,
+                'limit'     =>  $expectedLimit
+            ),
+            "should_return_language_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals($expectedLimit, count($decodedResponse));
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string

@@ -106,4 +106,22 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCount, count($data));
         $this->assertEquals($expectedFirstLanguage, strtolower($data[0]['Language']));
     }
+    /**
+     * findAllWithFilters() should limit the total results
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldLimitTheResult()
+    {
+        $expected = array('limit'   =>  5);
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        $this->assertEquals($expected['limit'], count($data));
+    }
 }
