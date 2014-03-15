@@ -27,6 +27,16 @@ $app->get(
     function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
         $data = array('has'=>array('goober' => 'true'));
         $gotCachedData = false;
+        /**
+         * Make sure we have an ID, else crash
+         *
+         * @author Johnathan Pulos
+         */
+        $continentId = intval(strip_tags($id));
+        if ((empty($continentId)) || (strlen($continentId) != 1) || (!in_array($continentId, array(1, 2, 3, 4, 5, 6, 7)))) {
+            $app->render("/errors/404." . $format . ".php");
+            exit;
+        }
         if ($useCaching === true) {
             /**
              * Check the cache

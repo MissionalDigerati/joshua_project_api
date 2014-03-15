@@ -199,6 +199,42 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isXML($response));
     }
     /**
+     * GET /continents/[id].json
+     * test the page throws an error if you send it an invalid id
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testContinentsShowShouldThrowErrorIfBadId()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/continents/bad_id.json",
+            array('api_key' => $this->APIKey),
+            "show_with_bad_id"
+        );
+        $this->assertEquals(404, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+     * GET /continents/[id].json
+     * test the page throws an error if you send it an invalid id
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testContinentsShowShouldThrowErrorIfIdIsOutOfRange()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/continents/9.json",
+            array('api_key' => $this->APIKey),
+            "show_with_bad_id_out_of_range"
+        );
+        $this->assertEquals(404, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string
