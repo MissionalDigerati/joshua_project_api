@@ -120,11 +120,10 @@ class Language extends QueryGenerator
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            if (strtolower($this->providedParams['has_completed_bible']) == 'n') {
-                $where .= "(BibleYear IS NULL OR BibleYear = '')";
-            } else {
-                $where .= "(BibleYear IS NOT NULL OR BibleYear != '')";
-            }
+            $where .= $this->generateWhereStatementForBooleanBasedOnIfFieldHasContentOrNot(
+                $this->providedParams['has_completed_bible'],
+                'BibleYear'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('has_new_testament')) {
@@ -132,11 +131,10 @@ class Language extends QueryGenerator
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            if (strtolower($this->providedParams['has_new_testament']) == 'n') {
-                $where .= "(NTYear IS NULL OR NTYear = '')";
-            } else {
-                $where .= "(NTYear IS NOT NULL OR NTYear != '')";
-            }
+            $where .= $this->generateWhereStatementForBooleanBasedOnIfFieldHasContentOrNot(
+                $this->providedParams['has_new_testament'],
+                'NTYear'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('has_portions')) {
@@ -144,11 +142,10 @@ class Language extends QueryGenerator
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            if (strtolower($this->providedParams['has_portions']) == 'n') {
-                $where .= "(PortionsYear IS NULL OR PortionsYear = '')";
-            } else {
-                $where .= "(PortionsYear IS NOT NULL OR PortionsYear != '')";
-            }
+            $where .= $this->generateWhereStatementForBooleanBasedOnIfFieldHasContentOrNot(
+                $this->providedParams['has_portions'],
+                'PortionsYear'
+            );
             $appendAndOnWhere = true;
         }
         if ($where != "") {
