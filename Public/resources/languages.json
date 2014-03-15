@@ -1,0 +1,52 @@
+{
+    "basePath": "http://jpapi.codingstudio.org/v1",
+    "swaggerVersion": "1.1",
+    "apiVersion": "1",
+    "resourcePath": "/languages",
+    "apis": [
+        {
+            "path": "/languages/{id}.{format}",
+            "operations": [
+                {
+                    "httpMethod": "GET",
+                    "summary": "Retrieve the details of a specific Language (JSON or XML)",
+                    "nickname": "languageShow",
+                    "parameters": [
+                        {
+                            "name": "api_key",
+                            "description": "Your Joshua Project API key.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": true
+                        },
+                        {
+                            "name": "id",
+                            "description": "The 3 letter ISO 639-2 Language Code for the Language you want to view. [<a href='http://goo.gl/gbkgo4' target='_blank'>View all Language Codes</a>]",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "path",
+                            "required": true
+                        }
+                    ],
+                    "errorResponses": [
+                        {
+                            "reason": "Bad request.  Your request is malformed in some way.  Check your supplied parameters.",
+                            "code": 400
+                        },
+                        {
+                            "reason": "Unauthorized.  Your missing your API key, or it has been suspended.",
+                            "code": 401
+                        },
+                        {
+                            "reason": "Not found.  Your search ended up with no results.",
+                            "code": 404
+                        }
+                    ],
+                    "notes": "Retrieve the details of a specific Language by supplying the language's 3 letter ISO 639-2 Code (id)."
+                }
+            ],
+            "description": "Retrieve the details of a specific Language."
+        }
+    ]
+}

@@ -268,6 +268,20 @@ if (strpos($requestedUrl, 'countries') !== false) {
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Countries.php");
 }
 /**
+ * Are we searching API for Languages?
+ *
+ * @author Johnathan Pulos
+ */
+if (strpos($requestedUrl, 'languages') !== false) {
+    /**
+     * Load the Query Generator for Languages
+     *
+     * @author Johnathan Pulos
+     */
+    $loader->add("QueryGenerators\Language", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/Languages.php");
+}
+/**
  * Now run the Slim Framework rendering
  *
  * @author Johnathan Pulos
