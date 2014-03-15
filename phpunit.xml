@@ -3,5 +3,17 @@
         <testsuite>
             <directory>.</directory>
         </testsuite>
+        <testsuite name="Country">
+            <file>Tests/v1/Integration/CountriesTest.php</file>
+            <file>Tests/v1/Unit/QueryGenerators/CountryTest.php</file>
+        </testsuite>
+        <testsuite name="Language">
+            <file>Tests/v1/Integration/LanguagesTest.php</file>
+            <file>Tests/v1/Unit/QueryGenerators/LanguageTest.php</file>
+        </testsuite>
+        <testsuite name="PeopleGroup">
+            <file>Tests/v1/Integration/PeopleGroupsTest.php</file>
+            <file>Tests/v1/Unit/QueryGenerators/PeopleGroupTest.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>
