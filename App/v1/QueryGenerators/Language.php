@@ -115,6 +115,21 @@ class Language extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['ids'], 'ROL3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('has_audio')) {
+            $this->validator->stringLength(
+                $this->providedParams['has_audio'],
+                1
+            );
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['has_audio'],
+                'AudioRecordings',
+                'has_audio'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('has_completed_bible')) {
             $this->validator->stringLength($this->providedParams['has_completed_bible'], 1);
             if ($appendAndOnWhere === true) {

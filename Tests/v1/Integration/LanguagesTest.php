@@ -586,6 +586,50 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
     }
     /**
+      * GET /languages.json?has_audio=y
+      * Language Index should return only languages with audio resources
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesWithAudioResources()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'     =>  $this->APIKey,
+                'has_audio'   =>  'Y'
+            ),
+            "should_return_language_with_audio_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertEquals('Y', $lang['AudioRecordings']);
+        }
+    }
+    /**
+      * GET /languages.json?has_audio=ysss
+      * Language Index should return an error if the value is too long
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfHasAudioIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'     =>  $this->APIKey,
+                'has_audio'   =>  'NNN'
+            ),
+            "should_return_language_by_has_audio_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string

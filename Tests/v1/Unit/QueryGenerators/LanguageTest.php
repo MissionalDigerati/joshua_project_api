@@ -224,4 +224,24 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
             $this->assertNull($lang['TranslationNeedQuestionable']);
         }
     }
+    /**
+     * findAllWithFilters() should limit based on whether they have audio resources
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByNotHavingAudioResources()
+    {
+        $expected = array('has_audio'   =>  'N');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertNull($lang['AudioRecordings']);
+        }
+    }
 }
