@@ -148,6 +148,21 @@ class Language extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('needs_translation_questionable')) {
+            $this->validator->stringLength(
+                $this->providedParams['needs_translation_questionable'],
+                1
+            );
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['needs_translation_questionable'],
+                'TranslationNeedQuestionable',
+                'questionable_need'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }
