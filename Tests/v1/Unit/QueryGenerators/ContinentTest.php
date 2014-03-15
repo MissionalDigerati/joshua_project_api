@@ -74,15 +74,14 @@ class ContinentTest extends \PHPUnit_Framework_TestCase
      **/
     public function testFindByIdShouldReturnCorrectContinent()
     {
-        $expected = array('id'  =>  7);
+        $expected = array('id'  =>  'lam');
         $expectedContinent = 'south america';
-        $expectedROG2 = 'lam';
         $continent = new \QueryGenerators\Continent($expected);
         $continent->findById();
         $statement = $this->db->prepare($continent->preparedStatement);
         $statement->execute($continent->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertEquals($expectedROG2, strtolower($data[0]['ROG2']));
+        $this->assertEquals($expected['id'], strtolower($data[0]['ROG2']));
         $this->assertEquals($expectedContinent, strtolower($data[0]['Continent']));
     }
     /**
@@ -101,7 +100,7 @@ class ContinentTest extends \PHPUnit_Framework_TestCase
         $continent->findById();
     }
     /**
-     * Tests that findById throws the correct error if the id is not 1-7
+     * Tests that findById throws the correct error if the id is not valid
      *
      * @return void
      * @access public
@@ -111,7 +110,22 @@ class ContinentTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindByIdShouldThrowErrorIfIdInvalid()
     {
-        $expected = array('id' => 15);
+        $expected = array('id' => 'WWQQ');
+        $continent = new \QueryGenerators\Continent($expected);
+        $continent->findById();
+    }
+    /**
+     * Tests that findById throws the correct error if the id is not one of the indicated ids
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testFindByIdShouldThrowErrorIfIdNotAcceptable()
+    {
+        $expected = array('id' => 'ggi');
         $continent = new \QueryGenerators\Continent($expected);
         $continent->findById();
     }

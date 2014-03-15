@@ -383,7 +383,7 @@ $app->get(
  *              ),
 *              @SWG\Parameter(
  *                  name="continents",
- *                  description="A bar separated list of one or more continents to filter by.Use the following codes:<br><ul><li>AFR - Africa</li><li>ASI - Asia</li><li>AUS - Australia</li><li>EUR - Europe</li><li>NAR - North America</li><li>SOP - Oceania (South Pacific)</li><li>LAM - South America</li></ul>",
+ *                  description="A bar separated list of one or more continents to filter by. Use the following codes:<br><ul><li>AFR - Africa</li><li>ASI - Asia</li><li>AUS - Australia</li><li>EUR - Europe</li><li>NAR - North America</li><li>SOP - Oceania (South Pacific)</li><li>LAM - South America</li></ul>",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",

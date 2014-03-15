@@ -174,7 +174,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     public function testShouldContinentShowInJSON()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/v1/continents/3.json",
+            "http://joshua.api.local/v1/continents/asi.json",
             array('api_key' => $this->APIKey),
             "show_accessible_in_json"
         );
@@ -191,7 +191,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     public function testShouldContinentShowInXML()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/v1/continents/3.xml",
+            "http://joshua.api.local/v1/continents/asi.xml",
             array('api_key' => $this->APIKey),
             "show_accessible_in_xml"
         );
@@ -218,24 +218,6 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     }
     /**
      * GET /continents/[id].json
-     * test the page throws an error if you send it an invalid id
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testContinentsShowShouldThrowErrorIfIdIsOutOfRange()
-    {
-        $response = $this->cachedRequest->get(
-            "http://joshua.api.local/v1/continents/9.json",
-            array('api_key' => $this->APIKey),
-            "show_with_bad_id_out_of_range"
-        );
-        $this->assertEquals(404, $this->cachedRequest->responseCode);
-        $this->assertTrue(isJSON($response));
-    }
-    /**
-     * GET /continents/[id].json
      * test page returns the language requested
      *
      * @return void
@@ -244,7 +226,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      **/
     public function testContinentsShowShouldRetrieveAContinent()
     {
-        $continentId = 2;
+        $continentId = 'asi';
         $expectedContinent = 'asia';
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/continents/" . $continentId . ".json",

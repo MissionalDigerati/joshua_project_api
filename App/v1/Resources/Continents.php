@@ -21,7 +21,62 @@
  * 
  */
 use Swagger\Annotations as SWG;
-
+/**
+ * @SWG\Resource(
+ *     apiVersion="1",
+ *     swaggerVersion="1.1",
+ *     resourcePath="/continents",
+ *     basePath="http://jpapi.codingstudio.org/v1"
+ * )
+ */
+/**
+  * 
+  * @SWG\API(
+  *  path="/continents/{id}.{format}",
+  *  description="Retrieve the details of a specific Continent.",
+  *  @SWG\Operations(
+  *      @SWG\Operation(
+  *          httpMethod="GET",
+  *          nickname="continentShow",
+  *          summary="Retrieve the details of a specific Continent (JSON or XML)",
+  *          notes="Retrieve the details of a specific Continent by supplying a three letter ISO Continent code (id).  Use the following codes:<br><ul><li>AFR - Africa</li><li>ASI - Asia</li><li>AUS - Australia</li><li>EUR - Europe</li><li>NAR - North America</li><li>SOP - Oceania (South Pacific)</li><li>LAM - South America</li></ul>",
+  *          @SWG\Parameters(
+  *              @SWG\Parameter(
+  *                  name="api_key",
+  *                  description="Your Joshua Project API key.",
+  *                  paramType="query",
+  *                  required="true",
+  *                  allowMultiple="false",
+  *                  dataType="string"
+  *              ),
+  *              @SWG\Parameter(
+  *                  name="id",
+  *                  description="The 3 letter ISO Continent Code for the Continent you want to view. Use the codes indicated above.",
+  *                  paramType="path",
+  *                  required="true",
+  *                  allowMultiple="false",
+  *                  dataType="string"
+  *              )
+  *          ),
+  *          @SWG\ErrorResponses(
+  *              @SWG\ErrorResponse(
+  *                  code="400",
+  *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="401",
+  *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="404",
+  *                  reason="Not found.  Your search ended up with no results."
+  *              )
+  *          )
+  *      )
+  *  )
+  * )
+  * 
+  */
 $app->get(
     "/:version/continents/:id\.:format",
     function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
@@ -32,8 +87,8 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
-        $continentId = intval(strip_tags($id));
-        if ((empty($continentId)) || (strlen($continentId) != 1) || (!in_array($continentId, array(1, 2, 3, 4, 5, 6, 7)))) {
+        $continentId = preg_replace("/\PL/u", "", strip_tags($id));
+        if ((empty($continentId)) || (strlen($continentId) != 3)) {
             $app->render("/errors/404." . $format . ".php");
             exit;
         }

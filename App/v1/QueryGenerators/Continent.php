@@ -76,7 +76,7 @@ class Continent extends QueryGenerator
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
     }
     /**
-     * find a continent by an id. [1] Africa [2] Asia [3] Australia [4] Europe [5] North America [6] Oceania [7] South America
+     * find a continent by an id. [AFR] Africa [ASI] Asia [AUS] Australia [EUR] Europe [NAR] North America [SOP] Oceania [LAM] South America
      *
      * @return void
      * @author Johnathan Pulos
@@ -84,18 +84,12 @@ class Continent extends QueryGenerator
     public function findById()
     {
         $this->validator->providedRequiredParams($this->providedParams, array('id'));
-        $id = intval($this->providedParams['id']);
-        $this->validator->integerInRange($id, 1, 7);
-        $continentISO = array(
-            1   =>  'AFR',
-            2   =>  'ASI',
-            3   =>  'AUS',
-            4   =>  'EUR',
-            5   =>  'NAR',
-            6   =>  'SOP',
-            7   =>  'LAM'
-        );
+        $id = strtolower(strip_tags($this->providedParams['id']));
+        $this->validator->stringLength($id, 3);
+        if (!in_array($id, array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam'))) {
+            throw new \InvalidArgumentException("The id you provided is incorrect.  It must be 'afr', 'asi', 'aus', 'eur', 'nar', 'sop', or 'lam'.");
+        }
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE ROG2 = :id LIMIT 1";
-        $this->preparedVariables = array('id' => $continentISO[$id]);
+        $this->preparedVariables = array('id' => $id);
     }
 }
