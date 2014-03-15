@@ -224,6 +224,14 @@ class Language extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['jpscale'], 'JPScale');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('least_reached')) {
+            $this->validator->stringLength($this->providedParams['least_reached'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean($this->providedParams['least_reached'], 'LeastReached', 'least_reached');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('needs_translation_questionable')) {
             $this->validator->stringLength(
                 $this->providedParams['needs_translation_questionable'],

@@ -994,6 +994,49 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
     }
     /**
+      * GET /languages.json?least_reached=n
+      * Language Index should return only languages with least reached
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesBasedOnLeastReached()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'least_reached'     =>  'n'
+            ),
+            "should_return_language_based_on_least_reached_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertNull($lang['LeastReached']);
+        }
+    }
+    /**
+      * GET /languages.json?least_reached=MNNN
+      * Language Index should return an error if the value is wrong
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfLeastReachedIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'least_reached'     =>  'NNNNNN'
+            ),
+            "should_return_language_by_least_reached_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string

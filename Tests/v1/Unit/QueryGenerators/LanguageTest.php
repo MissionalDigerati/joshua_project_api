@@ -445,4 +445,24 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(3.1, floatval($lang['JPScale']));
         }
     }
+    /**
+     * findAllWithFilters() should limit based on least reached
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByLeastReached()
+    {
+        $expected = array('least_reached'   =>  'y');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertEquals('y', strtolower($lang['LeastReached']));
+        }
+    }
 }
