@@ -231,6 +231,13 @@ class Language extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('population')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['population'], 'JPPopulation', 'pop');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('world_speakers')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";

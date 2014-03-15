@@ -832,6 +832,31 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+      * GET /languages.json?population=300-1300
+      * Language Index should return only languages with requested population
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesBasedOnNumberOfPopulation()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'population'    =>  '300-1300'
+            ),
+            "should_return_language_based_on_population_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertGreaterThanOrEqual(300, intval($lang['JPPopulation']));
+            $this->assertLessThanOrEqual(1300, intval($lang['JPPopulation']));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string
