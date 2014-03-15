@@ -216,6 +216,14 @@ class Language extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('jpscale')) {
+            $this->validator->barSeperatedStringProvidesAcceptableValues($this->providedParams['jpscale'], array('1.1', '1.2', '2.1', '2.2', '3.1', '3.2'));
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['jpscale'], 'JPScale');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('needs_translation_questionable')) {
             $this->validator->stringLength(
                 $this->providedParams['needs_translation_questionable'],
