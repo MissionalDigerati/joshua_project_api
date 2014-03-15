@@ -252,6 +252,17 @@ class Language extends QueryGenerator
             $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['population'], 'JPPopulation', 'pop');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('primary_religions')) {
+            $religions = explode('|', $this->providedParams['primary_religions']);
+            foreach ($religions as $religion) {
+                $this->validator->integerInRange($religion, 1, 9, array(3));
+            }
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['primary_religions'], 'RLG3');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('world_speakers')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";

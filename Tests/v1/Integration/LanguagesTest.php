@@ -907,6 +907,50 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+      * GET /languages.json?primary_religions=6|4
+      * Language Index should return only languages with requested primary religions
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesBasedOnNumberOfPrimaryReligions()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'primary_religions' =>  '6|4'
+            ),
+            "should_return_language_based_on_primary_religion_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertTrue(in_array(strtolower($lang['PrimaryReligion']), array('islam', 'ethnic religions')));
+        }
+    }
+    /**
+      * GET /languages.json?primary_religions=150
+      * Language Index should return an error if the value is wrong
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfPrimaryReligionIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'primary_religions' =>  '150'
+            ),
+            "should_return_language_by_primary_religions_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string

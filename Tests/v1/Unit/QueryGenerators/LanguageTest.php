@@ -405,4 +405,24 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(60, floatval($lang['PercentAdherents']));
         }
     }
+    /**
+     * findAllWithFilters() should limit based on primary religions
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByPrimaryReligion()
+    {
+        $expected = array('primary_religions'   =>  '6');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertEquals('islam', strtolower($lang['PrimaryReligion']));
+        }
+    }
 }
