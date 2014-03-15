@@ -421,7 +421,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
             array(
-                'api_key'   =>  $this->APIKey,
+                'api_key'               =>  $this->APIKey,
                 'has_new_testament'     =>  'Y'
             ),
             "should_return_language_by_ids_index_json"
@@ -449,6 +449,50 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
                 'has_new_testament'     =>  'NNN'
             ),
             "should_return_language_by_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /languages.json?has_portions=y
+      * Language Index should return only languages with portions of the Bible
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesWithPortionsOfScriptures()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'has_portions'      =>  'Y'
+            ),
+            "should_return_language_with_portions_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertNotNull($lang['PortionsYear']);
+        }
+    }
+    /**
+      * GET /languages.json?has_new_testament=ysss
+      * Language Index should return an error if the value is too long
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfHasPortionsIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'               =>  $this->APIKey,
+                'has_portions'          =>  'NNN'
+            ),
+            "should_return_language_by_has_portions_wrong_value_index_json"
         );
         $this->assertEquals(400, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));

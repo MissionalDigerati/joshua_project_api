@@ -127,6 +127,18 @@ class Language extends QueryGenerator
             }
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('has_portions')) {
+            $this->validator->stringLength($this->providedParams['has_portions'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            if (strtolower($this->providedParams['has_portions']) == 'n') {
+                $where .= "(PortionsYear IS NULL OR PortionsYear = '')";
+            } else {
+                $where .= "(PortionsYear IS NOT NULL OR PortionsYear != '')";
+            }
+            $appendAndOnWhere = true;
+        }
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }
