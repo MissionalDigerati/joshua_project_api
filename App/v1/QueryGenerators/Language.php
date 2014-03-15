@@ -115,6 +115,18 @@ class Language extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['ids'], 'ROL3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('has_new_testament')) {
+            $this->validator->stringLength($this->providedParams['has_new_testament'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            if (strtolower($this->providedParams['has_new_testament']) == 'n') {
+                $where .= "(NTYear IS NULL OR NTYear = '')";
+            } else {
+                $where .= "(NTYear IS NOT NULL OR NTYear != '')";
+            }
+            $appendAndOnWhere = true;
+        }
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }

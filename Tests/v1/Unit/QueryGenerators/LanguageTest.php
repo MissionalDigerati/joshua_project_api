@@ -144,4 +144,24 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array(strtolower($lang['ROL3']), explode("|", $expected['ids'])));
         }
     }
+    /**
+     * findAllWithFilters() should limit based on has_new_testament
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByNotHavingANewTestament()
+    {
+        $expected = array('has_new_testament'   =>  'N');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertNull($lang['NTYear']);
+        }
+    }
 }
