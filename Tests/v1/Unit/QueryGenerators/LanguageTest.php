@@ -86,4 +86,383 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedLanguage, strtolower($data[0]['Language']));
         $this->assertEquals($expectedHubCountry, strtolower($data[0]['HubCountry']));
     }
+    /**
+     * findAllWithFilters() should return all the Languages if no filters applied
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldReturnAllLanguagesWithoutFilters()
+    {
+        $expectedCount = 100;
+        $expectedFirstLanguage = "a'ou";
+        $language = new \QueryGenerators\Language(array());
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        $this->assertEquals($expectedCount, count($data));
+        $this->assertEquals($expectedFirstLanguage, strtolower($data[0]['Language']));
+    }
+    /**
+     * findAllWithFilters() should limit the total results
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldLimitTheResult()
+    {
+        $expected = array('limit'   =>  5);
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        $this->assertEquals($expected['limit'], count($data));
+    }
+    /**
+     * findAllWithFilters() should limit based on passed ids
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByASetOfIDS()
+    {
+        $expected = array('ids'   =>  'ace|boj|smf');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertTrue(in_array(strtolower($lang['ROL3']), explode("|", $expected['ids'])));
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on has_new_testament
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByNotHavingANewTestament()
+    {
+        $expected = array('has_new_testament'   =>  'N');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertNull($lang['NTYear']);
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on has_portions
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByNotHavingPortions()
+    {
+        $expected = array('has_portions'   =>  'N');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertNull($lang['PortionsYear']);
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on has_completed_bible
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByNotHavingCompletedBible()
+    {
+        $expected = array('has_completed_bible'   =>  'N');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertNull($lang['BibleYear']);
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on whether they have questionable translation need
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByNotHavingQuestionableTranslationNeed()
+    {
+        $expected = array('needs_translation_questionable'   =>  'N');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertNull($lang['TranslationNeedQuestionable']);
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on whether they have audio resources
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByNotHavingAudioResources()
+    {
+        $expected = array('has_audio'   =>  'N');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertNull($lang['AudioRecordings']);
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on whether they have 4 laws
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByNotHavingFourLaws()
+    {
+        $expected = array('has_four_laws'   =>  'N');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertNull($lang['FourLaws']);
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on whether they have Jesus Film
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByNotHavingJesusFilm()
+    {
+        $expected = array('has_jesus_film'   =>  'N');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertNull($lang['JF']);
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on whether they have God's Story
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByNotHavingGodsStory()
+    {
+        $expected = array('has_gods_story'   =>  'N');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertNull($lang['GodsStory']);
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on countries
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByCountry()
+    {
+        $expected = array('countries'   =>  'af|ni');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        $countries = explode("|", $expected['countries']);
+        foreach ($data as $lang) {
+            $this->assertTrue(in_array(strtolower($lang['ROG3']), $countries));
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on world speakers
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByWorldSpeakers()
+    {
+        $expected = array('world_speakers'   =>  '1');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertEquals(1, intval($lang['WorldSpeakers']));
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on population
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByPopulation()
+    {
+        $expected = array('population'   =>  '2630');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertEquals(2630, intval($lang['JPPopulation']));
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on percent evangelical
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByEvangelical()
+    {
+        $expected = array('pc_evangelical'   =>  '3.25');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertEquals(3.25, floatval($lang['PercentEvangelical']));
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on percent adherent
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByAdherent()
+    {
+        $expected = array('pc_adherent'   =>  '60');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertEquals(60, floatval($lang['PercentAdherents']));
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on primary religions
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByPrimaryReligion()
+    {
+        $expected = array('primary_religions'   =>  '6');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertEquals('islam', strtolower($lang['PrimaryReligion']));
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on jpscale
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByJPScale()
+    {
+        $expected = array('jpscale'   =>  '3.1');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertEquals(3.1, floatval($lang['JPScale']));
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on least reached
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByLeastReached()
+    {
+        $expected = array('least_reached'   =>  'y');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertEquals('y', strtolower($lang['LeastReached']));
+        }
+    }
 }

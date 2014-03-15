@@ -240,6 +240,28 @@ class QueryGenerator
         }
     }
     /**
+     * Generates the where statement for a boolean.  If the value is Y,  it looks for any value.  If it is N, it looks for
+     * a value of NULL or empty.
+     *
+     * @param string $str The value the user is looking for
+     * @param string $columnName the name of the table column to search
+     * @return string
+     * @throws InvalidArgumentException if the param has too many variables, or the min is greater than the max
+     * @access protected
+     * @author Johnathan Pulos
+     */
+    protected function generateWhereStatementForBooleanBasedOnIfFieldHasContentOrNot($str, $columnName)
+    {
+        $val = strtoupper($str);
+        if ($val == 'Y') {
+            return "(" . $columnName . " IS NOT NULL OR " . $columnName . " != '')";
+        } else if ($val == 'N') {
+            return "(" . $columnName . " IS NULL OR " . $columnName . " = '')";
+        } else {
+            throw new \InvalidArgumentException("A boolean was set with the wrong value.");
+        }
+    }
+    /**
      * Takes the aliasFields array and generates the alias select statements (jppeoples AS jp_peoples)
      *
      * @return string

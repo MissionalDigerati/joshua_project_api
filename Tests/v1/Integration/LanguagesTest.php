@@ -93,7 +93,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShouldRefuseAccessWithoutAnAPIKey()
+    public function testShowShouldRefuseAccessWithoutAnAPIKey()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages/aar.json",
@@ -108,7 +108,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShouldRefuseAccessWithoutAVersionNumber()
+    public function testShowShouldRefuseAccessWithoutAVersionNumber()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/languages/aar.json",
@@ -123,7 +123,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShouldRefuseAccessWithoutActiveAPIKey()
+    public function testShowShouldRefuseAccessWithoutActiveAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -139,7 +139,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShouldRefuseAccessWithSuspendedAPIKey()
+    public function testShowShouldRefuseAccessWithSuspendedAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -155,10 +155,10 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShouldRefuseAccessWithABadAPIKey()
+    public function testShowShouldRefuseAccessWithABadAPIKey()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/v1/people_groups/aar.json",
+            "http://joshua.api.local/v1/languages/aar.json",
             array('api_key' => 'BADKEY'),
             "bad_key_json"
         );
@@ -238,6 +238,803 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedLanguageCode, strtolower($decodedResponse[0]['ROL3']));
         $this->assertEquals($expectedLanguage, strtolower($decodedResponse[0]['Language']));
         $this->assertEquals($expectedHubCountry, strtolower($decodedResponse[0]['HubCountry']));
+    }
+    /**
+     * Tests that you can only access page with an API Key
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testIndexShouldRefuseAccessWithoutAnAPIKey()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(),
+            "index_up_json"
+        );
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+    }
+    /**
+     * Tests that you can only access page with a version number
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testIndexShouldRefuseAccessWithoutAVersionNumber()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/languages.json",
+            array('api_key' => $this->APIKey),
+            "index_versioning_missing_json"
+        );
+        $this->assertEquals(404, $this->cachedRequest->responseCode);
+    }
+    /**
+     * Tests that you can not access page without an active API Key
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testIndexShouldRefuseAccessWithoutActiveAPIKey()
+    {
+        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/languages.json",
+            array('api_key' => $this->APIKey),
+            "index_non_active_key_json"
+        );
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+    }
+    /**
+     * Tests that you can not access page with a suspended API Key
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testIndexShouldRefuseAccessWithSuspendedAPIKey()
+    {
+        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/languages.json",
+            array('api_key' => $this->APIKey),
+            "index_suspended_key_json"
+        );
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+    }
+    /**
+     * Tests that you can only access page with a valid API Key
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testIndexShouldRefuseAccessWithABadAPIKey()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array('api_key' => 'BADKEY'),
+            "index_bad_key_json"
+        );
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+    }
+    /**
+      * GET /languages.json
+      * Language Index should return the correct data
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguageDataInJSON()
+    {
+        $expectedLanguageCount = 100;
+        $expectedFirstLanguage = "a'ou";
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array('api_key' => $this->APIKey),
+            "should_return_language_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        $this->assertTrue(is_array($decodedResponse));
+        $this->assertFalse(empty($decodedResponse));
+        $this->assertEquals($expectedLanguageCount, count($decodedResponse));
+        $this->assertEquals($expectedFirstLanguage, strtolower($decodedResponse[0]['Language']));
+    }
+    /**
+      * GET /languages.json
+      * Language Index should return the correct limit
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnALimitOfLanguageDataInJSON()
+    {
+        $expectedLimit = 10;
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'   =>  $this->APIKey,
+                'limit'     =>  $expectedLimit
+            ),
+            "should_return_language_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals($expectedLimit, count($decodedResponse));
+    }
+    /**
+      * GET /languages.json?ids=bzw|bjf
+      * Language Index should return only desired ids
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnIDsRequestedLanguageDataInJSON()
+    {
+        $expectedIds = 'bzw|bjf';
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'   =>  $this->APIKey,
+                'ids'     =>  $expectedIds
+            ),
+            "should_return_language_by_ids_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertTrue(in_array(strtolower($lang['ROL3']), explode('|', $expectedIds)));
+        }
+    }
+    /**
+      * GET /languages.json?ids=bzwp
+      * Language Index should return an error if the id is too long
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfIdIsWrong()
+    {
+        $expectedIds = 'bzwp';
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'   =>  $this->APIKey,
+                'ids'     =>  $expectedIds
+            ),
+            "should_return_language_by_wrong_ids_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /languages.json?has_new_testament=y
+      * Language Index should return only languages with new testaments
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesWithNewTestaments()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'               =>  $this->APIKey,
+                'has_new_testament'     =>  'Y'
+            ),
+            "should_return_language_by_ids_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertNotNull($lang['NTYear']);
+        }
+    }
+    /**
+      * GET /languages.json?has_new_testament=y
+      * Language Index should return an error if the value is too long
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfHasNewTestamentIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'               =>  $this->APIKey,
+                'has_new_testament'     =>  'NNN'
+            ),
+            "should_return_language_by_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /languages.json?has_portions=y
+      * Language Index should return only languages with portions of the Bible
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesWithPortionsOfScriptures()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'has_portions'      =>  'Y'
+            ),
+            "should_return_language_with_portions_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertNotNull($lang['PortionsYear']);
+        }
+    }
+    /**
+      * GET /languages.json?has_new_testament=ysss
+      * Language Index should return an error if the value is too long
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfHasPortionsIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'               =>  $this->APIKey,
+                'has_portions'          =>  'NNN'
+            ),
+            "should_return_language_by_has_portions_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /languages.json?has_completed_bible=y
+      * Language Index should return only languages with a complete Bible
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesWithCompleteScriptures()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'                   =>  $this->APIKey,
+                'has_completed_bible'      =>  'Y'
+            ),
+            "should_return_language_with_complete_bible_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertNotNull($lang['BibleYear']);
+        }
+    }
+    /**
+      * GET /languages.json?has_completed_bible=ysss
+      * Language Index should return an error if the value is too long
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfHasCompleteBibleIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'               =>  $this->APIKey,
+                'has_completed_bible'   =>  'NNN'
+            ),
+            "should_return_language_by_has_completed_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /languages.json?needs_translation_questionable=y
+      * Language Index should return only languages with Questionable Translation Need
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesWithQuestionableTranslation()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'needs_translation_questionable'   =>  'Y'
+            ),
+            "should_return_language_with_questionable_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertEquals('Y', $lang['TranslationNeedQuestionable']);
+        }
+    }
+    /**
+      * GET /languages.json?needs_translation_questionable=ysss
+      * Language Index should return an error if the value is too long
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfHasQuestionableIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'               =>  $this->APIKey,
+                'needs_translation_questionable'   =>  'NNN'
+            ),
+            "should_return_language_by_has_questionable_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /languages.json?has_audio=y
+      * Language Index should return only languages with audio resources
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesWithAudioResources()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'     =>  $this->APIKey,
+                'has_audio'   =>  'Y'
+            ),
+            "should_return_language_with_audio_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertEquals('Y', $lang['AudioRecordings']);
+        }
+    }
+    /**
+      * GET /languages.json?has_audio=ysss
+      * Language Index should return an error if the value is too long
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfHasAudioIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'     =>  $this->APIKey,
+                'has_audio'   =>  'NNN'
+            ),
+            "should_return_language_by_has_audio_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /languages.json?has_four_laws=y
+      * Language Index should return only languages with 4 laws
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesWithFourLaws()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'has_four_laws'     =>  'Y'
+            ),
+            "should_return_language_with_four_laws_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertEquals('Y', $lang['FourLaws']);
+        }
+    }
+    /**
+      * GET /languages.json?has_four_laws=ysss
+      * Language Index should return an error if the value is too long
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfHasFourLawsIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'has_four_laws'     =>  'NNN'
+            ),
+            "should_return_language_by_has_four_laws_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /languages.json?has_jesus_film=y
+      * Language Index should return only languages with Jesus Film
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesWithJesusFilm()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'has_jesus_film'    =>  'Y'
+            ),
+            "should_return_language_with_jesus_film_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertEquals('Y', $lang['JF']);
+        }
+    }
+    /**
+      * GET /languages.json?has_jesus_film=ysss
+      * Language Index should return an error if the value is too long
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfHasJesusFilmIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'has_jesus_film'    =>  'NNN'
+            ),
+            "should_return_language_by_has_jesus_film_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /languages.json?has_gods_story=y
+      * Language Index should return only languages with God's Story
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesWithGodsStory()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'has_gods_story'    =>  'Y'
+            ),
+            "should_return_language_with_gods_story_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertEquals('Y', $lang['GodsStory']);
+        }
+    }
+    /**
+      * GET /languages.json?has_gods_story=ysss
+      * Language Index should return an error if the value is too long
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfHasGodsStoryIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'has_gods_story'    =>  'NNN'
+            ),
+            "should_return_language_by_has_gods_story_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /languages.json?countries=af|cn
+      * Language Index should return only languages based on countries spoken in
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesBasedOnCountries()
+    {
+        $expectedCountries = array('af', 'cn');
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'countries'         =>  implode("|", $expectedCountries)
+            ),
+            "should_return_language_based_on_country_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertTrue(in_array(strtolower($lang['ROG3']), $expectedCountries));
+        }
+    }
+    /**
+      * GET /languages.json?countries=af|cn
+      * Language Index should return an error if the value is too long
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfCountryIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'has_gods_story'    =>  'acdc|lklk'
+            ),
+            "should_return_language_by_countries_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /languages.json?world_speakers=1-10
+      * Language Index should return only languages with requested world speakers
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesBasedOnNumberOfWorldSpeakers()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'world_speakers'    =>  '1-10'
+            ),
+            "should_return_language_based_on_world_speakers_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertGreaterThanOrEqual(1, intval($lang['WorldSpeakers']));
+            $this->assertLessThanOrEqual(10, intval($lang['WorldSpeakers']));
+        }
+    }
+    /**
+      * GET /languages.json?population=300-1300
+      * Language Index should return only languages with requested population
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesBasedOnNumberOfPopulation()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'population'    =>  '300-1300'
+            ),
+            "should_return_language_based_on_population_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertGreaterThanOrEqual(300, intval($lang['JPPopulation']));
+            $this->assertLessThanOrEqual(1300, intval($lang['JPPopulation']));
+        }
+    }
+    /**
+      * GET /languages.json?pc_evangelical=16-40
+      * Language Index should return only languages with requested percent evangelical
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesBasedOnNumberOfPercentEvangelical()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'pc_evangelical'    =>  '16-40'
+            ),
+            "should_return_language_based_on_pc_evangelical_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertGreaterThanOrEqual(16.00, floatval($lang['PercentEvangelical']));
+            $this->assertLessThanOrEqual(40.00, floatval($lang['PercentEvangelical']));
+        }
+    }
+    /**
+      * GET /languages.json?pc_adherent=35-61
+      * Language Index should return only languages with requested percent adherent
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesBasedOnNumberOfPercentAdherent()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'pc_adherent'    =>  '35-61'
+            ),
+            "should_return_language_based_on_pc_adherent_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertGreaterThanOrEqual(35.00, floatval($lang['PercentAdherents']));
+            $this->assertLessThanOrEqual(61.00, floatval($lang['PercentAdherents']));
+        }
+    }
+    /**
+      * GET /languages.json?primary_religions=6|4
+      * Language Index should return only languages with requested primary religions
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesBasedOnNumberOfPrimaryReligions()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'primary_religions' =>  '6|4'
+            ),
+            "should_return_language_based_on_primary_religion_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertTrue(in_array(strtolower($lang['PrimaryReligion']), array('islam', 'ethnic religions')));
+        }
+    }
+    /**
+      * GET /languages.json?primary_religions=150
+      * Language Index should return an error if the value is wrong
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfPrimaryReligionIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'primary_religions' =>  '150'
+            ),
+            "should_return_language_by_primary_religions_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /languages.json?jpscale=2-4
+      * Language Index should return only languages with requested jpscale
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesBasedOnJPScale()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'jpscale'           =>  '2.2|3.1'
+            ),
+            "should_return_language_based_on_jpscale_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertTrue(in_array(floatval($lang['JPScale']), array(2.2, 3.1)));
+        }
+    }
+    /**
+      * GET /languages.json?jpscale=150
+      * Language Index should return an error if the value is wrong
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfJPScaleIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'jpscale'           =>  '150'
+            ),
+            "should_return_language_by_jpscale_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /languages.json?least_reached=n
+      * Language Index should return only languages with least reached
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesBasedOnLeastReached()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'least_reached'     =>  'n'
+            ),
+            "should_return_language_based_on_least_reached_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertNull($lang['LeastReached']);
+        }
+    }
+    /**
+      * GET /languages.json?least_reached=MNNN
+      * Language Index should return an error if the value is wrong
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfLeastReachedIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'least_reached'     =>  'NNNNNN'
+            ),
+            "should_return_language_by_least_reached_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
     }
     /**
      * gets an APIKey by sending a request to the /api_keys url

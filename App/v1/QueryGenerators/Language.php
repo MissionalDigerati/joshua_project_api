@@ -95,4 +95,201 @@ class Language extends QueryGenerator
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE ROL3 = :id LIMIT 1";
         $this->preparedVariables = array('id' => $id);
     }
+    /**
+     * Find all Languages by applying the supplied filters
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function findAllWithFilters()
+    {
+        $where = "";
+        $appendAndOnWhere = false;
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName;
+        if ($this->paramExists('countries')) {
+            $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['countries'], 2);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['countries'], 'ROG3');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('ids')) {
+            $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['ids'], 3);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['ids'], 'ROL3');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('has_audio')) {
+            $this->validator->stringLength(
+                $this->providedParams['has_audio'],
+                1
+            );
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['has_audio'],
+                'AudioRecordings',
+                'has_audio'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('has_completed_bible')) {
+            $this->validator->stringLength($this->providedParams['has_completed_bible'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBooleanBasedOnIfFieldHasContentOrNot(
+                $this->providedParams['has_completed_bible'],
+                'BibleYear'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('has_four_laws')) {
+            $this->validator->stringLength(
+                $this->providedParams['has_four_laws'],
+                1
+            );
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['has_four_laws'],
+                '4Laws',
+                'has_four_laws'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('has_jesus_film')) {
+            $this->validator->stringLength(
+                $this->providedParams['has_jesus_film'],
+                1
+            );
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['has_jesus_film'],
+                'JF',
+                'has_jesus_film'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('has_gods_story')) {
+            $this->validator->stringLength(
+                $this->providedParams['has_gods_story'],
+                1
+            );
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['has_gods_story'],
+                'GodsStory',
+                'has_gods_story'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('has_new_testament')) {
+            $this->validator->stringLength($this->providedParams['has_new_testament'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBooleanBasedOnIfFieldHasContentOrNot(
+                $this->providedParams['has_new_testament'],
+                'NTYear'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('has_portions')) {
+            $this->validator->stringLength($this->providedParams['has_portions'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBooleanBasedOnIfFieldHasContentOrNot(
+                $this->providedParams['has_portions'],
+                'PortionsYear'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('jpscale')) {
+            $this->validator->barSeperatedStringProvidesAcceptableValues($this->providedParams['jpscale'], array('1.1', '1.2', '2.1', '2.2', '3.1', '3.2'));
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['jpscale'], 'JPScale');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('least_reached')) {
+            $this->validator->stringLength($this->providedParams['least_reached'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean($this->providedParams['least_reached'], 'LeastReached', 'least_reached');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('needs_translation_questionable')) {
+            $this->validator->stringLength(
+                $this->providedParams['needs_translation_questionable'],
+                1
+            );
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['needs_translation_questionable'],
+                'TranslationNeedQuestionable',
+                'questionable_need'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_adherent')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_adherent'], 'PercentAdherents', 'pc_adherent');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_evangelical')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_evangelical'], 'PercentEvangelical', 'pc_evangelical');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('population')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['population'], 'JPPopulation', 'pop');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('primary_religions')) {
+            $religions = explode('|', $this->providedParams['primary_religions']);
+            foreach ($religions as $religion) {
+                $this->validator->integerInRange($religion, 1, 9, array(3));
+            }
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['primary_religions'], 'RLG3');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('world_speakers')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['world_speakers'], 'WorldSpeakers', 'world_speak');
+            $appendAndOnWhere = true;
+        }
+        if ($where != "") {
+            $this->preparedStatement .= " WHERE " . $where;
+        }
+        $this->preparedStatement .= " " . $this->defaultOrderByStatement . " ";
+        $this->addLimitFilter();
+    }
 }

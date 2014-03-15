@@ -391,7 +391,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="countries",
- *                  description="A bar separated list of one or more countries to filter by. Use the 2 letter ISO code.  See http://www.joshuaproject.net/global-countries.php for the codes.",
+ *                  description="A bar separated list of one or more countries to filter by. Use the 2 letter ISO code.  See <a href='https://www.iso.org/obp/ui/#search' target='_blank'>ISO.org</a> for the codes.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
