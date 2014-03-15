@@ -171,6 +171,21 @@ class Language extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('has_gods_story')) {
+            $this->validator->stringLength(
+                $this->providedParams['has_gods_story'],
+                1
+            );
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['has_gods_story'],
+                'GodsStory',
+                'has_gods_story'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('has_new_testament')) {
             $this->validator->stringLength($this->providedParams['has_new_testament'], 1);
             if ($appendAndOnWhere === true) {
