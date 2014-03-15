@@ -21,7 +21,62 @@
  * 
  */
 use Swagger\Annotations as SWG;
-
+/**
+ * @SWG\Resource(
+ *     apiVersion="1",
+ *     swaggerVersion="1.1",
+ *     resourcePath="/languages",
+ *     basePath="http://jpapi.codingstudio.org/v1"
+ * )
+ */
+/**
+  * 
+  * @SWG\API(
+  *  path="/languages/{id}.{format}",
+  *  description="Retrieve the details of a specific Language.",
+  *  @SWG\Operations(
+  *      @SWG\Operation(
+  *          httpMethod="GET",
+  *          nickname="languageShow",
+  *          summary="Retrieve the details of a specific Language (JSON or XML)",
+  *          notes="Retrieve the details of a specific Language by supplying the language's 3 letter ISO 639-2 Code (id).",
+  *          @SWG\Parameters(
+  *              @SWG\Parameter(
+  *                  name="api_key",
+  *                  description="Your Joshua Project API key.",
+  *                  paramType="query",
+  *                  required="true",
+  *                  allowMultiple="false",
+  *                  dataType="string"
+  *              ),
+  *              @SWG\Parameter(
+  *                  name="id",
+  *                  description="The 3 letter ISO 639-2 Language Code for the Language you want to view. [<a href='http://goo.gl/gbkgo4' target='_blank'>View all Language Codes</a>]",
+  *                  paramType="path",
+  *                  required="true",
+  *                  allowMultiple="false",
+  *                  dataType="string"
+  *              )
+  *          ),
+  *          @SWG\ErrorResponses(
+  *              @SWG\ErrorResponse(
+  *                  code="400",
+  *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="401",
+  *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="404",
+  *                  reason="Not found.  Your search ended up with no results."
+  *              )
+  *          )
+  *      )
+  *  )
+  * )
+  * 
+  */
 $app->get(
     "/:version/languages/:id\.:format",
     function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
