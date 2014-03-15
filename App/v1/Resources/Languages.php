@@ -99,7 +99,7 @@ $app->get(
              *
              * @author Johnathan Pulos
              */
-            $cacheKey = md5("LanguageShowId_".$countryId);
+            $cacheKey = md5("LanguageShowId_".$languageId);
             $data = $cache->get($cacheKey);
             if ((is_array($data)) && (!empty($data))) {
                 $gotCachedData = true;
@@ -340,7 +340,7 @@ $app->get(
              *
              * @author Johnathan Pulos
              */
-            $cacheKey = md5("LanguageIndexId_".$countryId);
+            $cacheKey = md5("LanguageIndex");
             $data = $cache->get($cacheKey);
             if ((is_array($data)) && (!empty($data))) {
                 $gotCachedData = true;
