@@ -742,7 +742,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-      * GET /languages.json?has_jesus_film=ysss
+      * GET /languages.json?has_gods_story=ysss
       * Language Index should return an error if the value is too long
       *
       * @access public
@@ -757,6 +757,51 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
                 'has_gods_story'    =>  'NNN'
             ),
             "should_return_language_by_has_gods_story_wrong_value_index_json"
+        );
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+      * GET /languages.json?countries=af|cn
+      * Language Index should return only languages based on countries spoken in
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesBasedOnCountries()
+    {
+        $expectedCountries = array('af', 'cn');
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'countries'         =>  implode("|", $expectedCountries)
+            ),
+            "should_return_language_based_on_country_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertTrue(in_array(strtolower($lang['ROG3']), $expectedCountries));
+        }
+    }
+    /**
+      * GET /languages.json?countries=af|cn
+      * Language Index should return an error if the value is too long
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnErrorIfCountryIsWrong()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'has_gods_story'    =>  'acdc|lklk'
+            ),
+            "should_return_language_by_countries_wrong_value_index_json"
         );
         $this->assertEquals(400, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));

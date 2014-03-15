@@ -304,4 +304,25 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
             $this->assertNull($lang['GodsStory']);
         }
     }
+    /**
+     * findAllWithFilters() should limit based on countries
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByCountry()
+    {
+        $expected = array('countries'   =>  'af|ni');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        $countries = explode("|", $expected['countries']);
+        foreach ($data as $lang) {
+            $this->assertTrue(in_array(strtolower($lang['ROG3']), $countries));
+        }
+    }
 }
