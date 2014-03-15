@@ -882,6 +882,31 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+      * GET /languages.json?pc_adherent=35-61
+      * Language Index should return only languages with requested percent adherent
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesBasedOnNumberOfPercentAdherent()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'pc_adherent'    =>  '35-61'
+            ),
+            "should_return_language_based_on_pc_adherent_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertGreaterThanOrEqual(35.00, floatval($lang['PercentAdherents']));
+            $this->assertLessThanOrEqual(61.00, floatval($lang['PercentAdherents']));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string

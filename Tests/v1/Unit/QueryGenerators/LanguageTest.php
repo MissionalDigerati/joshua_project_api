@@ -366,7 +366,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-     * findAllWithFilters() should limit based on percent evngelical
+     * findAllWithFilters() should limit based on percent evangelical
      *
      * @return void
      * @access public
@@ -383,6 +383,26 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
             $this->assertEquals(3.25, floatval($lang['PercentEvangelical']));
+        }
+    }
+    /**
+     * findAllWithFilters() should limit based on percent adherent
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByAdherent()
+    {
+        $expected = array('pc_adherent'   =>  '60');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertEquals(60, floatval($lang['PercentAdherents']));
         }
     }
 }

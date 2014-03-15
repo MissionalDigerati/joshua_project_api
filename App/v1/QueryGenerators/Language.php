@@ -231,6 +231,13 @@ class Language extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('pc_adherent')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_adherent'], 'PercentAdherents', 'pc_adherent');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('pc_evangelical')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
