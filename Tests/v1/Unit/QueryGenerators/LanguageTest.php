@@ -184,4 +184,24 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
             $this->assertNull($lang['PortionsYear']);
         }
     }
+    /**
+     * findAllWithFilters() should limit based on has_completed_bible
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByNotHavingCompletedBible()
+    {
+        $expected = array('has_completed_bible'   =>  'N');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertNull($lang['BibleYear']);
+        }
+    }
 }
