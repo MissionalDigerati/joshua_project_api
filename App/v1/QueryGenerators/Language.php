@@ -107,7 +107,17 @@ class Language extends QueryGenerator
         $where = "";
         $appendAndOnWhere = false;
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName;
-
+        if ($this->paramExists('ids')) {
+            $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['ids'], 3);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['ids'], 'ROL3');
+            $appendAndOnWhere = true;
+        }
+        if ($where != "") {
+            $this->preparedStatement .= " WHERE " . $where;
+        }
         $this->preparedStatement .= " " . $this->defaultOrderByStatement . " ";
         $this->addLimitFilter();
     }

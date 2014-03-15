@@ -124,4 +124,24 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(empty($data));
         $this->assertEquals($expected['limit'], count($data));
     }
+    /**
+     * findAllWithFilters() should limit based on passed ids
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindWithFiltersShouldLimitByASetOfIDS()
+    {
+        $expected = array('ids'   =>  'ace|boj|smf');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertTrue(in_array(strtolower($lang['ROL3']), explode("|", $expected['ids'])));
+        }
+    }
 }
