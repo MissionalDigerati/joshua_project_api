@@ -110,6 +110,7 @@ class Country extends QueryGenerator
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('ids')) {
+            $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['ids'], 2);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
