@@ -857,6 +857,31 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+      * GET /languages.json?pc_evangelical=16-40
+      * Language Index should return only languages with requested percent evangelical
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguagesBasedOnNumberOfPercentEvangelical()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'pc_evangelical'    =>  '16-40'
+            ),
+            "should_return_language_based_on_pc_evangelical_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertGreaterThanOrEqual(16.00, floatval($lang['PercentEvangelical']));
+            $this->assertLessThanOrEqual(40.00, floatval($lang['PercentEvangelical']));
+        }
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string
