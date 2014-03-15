@@ -93,7 +93,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShouldRefuseAccessWithoutAnAPIKey()
+    public function testShowShouldRefuseAccessWithoutAnAPIKey()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages/aar.json",
@@ -108,7 +108,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShouldRefuseAccessWithoutAVersionNumber()
+    public function testShowShouldRefuseAccessWithoutAVersionNumber()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/languages/aar.json",
@@ -123,7 +123,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShouldRefuseAccessWithoutActiveAPIKey()
+    public function testShowShouldRefuseAccessWithoutActiveAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -139,7 +139,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShouldRefuseAccessWithSuspendedAPIKey()
+    public function testShowShouldRefuseAccessWithSuspendedAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -155,10 +155,10 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShouldRefuseAccessWithABadAPIKey()
+    public function testShowShouldRefuseAccessWithABadAPIKey()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/v1/people_groups/aar.json",
+            "http://joshua.api.local/v1/languages/aar.json",
             array('api_key' => 'BADKEY'),
             "bad_key_json"
         );
@@ -238,6 +238,107 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedLanguageCode, strtolower($decodedResponse[0]['ROL3']));
         $this->assertEquals($expectedLanguage, strtolower($decodedResponse[0]['Language']));
         $this->assertEquals($expectedHubCountry, strtolower($decodedResponse[0]['HubCountry']));
+    }
+    /**
+     * Tests that you can only access page with an API Key
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testIndexShouldRefuseAccessWithoutAnAPIKey()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array(),
+            "index_up_json"
+        );
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+    }
+    /**
+     * Tests that you can only access page with a version number
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testIndexShouldRefuseAccessWithoutAVersionNumber()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/languages.json",
+            array('api_key' => $this->APIKey),
+            "index_versioning_missing_json"
+        );
+        $this->assertEquals(404, $this->cachedRequest->responseCode);
+    }
+    /**
+     * Tests that you can not access page without an active API Key
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testIndexShouldRefuseAccessWithoutActiveAPIKey()
+    {
+        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/languages.json",
+            array('api_key' => $this->APIKey),
+            "index_non_active_key_json"
+        );
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+    }
+    /**
+     * Tests that you can not access page with a suspended API Key
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testIndexShouldRefuseAccessWithSuspendedAPIKey()
+    {
+        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/languages.json",
+            array('api_key' => $this->APIKey),
+            "index_suspended_key_json"
+        );
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+    }
+    /**
+     * Tests that you can only access page with a valid API Key
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testIndexShouldRefuseAccessWithABadAPIKey()
+    {
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array('api_key' => 'BADKEY'),
+            "index_bad_key_json"
+        );
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+    }
+    /**
+      * GET /languages.json
+      * Language Index should return the correct data
+      *
+      * @access public
+      * @author Johnathan Pulos
+      */
+    public function testLanguageIndexShouldReturnLanguageDataInJSON()
+    {
+        $expectedLanguageCount = 100;
+        $expectedFirstLanguage = "a'ou";
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/languages.json",
+            array('api_key' => $this->APIKey),
+            "should_return_language_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        $this->assertTrue(is_array($decodedResponse));
+        $this->assertFalse(empty($decodedResponse));
+        $this->assertEquals($expectedLanguageCount, count($decodedResponse));
+        $this->assertEquals($expectedFirstLanguage, strtolower($decodedResponse[0]['Language']));
     }
     /**
      * gets an APIKey by sending a request to the /api_keys url

@@ -95,4 +95,20 @@ class Language extends QueryGenerator
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE ROL3 = :id LIMIT 1";
         $this->preparedVariables = array('id' => $id);
     }
+    /**
+     * Find all Languages by applying the supplied filters
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function findAllWithFilters()
+    {
+        $where = "";
+        $appendAndOnWhere = false;
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName;
+
+        $this->preparedStatement .= " " . $this->defaultOrderByStatement . " ";
+        $this->addLimitFilter();
+    }
 }

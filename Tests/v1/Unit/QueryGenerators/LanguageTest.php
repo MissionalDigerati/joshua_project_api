@@ -86,4 +86,24 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedLanguage, strtolower($data[0]['Language']));
         $this->assertEquals($expectedHubCountry, strtolower($data[0]['HubCountry']));
     }
+    /**
+     * findAllWithFilters() should return all the Languages if no filters applied
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testFindAllWithFiltersShouldReturnAllLanguagesWithoutFilters()
+    {
+        $expectedCount = 100;
+        $expectedFirstLanguage = "a'ou";
+        $language = new \QueryGenerators\Language(array());
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        $this->assertEquals($expectedCount, count($data));
+        $this->assertEquals($expectedFirstLanguage, strtolower($data[0]['Language']));
+    }
 }

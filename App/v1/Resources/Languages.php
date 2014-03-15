@@ -99,7 +99,7 @@ $app->get(
              *
              * @author Johnathan Pulos
              */
-            $cacheKey = md5("CountryShowId_".$countryId);
+            $cacheKey = md5("LanguageShowId_".$countryId);
             $data = $cache->get($cacheKey);
             if ((is_array($data)) && (!empty($data))) {
                 $gotCachedData = true;
@@ -109,6 +109,55 @@ $app->get(
             try {
                 $lang = new \QueryGenerators\Language(array('id' => $languageId));
                 $lang->findById();
+                $statement = $db->prepare($lang->preparedStatement);
+                $statement->execute($lang->preparedVariables);
+                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
+                exit;
+            }
+        }
+        if (($useCaching === true) && ($gotCachedData === false)) {
+            /**
+             * Set the data to the cache using it's cache key, and expire it in 1 day
+             *
+             * @author Johnathan Pulos
+             */
+            $cache->set($cacheKey, $data, 86400);
+        }
+        /**
+         * Render the final data
+         *
+         * @author Johnathan Pulos
+         */
+        if ($format == 'json') {
+            echo json_encode($data);
+        } else {
+            echo arrayToXML($data, "languages", "language");
+        }
+    }
+);
+$app->get(
+    "/:version/languages\.:format",
+    function ($version, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
+        $data = array();
+        $gotCachedData = false;
+        if ($useCaching === true) {
+            /**
+             * Check the cache
+             *
+             * @author Johnathan Pulos
+             */
+            $cacheKey = md5("LanguageIndexId_".$countryId);
+            $data = $cache->get($cacheKey);
+            if ((is_array($data)) && (!empty($data))) {
+                $gotCachedData = true;
+            }
+        }
+        if (empty($data)) {
+            try {
+                $lang = new \QueryGenerators\Language($appRequest->params());
+                $lang->findAllWithFilters();
                 $statement = $db->prepare($lang->preparedStatement);
                 $statement->execute($lang->preparedVariables);
                 $data = $statement->fetchAll(PDO::FETCH_ASSOC);
