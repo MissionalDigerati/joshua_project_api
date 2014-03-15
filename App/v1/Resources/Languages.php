@@ -137,6 +137,198 @@ $app->get(
         }
     }
 );
+/**
+ * 
+ * @SWG\API(
+ *  path="/languages.{format}",
+ *  description="Find all Languages that match your filter criteria.",
+ *  @SWG\Operations(
+ *      @SWG\Operation(
+ *          httpMethod="GET",
+ *          nickname="getAllLanguageWithFilters",
+ *          summary="Search all Languages with diverse filters (JSON or XML)",
+ *          notes="Retrieve a list of Languages that match your filter settings.",
+ *          @SWG\Parameters(
+ *              @SWG\Parameter(
+ *                  name="api_key",
+ *                  description="Your Joshua Project API key.",
+ *                  paramType="query",
+ *                  required="true",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="countries",
+ *                  description="A bar separated list of one or more countries to filter by. Use the 2 letter ISO code.  See <a href='https://www.iso.org/obp/ui/#search' target='_blank'>ISO.org</a> for the codes.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="has_audio",
+ *                  description="A boolean that states whether you want Languages who have access to audio Bibles. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="has_completed_bible",
+ *                  description="A boolean that states whether you want Languages who have access to a completed Bible. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="has_four_laws",
+ *                  description="A boolean that states whether you want Languages who have access to the 4 Spiritual Laws. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="has_gods_story",
+ *                  description="A boolean that states whether you want Languages who have access to the God's Story resource. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="has_jesus_film",
+ *                  description="A boolean that states whether you want Languages who have access to the Jesus Film. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="has_new_testament",
+ *                  description="A boolean that states whether you want Languages who have access to the New Testament. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="has_portions",
+ *                  description="A boolean that states whether you want Languages who have access to the portions of the Bible. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="ids",
+ *                  description="A bar separated list of one or more language codes to filter by. Use the 3 letter ISO code.  See <a href='http://goo.gl/EQn1RL' target='_blank'>this chart</a> for the codes.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="jpscale",
+ *                  description="A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1.1, 1.2, 2.1, 2.2, 3.1, 3.2.  For more information check out <a href='http://joshuaproject.net/progress-scale-definition.php' target='_blank'>http://joshuaproject.net/progress-scale-definition.php</a>.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="least_reached",
+ *                  description="A boolean that states whether you want Languages that are least reached. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="limit",
+ *                  description="The maximum results to return. (Defaults to 100)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="needs_translation_questionable",
+ *                  description="A boolean that states whether you want Languages whose need for Bible translation is questionable. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="page",
+ *                  description="The page of results to display  (Defaults to 1)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_adherent",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Adherents.(min-max) You can supply just the minimum to get Languages matching that percentage.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="pc_evangelical",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="population",
+ *                  description="A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get Languages matching that number.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="primary_religions",
+ *                  description="A bar separated list of one or more primary religions to filter by. Use the following numbers:<br><ul><li>1 - Christianity</li><li>2 - Buddhism</li><li>4 - Ethnic Religions</li><li>5 - Hinduism</li><li>6 - Islam</li><li>7 - Non-Religious</li><li>8 - Other/Small</li><li>9 - Unknown</li></ul>",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="world_speakers",
+ *                  description="A dashed seperated range specifying the minimum and maximum number of world speakers.(min-max) You can supply just the minimum to get Languages matching that number of world speakers.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              )
+ *          ),
+ *          @SWG\ErrorResponses(
+ *              @SWG\ErrorResponse(
+ *                  code="400",
+ *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
+ *              ),
+ *              @SWG\ErrorResponse(
+ *                  code="401",
+ *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
+ *              ),
+ *              @SWG\ErrorResponse(
+ *                  code="404",
+ *                  reason="Not found.  Your search ended up with no results."
+ *              )
+ *          )
+ *      )
+ *  )
+ * )
+ * 
+ */
 $app->get(
     "/:version/languages\.:format",
     function ($version, $format) use ($app, $db, $appRequest, $useCaching, $cache) {

@@ -8,7 +8,7 @@
         },
         {
             "path": "/resources/languages.{format}",
-            "description": "Retrieve the details of a specific Language."
+            "description": "Find all Languages that match your filter criteria."
         },
         {
             "path": "/resources/people_groups.{format}",
