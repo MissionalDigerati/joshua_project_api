@@ -380,6 +380,19 @@ $app->get(
     "/:version/countries\.:format",
     function ($version, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
         $data = array();
+        $gotCachedData = false;
+        if ($useCaching === true) {
+            /**
+             * Check the cache
+             *
+             * @author Johnathan Pulos
+             */
+            $cacheKey = md5("CountryIndex");
+            $data = $cache->get($cacheKey);
+            if ((is_array($data)) && (!empty($data))) {
+                $gotCachedData = true;
+            }
+        }
         if (empty($data)) {
             try {
                 $country = new \QueryGenerators\Country($appRequest->params());
@@ -391,6 +404,14 @@ $app->get(
                 $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
                 exit;
             }
+        }
+        if (($useCaching === true) && ($gotCachedData === false)) {
+            /**
+             * Set the data to the cache using it's cache key, and expire it in 1 day
+             *
+             * @author Johnathan Pulos
+             */
+            $cache->set($cacheKey, $data, 86400);
         }
         /**
          * Render the final data
