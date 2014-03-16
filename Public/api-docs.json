@@ -17,6 +17,10 @@
         {
             "path": "/resources/people_groups.{format}",
             "description": "Find all People Groups that match your filter criteria."
+        },
+        {
+            "path": "/resources/regions.{format}",
+            "description": "Retrieve the details of a specific Region."
         }
     ]
 }

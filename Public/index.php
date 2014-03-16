@@ -296,6 +296,20 @@ if (strpos($requestedUrl, 'continents') !== false) {
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Continents.php");
 }
 /**
+ * Are we searching API for Regions?
+ *
+ * @author Johnathan Pulos
+ */
+if (strpos($requestedUrl, 'regions') !== false) {
+    /**
+     * Load the Query Generator for Regions
+     *
+     * @author Johnathan Pulos
+     */
+    $loader->add("QueryGenerators\Region", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/Regions.php");
+}
+/**
  * Now run the Slim Framework rendering
  *
  * @author Johnathan Pulos

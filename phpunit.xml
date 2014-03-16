@@ -19,5 +19,9 @@
             <file>Tests/v1/Integration/PeopleGroupsTest.php</file>
             <file>Tests/v1/Unit/QueryGenerators/PeopleGroupTest.php</file>
         </testsuite>
+        <testsuite name="Region">
+            <file>Tests/v1/Integration/RegionsTest.php</file>
+            <file>Tests/v1/Unit/QueryGenerators/RegionTest.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>
