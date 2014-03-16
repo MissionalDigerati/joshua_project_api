@@ -3,6 +3,10 @@
     "swaggerVersion": "1.1",
     "apis": [
         {
+            "path": "/resources/continents.{format}",
+            "description": "Retrieve the details of a specific Continent."
+        },
+        {
             "path": "/resources/countries.{format}",
             "description": "Find all Countries that match your filter criteria."
         },

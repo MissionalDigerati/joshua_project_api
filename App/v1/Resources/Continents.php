@@ -39,7 +39,7 @@ use Swagger\Annotations as SWG;
   *          httpMethod="GET",
   *          nickname="continentShow",
   *          summary="Retrieve the details of a specific Continent (JSON or XML)",
-  *          notes="Retrieve the details of a specific Continent by supplying a three letter ISO Continent code (id).  Use the following codes:<br><ul><li>AFR - Africa</li><li>ASI - Asia</li><li>AUS - Australia</li><li>EUR - Europe</li><li>NAR - North America</li><li>SOP - Oceania (South Pacific)</li><li>LAM - South America</li></ul>",
+  *          notes="Retrieve the details of a specific Continent by supplying a three letter ISO Continent code (id).  Use the following codes:<br><ul><li>AFR - Africa</li><li>ASI  - Asia</li><li>AUS - Australia</li><li>EUR - Europe</li><li>NAR - North America</li><li>SOP - Oceania (South Pacific)</li><li>LAM - South America</li></ul>",
   *          @SWG\Parameters(
   *              @SWG\Parameter(
   *                  name="api_key",
