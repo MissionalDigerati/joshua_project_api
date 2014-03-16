@@ -27,7 +27,7 @@
                 </tr>
                 <tr>
                     <td>NbrPGIC</td>
-                    <td>The fnumber of people groups living on the continent.</td>
+                    <td>The number of people groups living on the continent.</td>
                 </tr>
                 <tr>
                     <td>PercentLR</td>
