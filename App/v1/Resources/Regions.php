@@ -29,6 +29,54 @@ use Swagger\Annotations as SWG;
  *     basePath="http://jpapi.codingstudio.org/v1"
  * )
  */
+/**
+  * 
+  * @SWG\API(
+  *  path="/regions/{id}.{format}",
+  *  description="Retrieve the details of a specific Region.",
+  *  @SWG\Operations(
+  *      @SWG\Operation(
+  *          httpMethod="GET",
+  *          nickname="regionShow",
+  *          summary="Retrieve the details of a specific Region (JSON or XML)",
+  *          notes="Retrieve the details of a specific Region by supplying a unique id for the region.  Use the following numbers:<br><ul><li>1 - South Pacific</li><li>2 - Southeast Asia</li><li>3 - Northeast Asia</li><li>4 - South Asia</li><li>5 - Central Asia</li><li>6 - Middle East and North Africa</li><li>7 - East and Southern Africa</li><li>8 - West and Central Africa</li><li>9 - Eastern Europe and Eurasia</li><li>10 - Western Europe</li><li>11 - Central and South America</li><li>12 - North America and Caribbean</li></ul>",
+  *          @SWG\Parameters(
+  *              @SWG\Parameter(
+  *                  name="api_key",
+  *                  description="Your Joshua Project API key.",
+  *                  paramType="query",
+  *                  required="true",
+  *                  allowMultiple="false",
+  *                  dataType="string"
+  *              ),
+  *              @SWG\Parameter(
+  *                  name="id",
+  *                  description="The unique id for the region. Use the codes indicated above.",
+  *                  paramType="path",
+  *                  required="true",
+  *                  allowMultiple="false",
+  *                  dataType="int"
+  *              )
+  *          ),
+  *          @SWG\ErrorResponses(
+  *              @SWG\ErrorResponse(
+  *                  code="400",
+  *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="401",
+  *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="404",
+  *                  reason="Not found.  Your search ended up with no results."
+  *              )
+  *          )
+  *      )
+  *  )
+  * )
+  * 
+  */
 $app->get(
     "/:version/regions/:id\.:format",
     function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
