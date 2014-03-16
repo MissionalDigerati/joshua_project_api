@@ -21,6 +21,20 @@
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  */
 /**
+ * Get the column descriptions for the continents
+ *
+ * GET /:version/docs/column_descriptions/continents
+ * Available Formats HTML
+ * 
+ * @author Johnathan Pulos
+ */
+$app->get(
+    "/:version/docs/column_descriptions/continents",
+    function ($version) use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
+        $app->render('Docs/ColumnDescriptions/continents.html.php', array('VIEW_DIRECTORY' => $VIEW_DIRECTORY));
+    }
+);
+/**
  * Get the column descriptions for the countries
  *
  * GET /:version/docs/column_descriptions/countries
