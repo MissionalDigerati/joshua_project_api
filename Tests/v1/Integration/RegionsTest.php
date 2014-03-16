@@ -199,6 +199,27 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isXML($response));
     }
     /**
+     * GET /regions/[id].json
+     * test page returns the region requested
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testRegionsShowShouldRetrieveTheAppropriateRegion()
+    {
+        $regionId = 10;
+        $expectedRegion = 'western europe';
+        $response = $this->cachedRequest->get(
+            "http://joshua.api.local/v1/regions/" . $regionId . ".json",
+            array('api_key' => $this->APIKey),
+            "show_returns_appropriate_region"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals($regionId, intval($decodedResponse[0]['RegionCode']));
+        $this->assertEquals($expectedRegion, strtolower($decodedResponse[0]['RegionName']));
+    }
+    /**
      * gets an APIKey by sending a request to the /api_keys url
      *
      * @return string

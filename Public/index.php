@@ -306,7 +306,7 @@ if (strpos($requestedUrl, 'regions') !== false) {
      *
      * @author Johnathan Pulos
      */
-    // $loader->add("QueryGenerators\Continent", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    $loader->add("QueryGenerators\Region", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Regions.php");
 }
 /**

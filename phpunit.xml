@@ -21,6 +21,7 @@
         </testsuite>
         <testsuite name="Region">
             <file>Tests/v1/Integration/RegionsTest.php</file>
+            <file>Tests/v1/Unit/QueryGenerators/RegionTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

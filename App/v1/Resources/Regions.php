@@ -32,21 +32,41 @@ use Swagger\Annotations as SWG;
 $app->get(
     "/:version/regions/:id\.:format",
     function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
-        $data = array('test' => array('goober' => true));
+        $data = array();
         $gotCachedData = false;
+        /**
+         * Make sure we have an ID, else crash
+         *
+         * @author Johnathan Pulos
+         */
+        $regionId = intval(strip_tags($id));
+        if ((empty($regionId)) || ($regionId > 12)) {
+            $app->render("/errors/404." . $format . ".php");
+            exit;
+        }
         if ($useCaching === true) {
             /**
              * Check the cache
              *
              * @author Johnathan Pulos
              */
-            $cacheKey = md5("RegionShowId_".$id);
+            $cacheKey = md5("RegionShowId_".$regionId);
             $data = $cache->get($cacheKey);
             if ((is_array($data)) && (!empty($data))) {
                 $gotCachedData = true;
             }
         }
         if (empty($data)) {
+            try {
+                $region = new \QueryGenerators\Region(array('id' => $regionId));
+                $region->findById();
+                $statement = $db->prepare($region->preparedStatement);
+                $statement->execute($region->preparedVariables);
+                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
+                exit;
+            }
         }
         if (($useCaching === true) && ($gotCachedData === false)) {
             /**
