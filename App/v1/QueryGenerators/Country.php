@@ -23,10 +23,27 @@
 namespace QueryGenerators;
 
 /**
- * A class that creates the prepared statement, and sets up the variables for a PDO prepared statement query.
- * These queries specifically work with the Country data.
+ * Generates the PDO prepared statements and variables for Countries.
  *
- * @package default
+ * A class that creates the prepared statement, and sets up the variables for a PDO prepared statement query.
+ * Once you call a method like findById,  you can get the prepared statement by reading the class variable
+ * $preparedStatement.  You can retrieve the prepared variables by reading the class variable $preparedVariables.
+ * So here is an example using the Continents Query Generator to find a continent by id:
+ * <pre><code>
+ * &lt;?php
+ * // Initialize the class, and pass in the id.
+ * $continent = new \QueryGenerators\Continent(array('id' => 'AFR'));
+ * // Call the method you want.
+ * $continent->findById();
+ * // Using PDO prepare the statement.
+ * $statement = $db->prepare($continent->preparedStatement);
+ * // Execute the query with the prepared params.
+ * $statement->execute($continent->preparedVariables);
+ * // Fetch the final results.
+ * $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+ * ?&gt;
+ * </code></pre>
+ *
  * @author Johnathan Pulos
  */
 class Country extends QueryGenerator
@@ -39,34 +56,36 @@ class Country extends QueryGenerator
      */
     protected $fieldsToSelectArray = array('JPScaleCtry', 'Ctry', 'ReligionPrimary', 'RLG3Primary', 'RLG4Primary', 'ROG2', 'ROG3', 'PercentAnglican', 'PercentBuddhism', 'PercentChristianity', 'PercentEthnicReligions', 'PercentEvangelical', 'PercentHinduism', 'PercentIndependent', 'PercentIslam', 'PercentNonReligious', 'PercentOtherSmall', 'PercentOrthodox', 'PercentOther', 'PercentProtestant', 'PercentRomanCatholic', 'PercentUnknown', 'ROL3OfficialLanguage', 'ROL3SecondaryLanguage', 'RLG3Primary', 'RegionCode', 'InternetCtryCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'AltName', 'Capital', 'Population', 'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles', 'AreaSquareKilometers', 'PopulationPerSquareMile', 'CountryPhoneCode', 'SecurityLevel', 'LibraryCongressReportExists', 'IsCountry', 'StonyGround', 'USAPostalSystem', 'ReligionDataYear', 'LiteracyCategory', 'LiteracyRate', 'LiteracyRange', 'LiteracySource', 'CountryNotes', 'PercentDoublyProfessing', 'HDIYear', 'HDIValue', 'HDIRank', 'StateDeptReligiousFreedom', 'Source', 'UNMap', 'PercentUrbanized', 'PrayercastVideo', 'WINCountryProfile');
     /**
-     * The table to pull the data from
+     * The Database table to pull the data from.
      *
      * @var string
      * @access protected
      */
     protected $tableName = "jpcountries";
     /**
-     * A string that will hold the default order by for the Select statement
+     * A string that will hold the default MySQL ORDER BY for the Select statement.
      *
      * @var string
      * @access protected
      */
     protected $defaultOrderByStatement = "ORDER BY Ctry ASC";
     /**
-     * An array of table columns (key) and their alias (value)
+     * An array of table columns (key) and their alias (value).
      *
      * @var array
      * @access protected
      **/
     protected $aliasFields = array('10_40Window'    =>  'Window1040');
     /**
-     * Construct the class
+     * Construct the Continent class.
      *
-     * @param array $getParams the params to use for the query.  Each message has required fields, and will throw error
-     * if they are missing
-     * 
-     * @access public
-     * @author Johnathan Pulos
+     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.  Some of the methods in this class require
+     * certain keys to be set, or it will throw an error.  The comments will state the required keys.
+     *
+     * @param   array   $getParams  The GET params to use for the query.
+     * @return  void
+     * @access  public
+     * @author  Johnathan Pulos
      */
     public function __construct($getParams)
     {
@@ -76,9 +95,14 @@ class Country extends QueryGenerator
         $this->selectFieldsStatement .= ", " . str_replace('JPScale', 'JPScaleCtry', $this->JPScaleImageURLSelectStatement) . " as JPScaleImageURL";
     }
     /**
-     * Find the Country by it's ID (ROG3) or ISO2
+     * Find a country by it's id.
+     *
+     * Find a country using it's <a href="http://goo.gl/31Gf" target="_blank">ISO 2 Letter code</a>,
+     * or the Joshua Projects ROG3 id.
+     * <strong>Requires $providedParams['id']:</strong> The three letter ISO code.
      *
      * @return void
+     * @throws \InvalidArgumentException If the 'id' key is not set on the $providedParams class variable.
      * @access public
      * @author Johnathan Pulos
      */
@@ -89,10 +113,13 @@ class Country extends QueryGenerator
         $this->preparedVariables = array('id' => $id);
     }
     /**
-     * Find all countries using the provided filters
+     * Find all countries using specified filters.
+     *
+     * Find all countries using a wide range of filters.  To see the types of filters, checkout the Swagger documentation of the API.
      *
      * @return void
      * @access public
+     * @throws \InvalidArgumentException When you set a filter, but fail to provide a valid parameter
      * @author Johnathan Pulos
      **/
     public function findAllWithFilters()
