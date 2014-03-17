@@ -23,20 +23,25 @@
 namespace Utilities;
 
 /**
- * A class that handles validation of the API supplied data
+ * A class that handles validation of supplied GET parameters.
  *
- * @package default
+ * This class offers a variety of methods for validating GET data passed from a user.
+ *
  * @author Johnathan Pulos
  */
 class Validator
 {
     /**
-     * Checks $providedParams to see that the $requiredKeys are set, and throws an error if it is not set
+     * Do the $requiredKeys exist?
      *
-     * @param array $providedParams An array of the given parameters with their values to check
-     * @param array $requiredKeys An array of the required keys to check
-     * @return void
-     * @throws InvalidArgumentException if the param does not exist
+     * Checks weather the $providedParams array has the $requiredKeys.  It checks to see if the key exists, and wether the value
+     * is set.  Throws an error if it does not pass these checks.
+     *
+     * @param   array   $providedParams     An array to check.
+     * @param   array   $requiredKeys       An array of keys that are required.
+     * @return  void
+     * @throws  \InvalidArgumentException   If the required key does not exist.
+     * @throws  \InvalidArgumentException   If the keys value is not set.
      * @access public
      * @author Johnathan Pulos
      **/
@@ -52,14 +57,17 @@ class Validator
         }
     }
     /**
-     * Checks the values of a bar seperated string ($barSeperatedString) that they are acceptable ($acceptableValues)
+     * Validate all values in a piped (barred) string are acceptable.
      *
-     * @param string $barSeperatedString the bar seperated string to evaluate
-     * @param array $acceptableValues an array of values that are acceptable
-     * @return void
-     * @throws InvalidArgumentException if a value is not acceptable
-     * @access public
-     * @author Johnathan Pulos
+     * Checks the values of a piped (barred) seperated string that they each value is acceptable.  This method takes each item in $barSeperatedString,
+     * and checks if the key exists in the $acceptableValues.  If not then it will throw an error.
+     *
+     * @param   string  $barSeperatedString     The bar seperated string to evaluate.
+     * @param   array   $acceptableValues       An array of values that are acceptable.
+     * @return  void
+     * @throws  \InvalidArgumentException   If the key does not exist in the $acceptableValues array.
+     * @access  public
+     * @author  Johnathan Pulos
      **/
     public function barSeperatedStringProvidesAcceptableValues($barSeperatedString, $acceptableValues)
     {
@@ -71,12 +79,15 @@ class Validator
         }
     }
     /**
-     * Checks the values of a bar seperated string ($barSeperatedString) that they are the correct length ($length)
+     * Validate all values in a piped (barred) string are the correct length.
      *
-     * @param string $barSeperatedString the bar seperate string to test
-     * @param integer $length the length they are expecting
-     * @return void
-     * @throws InvalidArgumentException if a value is not the correct length
+     * Checks the values of a piped (barred) seperated string that they each value is a set length.  This method takes each item in $barSeperatedString,
+     * and checks if each key is a set $length.  If not then it will throw an error.
+     *
+     * @param   string  $barSeperatedString     The bar seperated string to test.
+     * @param   integer $length                 The length that you want each key to be.
+     * @return  void
+     * @throws  \InvalidArgumentException   If the key is not equal to $length.
      * @access public
      * @author Johnathan Pulos
      **/
@@ -88,14 +99,14 @@ class Validator
         }
     }
     /**
-     * Validates the given string ($str) is the given length ($length)
+     * Validates a string is a given length.
      *
-     * @param string $str the string to test
-     * @param integer $length the required length of the string
-     * @return void
-     * @throws InvalidArgumentException if the length is incorrect
-     * @access public
-     * @author Johnathan Pulos
+     * @param   string  $str    The string to test.
+     * @param   integer $length The required length of the string.
+     * @return  void
+     * @throws  \InvalidArgumentException if the length is not equal.
+     * @access  public
+     * @author  Johnathan Pulos
      **/
     public function stringLength($str, $length)
     {
@@ -104,14 +115,18 @@ class Validator
         }
     }
     /**
-     * Checks if the given integer ($int) is within the given range ($start - $end)
+     * Is the given integer withing range?
      *
-     * @param integer $int the integer to check
-     * @param integer $start the starting integer for the range
-     * @param integer $end the ending integer for the range
-     * @param array $exceptions an array of integers in the range that should not be accepted
-     * @return void
-     * @throws InvalidArgumentException if the integer is not in range, or it is an exception
+     * Validates the integer is within the given range. [$start - $end].  You can supply an array of integers to exclude
+     * from the comparison.  If the integer is in the $exceptions or out of range, it will throw an error.
+     *
+     * @param   integer     $int        The integer to check.
+     * @param   integer     $start      The starting integer for the range.
+     * @param   integer     $end        The ending integer for the range.
+     * @param   array       $exceptions An array of integers in the range that should not be accepted.
+     * @return  void
+     * @throws  \InvalidArgumentException if the integer is not in range.
+     * @throws  \InvalidArgumentException if the integer is in the $exceptions array.
      * @access public
      * @author Johnathan Pulos
      **/
