@@ -51,29 +51,29 @@ class Country extends QueryGenerator
     /**
      * An array of column names for this database table that we want to select in searches.  Simply remove fields you do not want to expose.
      *
-     * @var array
-     * @access protected
+     * @var     array
+     * @access  protected
      */
     protected $fieldsToSelectArray = array('JPScaleCtry', 'Ctry', 'ReligionPrimary', 'RLG3Primary', 'RLG4Primary', 'ROG2', 'ROG3', 'PercentAnglican', 'PercentBuddhism', 'PercentChristianity', 'PercentEthnicReligions', 'PercentEvangelical', 'PercentHinduism', 'PercentIndependent', 'PercentIslam', 'PercentNonReligious', 'PercentOtherSmall', 'PercentOrthodox', 'PercentOther', 'PercentProtestant', 'PercentRomanCatholic', 'PercentUnknown', 'ROL3OfficialLanguage', 'ROL3SecondaryLanguage', 'RLG3Primary', 'RegionCode', 'InternetCtryCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'AltName', 'Capital', 'Population', 'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles', 'AreaSquareKilometers', 'PopulationPerSquareMile', 'CountryPhoneCode', 'SecurityLevel', 'LibraryCongressReportExists', 'IsCountry', 'StonyGround', 'USAPostalSystem', 'ReligionDataYear', 'LiteracyCategory', 'LiteracyRate', 'LiteracyRange', 'LiteracySource', 'CountryNotes', 'PercentDoublyProfessing', 'HDIYear', 'HDIValue', 'HDIRank', 'StateDeptReligiousFreedom', 'Source', 'UNMap', 'PercentUrbanized', 'PrayercastVideo', 'WINCountryProfile');
     /**
      * The Database table to pull the data from.
      *
-     * @var string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     protected $tableName = "jpcountries";
     /**
      * A string that will hold the default MySQL ORDER BY for the Select statement.
      *
-     * @var string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     protected $defaultOrderByStatement = "ORDER BY Ctry ASC";
     /**
      * An array of table columns (key) and their alias (value).
      *
-     * @var array
-     * @access protected
+     * @var     array
+     * @access  protected
      **/
     protected $aliasFields = array('10_40Window'    =>  'Window1040');
     /**
@@ -101,13 +101,14 @@ class Country extends QueryGenerator
      * or the Joshua Projects ROG3 id.
      * <strong>Requires $providedParams['id']:</strong> The three letter ISO code.
      *
-     * @return void
-     * @throws \InvalidArgumentException If the 'id' key is not set on the $providedParams class variable.
-     * @access public
-     * @author Johnathan Pulos
+     * @return  void
+     * @throws  \InvalidArgumentException If the 'id' key is not set on the $providedParams class variable.
+     * @access  public
+     * @author  Johnathan Pulos
      */
     public function findById()
     {
+        $this->validator->providedRequiredParams($this->providedParams, array('id'));
         $id = strtoupper($this->providedParams['id']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE ROG3 = :id LIMIT 1";
         $this->preparedVariables = array('id' => $id);
@@ -117,10 +118,10 @@ class Country extends QueryGenerator
      *
      * Find all countries using a wide range of filters.  To see the types of filters, checkout the Swagger documentation of the API.
      *
-     * @return void
-     * @access public
-     * @throws \InvalidArgumentException When you set a filter, but fail to provide a valid parameter
-     * @author Johnathan Pulos
+     * @return  void
+     * @access  public
+     * @throws  \InvalidArgumentException When you set a filter, but fail to provide a valid parameter
+     * @author  Johnathan Pulos
      **/
     public function findAllWithFilters()
     {
