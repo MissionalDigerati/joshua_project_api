@@ -77,7 +77,7 @@ class Country extends QueryGenerator
      **/
     protected $aliasFields = array('10_40Window'    =>  'Window1040');
     /**
-     * Construct the Continent class.
+     * Construct the Country class.
      *
      * During construction,  the $getParams are checked and inserted in the $providedParams class variable.  Some of the methods in this class require
      * certain keys to be set, or it will throw an error.  The comments will state the required keys.
