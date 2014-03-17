@@ -23,10 +23,27 @@
 namespace QueryGenerators;
 
 /**
- * A class that creates the prepared statement, and sets up the variables for a PDO prepared statement query.
- * These queries specifically work with the PeopleGroup data.
+ * Generates the PDO prepared statements and variables for People Groups.
  *
- * @package default
+ * A class that creates the prepared statement, and sets up the variables for a PDO prepared statement query.
+ * Once you call a method like findById,  you can get the prepared statement by reading the class variable
+ * $preparedStatement.  You can retrieve the prepared variables by reading the class variable $preparedVariables.
+ * So here is an example using the Continents Query Generator to find a continent by id:
+ * <pre><code>
+ * &lt;?php
+ * // Initialize the class, and pass in the id.
+ * $continent = new \QueryGenerators\Continent(array('id' => 'AFR'));
+ * // Call the method you want.
+ * $continent->findById();
+ * // Using PDO prepare the statement.
+ * $statement = $db->prepare($continent->preparedStatement);
+ * // Execute the query with the prepared params.
+ * $statement->execute($continent->preparedVariables);
+ * // Fetch the final results.
+ * $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+ * ?&gt;
+ * </code></pre>
+ *
  * @author Johnathan Pulos
  */
 class PeopleGroup extends QueryGenerator
@@ -34,60 +51,62 @@ class PeopleGroup extends QueryGenerator
     /**
      * An array of column names for this database table that we want to select in searches.  Simply remove fields you do not want to expose.
      *
-     * @var array
-     * @access protected
+     * @var     array
+     * @access  protected
      */
     protected $fieldsToSelectArray = array('ROG3', 'PeopleID3', 'ROP3', 'PeopNameInCountry', 'ROG2', 'Continent', 'RegionName', 'ISO3', 'LocationInCountry', 'PeopleID1', 'ROP1', 'AffinityBloc', 'PeopleID2', 'ROP2', 'PeopleCluster', 'PeopNameAcrossCountries', 'Population', 'PopulationPercentUN', 'Category', 'ROL3', 'PrimaryLanguageName', 'ROL4', 'PrimaryLanguageDialect', 'NumberLanguagesSpoken', 'ROL3OfficialLanguage', 'OfficialLang', 'SpeakNationalLang', 'BibleStatus', 'BibleYear', 'NTYear', 'PortionsYear', 'TranslationNeedQuestionable', 'JPScale', 'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedBasis', 'LeastReachedPC', 'LeastReachedPGAC', 'GSEC', 'Unengaged', 'JF', 'AudioRecordings', 'NTOnline', 'GospelRadio', 'RLG3', 'RLG3PC', 'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC', 'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision', 'PCIslam', 'PCNonReligious', 'PCUnknown', 'PCAnglican', 'PCIndependent', 'PCProtestant', 'PCOrthodox', 'PCOtherChristian', 'StonyGround', 'SecurityLevel', 'RaceCode', 'LRWebProfile', 'LRofTheDayMonth', 'LRofTheDayDay', 'LRTop100', 'PhotoAddress', 'PhotoWidth', 'PhotoHeight', 'PhotoCredits', 'PhotoCreditURL', 'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission', 'ProfileTextExists', 'Top10Ranking', 'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation', 'RankMinistryTools', 'CountOfCountries', 'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'V59Country', 'Longitude', 'Latitude', 'UNMap','Ctry', 'IndigenousCode', 'ROL3', 'PercentAdherents', 'PercentChristianPC', 'PercentChristianPGAC', 'PercentEvangelical', 'PercentEvangelicalPC', 'PercentEvangelicalPGAC', 'PCBuddhism', 'PCDblyProfessing', 'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'PCRomanCatholic', 'RegionCode');
     /**
-     * The table to pull the data from
+     * The database table to pull the data from.
      *
-     * @var string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     protected $tableName = "jppeoples";
     /**
-     * A string that will hold the default order by for the Select statement
+     * A string that will hold the default MySQL ORDER BY for the Select statement.
      *
-     * @var string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     protected $defaultOrderByStatement = "ORDER BY PeopleID1 ASC";
     /**
-     * The CONCAT statement for generating the PeopleGroupURL
+     * The MySQL CONCAT statement for generating the PeopleGroupURL.
      *
-     * @var string
-     * @access private
+     * @var     string
+     * @access  private
      */
     private $peopleGroupURLSelect = "CONCAT('http://www.joshuaproject.net/people-profile.php?peo3=', PeopleID3, '&amp;rog3=', ROG3)";
     /**
-     * The CONCAT statement for generating the PeopleGroupPhotoURL
+     * The MySQL CONCAT statement for generating the PeopleGroupPhotoURL.
      *
-     * @var string
-     * @access private
+     * @var     string
+     * @access  private
      */
     private $peopleGroupPhotoURLSelect = "CONCAT('http://www.joshuaproject.net/profiles/photos/', PhotoAddress)";
     /**
-     * The CONCAT statement for generating the CountryURL
+     * The MySQL CONCAT statement for generating the CountryURL.
      *
-     * @var string
-     * @access private
+     * @var     string
+     * @access  private
      */
     private $countryURLSelect = "CONCAT('http://www.joshuaproject.net/countries.php?rog3=', ROG3)";
     /**
-     * An array of table columns (key) and their alias (value)
+     * An array of table columns (key) and their alias (value).
      *
-     * @var array
-     * @access protected
+     * @var     array
+     * @access  protected
      **/
     protected $aliasFields = array('10_40Window'    =>  'Window1040');
     /**
-     * Construct the class
+     * Construct the People Group class.
      *
-     * @param array $getParams the params to use for the query.  Each message has required fields, and will throw error
-     * if they are missing
-     * 
-     * @access public
-     * @author Johnathan Pulos
+     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.  Some of the methods in this class require
+     * certain keys to be set, or it will throw an error.  The comments will state the required keys.
+     *
+     * @param   array   $getParams  The GET params to use for the query.
+     * @return  void
+     * @access  public
+     * @author  Johnathan Pulos
      */
     public function __construct($getParams)
     {
@@ -100,12 +119,17 @@ class PeopleGroup extends QueryGenerator
         $this->selectFieldsStatement .= ", " . $this->JPScaleImageURLSelectStatement . " as JPScaleImageURL";
     }
     /**
-     * Get the unreached of the day query statement.  Requires a month and day param in the given params.
-     * REQUIRES getParams month & day
+     * Find the daily unreached People Group.
+     *
+     * Find the daily unreached people Group based on the month and day that you specify.
+     * <br><br><strong>Requires $providedParams['month']:</strong> The specific month of the unreached.
+     * <br><strong>Requires $providedParams['day']:</strong> The specific month of the unreached.
      * 
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
+     * @return  void
+     * @access  public
+     * @throws  \InvalidArgumentException   If the 'month' key is not set on the $providedParams class variable, or it is not between 1-12.
+     * @throws  \InvalidArgumentException   If the 'day' key is not set on the $providedParams class variable, or it is not between 1-31.
+     * @author  Johnathan Pulos
      */
     public function dailyUnreached()
     {
@@ -118,11 +142,18 @@ class PeopleGroup extends QueryGenerator
         $this->preparedVariables = array('month' => $month, 'day' => $day);
     }
     /**
-     * Find the People Group using the id (PeopleID3), and the country (ROG3)
+     * Find the People Group by id (PeopleID3), and refine search by the country (ROG3).
      *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
+     * Find all People Groups with a specified id, and then filter by the country's <a href="http://goo.gl/31Gf" target="_blank">ISO 2 Letter code</a>.
+     * The id is the Joshua Projects PeopleID3.
+     * <br><br><strong>Requires $providedParams['id']:</strong> The Joshua Project PeopleID3.
+     * <br><strong>Requires $providedParams['country']:</strong> The country's ISO 2 letter code.
+     *
+     * @return  void
+     * @access  public
+     * @throws  \InvalidArgumentException   If the 'id' key is not set on the $providedParams class variable.
+     * @throws  \InvalidArgumentException   If the 'country' key is not set on the $providedParams class variable.
+     * @author  Johnathan Pulos
      */
     public function findByIdAndCountry()
     {
@@ -133,11 +164,15 @@ class PeopleGroup extends QueryGenerator
         $this->preparedVariables = array('id' => $id, 'country' => $country);
     }
     /**
-     * Find the People Group by ID (PeopleID3)
+     * Find the People Group by Id (PeopleID3).
      *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
+     * Find a People Group based on it's id,  Joshua Projects PeopleID3.
+     * <br><br><strong>Requires $providedParams['id']:</strong> The Joshua Project PeopleID3.
+     *
+     * @return  void
+     * @access  public
+     * @throws  \InvalidArgumentException   If the 'id' key is not set on the $providedParams class variable.
+     * @author  Johnathan Pulos
      */
     public function findById()
     {
@@ -147,11 +182,14 @@ class PeopleGroup extends QueryGenerator
         $this->preparedVariables = array('id' => $id);
     }
     /**
-     * Find all the People Groups using filters passed in the GET params
+     * Find all People Groups using specified filters.
      *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
+     * Find all People Groups using a wide range of filters.  To see the types of filters, checkout the Swagger documentation of the API.
+     *
+     * @return  void
+     * @access  public
+     * @throws  \InvalidArgumentException   When you set a filter, but fail to provide a valid parameter
+     * @author  Johnathan Pulos
      */
     public function findAllWithFilters()
     {
