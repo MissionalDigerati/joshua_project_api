@@ -23,43 +23,62 @@
 namespace QueryGenerators;
 
 /**
- * A class that creates the prepared statement, and sets up the variables for a PDO prepared statement query.
- * These queries specifically work with the people group Resources data.
+ * Generates the PDO prepared statements and variables for Resources.
  *
- * @package default
+ * A class that creates the prepared statement, and sets up the variables for a PDO prepared statement query.
+ * Once you call a method like findById,  you can get the prepared statement by reading the class variable
+ * $preparedStatement.  You can retrieve the prepared variables by reading the class variable $preparedVariables.
+ * So here is an example using the Continents Query Generator to find a continent by id:
+ * <pre><code>
+ * &lt;?php
+ * // Initialize the class, and pass in the id.
+ * $continent = new \QueryGenerators\Continent(array('id' => 'AFR'));
+ * // Call the method you want.
+ * $continent->findById();
+ * // Using PDO prepare the statement.
+ * $statement = $db->prepare($continent->preparedStatement);
+ * // Execute the query with the prepared params.
+ * $statement->execute($continent->preparedVariables);
+ * // Fetch the final results.
+ * $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+ * ?&gt;
+ * </code></pre>
+ *
  * @author Johnathan Pulos
- **/
+ */
 class Resource extends QueryGenerator
 {
     /**
-     * The table to pull the data from
+     * The database table to pull the data from.
      *
-     * @var string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     protected $tableName = 'jpresources';
     /**
-     * A string that will hold the default order by for the Select statement
+     * A string that will hold the default MySQL ORDER BY for the Select statement.
      *
-     * @var string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     protected $defaultOrderByStatement = 'ORDER BY DisplaySeq ASC';
     /**
      * An array of column names for this database table that we want to select in searches.  Simply remove fields you do not want to expose.
      *
-     * @var array
-     * @access protected
+     * @var     array
+     * @access  protected
      */
     protected $fieldsToSelectArray = array('ROL3', 'Category', 'WebText', 'URL');
     /**
-     * Construct the class
+     * Construct the Resource class.
      *
-     * @param array $getParams the params to use for the query.  Each message has required fields, and will throw error
-     * if they are missing
-     * 
-     * @access public
-     * @author Johnathan Pulos
+     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.  Some of the methods in this class require
+     * certain keys to be set, or it will throw an error.  The comments will state the required keys.
+     *
+     * @param   array   $getParams  The GET params to use for the query.
+     * @return  void
+     * @access  public
+     * @author  Johnathan Pulos
      */
     public function __construct($getParams)
     {
@@ -67,11 +86,16 @@ class Resource extends QueryGenerator
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
     }
     /**
-     * Find the People Group Resources using the language_id (ROL3)
+     * Find Resources for a specific Language.
      *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
+     * Find all Resources associated with a specific language by providing it's <a href='http://goo.gl/gbkgo4' target='_blank'>3 Letter ISO code</a>
+     *  or Joshua Projects ROL3 code.
+     * <br><br><strong>Requires $providedParams['id']:</strong> The three letter ISO code or Joshua Projects ROL3 code.
+     *
+     * @return  void
+     * @access  public
+     * @throws  \InvalidArgumentException If the 'id' key is not set on the $providedParams class variable.
+     * @author  Johnathan Pulos
      */
     public function findAllByLanguageId()
     {

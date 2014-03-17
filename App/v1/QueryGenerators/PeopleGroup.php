@@ -144,7 +144,7 @@ class PeopleGroup extends QueryGenerator
     /**
      * Find the People Group by id (PeopleID3), and refine search by the country (ROG3).
      *
-     * Find all People Groups with a specified id, and then filter by the country's <a href="http://goo.gl/31Gf" target="_blank">ISO 2 Letter code</a>.
+     * Find all People Groups with a specified id, and then filter by the country's <a href="http://goo.gl/1dhC" target="_blank">ISO 2 Letter code</a>.
      * The id is the Joshua Projects PeopleID3.
      * <br><br><strong>Requires $providedParams['id']:</strong> The Joshua Project PeopleID3.
      * <br><strong>Requires $providedParams['country']:</strong> The country's ISO 2 letter code.
