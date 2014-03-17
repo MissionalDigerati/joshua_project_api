@@ -20,7 +20,6 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
-
 /**
  * Convert an array of data to XML.
  *
@@ -46,7 +45,7 @@ function arrayToXML($data, $parentWrap = "items", $individualWrap = "item")
     return stripReturns($xml->asXML());
 }
 /**
- * Recursive function for adding the child XML element.
+ * Recursive function for adding the child XML elements.
  *
  * @param   SimpleXMLElement    $parentElement  A SimpleXMLElement which the children will be appended.
  * @param   string              $childLabel     The name for the child element.
@@ -128,7 +127,7 @@ function stripReturns($str)
  *
  * @param   array   $requiredFields The fields that are required to exist.
  * @param   array   $formData       The data passed from the form.
- * @return  array
+ * @return  array   An array of fields that were invalid.
  * @author  Johnathan Pulos
  **/
 function validatePresenceOf($requiredFields, $formData)
@@ -143,14 +142,19 @@ function validatePresenceOf($requiredFields, $formData)
     return $invalidFields;
 }
 /**
- * Creates the redirect url based on the $invalidFields parameters, and the data passed $formData
- * It redirects to the $redirectUrl and passes required_fields in GET string if there was an error
- * /home?required_fields=name|address&state=CA&zip=91801
+ * Create the redirect url by appending information to the URL.
  *
- * @param   string  $redirectURL the url to redirect to
- * @param   array   $formData the data supplied by the form
- * @param   array   $invalidFields an array with the names of all invalid fields
- * @return  string
+ * Creates a redirect url with several GET params.  These params include:
+ * <ul>
+ *  <li><strong>required_fields</strong> - A list of fields that are required and missing.</li>
+ *  <li>Any fields provided with the values that were sent.</li>
+ * </ul>
+ * The URL looks like this: /home?required_fields=name|address&state=CA&zip=91801.
+ *
+ * @param   string  $redirectURL    The URL without GET params to redirect to.  This is the base URL.
+ * @param   array   $formData       The data supplied by the form.
+ * @param   array   $invalidFields  An array with the names of all invalid fields.
+ * @return  string  The final URL to redirect to including the base URL.
  * @author  Johnathan Pulos
  **/
 function generateRedirectURL($redirectURL, array $formData, array $invalidFields)
@@ -173,23 +177,22 @@ function generateRedirectURL($redirectURL, array $formData, array $invalidFields
     return $redirectURL;
 }
 /**
- * Generate a random key of alphanumerical characters.  This function:
+ * Generates a random key of alphanumerical characters.
  *
- * @return void
- * @author Johnathan Pulos
+ * Using the current time, and md5 hashing, this function creates an alphanumeric string perfect for API keys.
+ *
+ * @param   integer     $length     The length of the key you need.
+ * @return  string The alphanumeric random string.
+ * @author  Johnathan Pulos
  **/
 function generateRandomKey($length = 10)
 {
     /**
      * Gets both seconds and microseconds parts of the time
-     *
-     * @author Johnathan Pulos
      **/
     list($usec, $sec) = explode(' ', microtime());
     /**
      * remove the period in $usec
-     *
-     * @author Johnathan Pulos
      **/
     $usec = preg_replace('[\.]', '', $usec);
     return substr(md5(date('ymd') . $usec . $sec), 0, $length);

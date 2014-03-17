@@ -4,6 +4,7 @@
     },
     "require-dev": {
         "phpdocumentor/phpdocumentor":  "2.*",
+        "phpdocumentor/template-responsive": "dev-master",
         "zircote/swagger-php": "0.6.1"
     }
 }
