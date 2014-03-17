@@ -32,7 +32,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     /**
      * The PDO database connection object
      *
-     * @var object
+     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
      */
     private $db;
     /**
@@ -72,7 +72,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testShouldReturnCorrectResultsForDailyUnreachedyQuery()
+    public function testDailyUnreachedRequestsShouldReturnCorrectResults()
     {
         $expected = array('month' => 1, 'day' => 11);
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
@@ -92,7 +92,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
       * 
       * @expectedException InvalidArgumentException
      */
-    public function testShouldThrowErrorIfMissingMonthOnDailyUnreached()
+    public function testDailyUnreachedRequestsShouldThrowErrorIfMissingMonth()
     {
         $getVars = array('day' => 11);
         $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
@@ -107,7 +107,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
       * 
       * @expectedException InvalidArgumentException
      */
-    public function testShouldThrowErrorIfMissingDayOnDailyUnreached()
+    public function testDailyUnreachedRequestsShouldThrowErrorIfMissingDay()
     {
         $getVars = array('month' => 11);
         $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
@@ -122,7 +122,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
       * 
       * @expectedException InvalidArgumentException
      */
-    public function testDailyUnreachedShouldThrowErrorIfMonthIsOutOfRange()
+    public function testDailyUnreachedRequestsShouldThrowErrorIfMonthIsOutOfRange()
     {
         $getVars = array('month' => 13, 'day' => 1);
         $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
@@ -137,7 +137,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
       * 
       * @expectedException InvalidArgumentException
      */
-    public function testDailyUnreachedShouldThrowErrorIfDayIsOutOfRange()
+    public function testDailyUnreachedRequestsShouldThrowErrorIfDayIsOutOfRange()
     {
         $getVars = array('month' => 12, 'day' => 32);
         $peopleGroup = new \QueryGenerators\PeopleGroup($getVars);
@@ -170,7 +170,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testQueryShouldReturnCorrectPeopleGroupURL()
+    public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupURL()
     {
         $expected = array('id' => '12662', 'country' => 'CB');
         $expectedURL = "http://www.joshuaproject.net/people-profile.php?peo3=12662&amp;rog3=cb";
@@ -188,7 +188,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testQueryShouldReturnCorrectPeopleGroupPhotoURL()
+    public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupPhotoURL()
     {
         $expected = array('id' => '12662', 'country' => 'CB');
         $expectedURL = "http://www.joshuaproject.net/profiles/photos/";
@@ -207,7 +207,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testQueryShouldReturnCorrectCountryURL()
+    public function testPeopleGroupQueryGeneratorShouldReturnCorrectCountryURL()
     {
         $expected = array('id' => '12662', 'country' => 'CB');
         $expectedURL = "http://www.joshuaproject.net/countries.php?rog3=cb";
@@ -225,7 +225,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testQueryShouldReturnCorrectJPScaleTextEqualToUnreached()
+    public function testPeopleGroupQueryGeneratorShouldReturnCorrectJPScaleTextEqualToUnreached()
     {
         $paramData = array('id' => '12662', 'country' => 'CB');
         $expectedText = "unreached";
@@ -245,7 +245,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testQueryShouldReturnCorrectJPScaleTextEqualToNominalChurch()
+    public function testPeopleGroupQueryGeneratorShouldReturnCorrectJPScaleTextEqualToNominalChurch()
     {
         $paramData = array('id' => '19007', 'country' => 'AE');
         $expectedText = "nominal church";
@@ -265,7 +265,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testQueryShouldReturnCorrectJPScaleImageURL()
+    public function testPeopleGroupQueryGeneratorShouldReturnCorrectJPScaleImageURL()
     {
         $paramData = array('id' => '16153', 'country' => 'IN');
         $peopleGroup = new \QueryGenerators\PeopleGroup($paramData);
@@ -285,7 +285,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * 
      * @expectedException InvalidArgumentException
      */
-    public function testFindByIdAndCountryShouldErrorIfNoIDProvided()
+    public function testFindByIdAndCountryShouldErrorIfNoIdProvided()
     {
         $expected = array('country' => 'CB');
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
@@ -347,7 +347,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersReturns100ResultsWithNoFiltersByDefault()
+    public function testFindAllWithFiltersReturnsLimitedResultsWithNoFiltersByDefault()
     {
         $expectedNumberOfResults = 100;
         $peopleGroup = new \QueryGenerators\PeopleGroup(array());
@@ -548,7 +548,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
       * 
       * @expectedException InvalidArgumentException
       */
-    public function testShouldErrorIfFindAllWithFilterFindsInCorrectContinents()
+    public function testFindAllWithFilterShouldErrorIfIncorrectContinent()
     {
         $expectedCountries = array('BBC', 'DED');
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('continents' => join("|", $expectedCountries)));
@@ -563,7 +563,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
       * 
       * @expectedException InvalidArgumentException
       */
-    public function testShouldErrorIfFindAllWithFilterFindsInCorrectRegionCodes()
+    public function testFindAllWithFilterShouldErrorIfIncorrectRegionCode()
     {
         $regionCodes = array(0, 13);
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('regions' => join("|", $regionCodes)));
@@ -716,7 +716,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * 
      * @expectedException InvalidArgumentException
      */
-    public function testFindAllWithFiltersShouldThrowErrorWithMinPopulationGreaterThenMaxPopulation()
+    public function testFindAllWithFiltersShouldThrowErrorWithMinPopulationGreaterThanMaxPopulation()
     {
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('population' => '30000-1000'));
         $peopleGroup->findAllWithFilters();
@@ -880,7 +880,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPercentOfNonReligions()
+    public function testFindAllWithFiltersShouldFilterByPercentOfNonReligious()
     {
         $expectedPercentMin = 22.0;
         $expectedPercentMax = 40.1;
@@ -1178,7 +1178,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
       * 
       * @expectedException InvalidArgumentException
       */
-    public function testShouldErrorIfFindAllWithFilterReceivesIncorrectJPScaleParameter()
+    public function testFindAllWithFilterShouldErrorIfIncorrectJPScale()
     {
         $expectedJPScales = "1.5|2.6";
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('jpscale' => $expectedJPScales));
@@ -1193,7 +1193,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
       * 
       * @expectedException InvalidArgumentException
       */
-    public function testShouldErrorIfFindAllWithFilterFindsInCorrectWindow1040()
+    public function testFindAllWithFilterShouldErrorIfIncorrectWindow1040()
     {
         $regionCodes = array(0, 13);
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('window1040' => 'b'));
