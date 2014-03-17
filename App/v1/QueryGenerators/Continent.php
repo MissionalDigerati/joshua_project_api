@@ -51,22 +51,22 @@ class Continent extends QueryGenerator
     /**
      * An array of table columns (key) and their alias (value).
      *
-     * @var array
-     * @access protected
+     * @var     array
+     * @access  protected
      **/
     protected $aliasFields = array();
     /**
      * A string that will hold the default ORDER BY for the Select statement.
      *
-     * @var string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     protected $defaultOrderByStatement = "ORDER BY Continent ASC";
     /**
      * An array of column names for this database table that we want to select in searches.  Simply remove fields you do not want to expose.
      *
-     * @var array
-     * @access protected
+     * @var     array
+     * @access  protected
      */
     protected $fieldsToSelectArray = array(
         'ROG2', 'Continent', 'NbrCountries', 'NbrPGIC', 'NbrLR', 'SumContinent', 'PercentLR', 'SumContinentLR', 'PercentPoplLR', 'PercentUrbanized'
@@ -74,8 +74,8 @@ class Continent extends QueryGenerator
     /**
      * The Database table to pull the data from.
      *
-     * @var string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     protected $tableName = "jpcontinentsum";
     /**
@@ -109,10 +109,10 @@ class Continent extends QueryGenerator
      * </ul>
      * <strong>Requires $providedParams['id']:</strong> The three letter ISO code.
      *
-     * @return void
-     * @access public
-     * @throws \InvalidArgumentException If the 'id' key is not set on the $providedParams class variable.
-     * @author Johnathan Pulos
+     * @return  void
+     * @access  public
+     * @throws  \InvalidArgumentException If the 'id' key is not set on the $providedParams class variable.
+     * @author  Johnathan Pulos
      **/
     public function findById()
     {
