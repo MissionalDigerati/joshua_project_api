@@ -99,13 +99,13 @@ class Continent extends QueryGenerator
      *
      * Finds a continent using a three letter ISO code.  The codes are:
      * <ul>
-     *  <li>AFR - Africa</li>
-     *  <li>ASI - Asia</li>
-     *  <li>AUS - Australia</li>
-     *  <li>EUR - Europe</li>
-     *  <li>NAR - North America</li>
-     *  <li>SOP - Oceania</li>
-     *  <li>LAM - South America</li>
+     *      <li>AFR - Africa</li>
+     *      <li>ASI - Asia</li>
+     *      <li>AUS - Australia</li>
+     *      <li>EUR - Europe</li>
+     *      <li>NAR - North America</li>
+     *      <li>SOP - Oceania</li>
+     *      <li>LAM - South America</li>
      * </ul>
      * <br><br><strong>Requires $providedParams['id']:</strong> The three letter ISO code.
      *
