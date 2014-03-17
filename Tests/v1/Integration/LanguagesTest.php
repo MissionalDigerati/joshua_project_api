@@ -33,9 +33,15 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
     /**
      * The CachedRequest Object
      *
-     * @var object
+     * @var \PHPToolbox\CachedRequest\CachedRequest
      */
     public $cachedRequest;
+    /**
+     * The PDO database connection object
+     *
+     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     */
+    private $db;
     /**
      * The APIKey to access the API
      *
@@ -43,12 +49,6 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @access private
      **/
     private $APIKey = '';
-    /**
-     * The PDO database connection object
-     *
-     * @var object
-     */
-    private $db;
     /**
      * Set up the test class
      *
@@ -93,7 +93,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowShouldRefuseAccessWithoutAnAPIKey()
+    public function testShowRequestsShouldRefuseAccessWithoutAnAPIKey()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages/aar.json",
@@ -108,7 +108,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowShouldRefuseAccessWithoutAVersionNumber()
+    public function testShowRequestsShouldRefuseAccessWithoutAVersionNumber()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/languages/aar.json",
@@ -123,7 +123,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowShouldRefuseAccessWithoutActiveAPIKey()
+    public function testShowRequestsShouldRefuseAccessWithoutAnActiveAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -139,7 +139,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowShouldRefuseAccessWithSuspendedAPIKey()
+    public function testShowRequestsShouldRefuseAccessWithSuspendedAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -155,7 +155,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowShouldRefuseAccessWithABadAPIKey()
+    public function testShowRequestsShouldRefuseAccessWithABadAPIKey()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages/aar.json",
@@ -171,7 +171,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testShouldLanguageShowInJSON()
+    public function testShowRequestsShouldReturnLanguagesInJSON()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages/aar.json",
@@ -188,7 +188,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testShouldLanguageShowInXML()
+    public function testShowRequestsShouldReturnLanguagesInXML()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages/aar.xml",
@@ -206,7 +206,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testLanguagesShowShouldThrowErrorIfBadId()
+    public function testShowRequestsShouldThrowErrorIfBadIdProvided()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages/bad_id.json",
@@ -224,7 +224,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testLanguagesShowShouldRetrieveALanguage()
+    public function testShowRequestsShouldRetrieveTheCorrectLanguage()
     {
         $expectedLanguageCode = 'aar';
         $expectedLanguage = 'afar';
@@ -245,7 +245,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testIndexShouldRefuseAccessWithoutAnAPIKey()
+    public function testIndexRequestsShouldRefuseAccessWithoutAnAPIKey()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -260,7 +260,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testIndexShouldRefuseAccessWithoutAVersionNumber()
+    public function testIndexRequestsShouldRefuseAccessWithoutAVersionNumber()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/languages.json",
@@ -275,7 +275,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testIndexShouldRefuseAccessWithoutActiveAPIKey()
+    public function testIndexRequestsShouldRefuseAccessWithoutAnActiveAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -291,7 +291,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testIndexShouldRefuseAccessWithSuspendedAPIKey()
+    public function testIndexRequestsShouldRefuseAccessWithSuspendedAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -307,7 +307,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testIndexShouldRefuseAccessWithABadAPIKey()
+    public function testIndexRequestsShouldRefuseAccessWithABadAPIKey()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -323,7 +323,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguageDataInJSON()
+    public function testIndexRequestsShouldReturnALanguageInJSON()
     {
         $expectedLanguageCount = 100;
         $expectedFirstLanguage = "a'ou";
@@ -347,7 +347,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnALimitOfLanguageDataInJSON()
+    public function testIndexRequestsShouldReturnALimitOfLanguagesBasedOnTheLimitParameter()
     {
         $expectedLimit = 10;
         $response = $this->cachedRequest->get(
@@ -370,7 +370,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnIDsRequestedLanguageDataInJSON()
+    public function testIndexRequestsShouldReturnTheCorrectLanguageIds()
     {
         $expectedIds = 'bzw|bjf';
         $response = $this->cachedRequest->get(
@@ -395,7 +395,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnErrorIfIdIsWrong()
+    public function testIndexRequestsShouldReturnErrorIfTheIdIsWrong()
     {
         $expectedIds = 'bzwp';
         $response = $this->cachedRequest->get(
@@ -416,7 +416,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesWithNewTestaments()
+    public function testIndexRequestsShouldReturnALanguagesWithNewTestaments()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -440,7 +440,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnErrorIfHasNewTestamentIsWrong()
+    public function testIndexRequestsShouldReturnAnErrorIfProvidingTheWrongNewTestamentValue()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -460,7 +460,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesWithPortionsOfScriptures()
+    public function testIndexRequestsShouldReturnLanguagesWithPortionsOfScriptures()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -484,7 +484,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnErrorIfHasPortionsIsWrong()
+    public function testIndexRequestsShouldReturnAnErrorIfHasPortionsParmeterIsWrong()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -504,7 +504,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesWithCompleteScriptures()
+    public function testIndexRequestsShouldReturnLanguagesWithCompleteScriptures()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -528,7 +528,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnErrorIfHasCompleteBibleIsWrong()
+    public function testIndexRequestsShouldReturnAnErrorIfHasCompleteBibleParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -548,7 +548,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesWithQuestionableTranslation()
+    public function testIndexRequestsShouldReturnLanguagesWithQuestionableTranslation()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -572,7 +572,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnErrorIfHasQuestionableIsWrong()
+    public function testIndexRequestsShouldReturnErrorIfHasQuestionableParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -592,7 +592,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesWithAudioResources()
+    public function testIndexRequestsShouldReturnLanguagesWithAudioResources()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -616,7 +616,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnErrorIfHasAudioIsWrong()
+    public function testIndexRequestsShouldReturnErrorIfHasAudioParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -636,7 +636,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesWithFourLaws()
+    public function testIndexRequestsShouldReturnLanguagesWithFourLaws()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -660,7 +660,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnErrorIfHasFourLawsIsWrong()
+    public function testIndexRequestsShouldReturnErrorIfHasFourLawsParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -680,7 +680,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesWithJesusFilm()
+    public function testIndexRequestsShouldReturnLanguagesWithJesusFilm()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -704,7 +704,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnErrorIfHasJesusFilmIsWrong()
+    public function testIndexRequestsShouldReturnErrorIfHasJesusFilmParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -724,7 +724,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesWithGodsStory()
+    public function testIndexRequestsShouldReturnLanguagesWithGodsStory()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -748,7 +748,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnErrorIfHasGodsStoryIsWrong()
+    public function testIndexRequestsShouldReturnErrorIfHasGodsStoryParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -768,7 +768,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesBasedOnCountries()
+    public function testIndexRequestsShouldReturnLanguagesBasedOnCountries()
     {
         $expectedCountries = array('af', 'cn');
         $response = $this->cachedRequest->get(
@@ -793,7 +793,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnErrorIfCountryIsWrong()
+    public function testIndexRequestsShouldReturnErrorIfCountryParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -813,7 +813,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesBasedOnNumberOfWorldSpeakers()
+    public function testIndexRequestsShouldReturnLanguagesBasedOnNumberOfWorldSpeakers()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -838,7 +838,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesBasedOnNumberOfPopulation()
+    public function testIndexRequestsShouldReturnLanguagesBasedOnNumberOfPopulation()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -863,7 +863,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesBasedOnNumberOfPercentEvangelical()
+    public function testIndexRequestsShouldReturnLanguagesBasedOnNumberOfPercentEvangelical()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -888,7 +888,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesBasedOnNumberOfPercentAdherent()
+    public function testIndexRequestsShouldReturnLanguagesBasedOnNumberOfPercentAdherent()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -913,7 +913,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesBasedOnNumberOfPrimaryReligions()
+    public function testIndexRequestsShouldReturnLanguagesBasedOnNumberOfPrimaryReligions()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -937,7 +937,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnErrorIfPrimaryReligionIsWrong()
+    public function testIndexRequestsShouldReturnErrorIfPrimaryReligionParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -956,7 +956,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesBasedOnJPScale()
+    public function testIndexRequestsShouldReturnLanguagesBasedOnJPScale()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -980,7 +980,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnErrorIfJPScaleIsWrong()
+    public function testIndexRequestsShouldReturnErrorIfJPScaleParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -999,7 +999,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnLanguagesBasedOnLeastReached()
+    public function testIndexRequestsShouldReturnLanguagesBasedOnLeastReached()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
@@ -1023,7 +1023,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testLanguageIndexShouldReturnErrorIfLeastReachedIsWrong()
+    public function testIndexRequestsShouldReturnErrorIfLeastReachedParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/languages.json",
