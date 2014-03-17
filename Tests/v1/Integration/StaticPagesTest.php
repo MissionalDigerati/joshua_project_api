@@ -33,13 +33,13 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
     /**
      * The CachedRequest Object
      *
-     * @var object
+     * @var \PHPToolbox\CachedRequest\CachedRequest
      */
     public $cachedRequest;
     /**
      * The PDO database connection object
      *
-     * @var object
+     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
      */
     private $db;
 
@@ -167,7 +167,7 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      */
-    public function testWebsiteShouldTellUsersWarnWhenTheAuthorizationTokenIsMissing()
+    public function testWebsiteShouldWarnUsersWhenTheAuthorizationTokenIsMissing()
     {
         $authorizationToken = 'l543g3$4Ac';
         $expectedAPIKey = 'AKey$43Ac';
