@@ -19,6 +19,7 @@ Vendor/symfony/
 Vendor/twig/
 Vendor/zendframework/
 Vendor/zetacomponents/
+Vendor/zircote/
 Config/JPAPI/DatabaseSettings.php
 Config/JPAPI/AdminSettings.php
 .DS_Store
