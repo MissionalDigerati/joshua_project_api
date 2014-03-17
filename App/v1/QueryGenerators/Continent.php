@@ -110,6 +110,7 @@ class Continent extends QueryGenerator
      * <strong>Requires $providedParams['id']:</strong> The three letter ISO code.
      *
      * @return void
+     * @access public
      * @throws \InvalidArgumentException If the 'id' key is not set on the $providedParams class variable.
      * @author Johnathan Pulos
      **/
