@@ -72,7 +72,7 @@ class Continent extends QueryGenerator
         'ROG2', 'Continent', 'NbrCountries', 'NbrPGIC', 'NbrLR', 'SumContinent', 'PercentLR', 'SumContinentLR', 'PercentPoplLR', 'PercentUrbanized'
     );
     /**
-     * The table to pull the data from.
+     * The Database table to pull the data from.
      *
      * @var string
      * @access protected
