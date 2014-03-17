@@ -32,7 +32,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
     /**
      * The PDO database connection object
      *
-     * @var object
+     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
      */
     private $db;
     /**
@@ -110,7 +110,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindAllWithFiltersShouldLimitResults()
+    public function testFindAllWithFiltersShouldLimitedResults()
     {
         $expectedCount = 10;
         $country = new \QueryGenerators\Country(array('limit' => $expectedCount));
@@ -127,7 +127,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindAllWithFiltersShouldFilterByIDs()
+    public function testFindAllWithFiltersShouldFilterByIds()
     {
         $expectedIDs = array('re', 'qa', 'qo');
         $country = new \QueryGenerators\Country(array('ids' => join('|', $expectedIDs)));
@@ -564,7 +564,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testCountryQueryGeneratorShouldSetJPScaleImageURL()
+    public function testCountryQueryGeneratorShouldSetJPScaleImageURLCorrectly()
     {
         $expectedJPScaleText = "established church";
         $country = new \QueryGenerators\Country(array('jpscale' => '3.2'));

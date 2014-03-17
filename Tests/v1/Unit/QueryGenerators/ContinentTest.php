@@ -32,7 +32,7 @@ class ContinentTest extends \PHPUnit_Framework_TestCase
     /**
      * The PDO database connection object
      *
-     * @var object
+     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
      */
     private $db;
     /**
