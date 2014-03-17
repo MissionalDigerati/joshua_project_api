@@ -25,7 +25,6 @@ namespace Tests\v1\Integration;
 /**
  * The class for testing integration of the API Keys
  *
- * @package default
  * @author Johnathan Pulos
  */
 class APIKeysTest extends \PHPUnit_Framework_TestCase
@@ -33,13 +32,13 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     /**
      * The CachedRequest Object
      *
-     * @var object
+     * @var \PHPToolbox\CachedRequest\CachedRequest
      */
     public $cachedRequest;
     /**
      * The PDO database connection object
      *
-     * @var object
+     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
      */
     private $db;
 
@@ -88,7 +87,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestWithMissingAllPOSTParamsShouldSetRequiredFieldsParam()
+    public function testAPIKeyRequestWithMissingPOSTParamsShouldSetAllRequiredFieldsInURL()
     {
         $expectedURL = "http://joshua.api.local/?required_fields=name|email|usage";
         $this->cachedRequest->post(
@@ -107,7 +106,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestWithMissingNamePOSTParamsShouldSetRequiredFieldsParam()
+    public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredNameFieldInURL()
     {
         $expectedURL = "http://joshua.api.local/?required_fields=name&email=joe%40yahoo.com&usage=testing";
         $this->cachedRequest->post(
@@ -126,7 +125,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestWithMissingEmailPOSTParamsShouldSetRequiredFieldsParam()
+    public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredEmailFieldInURL()
     {
         $expectedURL = "http://joshua.api.local/?required_fields=email&name=joe&usage=testing";
         $this->cachedRequest->post(
@@ -145,7 +144,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestWithMissingUsagePOSTParamsShouldSetRequiredFieldsParam()
+    public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredUsageFieldInURL()
     {
         $expectedURL = "http://joshua.api.local/?required_fields=usage&name=joe&email=joe%40yahoo.com";
         $this->cachedRequest->post(
@@ -164,7 +163,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestShouldSetReturnAnAPIKey()
+    public function testAPIKeyRequestShouldReturnIfAllPOSTParamsSupplied()
     {
         $this->cachedRequest->post(
             "http://joshua.api.local/api_keys",
@@ -185,7 +184,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestShouldSetStatusTo0()
+    public function testAPIKeyRequestShouldSetStatusToZeroIntially()
     {
         $content = $this->cachedRequest->post(
             "http://joshua.api.local/api_keys",
@@ -204,7 +203,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestShouldSetAnAuthorizeToken()
+    public function testAPIKeyRequestShouldCreateAnAuthorizeToken()
     {
         $this->cachedRequest->post(
             "http://joshua.api.local/api_keys",
@@ -252,7 +251,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testGetMyAPIKeyDoesNotChangeSuspendedKeys()
+    public function testGetMyAPIKeyShouldNotChangeKeysThatWereSuspended()
     {
         $expectedStatus = 2;
         $this->cachedRequest->post(
