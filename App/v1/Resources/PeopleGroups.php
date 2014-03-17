@@ -174,7 +174,7 @@ $app->get(
   *              ),
   *              @SWG\Parameter(
   *                  name="country",
-  *                  description="The country's 2 letter ISO Code specified at <a href='http://www.joshuaproject.net/global-countries.php' target='_blank'>http://www.joshuaproject.net/global-countries.php</a>.",
+  *                  description="The country's 2 letter ISO Code specified at <a href='http://goo.gl/31Gf' target='_blank'>http://goo.gl/31Gf</a>.",
   *                  paramType="query",
   *                  required="false",
   *                  allowMultiple="false",
