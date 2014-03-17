@@ -107,7 +107,7 @@ class Continent extends QueryGenerator
      *  <li>SOP - Oceania</li>
      *  <li>LAM - South America</li>
      * </ul>
-     * <strong>Requires $providedParams['id']:</strong> The three letter ISO code.
+     * <br><br><strong>Requires $providedParams['id']:</strong> The three letter ISO code.
      *
      * @return  void
      * @access  public

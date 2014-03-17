@@ -99,7 +99,7 @@ class Country extends QueryGenerator
      *
      * Find a country using it's <a href="http://goo.gl/31Gf" target="_blank">ISO 2 Letter code</a>,
      * or the Joshua Projects ROG3 id.
-     * <strong>Requires $providedParams['id']:</strong> The 2 letter ISO code.
+     * <br><br><strong>Requires $providedParams['id']:</strong> The 2 letter ISO code.
      *
      * @return  void
      * @throws  \InvalidArgumentException If the 'id' key is not set on the $providedParams class variable.
