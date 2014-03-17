@@ -21,14 +21,15 @@
  * 
  */
 /**
- * Send the authorize url to the developer so they can get their API Key
+ * Email the Developer an Autorization URL.
  *
- * @param string $email the email address to send it to
- * @param string $authorizeUrl the url for authorizing the email
- * @param object $mail the PHPMailer Object
- * @return void
- * @access public
- * @author Johnathan Pulos
+ * Sends the authorize URL to the developer so they can get obtain their API Key.
+ *
+ * @param   string      $email          The email address to send the email to.
+ * @param   string      $authorizeUrl   The url for authorizing the email.
+ * @param   PHPMailer   $mail           The PHPMailer Object for sending the email.
+ * @return  void
+ * @author  Johnathan Pulos
  */
 function sendAuthorizeToken($email, $authorizeUrl, $mail)
 {
@@ -45,15 +46,16 @@ function sendAuthorizeToken($email, $authorizeUrl, $mail)
     $mail->Send();
 }
 /**
- * Send all authorize urls to the developer so they can get their API Keys
+ * Retrieve all API tokens.
  *
- * @param string $email the email address to send it to
- * @param array $apiKeys the database results of keys that have not been activated
- * @param string $domain the domain name for the website
- * @param object $mail the PHPMailer Object
- * @return void
- * @access public
- * @author Johnathan Pulos
+ * Sends all authorize URLs to the developer so they can get obtain their API Keys.
+ *
+ * @param   string      $email      The email address to send the email to.
+ * @param   array       $apiKeys    All the API keys that have not been activated yet.
+ * @param   string      $domain     The domain name for this website.
+ * @param   PHPMailer   $mail       The PHPMailer Object for sending the email.
+ * @return  void
+ * @author  Johnathan Pulos
  */
 function sendAuthorizationLinks($email, $apiKeys, $domain, $mail)
 {
