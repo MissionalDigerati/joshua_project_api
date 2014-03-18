@@ -32,7 +32,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * The Validator object
      *
-     * @var object
+     * @var \Utilities\Validator
      */
     private $validator;
     /**

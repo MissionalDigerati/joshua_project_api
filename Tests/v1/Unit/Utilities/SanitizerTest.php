@@ -32,7 +32,7 @@ class SanitizerTest extends \PHPUnit_Framework_TestCase
     /**
      * The Sanitizer object
      *
-     * @var object
+     * @var \Utilities\Sanitizer
      */
     private $sanitizer;
     /**
