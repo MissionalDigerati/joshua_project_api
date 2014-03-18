@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
 namespace Tests\v1\Unit\QueryGenerators;
@@ -32,7 +32,7 @@ class ProfileTextTest extends \PHPUnit_Framework_TestCase
     /**
      * The PDO database connection object
      *
-     * @var object
+     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
      */
     private $db;
     /**
@@ -74,7 +74,7 @@ class ProfileTextTest extends \PHPUnit_Framework_TestCase
      * 
      * @expectedException InvalidArgumentException
      */
-    public function testFindAllByIdAndCountryShouldThrowErrorIfMissingIDOnFind()
+    public function testFindAllByIdAndCountryShouldThrowErrorIfMissingId()
     {
         $getVars = array('country' => 'CB');
         $profileText = new \QueryGenerators\ProfileText($getVars);
@@ -89,7 +89,7 @@ class ProfileTextTest extends \PHPUnit_Framework_TestCase
      * 
      * @expectedException InvalidArgumentException
      */
-    public function testFindAllByIdAndCountryShouldThrowErrorIfMissingCountryOnFind()
+    public function testFindAllByIdAndCountryShouldThrowErrorIfMissingCountry()
     {
         $getVars = array('id' => '12662');
         $profileText = new \QueryGenerators\ProfileText($getVars);

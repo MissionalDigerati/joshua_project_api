@@ -17,18 +17,20 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
 /**
- * Convert an array of data to XML
+ * Convert an array of data to XML.
  *
- * @param array $data The data array to be converted to XML
- * @param string $parentWrap The parent wrapper tag name (default: items)
- * @param string $individualWrap  The individual wrapper tag name (default: item)
- * @return string
- * @access public
- * @author Johnathan Pulos
+ * Takes the given data array, and converts it to XML.  It uses the $parentWrap as the first and last element.
+ * Each additional child gets the $individualWrap tag.
+ *
+ * @param   array   $data           The data array to be converted to XML.
+ * @param   string  $parentWrap     The parent wrapper tag name (default: items).
+ * @param   string  $individualWrap The individual wrapper tag name (default: item).
+ * @return  string  An XML string of the given data.
+ * @author  Johnathan Pulos
  */
 function arrayToXML($data, $parentWrap = "items", $individualWrap = "item")
 {
@@ -43,13 +45,13 @@ function arrayToXML($data, $parentWrap = "items", $individualWrap = "item")
     return stripReturns($xml->asXML());
 }
 /**
- * Recursive function for handing array children
+ * Recursive function for adding the child XML elements.
  *
- * @param object $parentElement a SimpleXMLElement which the children will be appended
- * @param string $childLabel the name for the child element
- * @param mixed $childVal the value of the child element.  If it is an array, we call this method again.
- * @return void
- * @author Johnathan Pulos
+ * @param   SimpleXMLElement    $parentElement  A SimpleXMLElement which the children will be appended.
+ * @param   string              $childLabel     The name for the child element.
+ * @param   mixed               $childVal       The value of the child element.  If it is an array, we call this method again.
+ * @return  void
+ * @author  Johnathan Pulos
  */
 function addChildXMLElement($parentElement, $childLabel, $childVal)
 {
@@ -71,13 +73,14 @@ function addChildXMLElement($parentElement, $childLabel, $childVal)
     }
 }
 /**
- * Checks if $variable is false, if so it returns $variable, else it returns $default
+ * Returns the present value or the default value.
+ * 
+ * Checks if $variable is true, if so it returns the $variable.  If the variable is false/empty/null it returns $default.
  *
- * @param mixed $variable The variable to test if empty
- * @param mixed $default The value to set if empty
- * @return mixed
- * @access public
- * @author Johnathan Pulos
+ * @param   mixed   $variable The variable to test if empty/null/false.
+ * @param   mixed   $default The value to set if empty/null/false.
+ * @return  mixed
+ * @author  Johnathan Pulos
  */
 function returnPresentOrDefault($variable, $default)
 {
@@ -88,30 +91,30 @@ function returnPresentOrDefault($variable, $default)
     }
 }
 /**
- * Checks if $variable has the key $key, if so it returns $variable[$key], else it returns $default
+ * Returns the present value if the key exists or the default value. 
  *
- * @param array $variable The variable to test for key
- * @param string $key The key to search for
- * @param mixed $default The value to set if empty
- * @return mixed
- * @access public
- * @author Johnathan Pulos
+ * Checks if $variable array has the key $key, if so it returns $variable[$key].  If it does not, it returns $default.
+ *
+ * @param   array   $providedArray The array to test.
+ * @param   string  $key The key to search for.
+ * @param   mixed   $default The value to set if the key does not exist.
+ * @return  mixed
+ * @author  Johnathan Pulos
  */
-function returnPresentIfKeyExistsOrDefault($variable, $key, $default)
+function returnPresentIfKeyExistsOrDefault($providedArray, $key, $default)
 {
-    if (array_key_exists($key, $variable)) {
-        return $variable[$key];
+    if (array_key_exists($key, $providedArray)) {
+        return $providedArray[$key];
     } else {
         return $default;
     }
 }
 /**
- * Strips the string of carriage returns
+ * Strips the string of carriage returns.
  *
- * @param string $str the string to clean 
- * @return string
- * @access public
- * @author Johnathan Pulos
+ * @param   string  $str the string to clean.
+ * @return  string
+ * @author  Johnathan Pulos
  */
 function stripReturns($str)
 {
@@ -120,15 +123,14 @@ function stripReturns($str)
     return $str;
 }
 /**
- * Validates the presence of the requiredFields against the supplied formData
+ * Validates the presence of the requiredFields against the supplied formData.
  *
- * @param array $requiredFields the fields requiring presence of
- * @param array $formData the data passed form the form
- * @return array
- * @access public
- * @author Johnathan Pulos
+ * @param   array   $requiredFields The fields that are required to exist.
+ * @param   array   $formData       The data passed from the form.
+ * @return  array   An array of fields that were invalid.
+ * @author  Johnathan Pulos
  **/
-function validatePresenceOf(array $requiredFields, array $formData)
+function validatePresenceOf($requiredFields, $formData)
 {
     $invalidFields = array();
     foreach ($requiredFields as $field) {
@@ -140,15 +142,20 @@ function validatePresenceOf(array $requiredFields, array $formData)
     return $invalidFields;
 }
 /**
- * Creates the redirect url based on the $invalidFields parameters, and the data passed $formData
- * It redirects to the $redirectUrl and passes required_fields in GET string if there was an error
- * @example /home?required_fields=name|address&state=CA&zip=91801
+ * Create the redirect url by appending information to the URL.
  *
- * @param string $redirectURL the url to redirect to
- * @param array $formData the data supplied by the form
- * @param array $invalidFields an array with the names of all invalid fields
- * @return string
- * @author Johnathan Pulos
+ * Creates a redirect url with several GET params.  These params include:
+ * <ul>
+ *  <li><strong>required_fields</strong> - A list of fields that are required and missing.</li>
+ *  <li>Any fields provided with the values that were sent.</li>
+ * </ul>
+ * The URL looks like this: /home?required_fields=name|address&state=CA&zip=91801.
+ *
+ * @param   string  $redirectURL    The URL without GET params to redirect to.  This is the base URL.
+ * @param   array   $formData       The data supplied by the form.
+ * @param   array   $invalidFields  An array with the names of all invalid fields.
+ * @return  string  The final URL to redirect to including the base URL.
+ * @author  Johnathan Pulos
  **/
 function generateRedirectURL($redirectURL, array $formData, array $invalidFields)
 {
@@ -170,23 +177,22 @@ function generateRedirectURL($redirectURL, array $formData, array $invalidFields
     return $redirectURL;
 }
 /**
- * Generate a random key of alphanumerical characters.  This function:
+ * Generates a random key of alphanumerical characters.
  *
- * @return void
- * @author Johnathan Pulos
+ * Using the current time, and md5 hashing, this function creates an alphanumeric string perfect for API keys.
+ *
+ * @param   integer     $length     The length of the key you need.
+ * @return  string The alphanumeric random string.
+ * @author  Johnathan Pulos
  **/
 function generateRandomKey($length = 10)
 {
     /**
      * Gets both seconds and microseconds parts of the time
-     *
-     * @author Johnathan Pulos
      **/
     list($usec, $sec) = explode(' ', microtime());
     /**
      * remove the period in $usec
-     *
-     * @author Johnathan Pulos
      **/
     $usec = preg_replace('[\.]', '', $usec);
     return substr(md5(date('ymd') . $usec . $sec), 0, $length);

@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
 namespace Tests\v1\Integration;
@@ -25,7 +25,6 @@ namespace Tests\v1\Integration;
 /**
  * The class for testing integration of the Continents
  *
- * @package default
  * @author Johnathan Pulos
  */
 class ContinentsTest extends \PHPUnit_Framework_TestCase
@@ -33,9 +32,15 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     /**
      * The CachedRequest Object
      *
-     * @var object
+     * @var \PHPToolbox\CachedRequest\CachedRequest
      */
     public $cachedRequest;
+    /**
+     * The PDO database connection object
+     *
+     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     */
+    private $db;
     /**
      * The APIKey to access the API
      *
@@ -43,12 +48,6 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @access private
      **/
     private $APIKey = '';
-    /**
-     * The PDO database connection object
-     *
-     * @var object
-     */
-    private $db;
     /**
      * Set up the test class
      *
@@ -93,7 +92,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowShouldRefuseAccessWithoutAnAPIKey()
+    public function testShowRequestShouldRefuseAccessWithoutAnAPIKey()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/continents/4.json",
@@ -108,7 +107,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowShouldRefuseAccessWithoutAVersionNumber()
+    public function testShowRequestShouldRefuseAccessWithoutAVersionNumber()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/continents/4.json",
@@ -123,7 +122,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowShouldRefuseAccessWithoutActiveAPIKey()
+    public function testShowRequestShouldRefuseAccessWithoutActiveAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -139,7 +138,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowShouldRefuseAccessWithSuspendedAPIKey()
+    public function testShowRequestShouldRefuseAccessToSuspendedAPIKeys()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -155,7 +154,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowShouldRefuseAccessWithABadAPIKey()
+    public function testShowRequestShouldRefuseAccessWithABadAPIKeys()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/continents/1.json",
@@ -171,7 +170,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testShouldContinentShowInJSON()
+    public function testShowRequestsShouldReturnContinentsInJSON()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/continents/asi.json",
@@ -188,7 +187,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testShouldContinentShowInXML()
+    public function testShowRequestsShouldReturnContinentsInXML()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/continents/asi.xml",
@@ -206,7 +205,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testContinentsShowShouldThrowErrorIfBadId()
+    public function testShowRequestsShouldThrowErrorIfIdIsBad()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/continents/bad_id.json",
@@ -224,7 +223,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testContinentsShowShouldRetrieveAContinent()
+    public function testShowRequestsShouldRetrieveTheCorrectContinent()
     {
         $continentId = 'asi';
         $expectedContinent = 'asia';

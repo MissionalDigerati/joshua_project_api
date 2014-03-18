@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
 namespace Tests\v1\Unit\Utilities;
@@ -32,7 +32,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * The Validator object
      *
-     * @var object
+     * @var \Utilities\Validator
      */
     private $validator;
     /**

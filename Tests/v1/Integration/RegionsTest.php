@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
 namespace Tests\v1\Integration;
@@ -33,9 +33,15 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
     /**
      * The CachedRequest Object
      *
-     * @var object
+     * @var \PHPToolbox\CachedRequest\CachedRequest
      */
     public $cachedRequest;
+    /**
+     * The PDO database connection object
+     *
+     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     */
+    private $db;
     /**
      * The APIKey to access the API
      *
@@ -43,12 +49,6 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      * @access private
      **/
     private $APIKey = '';
-    /**
-     * The PDO database connection object
-     *
-     * @var object
-     */
-    private $db;
     /**
      * Set up the test class
      *
@@ -93,7 +93,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowShouldRefuseAccessWithoutAnAPIKey()
+    public function testShowRequestsShouldRefuseAccessWithoutAnAPIKey()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/regions/2.json",
@@ -108,7 +108,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowShouldRefuseAccessWithoutAVersionNumber()
+    public function testShowRequestsShouldRefuseAccessWithoutAVersionNumber()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/regions/4.json",
@@ -123,7 +123,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowShouldRefuseAccessWithoutActiveAPIKey()
+    public function testShowRequestsShouldRefuseAccessWithoutActiveAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -139,7 +139,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowShouldRefuseAccessWithSuspendedAPIKey()
+    public function testShowRequestsShouldRefuseAccessWithSuspendedAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -155,7 +155,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowShouldRefuseAccessWithABadAPIKey()
+    public function testShowRequestsShouldRefuseAccessWithABadAPIKey()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/regions/1.json",
@@ -171,7 +171,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testRegionShowShouldReturnInJSON()
+    public function testShowRequestsShouldReturnARegionInJSON()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/regions/3.json",
@@ -188,7 +188,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testRegionShowShouldReturnInXML()
+    public function testShowRequestsShouldReturnARegionInXML()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/regions/3.xml",
@@ -206,7 +206,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testRegionsShowShouldRetrieveTheAppropriateRegion()
+    public function testShowRequestsShouldRetrieveTheAppropriateRegion()
     {
         $regionId = 10;
         $expectedRegion = 'western europe';

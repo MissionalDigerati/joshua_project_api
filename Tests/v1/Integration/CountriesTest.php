@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
 namespace Tests\v1\Integration;
@@ -25,7 +25,6 @@ namespace Tests\v1\Integration;
 /**
  * The class for testing integration of the Countries
  *
- * @package default
  * @author Johnathan Pulos
  */
 class CountriesTest extends \PHPUnit_Framework_TestCase
@@ -33,9 +32,15 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     /**
      * The CachedRequest Object
      *
-     * @var object
+     * @var \PHPToolbox\CachedRequest\CachedRequest
      */
     public $cachedRequest;
+    /**
+     * The PDO database connection object
+     *
+     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     */
+    private $db;
     /**
      * The APIKey to access the API
      *
@@ -43,12 +48,6 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access private
      **/
     private $APIKey = '';
-    /**
-     * The PDO database connection object
-     *
-     * @var object
-     */
-    private $db;
     /**
      * Set up the test class
      *
@@ -93,7 +92,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testCountryShowShouldRefuseAccessWithoutAValidID()
+    public function testShowRequestShouldRefuseAccessWithoutAValidId()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/countries/1234.json",
@@ -109,7 +108,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testCountryShowShouldBeAccessableByJSON()
+    public function testShowRequestsShouldReturnACountryInJSON()
     {
         $expectedCountry = "US";
         $response = $this->cachedRequest->get(
@@ -127,7 +126,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testCountryShowShouldBeAccessableByXML()
+    public function testShowRequestsShouldReturnACountryInXML()
     {
         $expectedCountry = "US";
         $response = $this->cachedRequest->get(
@@ -145,7 +144,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testCountryShowShouldReturnCountryInJSON()
+    public function testShowRequestsShouldReturnTheCorrectCountry()
     {
         $expectedCountry = "US";
         $response = $this->cachedRequest->get(
@@ -167,7 +166,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testCountryIndexShouldBeAccessableByJSON()
+    public function testIndexRequestShouldBeAccessableByJSON()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/countries.json",
@@ -184,7 +183,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testCountryIndexShouldBeAccessableByXML()
+    public function testIndexRequestShouldBeAccessableByXML()
     {
         $response = $this->cachedRequest->get(
             "http://joshua.api.local/v1/countries.xml",
@@ -201,7 +200,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testCountryIndexShouldReturnCountryDataInJSON()
+    public function testIndexRequestsShouldReturnTheCorrectCountry()
     {
         $expectedCountryCount = 100;
         $expectedFirstCountry = 'Afghanistan';
@@ -225,7 +224,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testCountryIndexShouldReturnASetLimitOfCountryData()
+    public function testIndexRequestsShouldReturnCountriesLimitedToOurRequest()
     {
         $expectedCountryCount = 10;
         $response = $this->cachedRequest->get(
@@ -243,7 +242,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testCountryIndexShouldReturnCountriesFilteredByIDs()
+    public function testIndexRequestsShouldReturnCountriesFilteredByIds()
     {
         $expectedIDs = array('us', 'af', 'al');
         $response = $this->cachedRequest->get(
@@ -263,7 +262,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testCountryIndexShouldReturnCountriesFilteredByContinents()
+    public function testIndexRequestsShouldReturnCountriesFilteredByContinents()
     {
         $expectedContinents = array('eur', 'nar');
         $response = $this->cachedRequest->get(
@@ -283,7 +282,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testCountryIndexShouldReturnCountriesFilteredByRegions()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRegions()
     {
         $expectedRegions = array(1, 5);
         $response = $this->cachedRequest->get(
@@ -303,7 +302,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testCountryIndexShouldReturnCountriesFilteredByWindow1040()
+    public function testIndexRequestsShouldReturnCountriesFilteredByWindow1040()
     {
         $expectedWindow1040 = 'y';
         $response = $this->cachedRequest->get(
@@ -323,7 +322,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testCountryIndexShouldReturnCountriesFilteredByPrimaryLanguages()
+    public function testIndexRequestsShouldReturnCountriesFilteredByPrimaryLanguages()
     {
         $expectedPrimaryLanguages = array('por');
         $response = $this->cachedRequest->get(
@@ -344,7 +343,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByAMinAndMaxPopulation()
+    public function testIndexRequestsReturnCountriesFilteredByAMinAndMaxPopulation()
     {
         $expectedMin = 10000;
         $expectedMax = 20000;
@@ -369,7 +368,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByAnExactPopulation()
+    public function testIndexRequestsReturnCountriesFilteredByAnExactPopulation()
     {
         $expectedPopulation = 600;
         $response = $this->cachedRequest->get(
@@ -392,7 +391,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByPrimaryReligions()
+    public function testIndexRequestsShouldReturnCountriesFilteredByPrimaryReligions()
     {
         $expectedReligions = array(1 => 'christianity', 7 => 'non-religious');
         $response = $this->cachedRequest->get(
@@ -416,7 +415,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByASinglePrimaryReligion()
+    public function testIndexRequestsShouldReturnCountriesFilteredByASinglePrimaryReligion()
     {
         $expectedReligions = array(7 => 'non-religious');
         $response = $this->cachedRequest->get(
@@ -440,7 +439,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByRangeOfPCChristianity()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCChristianity()
     {
         $expectedMin = 10;
         $expectedMax = 20;
@@ -465,7 +464,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByRangeOfPCEvangelical()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCEvangelical()
     {
         $expectedMin = 0;
         $expectedMax = 20;
@@ -490,7 +489,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByRangeOfPCBuddhist()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCBuddhist()
     {
         $expectedMin = 10;
         $expectedMax = 25;
@@ -515,7 +514,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByRangeOfPCEthnicReligions()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCEthnicReligions()
     {
         $expectedMin = 1;
         $expectedMax = 10;
@@ -540,7 +539,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByRangeOfPCHindu()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCHindu()
     {
         $expectedMin = 15;
         $expectedMax = 35;
@@ -565,7 +564,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByRangeOfPCIslam()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCIslam()
     {
         $expectedMin = 85;
         $expectedMax = 100;
@@ -590,7 +589,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByRangeOfPCNonReligious()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCNonReligious()
     {
         $expectedMin = 0;
         $expectedMax = 10;
@@ -615,7 +614,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByRangeOfPCOtherReligions()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCOtherReligions()
     {
         $expectedMin = 2;
         $expectedMax = 3;
@@ -640,7 +639,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByJPScale()
+    public function testIndexRequestsShouldReturnCountriesFilteredByJPScale()
     {
         $expectedJPScale = "2.1";
         $expectedJPScalesArray = array(2.1);
@@ -664,7 +663,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByRangeOfPCUnknown()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCUnknown()
     {
         $expectedMin = 0;
         $expectedMax = 0.14;
@@ -689,7 +688,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByRangeOfPCAnglican()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCAnglican()
     {
         $expectedMin = 20;
         $expectedMax = 25;
@@ -714,7 +713,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByRangeOfPCIndependent()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCIndependent()
     {
         $expectedMin = 20;
         $expectedMax = 25;
@@ -739,7 +738,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByRangeOfPCProtestant()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCProtestant()
     {
         $expectedMin = 10;
         $expectedMax = 15;
@@ -764,7 +763,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByRangeOfPCOrthodox()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCOrthodox()
     {
         $expectedMin = 70;
         $expectedMax = 74;
@@ -789,7 +788,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByRangeOfPCRomanCatholic()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCRomanCatholic()
     {
         $expectedMin = 20;
         $expectedMax = 25;
@@ -814,7 +813,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexShouldReturnCountriesFliteredByRangeOfPCOtherChristians()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCOtherChristians()
     {
         $expectedMin = 11;
         $expectedMax = 14;

@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
 namespace Tests\v1\Unit\QueryGenerators;
@@ -32,7 +32,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
     /**
      * The PDO database connection object
      *
-     * @var object
+     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
      */
     private $db;
     /**
@@ -74,7 +74,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
      * 
      * @expectedException InvalidArgumentException
      */
-    public function testFindAllByLanguageIdShouldThrowErrorIfMissingID()
+    public function testFindAllByLanguageIdShouldThrowErrorIfMissingId()
     {
         $getVars = array();
         $resource = new \QueryGenerators\Resource($getVars);
@@ -87,7 +87,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindAllByLanguageIdShouldLowerCaseTheID()
+    public function testFindAllByLanguageIdShouldLowerCaseTheId()
     {
         $expectedId = 'abv';
         $getVars = array('id' => $expectedId);

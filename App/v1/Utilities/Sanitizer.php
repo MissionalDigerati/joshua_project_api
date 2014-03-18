@@ -17,36 +17,42 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
 namespace Utilities;
 
 /**
- * A class that handles sanitizing of the API supplied data
+ * A class that handles sanitizing of supplied GET parameters.
  *
- * @package default
+ * This class offers a variety of methods for cleaning GET data passed from a user.
+ *
  * @author Johnathan Pulos
  */
 class Sanitizer
 {
     /**
-     * Cleans a param ($param) according to the given regex which removes unnecessary charcters, and html tags
+     * Clean the given param.
+     * 
+     * Cleans $param according to the given regex which removes unnecessary characters, and html tags.
      *
-     * @param mixed $param the param to clean
-     * @return mixed
-     * @author Johnathan Pulos
+     * @param   string  $param  The string to clean.
+     * @return  string  The cleaned string.
+     * @access  public
+     * @author  Johnathan Pulos
      **/
     public function cleanParam($param)
     {
         return preg_replace('/[^a-z\d\-|\.]/i', '', strip_tags($param));
     }
     /**
-     * Cleans an array's ($arr) values based on the same credentials of cleanParam()
+     * Clean all values in an array.
      *
-     * @param array $arr the array whose values need cleaning
-     * @return array
-     * @author Johnathan Pulos
+     * iterates over the values of an array, and cleans the values.
+     *
+     * @param   array   $arr    The array whose values need cleaning.
+     * @return  array   The cleaned array.
+     * @author  Johnathan Pulos
      **/
     public function cleanArrayValues($arr)
     {

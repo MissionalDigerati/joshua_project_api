@@ -17,58 +17,77 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
 namespace QueryGenerators;
 
 /**
- * A class that creates the prepared statement, and sets up the variables for a PDO prepared statement query.
- * These queries specifically work with the Continent data.
+ * Generates the PDO prepared statements and variables for Continents.
  *
- * @package default
+ * A class that creates the prepared statement, and sets up the variables for a PDO prepared statement query.
+ * Once you call a method like findById,  you can get the prepared statement by reading the class variable
+ * $preparedStatement.  You can retrieve the prepared variables by reading the class variable $preparedVariables.
+ * So here is an example using the Continents Query Generator to find a continent by id:
+ * <pre><code>
+ * &lt;?php
+ * // Initialize the class, and pass in the id.
+ * $continent = new \QueryGenerators\Continent(array('id' => 'AFR'));
+ * // Call the method you want.
+ * $continent->findById();
+ * // Using PDO prepare the statement.
+ * $statement = $db->prepare($continent->preparedStatement);
+ * // Execute the query with the prepared params.
+ * $statement->execute($continent->preparedVariables);
+ * // Fetch the final results.
+ * $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+ * ?&gt;
+ * </code></pre>
+ *
  * @author Johnathan Pulos
  */
 class Continent extends QueryGenerator
 {
     /**
+     * An array of table columns (key) and their alias (value).
+     *
+     * @var     array
+     * @access  protected
+     **/
+    protected $aliasFields = array();
+    /**
+     * A string that will hold the default ORDER BY for the Select statement.
+     *
+     * @var     string
+     * @access  protected
+     */
+    protected $defaultOrderByStatement = "ORDER BY Continent ASC";
+    /**
      * An array of column names for this database table that we want to select in searches.  Simply remove fields you do not want to expose.
      *
-     * @var array
-     * @access protected
+     * @var     array
+     * @access  protected
      */
     protected $fieldsToSelectArray = array(
         'ROG2', 'Continent', 'NbrCountries', 'NbrPGIC', 'NbrLR', 'SumContinent', 'PercentLR', 'SumContinentLR', 'PercentPoplLR', 'PercentUrbanized'
     );
     /**
-     * The table to pull the data from
+     * The Database table to pull the data from.
      *
-     * @var string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     protected $tableName = "jpcontinentsum";
     /**
-     * A string that will hold the default order by for the Select statement
+     * Construct the Continent class.
      *
-     * @var string
-     * @access protected
-     */
-    protected $defaultOrderByStatement = "ORDER BY Continent ASC";
-    /**
-     * An array of table columns (key) and their alias (value)
+     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.  Some of the methods in this class require
+     * certain keys to be set, or it will throw an error.  The comments will state the required keys.
      *
-     * @var array
-     * @access protected
-     **/
-    protected $aliasFields = array();
-    /**
-     * Construct the class
-     *
-     * @param array $getParams the params to use for the query.  Each message has required fields, and will throw error
-     * if they are missing
-     * 
-     * @access public
-     * @author Johnathan Pulos
+     * @param   array   $getParams  The GET params to use for the query.
+     * @return  void
+     * @access  public
+     * @author  Johnathan Pulos
      */
     public function __construct($getParams)
     {
@@ -76,10 +95,24 @@ class Continent extends QueryGenerator
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
     }
     /**
-     * find a continent by an id. [AFR] Africa [ASI] Asia [AUS] Australia [EUR] Europe [NAR] North America [SOP] Oceania [LAM] South America
+     * Find a continent by an id.
      *
-     * @return void
-     * @author Johnathan Pulos
+     * Finds a continent using a three letter ISO code.  The codes are:
+     * <ul>
+     *      <li>AFR - Africa</li>
+     *      <li>ASI - Asia</li>
+     *      <li>AUS - Australia</li>
+     *      <li>EUR - Europe</li>
+     *      <li>NAR - North America</li>
+     *      <li>SOP - Oceania</li>
+     *      <li>LAM - South America</li>
+     * </ul>
+     * <br><br><strong>Requires $providedParams['id']:</strong> The three letter ISO code.
+     *
+     * @return  void
+     * @access  public
+     * @throws  \InvalidArgumentException If the 'id' key is not set on the $providedParams class variable.
+     * @author  Johnathan Pulos
      **/
     public function findById()
     {

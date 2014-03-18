@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
 namespace Tests\v1\Unit\QueryGenerators;
@@ -32,7 +32,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
     /**
      * The PDO database connection object
      *
-     * @var object
+     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
      */
     private $db;
     /**
@@ -113,7 +113,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindAllWithFiltersShouldLimitTheResult()
+    public function testFindAllWithFiltersShouldFilterTheResult()
     {
         $expected = array('limit'   =>  5);
         $language = new \QueryGenerators\Language($expected);
@@ -131,7 +131,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByASetOfIDS()
+    public function testFindAllWithFiltersShouldFilterByASetOfIds()
     {
         $expected = array('ids'   =>  'ace|boj|smf');
         $language = new \QueryGenerators\Language($expected);
@@ -151,7 +151,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByNotHavingANewTestament()
+    public function testFindAllWithFiltersShouldFilterByNotHavingANewTestament()
     {
         $expected = array('has_new_testament'   =>  'N');
         $language = new \QueryGenerators\Language($expected);
@@ -171,7 +171,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByNotHavingPortions()
+    public function testFindAllWithFiltersShouldFilterByNotHavingPortions()
     {
         $expected = array('has_portions'   =>  'N');
         $language = new \QueryGenerators\Language($expected);
@@ -191,7 +191,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByNotHavingCompletedBible()
+    public function testFindAllWithFiltersShouldFilterByNotHavingCompletedBible()
     {
         $expected = array('has_completed_bible'   =>  'N');
         $language = new \QueryGenerators\Language($expected);
@@ -211,7 +211,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByNotHavingQuestionableTranslationNeed()
+    public function testFindAllWithFiltersShouldFilterByNotHavingQuestionableTranslationNeed()
     {
         $expected = array('needs_translation_questionable'   =>  'N');
         $language = new \QueryGenerators\Language($expected);
@@ -231,7 +231,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByNotHavingAudioResources()
+    public function testFindAllWithFiltersShouldFilterByNotHavingAudioResources()
     {
         $expected = array('has_audio'   =>  'N');
         $language = new \QueryGenerators\Language($expected);
@@ -251,7 +251,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByNotHavingFourLaws()
+    public function testFindAllWithFiltersShouldFilterByNotHavingFourLaws()
     {
         $expected = array('has_four_laws'   =>  'N');
         $language = new \QueryGenerators\Language($expected);
@@ -271,7 +271,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByNotHavingJesusFilm()
+    public function testFindAllWithFiltersShouldFilterByNotHavingJesusFilm()
     {
         $expected = array('has_jesus_film'   =>  'N');
         $language = new \QueryGenerators\Language($expected);
@@ -291,7 +291,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByNotHavingGodsStory()
+    public function testFindAllWithFiltersShouldFilterByNotHavingGodsStory()
     {
         $expected = array('has_gods_story'   =>  'N');
         $language = new \QueryGenerators\Language($expected);
@@ -311,7 +311,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByCountry()
+    public function testFindAllWithFiltersShouldFilterByCountry()
     {
         $expected = array('countries'   =>  'af|ni');
         $language = new \QueryGenerators\Language($expected);
@@ -332,7 +332,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByWorldSpeakers()
+    public function testFindAllWithFiltersShouldFilterByWorldSpeakers()
     {
         $expected = array('world_speakers'   =>  '1');
         $language = new \QueryGenerators\Language($expected);
@@ -352,7 +352,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByPopulation()
+    public function testFindAllWithFiltersShouldFilterByPopulation()
     {
         $expected = array('population'   =>  '2630');
         $language = new \QueryGenerators\Language($expected);
@@ -372,7 +372,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByEvangelical()
+    public function testFindAllWithFiltersShouldFilterByEvangelical()
     {
         $expected = array('pc_evangelical'   =>  '3.25');
         $language = new \QueryGenerators\Language($expected);
@@ -392,7 +392,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByAdherent()
+    public function testFindAllWithFiltersShouldFilterByAdherent()
     {
         $expected = array('pc_adherent'   =>  '60');
         $language = new \QueryGenerators\Language($expected);
@@ -412,7 +412,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByPrimaryReligion()
+    public function testFindAllWithFiltersShouldFilterByPrimaryReligion()
     {
         $expected = array('primary_religions'   =>  '6');
         $language = new \QueryGenerators\Language($expected);
@@ -432,7 +432,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByJPScale()
+    public function testFindAllWithFiltersShouldFilterByJPScale()
     {
         $expected = array('jpscale'   =>  '3.1');
         $language = new \QueryGenerators\Language($expected);
@@ -452,7 +452,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindWithFiltersShouldLimitByLeastReached()
+    public function testFindAllWithFiltersShouldFilterByLeastReached()
     {
         $expected = array('least_reached'   =>  'y');
         $language = new \QueryGenerators\Language($expected);

@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
 use Swagger\Annotations as SWG;
@@ -51,7 +51,7 @@ use Swagger\Annotations as SWG;
   *              ),
   *              @SWG\Parameter(
   *                  name="id",
-  *                  description="The 2 letter ISO Country Code for the Country you want to view. [<a href='http://goo.gl/5PGK4H' target='_blank'>View all Country Codes</a>]",
+  *                  description="The 2 letter ISO Country Code for the Country you want to view. [<a href='http://goo.gl/1dhC' target='_blank'>View all Country Codes</a>]",
   *                  paramType="path",
   *                  required="true",
   *                  allowMultiple="false",
@@ -166,7 +166,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="ids",
- *                  description="A bar separated list of one or more ISO 2 Letter Country Codes to filter by. See <a href='http://www.joshuaproject.net/global-countries.php' target='_blank'>http://www.joshuaproject.net/global-countries.php</a>.",
+ *                  description="A bar separated list of one or more ISO 2 Letter Country Codes to filter by. See <a href='http://goo.gl/1dhC' target='_blank'>http://goo.gl/31Gf</a>.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",

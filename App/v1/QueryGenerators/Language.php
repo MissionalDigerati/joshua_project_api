@@ -17,16 +17,33 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
 namespace QueryGenerators;
 
 /**
- * A class that creates the prepared statement, and sets up the variables for a PDO prepared statement query.
- * These queries specifically work with the Language data.
+ * Generates the PDO prepared statements and variables for Languages.
  *
- * @package default
+ * A class that creates the prepared statement, and sets up the variables for a PDO prepared statement query.
+ * Once you call a method like findById,  you can get the prepared statement by reading the class variable
+ * $preparedStatement.  You can retrieve the prepared variables by reading the class variable $preparedVariables.
+ * So here is an example using the Continents Query Generator to find a continent by id:
+ * <pre><code>
+ * &lt;?php
+ * // Initialize the class, and pass in the id.
+ * $continent = new \QueryGenerators\Continent(array('id' => 'AFR'));
+ * // Call the method you want.
+ * $continent->findById();
+ * // Using PDO prepare the statement.
+ * $statement = $db->prepare($continent->preparedStatement);
+ * // Execute the query with the prepared params.
+ * $statement->execute($continent->preparedVariables);
+ * // Fetch the final results.
+ * $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+ * ?&gt;
+ * </code></pre>
+ *
  * @author Johnathan Pulos
  */
 class Language extends QueryGenerator
@@ -34,8 +51,8 @@ class Language extends QueryGenerator
     /**
      * An array of column names for this database table that we want to select in searches.  Simply remove fields you do not want to expose.
      *
-     * @var array
-     * @access protected
+     * @var     array
+     * @access  protected
      */
     protected $fieldsToSelectArray = array(
         'ROL3', 'Language', 'WebLangText', 'Status', 'ROG3', 'HubCountry', 'WorldSpeakers', 'BibleStatus', 'TranslationNeedQuestionable', 'BibleYear',
@@ -44,37 +61,39 @@ class Language extends QueryGenerator
         'NbrCountries'
     );
     /**
-     * The table to pull the data from
+     * The Database table to pull the data from.
      *
-     * @var string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     protected $tableName = "jplanguages";
     /**
-     * A string that will hold the default order by for the Select statement
+     * A string that will hold the default MySQL ORDER BY for the Select statement.
      *
-     * @var string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     protected $defaultOrderByStatement = "ORDER BY Language ASC";
     /**
-     * An array of table columns (key) and their alias (value)
+     * An array of table columns (key) and their alias (value).
      *
-     * @var array
-     * @access protected
+     * @var     array
+     * @access  protected
      **/
     protected $aliasFields = array(
         '4Laws_URL' => 'FourLaws_URL',
         '4Laws' => 'FourLaws'
     );
     /**
-     * Construct the class
+     * Construct the Language class.
      *
-     * @param array $getParams the params to use for the query.  Each message has required fields, and will throw error
-     * if they are missing
-     * 
-     * @access public
-     * @author Johnathan Pulos
+     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.  Some of the methods in this class require
+     * certain keys to be set, or it will throw an error.  The comments will state the required keys.
+     *
+     * @param   array   $getParams  The GET params to use for the query.
+     * @return  void
+     * @access  public
+     * @author  Johnathan Pulos
      */
     public function __construct($getParams)
     {
@@ -82,11 +101,15 @@ class Language extends QueryGenerator
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " . $this->generateAliasSelectStatement();
     }
     /**
-     * Find a Language by it's id (ROL3) 3 letter code
+     * Find a Language by it's id.
      *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
+     * Find a language using it's 3 letter ISO code, or Joshua Projects ROL3 code.  You can find a list of codes at <a href='http://goo.gl/gbkgo4' target='_blank'>this website</a>.
+     * <br><br><strong>Requires $providedParams['id']:</strong> The three letter ISO code or Joshua Projects ROL3 code.
+     *
+     * @return  void
+     * @access  public
+     * @throws  \InvalidArgumentException If the 'id' key is not set on the $providedParams class variable.
+     * @author  Johnathan Pulos
      **/
     public function findById()
     {
@@ -96,11 +119,14 @@ class Language extends QueryGenerator
         $this->preparedVariables = array('id' => $id);
     }
     /**
-     * Find all Languages by applying the supplied filters
+     * Find all languages using specific filters.
      *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
+     * Find all languages using a wide range of filters.  To see the types of filters, checkout the Swagger documentation of the API.
+     *
+     * @return  void
+     * @access  public
+     * @throws  \InvalidArgumentException When you set a filter, but fail to provide a valid parameter
+     * @author  Johnathan Pulos
      **/
     public function findAllWithFilters()
     {

@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
 namespace Tests\v1\Unit\QueryGenerators;
@@ -32,7 +32,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
     /**
      * The PDO database connection object
      *
-     * @var object
+     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
      */
     private $db;
     /**
@@ -207,7 +207,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testGenerateBetweenStatementFromDashSeperatedStringShouldReturnCorrectStatementWithAMinOnly()
+    public function testGenerateBetweenStatementFromDashSeperatedStringShouldReturnCorrectStatementWithMinOnly()
     {
         $expectedString = "Population = :total_population";
         $expectedKeys = array('total_population');
@@ -230,7 +230,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * 
      * @expectedException InvalidArgumentException
      */
-    public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMoreThenMaxAndMinAreGiven()
+    public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMoreMinThanMaxGiven()
     {
         $queryGenerator = new \QueryGenerators\QueryGenerator(array());
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
@@ -247,7 +247,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * 
      * @expectedException InvalidArgumentException
      */
-    public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMoreMinIsGreaterThanMax()
+    public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMinGreaterThanMax()
     {
         $queryGenerator = new \QueryGenerators\QueryGenerator(array());
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
@@ -262,7 +262,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForAYes()
+    public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForYes()
     {
         $expectedStatement = "IndigenousCode = :indigenous";
         $expectedKeys = array('indigenous');
@@ -283,7 +283,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForANo()
+    public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForNo()
     {
         $expectedStatement = "(10_40Window IS NULL OR 10_40Window = '')";
         $queryGenerator = new \QueryGenerators\QueryGenerator(array());
@@ -303,7 +303,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * 
      * @expectedException InvalidArgumentException
      */
-    public function testGenerateWhereStatementFromBooleanShouldThrowErrorIfNotYOrN()
+    public function testGenerateWhereStatementFromBooleanShouldThrowErrorIfParamInvalid()
     {
         $queryGenerator = new \QueryGenerators\QueryGenerator(array());
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');

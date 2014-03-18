@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
 use Swagger\Annotations as SWG;
@@ -174,7 +174,7 @@ $app->get(
   *              ),
   *              @SWG\Parameter(
   *                  name="country",
-  *                  description="The country's 2 letter ISO Code specified at <a href='http://www.joshuaproject.net/global-countries.php' target='_blank'>http://www.joshuaproject.net/global-countries.php</a>.",
+  *                  description="The country's 2 letter ISO Code specified at <a href='http://goo.gl/31Gf' target='_blank'>http://goo.gl/31Gf</a>.",
   *                  paramType="query",
   *                  required="false",
   *                  allowMultiple="false",
