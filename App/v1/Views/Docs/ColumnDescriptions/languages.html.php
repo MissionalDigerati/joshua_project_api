@@ -132,7 +132,7 @@
                 </tr>
                 <tr>
                     <td>Status</td>
-                    <td>Language status - L=Living, E=Extinct, N=Nearly extinct, H=Historical, A=Ancient, C=Constructed.</td>
+                    <td>Language status [L - Living, E - Extinct, N - Nearly extinct, H - Historical, A - Ancient, C - Constructed].</td>
                 </tr>
                 <tr>
                     <td>TranslationNeedQuestionable</td>
