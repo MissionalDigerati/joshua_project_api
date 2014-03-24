@@ -27,15 +27,15 @@
                 </tr>
                 <tr>
                     <td>NbrLR</td>
-                    <td>The number of least reached living in this region.</td>
+                    <td>The number of least reached people groups living in this region.</td>
                 </tr>
                 <tr>
                     <td>PercentLR</td>
-                    <td>The percentage of least reached in this region.</td>
+                    <td>The percentage of least reached people groups in this region.</td>
                 </tr>
                 <tr>
                     <td>PercentPoplLR</td>
-                    <td>The percentage of the population that are least reached in this region.</td>
+                    <td>The percentage of the population that live in least reached people groups in this region.</td>
                 </tr>
                 <tr>
                     <td>PercentUrbanized</td>
@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                     <td>SumRegionLR</td>
-                    <td>The total number of least reached in this region.</td>
+                    <td>The total population living in least reached people groups in this region.</td>
                 </tr>
             </tbody>
         </table>

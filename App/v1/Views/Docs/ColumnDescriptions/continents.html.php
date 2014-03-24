@@ -35,7 +35,7 @@
                 </tr>
                 <tr>
                     <td>PercentPoplLR</td>
-                    <td>The percentage of the population that are least reached on the continent.</td>
+                    <td>The percentage of the population that live in least reached people groups on the continent.</td>
                 </tr>
                 <tr>
                     <td>PercentUrbanized</td>
@@ -51,7 +51,7 @@
                 </tr>
                 <tr>
                     <td>SumContinentLR</td>
-                    <td>The total number of least reached on the continent.</td>
+                    <td>The total population living in least reached people groups on this continent.</td>
                 </tr>
             </tbody>
         </table>
