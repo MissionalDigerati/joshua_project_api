@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                     <td>SumRegionLR</td>
-                    <td>The total population living in least reached people groups in this region.</td>
+                    <td>The total population living in least reached people groups in this region.</td> 
                 </tr>
             </tbody>
         </table>
