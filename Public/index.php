@@ -36,10 +36,18 @@ date_default_timezone_set('America/Denver');
  * @author Johnathan Pulos
  */
 $useCaching = false;
+$googleDocTitle = '';
 $DS = DIRECTORY_SEPARATOR;
 $DOMAIN_ADDRESS = $_SERVER['SERVER_NAME'];
 if ((substr_compare($DOMAIN_ADDRESS, "http://", 0, 7)) !== 0) {
     $DOMAIN_ADDRESS = "http://" . $DOMAIN_ADDRESS;
+}
+if (strpos($DOMAIN_ADDRESS, 'joshua.api.local') !== false) {
+    $GOOGLE_TRACKING_ID = 'UA-49359140-2';
+} elseif (strpos($DOMAIN_ADDRESS, 'jpapi.codingstudio.org') !== false) {
+    $GOOGLE_TRACKING_ID = 'UA-49359140-1';
+} else {
+    $GOOGLE_TRACKING_ID = '';
 }
 /**
  * Set the Public directory path
@@ -144,6 +152,7 @@ $staticPages = array("/", "/get_my_api_key", "/resend_activation_links", "/getti
 if (in_array($requestedUrl, $staticPages)) {
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/StaticPages.php");
     $bypassExtTest = true;
+    $googleDocTitle = "Requesting a Static Page";
 }
 /**
  * Are we on a documentation page?
@@ -153,6 +162,7 @@ if (in_array($requestedUrl, $staticPages)) {
 if (strpos($requestedUrl, '/docs') !== false) {
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Docs.php");
     $bypassExtTest = true;
+    $googleDocTitle = "Requesting Documentation";
 }
 /**
  * Are we on a API Key page?
@@ -177,6 +187,7 @@ if (strpos($requestedUrl, '/api_keys') !== false) {
     }
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/APIKeys.php");
     $bypassExtTest = true;
+    $googleDocTitle = "Requesting Admin Area";
 }
 /**
  * We must be on an API Request.  Make sure they only supply supported formats.
@@ -252,6 +263,7 @@ if (strpos($requestedUrl, 'people_groups') !== false) {
     $loader->add("QueryGenerators\ProfileText", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     $loader->add("QueryGenerators\Resource", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/PeopleGroups.php");
+    $googleDocTitle = "API Request for People Group Data.";
 }
 /**
  * Are we searching API for Countries?
@@ -266,6 +278,7 @@ if (strpos($requestedUrl, 'countries') !== false) {
      */
     $loader->add("QueryGenerators\Country", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Countries.php");
+    $googleDocTitle = "API Request for Country Data.";
 }
 /**
  * Are we searching API for Languages?
@@ -280,6 +293,7 @@ if (strpos($requestedUrl, 'languages') !== false) {
      */
     $loader->add("QueryGenerators\Language", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Languages.php");
+    $googleDocTitle = "API Request for Language Data.";
 }
 /**
  * Are we searching API for Continents?
@@ -294,6 +308,7 @@ if (strpos($requestedUrl, 'continents') !== false) {
      */
     $loader->add("QueryGenerators\Continent", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Continents.php");
+    $googleDocTitle = "API Request for Continent Data.";
 }
 /**
  * Are we searching API for Regions?
@@ -308,6 +323,46 @@ if (strpos($requestedUrl, 'regions') !== false) {
      */
     $loader->add("QueryGenerators\Region", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Regions.php");
+    $googleDocTitle = "API Request for Continent Data.";
+}
+/**
+ * Send the request to Google Analytics
+ *
+ * @author Johnathan Pulos
+ */
+/**
+ * Autoload the Google Analytics Class
+ *
+ * @author Johnathan Pulos
+ */
+if ($GOOGLE_TRACKING_ID != '') {
+    $loader->add("PHPToolbox\CachedRequest\CurlUtility", $vendorDirectory . "PHPToolbox" . $DS . "src");
+    $loader->add("PHPToolbox\GoogleAnalytics\GoogleAnalytics", $vendorDirectory . "PHPToolbox" . $DS . "src");
+    $googleAnalytics = new \PHPToolbox\GoogleAnalytics\GoogleAnalytics($GOOGLE_TRACKING_ID);
+    /**
+     * Construct the Payload
+     */
+    if (isset($_SERVER['REQUEST_URI'])) {
+        $dp = $_SERVER['REQUEST_URI'];
+    } else {
+        $dp = '';
+    }
+    if ((isset($APIKey)) && ($APIKey != '')) {
+        $cid = $APIKey;
+    } else {
+        $cid = 'Site Visitor';
+    }
+    $payload = array(
+        'cid'   =>  $cid,
+        't'     =>  'pageview',
+        'dh'    =>  $DOMAIN_ADDRESS,
+        'dp'    =>  $dp,
+        'dt'    =>  $googleDocTitle
+    );
+    /**
+     * Send the payload
+     */
+    $googleAnalytics->save($payload);
 }
 /**
  * Now run the Slim Framework rendering

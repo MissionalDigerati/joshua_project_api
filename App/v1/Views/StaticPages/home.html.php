@@ -63,7 +63,7 @@
                             <p>If you need to see working examples of the Joshua Project API,  you can visit our <a href="/docs/v1/sample_code">Sample Code</a> section.  Here you can browse the repository of sample code, and find examples written in PHP, Javascript, Ruby, and Python.</p>
                           </div>
                           <div class="panel-footer">
-                            <a href="/docs/v1/sample_code" class="btn btn-success pull-right">View Sample Code >></a>
+                            <a href="/v1/docs/sample_code" class="btn btn-success pull-right">View Sample Code >></a>
                             <span class="clearfix"></span>
                           </div>
                         </div>
@@ -79,7 +79,7 @@
                             <p>To get a better understanding of the API, we highly encourage you to look over the documentation.  The documentation will show you all the resources available to you.  Make sure you have an API Key to use the interactive documentation.</p>
                           </div>
                             <div class="panel-footer">
-                                <a href="/docs/v1/#!/countries" class="btn btn-success pull-right">View Documentation >></a>
+                                <a href="/v1/docs/available_api_requests#!/continents" class="btn btn-success pull-right">View Documentation >></a>
                                 <span class="clearfix"></span>
                             </div>
                         </div>
