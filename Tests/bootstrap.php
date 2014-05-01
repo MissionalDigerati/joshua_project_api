@@ -27,7 +27,7 @@ $DS = DIRECTORY_SEPARATOR;
  * @param string
  * @author Johnathan Pulos
  */
-$SITE_URL = "http://joshua.api.local";
+$SITE_URL = $_ENV['site_url'];
 /**
  * The version of the API to test for (ex. v1)
  *
