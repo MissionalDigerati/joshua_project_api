@@ -42,6 +42,20 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
      * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
      */
     private $db;
+    /**
+     * The current API version number
+     *
+     * @var string
+     * @access private
+     **/
+    private $APIVersion;
+    /**
+     * The URL for the testing server
+     *
+     * @var string
+     * @access private
+     **/
+    private $siteURL;
 
     /**
      * Set up the test class
@@ -52,6 +66,10 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
+        global $API_VERSION;
+        $this->APIVersion = $API_VERSION;
+        global $SITE_URL;
+        $this->siteURL = $SITE_URL;
         $this->cachedRequest = new \PHPToolbox\CachedRequest\CachedRequest;
         $this->cachedRequest->cacheDirectory =
             __DIR__ .
@@ -89,7 +107,7 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
     public function testWebsiteShouldDisplayTheHomePage()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/",
+            $this->siteURL . "/",
             array(),
             "show_home"
         );
@@ -106,11 +124,11 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
         $authorizationToken = 'l543g3$4';
         $expectedAPIKey = 'AKey$43';
         $this->db->query(
-            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', '" . $expectedAPIKey .
-            "', '" . $authorizationToken . "', 0, NOW())"
+            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', '" .
+            $expectedAPIKey . "', '" . $authorizationToken . "', 0, NOW())"
         );
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/get_my_api_key",
+            $this->siteURL . "/get_my_api_key",
             array('authorize_token' => $authorizationToken),
             "get_my_api_key"
         );
@@ -128,11 +146,11 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
         $authorizationToken = 'l543g3$4Ac';
         $expectedAPIKey = 'AKey$43Ac';
         $this->db->query(
-            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', '" . $expectedAPIKey .
-            "', '" . $authorizationToken . "', 1, NOW())"
+            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', '" .
+            $expectedAPIKey . "', '" . $authorizationToken . "', 1, NOW())"
         );
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/get_my_api_key",
+            $this->siteURL . "/get_my_api_key",
             array('authorize_token' => $authorizationToken),
             "get_my_api_key_active_key"
         );
@@ -150,11 +168,11 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
         $authorizationToken = 'l543g3$4Ac';
         $expectedAPIKey = 'AKey$43Ac';
         $this->db->query(
-            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', '" . $expectedAPIKey .
-            "', '" . $authorizationToken . "', 2, NOW())"
+            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', '" .
+            $expectedAPIKey . "', '" . $authorizationToken . "', 2, NOW())"
         );
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/get_my_api_key",
+            $this->siteURL . "/get_my_api_key",
             array('authorize_token' => $authorizationToken),
             "get_my_api_key_suspended_key"
         );
@@ -172,11 +190,11 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
         $authorizationToken = 'l543g3$4Ac';
         $expectedAPIKey = 'AKey$43Ac';
         $this->db->query(
-            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', '" . $expectedAPIKey .
-            "', '" . $authorizationToken . "', 2, NOW())"
+            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', '" .
+            $expectedAPIKey . "', '" . $authorizationToken . "', 2, NOW())"
         );
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/get_my_api_key",
+            $this->siteURL . "/get_my_api_key",
             array('authorize_token' => ''),
             "get_my_api_key_missing_token"
         );
@@ -192,7 +210,7 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
     public function testWebsiteShouldDisplayTheResendActivationLinkPage()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/resend_activation_links",
+            $this->siteURL . "/resend_activation_links",
             array(),
             "show_resend_activation_links"
         );

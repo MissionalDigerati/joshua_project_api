@@ -1,4 +1,7 @@
 <phpunit bootstrap="./Tests/bootstrap.php">
+    <php>
+        <env name="site_url" value="http://joshua.api.local"/>
+    </php>
     <testsuites>
         <testsuite>
             <directory>.</directory>
