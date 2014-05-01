@@ -49,7 +49,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @var string
      * @access private
      **/
-    private $apiVersion;
+    private $APIVersion;
     /**
      * The URL for the testing server
      *
@@ -68,7 +68,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         global $API_VERSION;
-        $this->apiVersion = $API_VERSION;
+        $this->APIVersion = $API_VERSION;
         global $SITE_URL;
         $this->siteURL = $SITE_URL;
         $this->cachedRequest = new \PHPToolbox\CachedRequest\CachedRequest;

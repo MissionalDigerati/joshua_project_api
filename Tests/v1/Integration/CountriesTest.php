@@ -54,7 +54,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      * @var string
      * @access private
      **/
-    private $apiVersion;
+    private $APIVersion;
     /**
      * The URL for the testing server
      *
@@ -72,7 +72,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         global $API_VERSION;
-        $this->apiVersion = $API_VERSION;
+        $this->APIVersion = $API_VERSION;
         global $SITE_URL;
         $this->siteURL = $SITE_URL;
         $this->cachedRequest = new \PHPToolbox\CachedRequest\CachedRequest;
@@ -113,7 +113,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestShouldRefuseAccessWithoutAValidId()
     {
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries/1234.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries/1234.json",
             array('api_key' => $this->APIKey),
             "country_show_without_id"
         );
@@ -130,7 +130,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     {
         $expectedCountry = "US";
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries/" . $expectedCountry . ".json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries/" . $expectedCountry . ".json",
             array('api_key' => $this->APIKey),
             "should_return_country_json"
         );
@@ -148,7 +148,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     {
         $expectedCountry = "US";
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries/" . $expectedCountry . ".xml",
+            $this->siteURL . "/" . $this->APIVersion . "/countries/" . $expectedCountry . ".xml",
             array('api_key' => $this->APIKey),
             "should_return_country_xml"
         );
@@ -166,7 +166,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     {
         $expectedCountry = "US";
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries/" . $expectedCountry . ".json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries/" . $expectedCountry . ".json",
             array('api_key' => $this->APIKey),
             "should_return_country_json"
         );
@@ -187,7 +187,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     public function testIndexRequestShouldBeAccessableByJSON()
     {
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey),
             "should_return_country_index_json"
         );
@@ -204,7 +204,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     public function testIndexRequestShouldBeAccessableByXML()
     {
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.xml",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.xml",
             array('api_key' => $this->APIKey),
             "should_return_country_index_xml"
         );
@@ -223,7 +223,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedCountryCount = 100;
         $expectedFirstCountry = 'Afghanistan';
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey),
             "should_return_country_index_json"
         );
@@ -246,7 +246,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     {
         $expectedCountryCount = 10;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'limit' => $expectedCountryCount),
             "should_return_country_index_with_limit_json"
         );
@@ -264,7 +264,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     {
         $expectedIDs = array('us', 'af', 'al');
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'ids' => join('|', $expectedIDs)),
             "should_return_country_index_with_ids_json"
         );
@@ -284,7 +284,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     {
         $expectedContinents = array('eur', 'nar');
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'continents' => join('|', $expectedContinents)),
             "should_return_country_index_with_continents_json"
         );
@@ -304,7 +304,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     {
         $expectedRegions = array(1, 5);
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'regions' => join('|', $expectedRegions)),
             "should_return_country_index_with_regions_json"
         );
@@ -324,7 +324,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     {
         $expectedWindow1040 = 'y';
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'window1040' => $expectedWindow1040),
             "should_return_country_index_with_window_1040_json"
         );
@@ -344,7 +344,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPrimaryLanguages = array('por');
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'primary_languages' => join('|', $expectedPrimaryLanguages)),
             "should_return_country_index_with_primary_languages_json"
         );
@@ -366,7 +366,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 10000;
         $expectedMax = 20000;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'population' => $expectedMin."-".$expectedMax),
             "filter_by_pop_in_range_on_index_json"
         );
@@ -390,7 +390,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPopulation = 600;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'population' => $expectedPopulation),
             "filter_by_pop_exact_on_index_json"
         );
@@ -413,7 +413,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     {
         $expectedReligions = array(1 => 'christianity', 7 => 'non-religious');
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'primary_religions' => join('|', array_keys($expectedReligions))),
             "filter_by_primary_religion_on_index_json"
         );
@@ -437,7 +437,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     {
         $expectedReligions = array(7 => 'non-religious');
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'primary_religions' => join('|', array_keys($expectedReligions))),
             "filter_by_exact_primary_religion_on_index_json"
         );
@@ -462,7 +462,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 10;
         $expectedMax = 20;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'pc_christianity' => $expectedMin . '-' . $expectedMax),
             "filter_by_range_percent_christianity_on_index_json"
         );
@@ -487,7 +487,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 0;
         $expectedMax = 20;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'pc_evangelical' => $expectedMin . '-' . $expectedMax),
             "filter_by_range_percent_evangelical_on_index_json"
         );
@@ -512,7 +512,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 10;
         $expectedMax = 25;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'pc_buddhist' => $expectedMin . '-' . $expectedMax),
             "filter_by_range_pc_buddhist_on_index_json"
         );
@@ -537,7 +537,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 1;
         $expectedMax = 10;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'pc_ethnic_religion' => $expectedMin . '-' . $expectedMax),
             "filter_by_range_pc_ethnic_religion_on_index_json"
         );
@@ -562,7 +562,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 15;
         $expectedMax = 35;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'pc_hindu' => $expectedMin . '-' . $expectedMax),
             "filter_by_range_pc_hindu_on_index_json"
         );
@@ -587,7 +587,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 85;
         $expectedMax = 100;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'pc_islam' => $expectedMin . '-' . $expectedMax),
             "filter_by_range_pc_islam_on_index_json"
         );
@@ -612,7 +612,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 0;
         $expectedMax = 10;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'pc_non_religious' => $expectedMin . '-' . $expectedMax),
             "filter_by_range_pc_non_religious_on_index_json"
         );
@@ -637,7 +637,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 2;
         $expectedMax = 3;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'pc_other_religion' => $expectedMin . '-' . $expectedMax),
             "filter_by_range_pc_other_religion_on_index_json"
         );
@@ -662,7 +662,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedJPScale = "2.1";
         $expectedJPScalesArray = array(2.1);
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'jpscale' => $expectedJPScale),
             "filter_by_jpscale_on_index_json"
         );
@@ -686,7 +686,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 0;
         $expectedMax = 0.14;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'pc_unknown' => $expectedMin . '-' . $expectedMax),
             "filter_by_range_pc_unknown_on_index_json"
         );
@@ -711,7 +711,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 20;
         $expectedMax = 25;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'pc_anglican' => $expectedMin . '-' . $expectedMax),
             "filter_by_range_pc_anglican_on_index_json"
         );
@@ -736,7 +736,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 20;
         $expectedMax = 25;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'pc_independent' => $expectedMin . '-' . $expectedMax),
             "filter_by_range_pc_independent_on_index_json"
         );
@@ -761,7 +761,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 10;
         $expectedMax = 15;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'pc_protestant' => $expectedMin . '-' . $expectedMax),
             "filter_by_range_pc_protestant_on_index_json"
         );
@@ -786,7 +786,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 70;
         $expectedMax = 74;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'pc_orthodox' => $expectedMin . '-' . $expectedMax),
             "filter_by_range_pc_orthodox_on_index_json"
         );
@@ -811,7 +811,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 20;
         $expectedMax = 25;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'pc_rcatholic' => $expectedMin . '-' . $expectedMax),
             "filter_by_range_pc_rcatholic_on_index_json"
         );
@@ -836,7 +836,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $expectedMin = 11;
         $expectedMax = 14;
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/countries.json",
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'pc_other_christian' => $expectedMin . '-' . $expectedMax),
             "filter_by_range_pc_other_christian_on_index_json"
         );

@@ -47,7 +47,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @var string
      * @access private
      **/
-    private $apiVersion;
+    private $APIVersion;
     /**
      * The URL for the testing server
      *
@@ -72,7 +72,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         global $API_VERSION;
-        $this->apiVersion = $API_VERSION;
+        $this->APIVersion = $API_VERSION;
         global $SITE_URL;
         $this->siteURL = $SITE_URL;
         $this->cachedRequest = new \PHPToolbox\CachedRequest\CachedRequest;
@@ -113,7 +113,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestShouldRefuseAccessWithoutAnAPIKey()
     {
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/continents/4.json",
+            $this->siteURL . "/" . $this->APIVersion . "/continents/4.json",
             array(),
             "continent_show_up_json"
         );
@@ -175,7 +175,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestShouldRefuseAccessWithABadAPIKeys()
     {
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/continents/1.json",
+            $this->siteURL . "/" . $this->APIVersion . "/continents/1.json",
             array('api_key' => 'BADKEY'),
             "bad_key_json"
         );
@@ -191,7 +191,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldReturnContinentsInJSON()
     {
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/continents/asi.json",
+            $this->siteURL . "/" . $this->APIVersion . "/continents/asi.json",
             array('api_key' => $this->APIKey),
             "show_accessible_in_json"
         );
@@ -208,7 +208,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldReturnContinentsInXML()
     {
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/continents/asi.xml",
+            $this->siteURL . "/" . $this->APIVersion . "/continents/asi.xml",
             array('api_key' => $this->APIKey),
             "show_accessible_in_xml"
         );
@@ -226,7 +226,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldThrowErrorIfIdIsBad()
     {
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/continents/bad_id.json",
+            $this->siteURL . "/" . $this->APIVersion . "/continents/bad_id.json",
             array('api_key' => $this->APIKey),
             "show_with_bad_id"
         );
@@ -246,7 +246,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
         $continentId = 'asi';
         $expectedContinent = 'asia';
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/continents/" . $continentId . ".json",
+            $this->siteURL . "/" . $this->APIVersion . "/continents/" . $continentId . ".json",
             array('api_key' => $this->APIKey),
             "show_returns_appropriate_continent"
         );

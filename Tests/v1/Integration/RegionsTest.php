@@ -55,7 +55,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      * @var string
      * @access private
      **/
-    private $apiVersion;
+    private $APIVersion;
     /**
      * The URL for the testing server
      *
@@ -73,7 +73,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         global $API_VERSION;
-        $this->apiVersion = $API_VERSION;
+        $this->APIVersion = $API_VERSION;
         global $SITE_URL;
         $this->siteURL = $SITE_URL;
         $this->cachedRequest = new \PHPToolbox\CachedRequest\CachedRequest;
@@ -114,7 +114,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldRefuseAccessWithoutAnAPIKey()
     {
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/regions/2.json",
+            $this->siteURL . "/" . $this->APIVersion . "/regions/2.json",
             array(),
             "region_show_up_json"
         );
@@ -176,7 +176,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldRefuseAccessWithABadAPIKey()
     {
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/regions/1.json",
+            $this->siteURL . "/" . $this->APIVersion . "/regions/1.json",
             array('api_key' => 'BADKEY'),
             "bad_key_json"
         );
@@ -192,7 +192,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldReturnARegionInJSON()
     {
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/regions/3.json",
+            $this->siteURL . "/" . $this->APIVersion . "/regions/3.json",
             array('api_key' => $this->APIKey),
             "show_accessible_in_json"
         );
@@ -209,7 +209,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldReturnARegionInXML()
     {
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/regions/3.xml",
+            $this->siteURL . "/" . $this->APIVersion . "/regions/3.xml",
             array('api_key' => $this->APIKey),
             "show_accessible_in_xml"
         );
@@ -229,7 +229,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
         $regionId = 10;
         $expectedRegion = 'western europe';
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->apiVersion . "/regions/" . $regionId . ".json",
+            $this->siteURL . "/" . $this->APIVersion . "/regions/" . $regionId . ".json",
             array('api_key' => $this->APIKey),
             "show_returns_appropriate_region"
         );
