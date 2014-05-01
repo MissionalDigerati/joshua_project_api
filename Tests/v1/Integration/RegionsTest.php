@@ -50,6 +50,20 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      **/
     private $APIKey = '';
     /**
+     * The current API version number
+     *
+     * @var string
+     * @access private
+     **/
+    private $apiVersion;
+    /**
+     * The URL for the testing server
+     *
+     * @var string
+     * @access private
+     **/
+    private $siteURL;
+    /**
      * Set up the test class
      *
      * @return void
@@ -58,6 +72,10 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
+        global $API_VERSION;
+        $this->apiVersion = $API_VERSION;
+        global $SITE_URL;
+        $this->siteURL = $SITE_URL;
         $this->cachedRequest = new \PHPToolbox\CachedRequest\CachedRequest;
         $this->cachedRequest->cacheDirectory =
             __DIR__ .
@@ -96,7 +114,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldRefuseAccessWithoutAnAPIKey()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/v1/regions/2.json",
+            $this->siteURL . "/" . $this->apiVersion . "/regions/2.json",
             array(),
             "region_show_up_json"
         );
@@ -111,7 +129,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldRefuseAccessWithoutAVersionNumber()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/regions/4.json",
+            $this->siteURL . "/regions/4.json",
             array('api_key' => $this->APIKey),
             "regions_versioning_missing_json"
         );
@@ -127,7 +145,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/regions/3.json",
+            $this->siteURL . "/regions/3.json",
             array('api_key' => $this->APIKey),
             "non_active_key_json"
         );
@@ -143,7 +161,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/regions/2.json",
+            $this->siteURL . "/regions/2.json",
             array('api_key' => $this->APIKey),
             "suspended_key_json"
         );
@@ -158,7 +176,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldRefuseAccessWithABadAPIKey()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/v1/regions/1.json",
+            $this->siteURL . "/" . $this->apiVersion . "/regions/1.json",
             array('api_key' => 'BADKEY'),
             "bad_key_json"
         );
@@ -174,7 +192,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldReturnARegionInJSON()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/v1/regions/3.json",
+            $this->siteURL . "/" . $this->apiVersion . "/regions/3.json",
             array('api_key' => $this->APIKey),
             "show_accessible_in_json"
         );
@@ -191,7 +209,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldReturnARegionInXML()
     {
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/v1/regions/3.xml",
+            $this->siteURL . "/" . $this->apiVersion . "/regions/3.xml",
             array('api_key' => $this->APIKey),
             "show_accessible_in_xml"
         );
@@ -211,7 +229,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
         $regionId = 10;
         $expectedRegion = 'western europe';
         $response = $this->cachedRequest->get(
-            "http://joshua.api.local/v1/regions/" . $regionId . ".json",
+            $this->siteURL . "/" . $this->apiVersion . "/regions/" . $regionId . ".json",
             array('api_key' => $this->APIKey),
             "show_returns_appropriate_region"
         );
