@@ -231,7 +231,9 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
             array('name' => 'i_should_become_active', 'email' => 'joe@gmail.com', 'usage' => 'testing'),
             "i_should_become_active"
         );
-        $statement = $this->db->query("SELECT authorize_token from `md_api_keys` WHERE `name` = 'i_should_become_active'");
+        $statement = $this->db->query(
+            "SELECT authorize_token from `md_api_keys` WHERE `name` = 'i_should_become_active'"
+        );
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->cachedRequest->get(
             "http://joshua.api.local/get_my_api_key",
@@ -260,7 +262,9 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
             "i_should_stay_suspended"
         );
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `name` = 'i_should_stay_suspended'");
-        $statement = $this->db->query("SELECT authorize_token from `md_api_keys` WHERE `name` = 'i_should_stay_suspended'");
+        $statement = $this->db->query(
+            "SELECT authorize_token from `md_api_keys` WHERE `name` = 'i_should_stay_suspended'"
+        );
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->cachedRequest->get(
             "http://joshua.api.local/get_my_api_key",
