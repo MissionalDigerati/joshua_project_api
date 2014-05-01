@@ -33,14 +33,30 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * The CachedRequest Object
      *
      * @var \PHPToolbox\CachedRequest\CachedRequest
+     * @access public
      */
     public $cachedRequest;
     /**
      * The PDO database connection object
      *
      * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     * @access private
      */
     private $db;
+    /**
+     * The current API version number
+     *
+     * @var string
+     * @access private
+     **/
+    private $apiVersion;
+    /**
+     * The URL for the testing server
+     *
+     * @var string
+     * @access private
+     **/
+    private $siteURL;
 
     /**
      * Set up the test class
@@ -51,6 +67,10 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
+        global $API_VERSION;
+        $this->apiVersion = $API_VERSION;
+        global $SITE_URL;
+        $this->siteURL = $SITE_URL;
         $this->cachedRequest = new \PHPToolbox\CachedRequest\CachedRequest;
         $this->cachedRequest->cacheDirectory =
             __DIR__ .
@@ -89,9 +109,9 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      **/
     public function testAPIKeyRequestWithMissingPOSTParamsShouldSetAllRequiredFieldsInURL()
     {
-        $expectedURL = "http://joshua.api.local/?required_fields=name|email|usage";
+        $expectedURL = $this->siteURL . "/?required_fields=name|email|usage";
         $this->cachedRequest->post(
-            "http://joshua.api.local/api_keys",
+            $this->siteURL . "/api_keys",
             array('name' => '', 'email' => '', 'usage' => ''),
             "api_keys_required_fields"
         );
@@ -108,9 +128,9 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      **/
     public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredNameFieldInURL()
     {
-        $expectedURL = "http://joshua.api.local/?required_fields=name&email=joe%40yahoo.com&usage=testing";
+        $expectedURL = $this->siteURL . "/?required_fields=name&email=joe%40yahoo.com&usage=testing";
         $this->cachedRequest->post(
-            "http://joshua.api.local/api_keys",
+            $this->siteURL . "/api_keys",
             array('name' => '', 'email' => 'joe@yahoo.com', 'usage' => 'testing'),
             "api_keys_required_fields"
         );
@@ -127,9 +147,9 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      **/
     public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredEmailFieldInURL()
     {
-        $expectedURL = "http://joshua.api.local/?required_fields=email&name=joe&usage=testing";
+        $expectedURL = $this->siteURL . "/?required_fields=email&name=joe&usage=testing";
         $this->cachedRequest->post(
-            "http://joshua.api.local/api_keys",
+            $this->siteURL . "/api_keys",
             array('name' => 'joe', 'email' => '', 'usage' => 'testing'),
             "api_keys_required_fields"
         );
@@ -146,9 +166,9 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      **/
     public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredUsageFieldInURL()
     {
-        $expectedURL = "http://joshua.api.local/?required_fields=usage&name=joe&email=joe%40yahoo.com";
+        $expectedURL = $this->siteURL . "/?required_fields=usage&name=joe&email=joe%40yahoo.com";
         $this->cachedRequest->post(
-            "http://joshua.api.local/api_keys",
+            $this->siteURL . "/api_keys",
             array('name' => 'joe', 'email' => 'joe@yahoo.com', 'usage' => ''),
             "api_keys_required_fields"
         );
@@ -166,7 +186,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     public function testAPIKeyRequestShouldReturnIfAllPOSTParamsSupplied()
     {
         $this->cachedRequest->post(
-            "http://joshua.api.local/api_keys",
+            $this->siteURL . "/api_keys",
             array('name' => 'joe', 'email' => 'joe@yahoo.com', 'usage' => 'testing'),
             "api_keys_required_fields"
         );
@@ -187,7 +207,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     public function testAPIKeyRequestShouldSetStatusToZeroIntially()
     {
         $content = $this->cachedRequest->post(
-            "http://joshua.api.local/api_keys",
+            $this->siteURL . "/api_keys",
             array('name' => 'status_should_be_zero', 'email' => 'joe@yahoo.com', 'usage' => 'testing'),
             "status_should_be_zero"
         );
@@ -206,7 +226,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     public function testAPIKeyRequestShouldCreateAnAuthorizeToken()
     {
         $this->cachedRequest->post(
-            "http://joshua.api.local/api_keys",
+            $this->siteURL . "/api_keys",
             array('name' => 'should_set_authorize_token', 'email' => 'joe@gmail.com', 'usage' => 'testing'),
             "should_set_authorize_token"
         );
@@ -229,7 +249,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     {
         $expectedStatus = 1;
         $this->cachedRequest->post(
-            "http://joshua.api.local/api_keys",
+            $this->siteURL . "/api_keys",
             array('name' => 'i_should_become_active', 'email' => 'joe@gmail.com', 'usage' => 'testing'),
             "i_should_become_active"
         );
@@ -238,7 +258,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
         );
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->cachedRequest->get(
-            "http://joshua.api.local/get_my_api_key",
+            $this->siteURL . "/get_my_api_key",
             array('authorize_token' => $data[0]['authorize_token']),
             "i_should_become_active_authorize"
         );
@@ -259,7 +279,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     {
         $expectedStatus = 2;
         $this->cachedRequest->post(
-            "http://joshua.api.local/api_keys",
+            $this->siteURL . "/api_keys",
             array('name' => 'i_should_stay_suspended', 'email' => 'joe@gmail.com', 'usage' => 'testing'),
             "i_should_stay_suspended"
         );
@@ -269,7 +289,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
         );
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->cachedRequest->get(
-            "http://joshua.api.local/get_my_api_key",
+            $this->siteURL . "/get_my_api_key",
             array('authorize_token' => $data[0]['authorize_token']),
             "i_should_stay_suspended_authorize"
         );
