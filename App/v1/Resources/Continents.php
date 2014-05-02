@@ -21,6 +21,7 @@
  * 
  */
 use Swagger\Annotations as SWG;
+
 /**
  * @SWG\Resource(
  *     apiVersion="1",
