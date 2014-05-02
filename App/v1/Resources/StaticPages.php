@@ -16,7 +16,7 @@
  * along with this program.  If not, see 
  * <http://www.gnu.org/licenses/>.
  *
- * @author Johnathan Pulos <johnathan@missionaldigerati.org>
+ * @author Johnathan Pulos <johnathan@missionaldigerati.org> 
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
