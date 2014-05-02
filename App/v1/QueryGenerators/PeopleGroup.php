@@ -49,12 +49,31 @@ namespace QueryGenerators;
 class PeopleGroup extends QueryGenerator
 {
     /**
-     * An array of column names for this database table that we want to select in searches.  Simply remove fields you do not want to expose.
+     * An array of column names for this database table that we want to select in searches.  Simply remove fields you
+     * do not want to expose.
      *
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = array('ROG3', 'PeopleID3', 'ROP3', 'PeopNameInCountry', 'ROG2', 'Continent', 'RegionName', 'ISO3', 'LocationInCountry', 'PeopleID1', 'ROP1', 'AffinityBloc', 'PeopleID2', 'ROP2', 'PeopleCluster', 'PeopNameAcrossCountries', 'Population', 'PopulationPercentUN', 'Category', 'ROL3', 'PrimaryLanguageName', 'ROL4', 'PrimaryLanguageDialect', 'NumberLanguagesSpoken', 'ROL3OfficialLanguage', 'OfficialLang', 'SpeakNationalLang', 'BibleStatus', 'BibleYear', 'NTYear', 'PortionsYear', 'TranslationNeedQuestionable', 'JPScale', 'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedBasis', 'LeastReachedPC', 'LeastReachedPGAC', 'GSEC', 'Unengaged', 'JF', 'AudioRecordings', 'NTOnline', 'GospelRadio', 'RLG3', 'RLG3PC', 'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC', 'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision', 'PCIslam', 'PCNonReligious', 'PCUnknown', 'PCAnglican', 'PCIndependent', 'PCProtestant', 'PCOrthodox', 'PCOtherChristian', 'StonyGround', 'SecurityLevel', 'RaceCode', 'LRWebProfile', 'LRofTheDayMonth', 'LRofTheDayDay', 'LRTop100', 'PhotoAddress', 'PhotoWidth', 'PhotoHeight', 'PhotoCredits', 'PhotoCreditURL', 'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission', 'ProfileTextExists', 'Top10Ranking', 'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation', 'RankMinistryTools', 'CountOfCountries', 'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'V59Country', 'Longitude', 'Latitude', 'UNMap','Ctry', 'IndigenousCode', 'ROL3', 'PercentAdherents', 'PercentChristianPC', 'PercentChristianPGAC', 'PercentEvangelical', 'PercentEvangelicalPC', 'PercentEvangelicalPGAC', 'PCBuddhism', 'PCDblyProfessing', 'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'PCRomanCatholic', 'RegionCode');
+    protected $fieldsToSelectArray = array(
+        'ROG3', 'PeopleID3', 'ROP3', 'PeopNameInCountry', 'ROG2', 'Continent', 'RegionName', 'ISO3',
+        'LocationInCountry', 'PeopleID1', 'ROP1', 'AffinityBloc', 'PeopleID2', 'ROP2', 'PeopleCluster',
+        'PeopNameAcrossCountries', 'Population', 'PopulationPercentUN', 'Category', 'ROL3', 'PrimaryLanguageName',
+        'ROL4', 'PrimaryLanguageDialect', 'NumberLanguagesSpoken', 'ROL3OfficialLanguage', 'OfficialLang',
+        'SpeakNationalLang', 'BibleStatus', 'BibleYear', 'NTYear', 'PortionsYear', 'TranslationNeedQuestionable',
+        'JPScale', 'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedBasis', 'LeastReachedPC',
+        'LeastReachedPGAC', 'GSEC', 'Unengaged', 'JF', 'AudioRecordings', 'NTOnline', 'GospelRadio', 'RLG3', 'RLG3PC',
+        'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC', 'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision',
+        'PCIslam', 'PCNonReligious', 'PCUnknown', 'PCAnglican', 'PCIndependent', 'PCProtestant', 'PCOrthodox',
+        'PCOtherChristian', 'StonyGround', 'SecurityLevel', 'RaceCode', 'LRWebProfile', 'LRofTheDayMonth',
+        'LRofTheDayDay', 'LRTop100', 'PhotoAddress', 'PhotoWidth', 'PhotoHeight', 'PhotoCredits', 'PhotoCreditURL',
+        'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission', 'ProfileTextExists', 'Top10Ranking',
+        'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation', 'RankMinistryTools', 'CountOfCountries',
+        'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'V59Country', 'Longitude', 'Latitude', 'UNMap','Ctry',
+        'IndigenousCode', 'ROL3', 'PercentAdherents', 'PercentChristianPC', 'PercentChristianPGAC',
+        'PercentEvangelical', 'PercentEvangelicalPC', 'PercentEvangelicalPGAC', 'PCBuddhism', 'PCDblyProfessing',
+        'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'PCRomanCatholic', 'RegionCode'
+    );
     /**
      * The database table to pull the data from.
      *
@@ -75,7 +94,8 @@ class PeopleGroup extends QueryGenerator
      * @var     string
      * @access  private
      */
-    private $peopleGroupURLSelect = "CONCAT('http://www.joshuaproject.net/people-profile.php?peo3=', PeopleID3, '&amp;rog3=', ROG3)";
+    private $peopleGroupURLSelect =
+        "CONCAT('http://www.joshuaproject.net/people-profile.php?peo3=', PeopleID3, '&amp;rog3=', ROG3)";
     /**
      * The MySQL CONCAT statement for generating the PeopleGroupPhotoURL.
      *
@@ -100,8 +120,9 @@ class PeopleGroup extends QueryGenerator
     /**
      * Construct the People Group class.
      *
-     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.  Some of the methods in this class require
-     * certain keys to be set, or it will throw an error.  The comments will state the required keys.
+     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.
+     * Some of the methods in this class require certain keys to be set, or it will throw an error.  The comments will
+     * state the required keys.
      *
      * @param   array   $getParams  The GET params to use for the query.
      * @return  void
@@ -111,7 +132,8 @@ class PeopleGroup extends QueryGenerator
     public function __construct($getParams)
     {
         parent::__construct($getParams);
-        $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " . $this->generateAliasSelectStatement();
+        $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " .
+            $this->generateAliasSelectStatement();
         $this->selectFieldsStatement .= ", " . $this->peopleGroupURLSelect . " as PeopleGroupURL";
         $this->selectFieldsStatement .= ", " . $this->peopleGroupPhotoURLSelect . " as PeopleGroupPhotoURL";
         $this->selectFieldsStatement .= ", " . $this->countryURLSelect . " as CountryURL";
@@ -127,8 +149,8 @@ class PeopleGroup extends QueryGenerator
      * 
      * @return  void
      * @access  public
-     * @throws  \InvalidArgumentException   If the 'month' key is not set on the $providedParams class variable, or it is not between 1-12.
-     * @throws  \InvalidArgumentException   If the 'day' key is not set on the $providedParams class variable, or it is not between 1-31.
+     * @throws  \InvalidArgumentException   If the 'month' key is not set or it is not between 1-12.
+     * @throws  \InvalidArgumentException   If the 'day' key is not set or it is not between 1-31.
      * @author  Johnathan Pulos
      */
     public function dailyUnreached()
@@ -138,13 +160,15 @@ class PeopleGroup extends QueryGenerator
         $day = intval($this->providedParams['day']);
         $this->validator->integerInRange($month, 1, 12);
         $this->validator->integerInRange($day, 1, 31);
-        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName .
+            " WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
         $this->preparedVariables = array('month' => $month, 'day' => $day);
     }
     /**
      * Find the People Group by id (PeopleID3), and refine search by the country (ROG3).
      *
-     * Find all People Groups with a specified id, and then filter by the country's <a href="http://goo.gl/1dhC" target="_blank">ISO 2 Letter code</a>.
+     * Find all People Groups with a specified id, and then filter by the country's
+     *  <a href="http://goo.gl/1dhC" target="_blank">ISO 2 Letter code</a>.
      * The id is the Joshua Projects PeopleID3.
      * <br><br><strong>Requires $providedParams['id']:</strong> The Joshua Project PeopleID3.
      * <br><strong>Requires $providedParams['country']:</strong> The country's ISO 2 letter code.
@@ -160,7 +184,8 @@ class PeopleGroup extends QueryGenerator
         $this->validator->providedRequiredParams($this->providedParams, array('id', 'country'));
         $id = intval($this->providedParams['id']);
         $country = strtoupper($this->providedParams['country']);
-        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE PeopleID3 = :id AND ROG3 = :country LIMIT 1";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName .
+            " WHERE PeopleID3 = :id AND ROG3 = :country LIMIT 1";
         $this->preparedVariables = array('id' => $id, 'country' => $country);
     }
     /**
@@ -178,13 +203,15 @@ class PeopleGroup extends QueryGenerator
     {
         $this->validator->providedRequiredParams($this->providedParams, array('id'));
         $id = intval($this->providedParams['id']);
-        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE PeopleID3 = :id";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName .
+            " WHERE PeopleID3 = :id";
         $this->preparedVariables = array('id' => $id);
     }
     /**
      * Find all People Groups using specified filters.
      *
-     * Find all People Groups using a wide range of filters.  To see the types of filters, checkout the Swagger documentation of the API.
+     * Find all People Groups using a wide range of filters.  To see the types of filters, checkout the Swagger
+     * documentation of the API.
      *
      * @return  void
      * @access  public
@@ -201,12 +228,19 @@ class PeopleGroup extends QueryGenerator
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateWhereStatementForBoolean($this->providedParams['window1040'], '10_40Window', 'window_10_40');
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['window1040'],
+                '10_40Window',
+                'window_10_40'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('continents')) {
             $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['continents'], 3);
-            $this->validator->barSeperatedStringProvidesAcceptableValues($this->providedParams['continents'], array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam'));
+            $this->validator->barSeperatedStringProvidesAcceptableValues(
+                $this->providedParams['continents'],
+                array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam')
+            );
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -226,11 +260,18 @@ class PeopleGroup extends QueryGenerator
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateWhereStatementForBoolean($this->providedParams['indigenous'], 'IndigenousCode', 'indigenous');
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['indigenous'],
+                'IndigenousCode',
+                'indigenous'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('jpscale')) {
-            $this->validator->barSeperatedStringProvidesAcceptableValues($this->providedParams['jpscale'], array('1.1', '1.2', '2.1', '2.2', '3.1', '3.2'));
+            $this->validator->barSeperatedStringProvidesAcceptableValues(
+                $this->providedParams['jpscale'],
+                array('1.1', '1.2', '2.1', '2.2', '3.1', '3.2')
+            );
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -250,7 +291,11 @@ class PeopleGroup extends QueryGenerator
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateWhereStatementForBoolean($this->providedParams['least_reached'], 'LeastReached', 'least_reached');
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['least_reached'],
+                'LeastReached',
+                'least_reached'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('people_id1')) {
@@ -278,112 +323,176 @@ class PeopleGroup extends QueryGenerator
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_anglican'], 'PCAnglican', 'pc_anglican');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_anglican'],
+                'PCAnglican',
+                'pc_anglican'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_adherent')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_adherent'], 'PercentAdherents', 'pc_adherents');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_adherent'],
+                'PercentAdherents',
+                'pc_adherents'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_buddhist')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_buddhist'], 'PCBuddhism', 'pc_buddhist');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_buddhist'],
+                'PCBuddhism',
+                'pc_buddhist'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_ethnic_religion')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_ethnic_religion'], 'PCEthnicReligions', 'pc_ethnic_religion');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_ethnic_religion'],
+                'PCEthnicReligions',
+                'pc_ethnic_religion'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_evangelical')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_evangelical'], 'PercentEvangelical', 'pc_evangelical');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_evangelical'],
+                'PercentEvangelical',
+                'pc_evangelical'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_hindu')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_hindu'], 'PCHinduism', 'pc_hindu');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_hindu'],
+                'PCHinduism',
+                'pc_hindu'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_independent')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_independent'], 'PCIndependent', 'pc_independent');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_independent'],
+                'PCIndependent',
+                'pc_independent'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_islam')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_islam'], 'PCIslam', 'pc_islam');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_islam'],
+                'PCIslam',
+                'pc_islam'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_non_religious')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_non_religious'], 'PCNonReligious', 'pc_non_religious');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_non_religious'],
+                'PCNonReligious',
+                'pc_non_religious'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_orthodox')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_orthodox'], 'PCOrthodox', 'pc_orthodox');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_orthodox'],
+                'PCOrthodox',
+                'pc_orthodox'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_other_christian')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_other_christian'], 'PCOtherChristian', 'pc_other_christian');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_other_christian'],
+                'PCOtherChristian',
+                'pc_other_christian'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_other_religion')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_other_religion'], 'PCOtherSmall', 'pc_other_religion');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_other_religion'],
+                'PCOtherSmall',
+                'pc_other_religion'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_protestant')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_protestant'], 'PCProtestant', 'pc_protestant');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_protestant'],
+                'PCProtestant',
+                'pc_protestant'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_rcatholic')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_rcatholic'], 'PCRomanCatholic', 'pc_rcatholic');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_rcatholic'],
+                'PCRomanCatholic',
+                'pc_rcatholic'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_unknown')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_unknown'], 'PCUnknown', 'pc_unknown');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_unknown'],
+                'PCUnknown',
+                'pc_unknown'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('population')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['population'], 'Population', 'pop');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['population'],
+                'Population',
+                'pop'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('primary_religions')) {
@@ -394,7 +503,10 @@ class PeopleGroup extends QueryGenerator
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateInStatementFromPipedString($this->providedParams['primary_religions'], 'RLG3');
+            $where .= $this->generateInStatementFromPipedString(
+                $this->providedParams['primary_religions'],
+                'RLG3'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('regions')) {
@@ -434,7 +546,11 @@ class PeopleGroup extends QueryGenerator
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateWhereStatementForBoolean($this->providedParams['unengaged'], 'Unengaged', 'unengaged');
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['unengaged'],
+                'Unengaged',
+                'unengaged'
+            );
             $appendAndOnWhere = true;
         }
         if ($where != "") {

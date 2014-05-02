@@ -63,7 +63,8 @@ class Resource extends QueryGenerator
      */
     protected $defaultOrderByStatement = 'ORDER BY DisplaySeq ASC';
     /**
-     * An array of column names for this database table that we want to select in searches.  Simply remove fields you do not want to expose.
+     * An array of column names for this database table that we want to select in searches.
+     * Simply remove fields you do not want to expose.
      *
      * @var     array
      * @access  protected
@@ -72,8 +73,9 @@ class Resource extends QueryGenerator
     /**
      * Construct the Resource class.
      *
-     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.  Some of the methods in this class require
-     * certain keys to be set, or it will throw an error.  The comments will state the required keys.
+     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.
+     * Some of the methods in this class require certain keys to be set, or it will throw an error.  The comments will 
+     * state the required keys.
      *
      * @param   array   $getParams  The GET params to use for the query.
      * @return  void
@@ -88,8 +90,8 @@ class Resource extends QueryGenerator
     /**
      * Find Resources for a specific Language.
      *
-     * Find all Resources associated with a specific language by providing it's <a href='http://goo.gl/gbkgo4' target='_blank'>3 Letter ISO code</a>
-     *  or Joshua Projects ROL3 code.
+     * Find all Resources associated with a specific language by providing it's 
+     * <a href='http://goo.gl/gbkgo4' target='_blank'>3 Letter ISO code</a> or Joshua Projects ROL3 code.
      * <br><br><strong>Requires $providedParams['id']:</strong> The three letter ISO code or Joshua Projects ROL3 code.
      *
      * @return  void
@@ -101,7 +103,8 @@ class Resource extends QueryGenerator
     {
         $this->validator->providedRequiredParams($this->providedParams, array('id'));
         $id = strtolower($this->providedParams['id']);
-        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE ROL3 = :id " . $this->defaultOrderByStatement;
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName .
+            " WHERE ROL3 = :id " . $this->defaultOrderByStatement;
         $this->preparedVariables = array('id' => $id);
     }
 }

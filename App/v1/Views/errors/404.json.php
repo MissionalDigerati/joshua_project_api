@@ -23,5 +23,9 @@
  */
 header('HTTP/1.1 404 Not Found');
 echo json_encode(
-    array('api' => array('status'    =>  'error', 'error' => array('code'    =>  404, 'message'  =>  'Not Found', 'details' => '')))
+    array('api' =>
+        array('status'    =>  'error', 'error' =>
+            array('code'    =>  404, 'message'  =>  'Not Found', 'details' => '')
+        )
+    )
 );

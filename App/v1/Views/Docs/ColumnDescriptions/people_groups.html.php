@@ -91,7 +91,8 @@
                 </tr>
                 <tr>
                     <td>Latitude</td>
-                    <td>Latitude value of language polygon or highest density district centroid, for Google maps colored dots</td>
+                    <td>Latitude value of language polygon or highest density district centroid, for Google maps 
+                        colored dots</td>
                 </tr>
                 <tr>
                     <td>LeastReached</td>
@@ -107,7 +108,8 @@
                 </tr>
                 <tr>
                     <td>LeastReachedPGAC</td>
-                    <td>Is this people group across all countries considered least-reached / unreached? [JPScale < 2.0]</td>
+                    <td>Is this people group across all countries considered least-reached / unreached? 
+                        [JPScale < 2.0]</td>
                 </tr>
                 <tr>
                     <td>LocationInCountry</td>
@@ -115,7 +117,8 @@
                 </tr>
                 <tr>
                     <td>Longitude</td>
-                    <td>Longitude value of language polygon or highest density district centroid, for Google maps colored dots</td>
+                    <td>Longitude value of language polygon or highest density district centroid, for Google maps 
+                        colored dots</td>
                 </tr>
                 <tr>
                     <td>LRofTheDayDay</td>
@@ -159,7 +162,8 @@
                 </tr>
                 <tr>
                     <td>PercentAdherentsPGAC</td>
-                    <td>Percent of people in group who are Christian Adherents in all people groups across all countries</td>
+                    <td>Percent of people in group who are Christian Adherents in all people groups across all 
+                        countries</td>
                 </tr>
                 <tr>
                     <td>PCAnglican</td>
@@ -179,7 +183,8 @@
                 </tr>
                 <tr>
                     <td>PercentAdherentsPGAC</td>
-                    <td>Percent of people in group who are Christian Adherents in all people groups across all countries</td>
+                    <td>Percent of people in group who are Christian Adherents in all people groups across all 
+                        countries</td>
                 </tr>
                 <tr>
                     <td>PercentEvangelical</td>
@@ -191,7 +196,8 @@
                 </tr>
                 <tr>
                     <td>PercentEvangelicalPGAC</td>
-                    <td>Percent of people in group who are Evangelicals in all people groups across all countries</td>
+                    <td>Percent of people in group who are Evangelicals in all people groups across all 
+                        countries</td>
                 </tr>
                 <tr>
                     <td>PCHinduism</td>
@@ -319,7 +325,9 @@
                 </tr>
                 <tr>
                     <td>PrimaryReligion</td>
-                    <td>Primary religion of the people group in this country [1 - Christianity, 2 - Buddhism, 4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 9 - Unknown]</td>
+                    <td>Primary religion of the people group in this country [1 - Christianity, 2 - Buddhism, 
+                        4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 
+                        9 - Unknown]</td>
                 </tr>
                 <tr>
                     <td>PrimaryReligionPC</td>
@@ -359,7 +367,10 @@
                 </tr>
                 <tr>
                     <td>RegionCode</td>
-                    <td>Region code for this people group [1 - South Pacific, 2 - Southeast Asia, 3 - Northeast Asia, 4 - South Asia, 5 - Central Asia, 6 - Middle East and North Africa, 7 - East and Southern Africa, 8 - West and Central Africa, 9 - Eastern Europe and Eurasia, 10 - Western Europe, 11 - Central and South America, 12 - North America and Caribbean]</td>
+                    <td>Region code for this people group [1 - South Pacific, 2 - Southeast Asia, 3 - Northeast Asia, 
+                        4 - South Asia, 5 - Central Asia, 6 - Middle East and North Africa, 
+                        7 - East and Southern Africa, 8 - West and Central Africa, 9 - Eastern Europe and Eurasia, 
+                        10 - Western Europe, 11 - Central and South America, 12 - North America and Caribbean]</td>
                 </tr>
                 <tr>
                     <td>RegionName</td>
@@ -427,7 +438,8 @@
                 </tr>
                 <tr>
                     <td>StonyGround</td>
-                    <td>Is this country stony ground for evangelism? If If "Y" the default for people groups in this country with unknown % Evangelical and % Christian Adherents is "Unreached"</td>
+                    <td>Is this country stony ground for evangelism? If If "Y" the default for people groups in this 
+                        country with unknown % Evangelical and % Christian Adherents is "Unreached"</td>
                 </tr>
                 <tr>
                     <td>Top10Ranking</td>

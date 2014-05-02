@@ -71,7 +71,8 @@
                 </tr>
                 <tr>
                     <td>JPScale</td>
-                    <td>Joshua Project Progress Scale for this language, derived from the people group data who speak this language.</td>
+                    <td>Joshua Project Progress Scale for this language, derived from the people group data who speak 
+                        this language.</td>
                 </tr>
                 <tr>
                     <td>Language</td>
@@ -79,7 +80,8 @@
                 </tr>
                 <tr>
                     <td>LeastReached</td>
-                    <td>Is this language considered unreached, derived from the people group data who speak this language?</td>
+                    <td>Is this language considered unreached, derived from the people group data who speak this 
+                        language?</td>
                 </tr>
 
                 <tr>
@@ -108,11 +110,14 @@
                 </tr>
                 <tr>
                     <td>PrimaryReligion</td>
-                    <td>Primary religion (text) for this language [1 - Christianity, 2 - Buddhism, 4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 9 - Unknown]</td>
+                    <td>Primary religion (text) for this language [1 - Christianity, 2 - Buddhism, 4 - Ethnic Religions,
+                        5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 9 - Unknown]</td>
                 </tr>
                 <tr>
                     <td>RLG3</td>
-                    <td>Primary religion (number) of the people group in this language [1 - Christianity, 2 - Buddhism, 4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 9 - Unknown]</td>
+                    <td>Primary religion (number) of the people group in this language [1 - Christianity, 2 - Buddhism, 
+                        4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 
+                        9 - Unknown]</td>
                 </tr>
                 <tr>
                     <td>ROG3</td>
@@ -132,7 +137,8 @@
                 </tr>
                 <tr>
                     <td>Status</td>
-                    <td>Language status [L - Living, E - Extinct, N - Nearly extinct, H - Historical, A - Ancient, C - Constructed].</td>
+                    <td>Language status [L - Living, E - Extinct, N - Nearly extinct, H - Historical, A - Ancient, 
+                        C - Constructed].</td>
                 </tr>
                 <tr>
                     <td>TranslationNeedQuestionable</td>

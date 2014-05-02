@@ -63,13 +63,15 @@ class Continent extends QueryGenerator
      */
     protected $defaultOrderByStatement = "ORDER BY Continent ASC";
     /**
-     * An array of column names for this database table that we want to select in searches.  Simply remove fields you do not want to expose.
+     * An array of column names for this database table that we want to select in searches.
+     * Simply remove fields you do not want to expose.
      *
      * @var     array
      * @access  protected
      */
     protected $fieldsToSelectArray = array(
-        'ROG2', 'Continent', 'NbrCountries', 'NbrPGIC', 'NbrLR', 'SumContinent', 'PercentLR', 'SumContinentLR', 'PercentPoplLR', 'PercentUrbanized'
+        'ROG2', 'Continent', 'NbrCountries', 'NbrPGIC', 'NbrLR', 'SumContinent',
+        'PercentLR', 'SumContinentLR', 'PercentPoplLR', 'PercentUrbanized'
     );
     /**
      * The Database table to pull the data from.
@@ -81,8 +83,9 @@ class Continent extends QueryGenerator
     /**
      * Construct the Continent class.
      *
-     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.  Some of the methods in this class require
-     * certain keys to be set, or it will throw an error.  The comments will state the required keys.
+     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.
+     * Some of the methods in this class require certain keys to be set, or it will throw an error.
+     * The comments will state the required keys.
      *
      * @param   array   $getParams  The GET params to use for the query.
      * @return  void
@@ -120,9 +123,12 @@ class Continent extends QueryGenerator
         $id = strtolower(strip_tags($this->providedParams['id']));
         $this->validator->stringLength($id, 3);
         if (!in_array($id, array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam'))) {
-            throw new \InvalidArgumentException("The id you provided is incorrect.  It must be 'afr', 'asi', 'aus', 'eur', 'nar', 'sop', or 'lam'.");
+            throw new \InvalidArgumentException(
+                "The id you provided is incorrect.  It must be 'afr', 'asi', 'aus', 'eur', 'nar', 'sop', or 'lam'."
+            );
         }
-        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE ROG2 = :id LIMIT 1";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement .
+            " FROM " . $this->tableName . " WHERE ROG2 = :id LIMIT 1";
         $this->preparedVariables = array('id' => $id);
     }
 }

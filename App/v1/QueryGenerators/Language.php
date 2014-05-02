@@ -49,16 +49,17 @@ namespace QueryGenerators;
 class Language extends QueryGenerator
 {
     /**
-     * An array of column names for this database table that we want to select in searches.  Simply remove fields you do not want to expose.
+     * An array of column names for this database table that we want to select in searches.
+     * Simply remove fields you do not want to expose.
      *
      * @var     array
      * @access  protected
      */
     protected $fieldsToSelectArray = array(
-        'ROL3', 'Language', 'WebLangText', 'Status', 'ROG3', 'HubCountry', 'WorldSpeakers', 'BibleStatus', 'TranslationNeedQuestionable', 'BibleYear',
-        'NTYear', 'PortionsYear', 'ROL3Edition14', 'ROL3Edition14Orig', 'JF', 'JF_URL', 'JF_ID', 'GRN_URL', 'AudioRecordings','GodsStory',
-        'FCBH_ID', 'JPScale', 'PercentAdherents', 'PercentEvangelical', 'LeastReached', 'JPPopulation', 'RLG3', 'PrimaryReligion', 'NbrPGICs',
-        'NbrCountries'
+        'ROL3', 'Language', 'WebLangText', 'Status', 'ROG3', 'HubCountry', 'WorldSpeakers', 'BibleStatus',
+        'TranslationNeedQuestionable', 'BibleYear', 'NTYear', 'PortionsYear', 'ROL3Edition14', 'ROL3Edition14Orig',
+        'JF', 'JF_URL', 'JF_ID', 'GRN_URL', 'AudioRecordings','GodsStory', 'FCBH_ID', 'JPScale', 'PercentAdherents',
+        'PercentEvangelical', 'LeastReached', 'JPPopulation', 'RLG3', 'PrimaryReligion', 'NbrPGICs', 'NbrCountries'
     );
     /**
      * The Database table to pull the data from.
@@ -87,8 +88,9 @@ class Language extends QueryGenerator
     /**
      * Construct the Language class.
      *
-     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.  Some of the methods in this class require
-     * certain keys to be set, or it will throw an error.  The comments will state the required keys.
+     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.
+     * Some of the methods in this class require certain keys to be set, or it will throw an error.  The comments will
+     * state the required keys.
      *
      * @param   array   $getParams  The GET params to use for the query.
      * @return  void
@@ -98,13 +100,15 @@ class Language extends QueryGenerator
     public function __construct($getParams)
     {
         parent::__construct($getParams);
-        $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " . $this->generateAliasSelectStatement();
+        $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) .
+            ", " . $this->generateAliasSelectStatement();
     }
     /**
      * Find a Language by it's id.
      *
-     * Find a language using it's 3 letter ISO code, or Joshua Projects ROL3 code.  You can find a list of codes at <a href='http://goo.gl/gbkgo4' target='_blank'>this website</a>.
-     * <br><br><strong>Requires $providedParams['id']:</strong> The three letter ISO code or Joshua Projects ROL3 code.
+     * Find a language using it's 3 letter ISO code, or Joshua Projects ROL3 code.  You can find a list of codes at
+     * <a href='http://goo.gl/gbkgo4' target='_blank'>this website</a>.<br><br><strong>Requires $providedParams['id']:
+     * </strong> The three letter ISO code or Joshua Projects ROL3 code.
      *
      * @return  void
      * @access  public
@@ -115,13 +119,15 @@ class Language extends QueryGenerator
     {
         $id = strtoupper($this->providedParams['id']);
         $this->validator->providedRequiredParams($this->providedParams, array('id'));
-        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE ROL3 = :id LIMIT 1";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement .
+            " FROM " . $this->tableName . " WHERE ROL3 = :id LIMIT 1";
         $this->preparedVariables = array('id' => $id);
     }
     /**
      * Find all languages using specific filters.
      *
-     * Find all languages using a wide range of filters.  To see the types of filters, checkout the Swagger documentation of the API.
+     * Find all languages using a wide range of filters.  To see the types of filters, checkout the Swagger
+     * documentation of the API.
      *
      * @return  void
      * @access  public
@@ -243,7 +249,10 @@ class Language extends QueryGenerator
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('jpscale')) {
-            $this->validator->barSeperatedStringProvidesAcceptableValues($this->providedParams['jpscale'], array('1.1', '1.2', '2.1', '2.2', '3.1', '3.2'));
+            $this->validator->barSeperatedStringProvidesAcceptableValues(
+                $this->providedParams['jpscale'],
+                array('1.1', '1.2', '2.1', '2.2', '3.1', '3.2')
+            );
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
@@ -255,7 +264,11 @@ class Language extends QueryGenerator
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateWhereStatementForBoolean($this->providedParams['least_reached'], 'LeastReached', 'least_reached');
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['least_reached'],
+                'LeastReached',
+                'least_reached'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('needs_translation_questionable')) {
@@ -277,21 +290,33 @@ class Language extends QueryGenerator
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_adherent'], 'PercentAdherents', 'pc_adherent');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_adherent'],
+                'PercentAdherents',
+                'pc_adherent'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_evangelical')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['pc_evangelical'], 'PercentEvangelical', 'pc_evangelical');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_evangelical'],
+                'PercentEvangelical',
+                'pc_evangelical'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('population')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['population'], 'JPPopulation', 'pop');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['population'],
+                'JPPopulation',
+                'pop'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('primary_religions')) {
@@ -309,7 +334,11 @@ class Language extends QueryGenerator
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString($this->providedParams['world_speakers'], 'WorldSpeakers', 'world_speak');
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['world_speakers'],
+                'WorldSpeakers',
+                'world_speak'
+            );
             $appendAndOnWhere = true;
         }
         if ($where != "") {

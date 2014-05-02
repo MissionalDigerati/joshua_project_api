@@ -57,9 +57,10 @@ if (strpos($DOMAIN_ADDRESS, 'joshua.api.local') !== false) {
  */
 $PUBLIC_DIRECTORY = dirname(__FILE__);
 /**
- * Lets get the version of the API based on the URL (http://joshua.api.local/v12/people_groups/daily_unreached.json?api_key=37e24112caae)
- * It will default to the latest API.  You must provide an API Version if you are accessing the data.  The default is only for
- * static pages
+ * Lets get the version of the API based on the URL (
+ * http://joshua.api.local/v12/people_groups/daily_unreached.json?api_key=37e24112caae
+ * ) It will default to the latest API.  You must provide an API Version if you are accessing the data.  The default is 
+ * only for static pages
  *
  * @author Johnathan Pulos
  */
@@ -183,7 +184,12 @@ if (strpos($requestedUrl, '/api_keys') !== false) {
          */
         $loader->add("JPAPI\AdminSettings", __DIR__ . $DS . ".." . $DS . "Config");
         $adminSettings = new \JPAPI\AdminSettings;
-        $app->add(new Slim\Extras\Middleware\HttpBasicAuth($adminSettings->default['username'], $adminSettings->default['password']));
+        $app->add(
+            new Slim\Extras\Middleware\HttpBasicAuth(
+                $adminSettings->default['username'],
+                $adminSettings->default['password']
+            )
+        );
     }
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/APIKeys.php");
     $bypassExtTest = true;

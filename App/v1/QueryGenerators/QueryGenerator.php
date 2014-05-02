@@ -90,7 +90,8 @@ class QueryGenerator
      */
     protected $providedParams = array();
     /**
-     * An array of column names for this database table that we want to select in searches.  Simply remove fields you do not want to expose.
+     * An array of column names for this database table that we want to select in searches. 
+     * Simply remove fields you do not want to expose.
      *
      * @var     array
      * @access  protected
@@ -123,14 +124,15 @@ class QueryGenerator
      * @var     string
      * @access  protected
      */
-    protected $JPScaleTextSelectStatement = "CASE  WHEN JPScale = 1.0 OR JPScale = 2.0 THEN 'Status Unavailable' WHEN JPScale = 1.1 OR JPScale = 1.2 THEN 'Unreached' WHEN JPScale = 2.1 OR JPScale = 2.2 THEN 'Nominal Church' ELSE 'Established Church' END";
+    protected $JPScaleTextSelectStatement = "";
     /**
      * The MySQL CONCAT statement for generating the JPScaleImageURL.
      *
      * @var     string
      * @access  protected
      */
-    protected $JPScaleImageURLSelectStatement = "CONCAT('http://www.joshuaproject.net/images/scale', ROUND(JPScale), '.jpg')";
+    protected $JPScaleImageURLSelectStatement =
+        "CONCAT('http://www.joshuaproject.net/images/scale', ROUND(JPScale), '.jpg')";
     /**
      * An array of table columns (key) and their alias (value).
      *
@@ -141,8 +143,9 @@ class QueryGenerator
     /**
      * Construct the QueryGenerator class.
      *
-     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.  Some of the methods in the child classes require
-     * certain keys to be set, or it will throw an error.  The comments will state the required keys.
+     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.  
+     * Some of the methods in the child classes require certain keys to be set, or it will throw an error.
+     * The comments will state the required keys.
      *
      * @param   array   $getParams  The GET params to use for the query.
      * @return  void
@@ -151,6 +154,9 @@ class QueryGenerator
      */
     public function __construct($getParams)
     {
+        $this->JPScaleTextSelectStatement = "CASE  WHEN JPScale = 1.0 OR JPScale = 2.0 THEN 'Status Unavailable' WHEN" .
+            " JPScale = 1.1 OR JPScale = 1.2 THEN 'Unreached' WHEN JPScale = 2.1 OR JPScale = 2.2 THEN" .
+            " 'Nominal Church' ELSE 'Established Church' END";
         $this->validator = new \Utilities\Validator();
         $this->sanitizer = new \Utilities\Sanitizer();
         $this->providedParams = $this->sanitizer->cleanArrayValues($getParams);
@@ -172,9 +178,9 @@ class QueryGenerator
     /**
      * Add a MySQL LIMIT based on the $providedParams class variable.
      *
-     * Checks the given $providedParams class variable for keys <strong>limit</strong> and <strong>page</strong>.  If they exist,
-     * then this method will generate the appropriate MySQL syntax for the LIMIT attribute.  It appends the LIMIT string to the
-     * $preparedStatement class variable.
+     * Checks the given $providedParams class variable for keys <strong>limit</strong> and <strong>page</strong>.  
+     * If they exist, then this method will generate the appropriate MySQL syntax for the LIMIT attribute. 
+     * It appends the LIMIT string to the $preparedStatement class variable.
      *
      * @return void
      * @access protected
@@ -188,7 +194,8 @@ class QueryGenerator
             $this->preparedVariables['limit'] = 100;
         }
         if (($this->paramExists('page')) && intval($this->providedParams['page']) > 0) {
-            $this->preparedVariables['starting'] = (intval($this->providedParams['page'])*$this->preparedVariables['limit'])-1;
+            $starting = (intval($this->providedParams['page'])*$this->preparedVariables['limit'])-1;
+            $this->preparedVariables['starting'] = $starting;
         } else {
             $this->preparedVariables['starting'] = 0;
         }
@@ -197,7 +204,8 @@ class QueryGenerator
     /**
      * Generates an IN () statement from a piped string.
      *
-     * Generates the MySQL IN() syntax from a supplied a pipe (bar) seperated string.  So a $str of 17|23|12 will return $columnName IN (17, 23, 12).
+     * Generates the MySQL IN() syntax from a supplied a pipe (bar) seperated string.  So a $str of 17|23|12 will 
+     * return $columnName IN (17, 23, 12).
      *
      * @param   string  $str        The piped/barred string.
      * @param   string  $columnName The MySQL column name that you want to search.
@@ -221,13 +229,13 @@ class QueryGenerator
     /**
      * Generates a BETWEEN statement using a dash separated string.
      *
-     * Generates the MySQL BETWEEN statement from a dash seperated string.  If $str is a single integer, it will generate an EQUALITY
-     * MySQL statement.  If you supply 2 integers seperated by a dash,  it will generate a MySQL BETWEEN statement.  For example, 10-20, will
-     * return $columnName BETWEEN 10 AND 20.
+     * Generates the MySQL BETWEEN statement from a dash seperated string.  If $str is a single integer, it will
+     * generate an EQUALITY MySQL statement.  If you supply 2 integers seperated by a dash,  it will generate a MySQL 
+     * BETWEEN statement.  For example, 10-20, will return $columnName BETWEEN 10 AND 20.
      *
      * @param   string  $str        Either a single integer or a dash separated string (min-max).
      * @param   string  $columnName The name of the MySQL table column to search.
-     * @param   string  $suffix     A suffix to be appended to the prepared variable name. (Please do not separate with spaces)
+     * @param   string  $suffix     A suffix to be appended to the prepared variable name. (No Spaces Allowed)
      * @return  string  The MySQL statement.
      * @throws  \InvalidArgumentException   If $str has more than 2 integers.
      * @throws  \InvalidArgumentException   If $str first integer is greater than the second integer.
@@ -247,7 +255,7 @@ class QueryGenerator
             $this->preparedVariables["min_" . $suffix] = $min;
             $this->preparedVariables["max_" . $suffix] = $max;
             return $columnName . " BETWEEN :min_" . $suffix . " AND :max_" . $suffix;
-        } else if ($stringValuesLength == 1) {
+        } elseif ($stringValuesLength == 1) {
             $this->preparedVariables["total_" . $suffix] = floatval($stringValues[0]);
             return $columnName . " = :total_" . $suffix;
         } else {
@@ -262,7 +270,7 @@ class QueryGenerator
      *
      * @param   string  $str            The value your looking for. (Y or N)
      * @param   string  $columnName     The name of the MySQL table column to search.
-     * @param   string  $suffix         A suffix to be appended to the prepared variable name. (Please do not separate with spaces)
+     * @param   string  $suffix         A suffix to be appended to the prepared variable name. (No Spaces Allowed)
      * @return  string  The MySQL statement.
      * @throws  \InvalidArgumentException   If $str value is not Y or N. (Case Insensitive)
      * @access  protected
@@ -274,7 +282,7 @@ class QueryGenerator
         if ($val == 'Y') {
             $this->preparedVariables[$suffix] = $val;
             return $columnName . " = :" . $suffix;
-        } else if ($val == 'N') {
+        } elseif ($val == 'N') {
             return "(" . $columnName . " IS NULL OR " . $columnName . " = '')";
         } else {
             throw new \InvalidArgumentException("A boolean was set with the wrong value.");
@@ -283,8 +291,8 @@ class QueryGenerator
     /**
      * Generates the WHERE statement for a boolean based on wether the column has content or not.
      *
-     * Generates a MySQL WHERE statement for a boolean value check.  If $str equals Y,  it looks for a value that is NOT NULL or EMPTY.
-     * If $str equals N, it looks for a NULL or EMPTY value.
+     * Generates a MySQL WHERE statement for a boolean value check.  If $str equals Y,  it looks for a value that is 
+     * NOT NULL or EMPTY.  If $str equals N, it looks for a NULL or EMPTY value.
      *
      * @param   string  $str            The value your looking for. (Y or N)
      * @param   string  $columnName     The name of the MySQL table column to search.
@@ -298,7 +306,7 @@ class QueryGenerator
         $val = strtoupper($str);
         if ($val == 'Y') {
             return "(" . $columnName . " IS NOT NULL OR " . $columnName . " != '')";
-        } else if ($val == 'N') {
+        } elseif ($val == 'N') {
             return "(" . $columnName . " IS NULL OR " . $columnName . " = '')";
         } else {
             throw new \InvalidArgumentException("A boolean was set with the wrong value.");
@@ -307,8 +315,9 @@ class QueryGenerator
     /**
      * Generates column name aliases based on the key and values of the $aliasFields class variable. 
      *
-     * Using the key and values of the $aliasFields class variable, it generates the column names to SELECT using the following format: key AS value.
-     * So with multiple values, you will receive key AS value, key AS value, key AS value etc.
+     * Using the key and values of the $aliasFields class variable, it generates the column names to SELECT using the 
+     * following format: key AS value.  So with multiple values, you will receive key AS value, key AS value, key AS 
+     * value etc.
      *
      * @return string   The MySQL statement.
      * @access protected

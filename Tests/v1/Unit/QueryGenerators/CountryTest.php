@@ -267,7 +267,11 @@ class CountryTest extends \PHPUnit_Framework_TestCase
     public function testFindAllWithFiltersShouldFilterByPrimaryReligions()
     {
         $expectedReligions = array(2 => 'buddhism', 6 => 'islam');
-        $country = new \QueryGenerators\Country(array('primary_religions' => join('|', array_keys($expectedReligions))));
+        $country = new \QueryGenerators\Country(
+            array(
+                'primary_religions' => join('|', array_keys($expectedReligions))
+            )
+        );
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);

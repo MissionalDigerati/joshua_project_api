@@ -34,8 +34,8 @@ class Validator
     /**
      * Do the $requiredKeys exist?
      *
-     * Checks weather the $providedParams array has the $requiredKeys.  It checks to see if the key exists, and wether the value
-     * is set.  Throws an error if it does not pass these checks.
+     * Checks weather the $providedParams array has the $requiredKeys.  It checks to see if the key exists, 
+     * and wether the value is set.  Throws an error if it does not pass these checks.
      *
      * @param   array   $providedParams     An array to check.
      * @param   array   $requiredKeys       An array of keys that are required.
@@ -59,8 +59,9 @@ class Validator
     /**
      * Validate all values in a piped (barred) string are acceptable.
      *
-     * Checks the values of a piped (barred) seperated string that they each value is acceptable.  This method takes each item in $barSeperatedString,
-     * and checks if the key exists in the $acceptableValues.  If not then it will throw an error.
+     * Checks the values of a piped (barred) seperated string that they each value is acceptable.  This method takes 
+     * each item in $barSeperatedString, and checks if the key exists in the $acceptableValues.  If not then it will
+     * throw an error.
      *
      * @param   string  $barSeperatedString     The bar seperated string to evaluate.
      * @param   array   $acceptableValues       An array of values that are acceptable.
@@ -81,8 +82,8 @@ class Validator
     /**
      * Validate all values in a piped (barred) string are the correct length.
      *
-     * Checks the values of a piped (barred) seperated string that they each value is a set length.  This method takes each item in $barSeperatedString,
-     * and checks if each key is a set $length.  If not then it will throw an error.
+     * Checks the values of a piped (barred) seperated string that they each value is a set length.  This method takes 
+     * each item in $barSeperatedString, and checks if each key is a set $length.  If not then it will throw an error.
      *
      * @param   string  $barSeperatedString     The bar seperated string to test.
      * @param   integer $length                 The length that you want each key to be.

@@ -180,7 +180,8 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedValues, array_values($queryGenerator->preparedVariables));
     }
     /**
-     * generateBetweenStatementFromDashSeperatedString() should generate an appropriate BETWEEN statement with a max and minimum
+     * generateBetweenStatementFromDashSeperatedString() should generate an appropriate BETWEEN statement with a max 
+     * and minimum
      *
      * @return void
      * @access public

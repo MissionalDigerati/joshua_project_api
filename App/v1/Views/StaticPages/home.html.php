@@ -38,7 +38,12 @@
                 <div class="page-header">
                     <h2>Welcome to the Joshua Project API</h2>
                 </div>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Joshua Project is a research initiative seeking to highlight the ethnic people groups of the world with the fewest followers of Christ.  This API was developed to provide believers easier access to the Joshua Project's rich data.  Once you request and receive an API key you will have access to data regarding people groups, countries and languages throughout the world.  You will also have access to current missional work being done in those areas.  If you would like to know more, check out the links below!</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Joshua Project is a research initiative seeking to highlight the 
+                    ethnic people groups of the world with the fewest followers of Christ.  This API was developed to 
+                    provide believers easier access to the Joshua Project's rich data.  Once you request and receive an 
+                    API key you will have access to data regarding people groups, countries and languages throughout 
+                    the world.  You will also have access to current missional work being done in those areas.  If you 
+                    would like to know more, check out the links below!</p>
                 <div class="beginner_panel row">
                     <div class="col-sm-6">
                         <div class="panel panel-default">
@@ -46,7 +51,9 @@
                             <h3 class="panel-title"><img src="img/compass.png" alt="compass"> Getting Started</h3>
                           </div>
                           <div class="panel-body">
-                            <p>If you are new to API development,  this tutorial will walk you through the basics of using the Joshua Project API.  We offer the tutorial in PHP, Javascript, Ruby, and Python.  So buckle up and prepare to learn API development.</p>
+                            <p>If you are new to API development,  this tutorial will walk you through the basics of 
+                                using the Joshua Project API.  We offer the tutorial in PHP, Javascript, Ruby, and 
+                                Python.  So buckle up and prepare to learn API development.</p>
                           </div>
                           <div class="panel-footer">
                             <a href="/getting_started" class="btn btn-success pull-right">Start Now >></a>
@@ -60,7 +67,10 @@
                             <h3 class="panel-title"><img src="img/computer.png" alt="computer"> Sample Code</h3>
                           </div>
                           <div class="panel-body">
-                            <p>If you need to see working examples of the Joshua Project API,  you can visit our <a href="/docs/v1/sample_code">Sample Code</a> section.  Here you can browse the repository of sample code, and find examples written in PHP, Javascript, Ruby, and Python.</p>
+                            <p>If you need to see working examples of the Joshua Project API,  you can visit our 
+                                <a href="/docs/v1/sample_code">Sample Code</a> section.  Here you can browse the 
+                                repository of sample code, and find examples written in PHP, Javascript, Ruby, and 
+                                Python.</p>
                           </div>
                           <div class="panel-footer">
                             <a href="/v1/docs/sample_code" class="btn btn-success pull-right">View Sample Code >></a>
@@ -76,10 +86,13 @@
                             <h3 class="panel-title"><img src="img/documents.png" alt="documents"> Documentation</h3>
                           </div>
                           <div class="panel-body">
-                            <p>To get a better understanding of the API, we highly encourage you to look over the documentation.  The documentation will show you all the resources available to you.  Make sure you have an API Key to use the interactive documentation.</p>
+                            <p>To get a better understanding of the API, we highly encourage you to look over the 
+                                documentation.  The documentation will show you all the resources available to you.  
+                                Make sure you have an API Key to use the interactive documentation.</p>
                           </div>
                             <div class="panel-footer">
-                                <a href="/v1/docs/available_api_requests#!/continents" class="btn btn-success pull-right">View Documentation >></a>
+                            <a href="/v1/docs/available_api_requests#!/continents" class="btn btn-success pull-right">
+                                View Documentation >></a>
                                 <span class="clearfix"></span>
                             </div>
                         </div>
@@ -90,10 +103,14 @@
                             <h3 class="panel-title"><img src="img/people.png" alt="people"> Learn More</h3>
                           </div>
                           <div class="panel-body">
-                            <p>Joshua Project is a research initiative seeking to highlight the ethnic people groups of the world with the fewest followers of Christ. Accurate, regularly updated ethnic people group information is critical for understanding and completing the Great Commission.</p>
+                            <p>Joshua Project is a research initiative seeking to highlight the ethnic people groups of 
+                                the world with the fewest followers of Christ. Accurate, regularly updated ethnic 
+                                people group information is critical for understanding and completing the Great 
+                                Commission.</p>
                           </div>
                           <div class="panel-footer">
-                            <a href="http://www.joshuaproject.net/" target="_blank" class="btn btn-success pull-right">Visit Website >></a>
+                            <a href="http://www.joshuaproject.net/" target="_blank" class="btn btn-success pull-right">
+                                Visit Website >></a>
                             <span class="clearfix"></span>
                           </div>
                         </div>
@@ -105,7 +122,8 @@
 if ((isset($data['api_key'])) && ($data['api_key'] == 'true')) {
     ?>
                 <div class="alert alert-success">
-                    Thank you!  We made you a shiny new API key.  Before you can retrieve it,  please visit the email you provided and click the link in the email we sent you.  Happy programming!
+                    Thank you!  We made you a shiny new API key.  Before you can retrieve it,  please visit the email 
+                    you provided and click the link in the email we sent you.  Happy programming!
                 </div>
     <?php
 }
@@ -113,7 +131,8 @@ if ((isset($data['api_key'])) && ($data['api_key'] == 'true')) {
                 <div class="page-header">
                     <h2>Request An API Key</h2>
                 </div>
-                <p>If you would like to get an API key, please complete the form below and verify your email address.</p>
+                <p>If you would like to get an API key, please complete the form below and verify your email 
+                    address.</p>
                 <form class="form-horizontal" method="POST" action="api_keys" role="form">
                     <fieldset>
 <?php
@@ -127,12 +146,13 @@ if ((!empty($errors)) && (in_array('name', $errors))) {
     <?php
 }
 ?>
-                            <label class="control-label col-lg-4" for="input-name">Name <span class="required-field">*</span></label>
+                            <label class="control-label col-lg-4" for="input-name">Name 
+                                <span class="required-field">*</span></label>
                             <div class="controls col-lg-8">
 <?php
 if ((isset($data['name'])) && ($data['name'] != "")) {
     ?>
-                                <input type="text" name="name" id="input-name"  value="<?php echo $data['name']; ?>" class="form-control">
+            <input type="text" name="name" id="input-name"  value="<?php echo $data['name']; ?>" class="form-control">
     <?php
 } else {
     ?>
@@ -158,16 +178,16 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
     <?php
 }
 ?>
-                            <label class="control-label col-lg-4" for="input-email">Email <span class="required-field">*</span></label>
+            <label class="control-label col-lg-4" for="input-email">Email <span class="required-field">*</span></label>
                             <div class="controls col-lg-8">
 <?php
 if ((isset($data['email'])) && ($data['email'] != "")) {
     ?>
-                                <input type="text" name="email" id="input-email" value="<?php echo $data['email']; ?>" class="form-control">
+            <input type="text" name="email" id="input-email" value="<?php echo $data['email']; ?>" class="form-control">
     <?php
 } else {
     ?>
-                                <input type="text" name="email" id="input-email" placeholder="Email" class="form-control">
+                        <input type="text" name="email" id="input-email" placeholder="Email" class="form-control">
     <?php
 }
 if ((!empty($errors)) && (in_array('email', $errors))) {
@@ -184,11 +204,12 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
 <?php
 if ((isset($data['organization'])) && ($data['organization'] != "")) {
     ?>
-                                <input type="text" name="organization" id="input-organization"  value="<?php echo $data['organization']; ?>" class="form-control">
+    <input type="text" name="organization" id="input-organization"  value="<?php echo $data['organization']; ?>" 
+    class="form-control">
     <?php
 } else {
     ?>
-                                <input type="text" name="organization" id="input-organization" placeholder="Organization" class="form-control">
+        <input type="text" name="organization" id="input-organization" placeholder="Organization" class="form-control">
     <?php
 }
     ?>
@@ -200,11 +221,11 @@ if ((isset($data['organization'])) && ($data['organization'] != "")) {
 <?php
 if ((isset($data['website'])) && ($data['website'] != "")) {
     ?>
-                                <input type="text" name="website" id="input-website"  value="<?php echo $data['website']; ?>" class="form-control">
+    <input type="text" name="website" id="input-website"  value="<?php echo $data['website']; ?>" class="form-control">
     <?php
 } else {
     ?>
-                                <input type="text" name="website" id="input-website" placeholder="Website" class="form-control">
+                    <input type="text" name="website" id="input-website" placeholder="Website" class="form-control">
     <?php
 }
 ?>
@@ -216,11 +237,12 @@ if ((isset($data['website'])) && ($data['website'] != "")) {
 <?php
 if ((isset($data['phone_number'])) && ($data['phone_number'] != "")) {
     ?>
-                                <input type="text" name="phone_number" id="input-phone_number"  value="<?php echo $data['phone_number']; ?>" class="form-control">
+    <input type="text" name="phone_number" id="input-phone_number"  value="<?php echo $data['phone_number']; ?>" 
+    class="form-control">
     <?php
 } else {
     ?>
-                                <input type="text" name="phone_number" id="input-phone_number" placeholder="Phone Number" class="form-control">
+        <input type="text" name="phone_number" id="input-phone_number" placeholder="Phone Number" class="form-control">
     <?php
 }
 ?>
@@ -237,16 +259,17 @@ if ((!empty($errors)) && (in_array('usage', $errors))) {
     <?php
 }
 ?>
-                            <label class="control-label col-lg-4" for="input-usage">How Will You Use the API? <span class="required-field">*</span></label>
+                            <label class="control-label col-lg-4" for="input-usage">How Will You Use the API? 
+                                <span class="required-field">*</span></label>
                             <div class="controls col-lg-8">
 <?php
 if ((isset($data['usage'])) && ($data['usage'] != "")) {
     ?>
-                                <textarea rows="6" id="input-usage" name="usage" class="form-control"><?php echo $data['usage']; ?></textarea>
+        <textarea rows="6" id="input-usage" name="usage" class="form-control"><?php echo $data['usage']; ?></textarea>
     <?php
 } else {
     ?>
-                                <textarea rows="6" id="input-usage" name="usage" class="form-control"></textarea>
+            <textarea rows="6" id="input-usage" name="usage" class="form-control"></textarea>
     <?php
 }
 if ((!empty($errors)) && (in_array('usage', $errors))) {
@@ -260,7 +283,8 @@ if ((!empty($errors)) && (in_array('usage', $errors))) {
                         <div class="form-group">
                             <div class="controls col-lg-12">
                                 <button type="submit" class="btn btn-primary btn-block">Send request</button><br>
-                                <a type="button" class="btn btn-link" href="/resend_activation_links">Resend Activation Links</a>
+                                <a type="button" class="btn btn-link" href="/resend_activation_links">
+                                    Resend Activation Links</a>
                             </div>
                         </div>
                         <span class="required-field">* = Required</span>

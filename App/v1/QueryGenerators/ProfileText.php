@@ -49,17 +49,28 @@ namespace QueryGenerators;
 class ProfileText extends QueryGenerator
 {
     /**
-     * An array of column names for this database table that we want to select in searches.  Simply remove fields you do not want to expose.
+     * An array of column names for this database table that we want to select in searches.
+     * Simply remove fields you do not want to expose.
      *
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = array('jpprofiletext.ProfileID', 'jpprofiletext.ROL3', 'jpprofiletext.Active', 'jpprofiletext.Format', 'jpprofiletext.FileName', 'jpprofiletext.IntroductionHistory', 'jpprofiletext.WhereLocated', 'jpprofiletext.LivesLike', 'jpprofiletext.Beliefs', 'jpprofiletext.Needs', 'jpprofiletext.Prayer', 'jpprofiletext.Reference', 'jpprofiletext.Summary', 'jpprofiletext.ScriptureFocus', 'jpprofiletext.Obstacles', 'jpprofiletext.HowReach', 'jpprofiletext.PrayForChurch', 'jpprofiletext.PrayForPG', 'jpprofiletext.Identity', 'jpprofiletext.History', 'jpprofiletext.Customs', 'jpprofiletext.Religion', 'jpprofiletext.Christianity', 'jpprofiletext.Comments', 'jpprofiletext.Copyright', 'jpprofiletext.Permission', 'jpprofiletext.CreativeCommons', 'jpprofiletext.Credits', 'jpprofiletext.CreditsURL');
+    protected $fieldsToSelectArray = array(
+        'jpprofiletext.ProfileID', 'jpprofiletext.ROL3', 'jpprofiletext.Active', 'jpprofiletext.Format',
+        'jpprofiletext.FileName', 'jpprofiletext.IntroductionHistory', 'jpprofiletext.WhereLocated',
+        'jpprofiletext.LivesLike', 'jpprofiletext.Beliefs', 'jpprofiletext.Needs', 'jpprofiletext.Prayer',
+        'jpprofiletext.Reference', 'jpprofiletext.Summary', 'jpprofiletext.ScriptureFocus', 'jpprofiletext.Obstacles',
+        'jpprofiletext.HowReach', 'jpprofiletext.PrayForChurch', 'jpprofiletext.PrayForPG', 'jpprofiletext.Identity',
+        'jpprofiletext.History', 'jpprofiletext.Customs', 'jpprofiletext.Religion', 'jpprofiletext.Christianity',
+        'jpprofiletext.Comments', 'jpprofiletext.Copyright', 'jpprofiletext.Permission',
+        'jpprofiletext.CreativeCommons', 'jpprofiletext.Credits', 'jpprofiletext.CreditsURL'
+    );
     /**
      * Construct the Profile Text class.
      *
-     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.  Some of the methods in this class require
-     * certain keys to be set, or it will throw an error.  The comments will state the required keys.
+     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.
+     * Some of the methods in this class require certain keys to be set, or it will throw an error.  The comments will
+     * state the required keys.
      *
      * @param   array   $getParams  The GET params to use for the query.
      * @return  void
@@ -74,9 +85,10 @@ class ProfileText extends QueryGenerator
     /**
      * Find the Profile Text for a specific People Group in a specific Country.
      *
-     * Find the Profile Text for a specific People group by suppling the People Group's id, the Joshua Project's PeopleID3.  Also specify the country
-     * by supplying the country's <a href="http://goo.gl/31Gf" target="_blank">ISO 2 Letter code</a>.
-     * <br><br><strong>Requires $providedParams['id']:</strong> The Joshua Project PeopleID3.
+     * Find the Profile Text for a specific People group by suppling the People Group's id, the Joshua Project's
+     * PeopleID3.  Also specify the country by supplying the country's
+     * <a href="http://goo.gl/31Gf" target="_blank">ISO2 Letter code</a>. <br><br>
+     * <strong>Requires $providedParams['id']:</strong> The Joshua Project PeopleID3.
      * <br><strong>Requires $providedParams['country']:</strong> The country's ISO 2 letter code.
      *
      * @return  void
@@ -90,7 +102,9 @@ class ProfileText extends QueryGenerator
         $this->validator->providedRequiredParams($this->providedParams, array('id', 'country'));
         $id = intval($this->providedParams['id']);
         $country = strtoupper($this->providedParams['country']);
-        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jpprofiletopeople JOIN jpprofiletext ON jpprofiletopeople.ProfileID = jpprofiletext.ProfileID WHERE jpprofiletopeople.PeopleID3 = :id AND jpprofiletopeople.ROG3 = :country";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement .
+            " FROM jpprofiletopeople JOIN jpprofiletext ON jpprofiletopeople.ProfileID = jpprofiletext.ProfileID " .
+            "WHERE jpprofiletopeople.PeopleID3 = :id AND jpprofiletopeople.ROG3 = :country";
         $this->preparedVariables = array('id' => $id, 'country' => $country);
     }
 }

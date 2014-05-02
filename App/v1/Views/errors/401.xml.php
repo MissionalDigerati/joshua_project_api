@@ -22,4 +22,11 @@
  */
 header('HTTP/1.1 401 Unauthorized');
 ?>
-<api><status>error</status><error><code>401</code><message>Unauthorized</message><details></details></error></api>
+<api>
+    <status>error</status>
+    <error>
+        <code>401</code>
+        <message>Unauthorized</message>
+        <details></details>
+    </error>
+</api>

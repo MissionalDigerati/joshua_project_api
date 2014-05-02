@@ -408,7 +408,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedROP = 'A014';
         $expectedPeopleID = 23;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('rop1' => $expectedROP, 'people_id1' => $expectedPeopleID));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'rop1' => $expectedROP, 'people_id1' => $expectedPeopleID
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -662,7 +666,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     public function testFindAllWithFiltersShouldFilterByPrimaryReligions()
     {
         $expectedReligions = array(2 => 'buddhism', 6 => 'islam');
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('primary_religions' => join('|', array_keys($expectedReligions))));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'primary_religions' => join('|', array_keys($expectedReligions))
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -732,7 +740,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_adherent' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'pc_adherent' => $expectedPercentMin."-".$expectedPercentMax
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -774,7 +786,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_evangelical' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'pc_evangelical' => $expectedPercentMin."-".$expectedPercentMax
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -796,7 +812,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_buddhist' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'pc_buddhist' => $expectedPercentMin."-".$expectedPercentMax
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -818,7 +838,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_ethnic_religion' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'pc_ethnic_religion' => $expectedPercentMin."-".$expectedPercentMax
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -840,7 +864,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_hindu' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'pc_hindu' => $expectedPercentMin."-".$expectedPercentMax
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -862,7 +890,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 20.0;
         $expectedPercentMax = 30.1;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_islam' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'pc_islam' => $expectedPercentMin."-".$expectedPercentMax
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -884,7 +916,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 22.0;
         $expectedPercentMax = 40.1;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_non_religious' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'pc_non_religious' => $expectedPercentMin."-".$expectedPercentMax
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -906,7 +942,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 2.0;
         $expectedPercentMax = 10.3;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_other_religion' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'pc_other_religion' => $expectedPercentMin."-".$expectedPercentMax
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -928,7 +968,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 2.0;
         $expectedPercentMax = 10.3;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_unknown' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'pc_unknown' => $expectedPercentMin."-".$expectedPercentMax
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -950,7 +994,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 5.4;
         $expectedPercentMax = 21.2;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_anglican' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'pc_anglican' => $expectedPercentMin."-".$expectedPercentMax
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -972,7 +1020,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 5.4;
         $expectedPercentMax = 21.2;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_independent' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'pc_independent' => $expectedPercentMin."-".$expectedPercentMax
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -994,7 +1046,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 33.4;
         $expectedPercentMax = 66.74;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_protestant' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'pc_protestant' => $expectedPercentMin."-".$expectedPercentMax
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -1016,7 +1072,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 22.43;
         $expectedPercentMax = 74.56;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_orthodox' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'pc_orthodox' => $expectedPercentMin."-".$expectedPercentMax
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -1038,7 +1098,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 22.43;
         $expectedPercentMax = 74.56;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_rcatholic' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'pc_rcatholic' => $expectedPercentMin."-".$expectedPercentMax
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -1060,7 +1124,11 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPercentMin = 22.43;
         $expectedPercentMax = 74.56;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_other_christian' => $expectedPercentMin."-".$expectedPercentMax));
+        $peopleGroup = new \QueryGenerators\PeopleGroup(
+            array(
+                'pc_other_christian' => $expectedPercentMin."-".$expectedPercentMax
+            )
+        );
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -1170,7 +1238,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedTotalGroups, count($data));
     }
     /**
-      * Tests that findAllWithFilters() throws the correct error if one of the jpscale parameters is not a required numbers
+      * Tests that findAllWithFilters() throws the correct error if one of the jpscale parameters is not a 
+      * required numbers
       *
       * @return void
       * @access public

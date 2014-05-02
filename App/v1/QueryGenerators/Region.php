@@ -49,13 +49,15 @@ namespace QueryGenerators;
 class Region extends QueryGenerator
 {
     /**
-     * An array of column names for this database table that we want to select in searches.  Simply remove fields you do not want to expose.
+     * An array of column names for this database table that we want to select in searches.
+     * Simply remove fields you do not want to expose.
      *
      * @var     array
      * @access  protected
      */
     protected $fieldsToSelectArray = array(
-        'RegionCode', 'RegionName', 'NbrCountries', 'NbrPGIC', 'NbrLR', 'SumRegion', 'PercentLR', 'SumRegionLR', 'PercentPoplLR', 'PercentUrbanized'
+        'RegionCode', 'RegionName', 'NbrCountries', 'NbrPGIC', 'NbrLR', 'SumRegion', 'PercentLR', 'SumRegionLR',
+        'PercentPoplLR', 'PercentUrbanized'
     );
     /**
      * The database table to pull the data from.
@@ -81,8 +83,9 @@ class Region extends QueryGenerator
     /**
      * Construct the Region class.
      *
-     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.  Some of the methods in this class require
-     * certain keys to be set, or it will throw an error.  The comments will state the required keys.
+     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.
+     * Some of the methods in this class require certain keys to be set, or it will throw an error.  The comments will
+     * state the required keys.
      *
      * @param   array   $getParams  The GET params to use for the query.
      * @return  void
@@ -126,7 +129,8 @@ class Region extends QueryGenerator
         $this->validator->providedRequiredParams($this->providedParams, array('id'));
         $id = intval(strip_tags($this->providedParams['id']));
         $this->validator->integerInRange($id, 1, 12);
-        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName . " WHERE RegionCode = :id LIMIT 1";
+        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName .
+            " WHERE RegionCode = :id LIMIT 1";
         $this->preparedVariables = array('id' => $id);
     }
 }

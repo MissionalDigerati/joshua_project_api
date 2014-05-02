@@ -67,7 +67,8 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddChildXMLElementGeneratesProperXMLWithArrayChildren()
     {
-        $expected = "<?xml version=\"1.0\"?><api><items><item><item_0><name>frog</name><title>Prince and Frog</title></item_0></item></items></api>";
+        $expected = "<?xml version=\"1.0\"?><api><items><item><item_0><name>frog</name><title>Prince and Frog" .
+            "</title></item_0></item></items></api>";
         $xml = new \SimpleXMLElement('<api/>');
         $parentElement = $xml->addChild('items');
         addChildXMLElement($parentElement, 'item', array(0 => array('name' => 'frog', 'title' => 'Prince and Frog')));

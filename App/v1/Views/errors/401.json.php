@@ -22,5 +22,9 @@
  */
 header('HTTP/1.1 401 Unauthorized');
 echo json_encode(
-    array('api' => array('status'  =>  'error', 'error' => array('code'    =>  401, 'message'  =>  'Unautorized', 'details' => '')))
+    array('api' =>
+        array('status'  =>  'error', 'error' =>
+            array('code'    =>  401, 'message'  =>  'Unautorized', 'details' => '')
+        )
+    )
 );

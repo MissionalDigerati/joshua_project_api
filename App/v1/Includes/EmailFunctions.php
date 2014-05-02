@@ -39,8 +39,10 @@ function sendAuthorizeToken($email, $authorizeUrl, $mail)
     $mail->From = 'api@joshuaproject.net';
     $mail->FromName = 'Joshua Project API';
     $mail->AddAddress($email, '');
-    $emailMessage = "Dear Developer,<br>Thank you for your request for a Joshua Project API Key.  Please click the following link to retrieve your key:<br><br>";
-    $emailMessage .= "<a href='" . $authorizeUrl . "'>" . $authorizeUrl . "</a><br>Take care, and God Bless.<br>Sincerely,<br>Joshua Project API";
+    $emailMessage = "Dear Developer,<br>Thank you for your request for a Joshua Project API Key.";
+    $emailMessage .= "Please click the following link to retrieve your key:<br><br>";
+    $emailMessage .= "<a href='" . $authorizeUrl . "'>" . $authorizeUrl . "</a><br>";
+    $emailMessage .= "Take care, and God Bless.<br>Sincerely,<br>Joshua Project API";
     $mail->Body = $emailMessage;
     $mail->IsHTML(true);
     $mail->Send();
@@ -69,9 +71,9 @@ function sendAuthorizationLinks($email, $apiKeys, $domain, $mail)
     $emailMessage .= "Please click the following links to activate your key:<br><br>";
     foreach ($apiKeys as $apiKey) {
         $authorizationUrl = $domain . "/get_my_api_key?authorize_token=" . $apiKey['authorize_token'];
-        $emailMessage .= $apiKey['api_usage'] . "<br><a href='" . $authorizationUrl . "'>" . $authorizationUrl . "</a><br>";
+        $emailMessage .= $apiKey['api_usage'] . "<br><a href='" . $authorizationUrl . "'>" . $authorizationUrl . "</a>";
     }
-    $emailMessage .= "<br>Take care, and God Bless.<br>Sincerely,<br>Joshua Project API";
+    $emailMessage .= "<br><br>Take care, and God Bless.<br>Sincerely,<br>Joshua Project API";
     $mail->Body = $emailMessage;
     $mail->IsHTML(true);
     $mail->Send();

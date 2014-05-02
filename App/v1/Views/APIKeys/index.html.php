@@ -44,7 +44,7 @@ if ((isset($data['saving_error'])) && ($data['saving_error'] == "true")) {
         Your request has had an error!  Please try again.
     </div>
     <?php
-} else if ((isset($data['saved'])) && ($data['saved'] == "true")) {
+} elseif ((isset($data['saved'])) && ($data['saved'] == "true")) {
     ?>
     <div class="alert alert-success">
         The API Key has been <?php echo $data['key_state']; ?>!
@@ -72,9 +72,9 @@ foreach ($api_keys as $api_key) {
     <?php
     if ($api_key['status'] == 0) {
         echo "<span class='label label-warning'>Pending</span>";
-    } else if ($api_key['status'] == 1) {
+    } elseif ($api_key['status'] == 1) {
         echo "<span class='label label-success'>Activated</span>";
-    } else if ($api_key['status'] == 2) {
+    } elseif ($api_key['status'] == 2) {
         echo "<span class='label label-danger'>Suspended</span>";
     }
     ?>
@@ -85,7 +85,9 @@ foreach ($api_keys as $api_key) {
         <td><?php echo $api_key['email']; ?><br>
     <?php
     if (!empty($api_key['phone_number'])) {
-        echo "(" . substr($api_key['phone_number'], 0, 3). ") " . substr($api_key['phone_number'], 3, 3) . "-" . substr($api_key['phone_number'], 6, 4);
+        echo "(" . substr($api_key['phone_number'], 0, 3). ") " .
+            substr($api_key['phone_number'], 3, 3) . "-" .
+            substr($api_key['phone_number'], 6, 4);
     }
     ?>
         </td>
@@ -100,7 +102,7 @@ foreach ($api_keys as $api_key) {
                 <input type="hidden" value="1" name="state">
                 <button type="submit" class="btn btn-success btn-mini">Reinstate</button>
         <?php
-    } else if ($api_key['status'] == 1) {
+    } elseif ($api_key['status'] == 1) {
         ?>
                 <input type="hidden" value="2" name="state">
                 <button type="submit" class="btn btn-danger btn-mini">Suspend</button>

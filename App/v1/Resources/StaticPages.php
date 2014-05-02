@@ -36,7 +36,10 @@ $app->get(
         if ((isset($data['required_fields'])) && ($data['required_fields'] !="")) {
             $errors = explode("|", $data['required_fields']);
         }
-        $app->render('StaticPages/home.html.php', array('data' => $data, 'errors' => $errors, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY));
+        $app->render(
+            'StaticPages/home.html.php',
+            array('data' => $data, 'errors' => $errors, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
+        );
     }
 );
 /**
@@ -50,7 +53,10 @@ $app->get(
 $app->get(
     "/getting_started",
     function () use ($app, $db, $appRequest, $DOMAIN_ADDRESS, $VIEW_DIRECTORY) {
-        $app->render('StaticPages/getting_started.html.php', array('DOMAIN_ADDRESS' => $DOMAIN_ADDRESS, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY));
+        $app->render(
+            'StaticPages/getting_started.html.php',
+            array('DOMAIN_ADDRESS' => $DOMAIN_ADDRESS, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
+        );
     }
 );
 /**
@@ -96,14 +102,19 @@ $app->get(
                         $error = "Your API Key was suspended!";
                         break;
                 }
-                $statement = $db->prepare("UPDATE `md_api_keys` SET authorize_token = NULL, status = :status WHERE id = :id");
+                $statement = $db->prepare(
+                    "UPDATE `md_api_keys` SET authorize_token = NULL, status = :status WHERE id = :id"
+                );
                 $statement->execute(array('id' => $data[0]['id'], 'status' => $status));
             } catch (Exception $e) {
                 $error = "Unable to update your API Key.";
             }
         }
         
-        $app->render('StaticPages/get_my_api_key.html.php', array('message' => $message, 'error' => $error, 'APIKey' => $APIKey, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY));
+        $app->render(
+            'StaticPages/get_my_api_key.html.php',
+            array('message' => $message, 'error' => $error, 'APIKey' => $APIKey, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
+        );
     }
 );
 /**
@@ -148,6 +159,9 @@ $app->post(
                 $errors['find_keys'] = "We were unable to locate your pending API keys.";
             }
         }
-        $app->render('StaticPages/resend_activation_links.html.php', array('errors' => $errors, 'data' => $formData, 'message' => $message));
+        $app->render(
+            'StaticPages/resend_activation_links.html.php',
+            array('errors' => $errors, 'data' => $formData, 'message' => $message)
+        );
     }
 );

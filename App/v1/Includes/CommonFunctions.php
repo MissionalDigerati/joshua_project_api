@@ -49,7 +49,7 @@ function arrayToXML($data, $parentWrap = "items", $individualWrap = "item")
  *
  * @param   SimpleXMLElement    $parentElement  A SimpleXMLElement which the children will be appended.
  * @param   string              $childLabel     The name for the child element.
- * @param   mixed               $childVal       The value of the child element.  If it is an array, we call this method again.
+ * @param   mixed               $childVal       The value of the child element.  If in array, we call this method again
  * @return  void
  * @author  Johnathan Pulos
  */
@@ -75,7 +75,7 @@ function addChildXMLElement($parentElement, $childLabel, $childVal)
 /**
  * Returns the present value or the default value.
  * 
- * Checks if $variable is true, if so it returns the $variable.  If the variable is false/empty/null it returns $default.
+ * Checks if $variable is true, if so it returns the $variable.  If variable is false/empty/null it returns $default.
  *
  * @param   mixed   $variable The variable to test if empty/null/false.
  * @param   mixed   $default The value to set if empty/null/false.
