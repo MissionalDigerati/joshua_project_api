@@ -28,6 +28,7 @@ namespace Utilities;
  * This class offers a variety of methods for validating GET data passed from a user.
  *
  * @author Johnathan Pulos
+ * @package Utilities
  */
 class Validator
 {

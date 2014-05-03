@@ -45,6 +45,7 @@ namespace QueryGenerators;
  * </code></pre>
  *
  * @author Johnathan Pulos
+ * @package QueryGenerators
  */
 class Country extends QueryGenerator
 {
