@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jp_api" default="build" basedir=".">
+  <description>
+        An API for the Joshua Project ministry data.
+  </description>
+  <target name="build" depends="checkout,update-composer,remove-old-localhost,setup-localhost,setup-ci-shared,setup-swagger-json,lint,php-codesniffer,php-documentor,phpunit"/>
+  <target name="checkout">
+    <exec executable="git" dir="${basedir}/source" failonerror="on">
+      <arg line="pull origin develop"/>
+    </exec>
+  </target>
+  <target name="remove-old-localhost" depends="checkout">
+    <exec executable="rm" dir="/var/www" failonerror="on">
+      <arg line="webroot"/>
+    </exec>
+  </target>
+  <target name="setup-localhost" depends="remove-old-localhost">
+    <exec executable="ln" dir="/var/www" failonerror="on">
+      <arg line="-s ${basedir}/source/Public webroot"/>
+    </exec>
+  </target>
+  <target name="setup-ci-shared" depends="remove-ci-shared">
+    <exec executable="ln" dir="${basedir}/source/Public">
+      <arg line="-s /var/www/ci_shared/ ci_shared"/>
+    </exec>
+  </target>
+  <target name="setup-swagger-json" depends="checkout">
+    <exec executable="php" dir="${basedir}/source">
+      <arg line="./Vendor/zircote/swagger-php/swagger.phar -p ${basedir}/source/App/v1/Resources -o /var/www/ci_shared/jp_api/api_docs -i ${basedir}/source/Vendor/zircote/swagger-php/library/Swagger/Annotations/Api.php"/>
+    </exec>
+  </target>
+  <target name="get-stats" depends="checkout">
+    <exec executable="phploc" dir="${basedir}/source">
+      <arg line="--exclude Vendor --exclude Slim ."/>
+      <redirector output="${basedir}/build/stats/results.txt" alwayslog="true"/>
+    </exec>
+  </target>
+  <target name="lint">
+    <apply executable="php" dir="${basedir}/source" failonerror="on" logerror="on">
+      <arg line="-l"/>
+      <fileset dir="${basedir}/source/App">
+        <include name="**/*.php"/>
+      </fileset>
+      <fileset dir="${basedir}/source/Config">
+        <include name="**/*.php"/>
+      </fileset>
+      <fileset dir="${basedir}/source/Public">
+        <include name="**/*.php"/>
+      </fileset>
+    </apply>
+  </target>
+  <target name="php-codesniffer" depends="lint">
+    <exec executable="phpcs" dir="${basedir}/source" output="${basedir}/build/logs/checkstyle.xml" error="/tmp/checkstyle.error.log">
+      <arg line="--report=checkstyle --standard=PSR2 --ignore=Slim,Vendor -n --extensions=php ${basedir}/source"/>
+    </exec>
+  </target>
+  <target name="php-documentor" depends="lint">
+    <exec executable="phpdoc" dir="${basedir}/source" logerror="on">
+      <arg line="--title '${ant.project.name}' -ue on -t ${basedir}/build/api -d src -tb '/usr/share/php/data/phpUnderControl/data/phpdoc' -o HTML:Phpuc:phpuc --directory ${basedir}/source/App/v1/QueryGenerators,${basedir}/source/App/v1/Utilities"/>
+    </exec>
+  </target>
+  <target name="phpunit" depends="lint">
+    <exec executable="phpunit" dir="${basedir}/source" failonerror="on">
+      <arg line=" --log-junit ${basedir}/build/logs/phpunit.xml --coverage-clover ${basedir}/build/logs/phpunit.coverage.xml --coverage-html ${basedir}/build/coverage ./Tests"/>
+    </exec>
+  </target>
+  <target name="phpmd" depends="lint">
+    <exec executable="phpmd" failonerror="false">
+      <arg line="${basedir}/source xml codesize,unusedcode,naming,design --reportfile ${basedir}/build/logs/pmd.xml --exclude ${basedir}/source/Tests,${basedir}/source/Slim,${basedir}/source/Vendor" />
+    </exec>
+  </target>
+  <target name="phpcpd" depends="lint">
+    <exec executable="phpcpd" failonerror="false">
+      <arg line="--log-pmd ${basedir}/build/logs/pmd-cpd.xml
+                 --exclude Views
+                 ${basedir}/source/App/v1 ${basedir}/source/Public" />
+    </exec>
+  </target>
+</project>
