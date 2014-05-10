@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="jp_api" default="build" basedir=".">
-  <description>
+    <description>
         An API for the Joshua Project ministry data.
   </description>
-  <target name="build" depends="checkout,update-composer,remove-old-localhost,setup-localhost,setup-ci-shared,setup-swagger-json,lint,php-codesniffer,php-documentor,phpunit"/>
+  <target name="build" depends="checkout,remove-old-localhost,setup-localhost,setup-ci-shared,setup-swagger-json,lint,php-codesniffer,php-documentor,phpunit,phpmd,phpcpd"/>
   <target name="checkout">
     <exec executable="git" dir="${basedir}/source" failonerror="on">
       <arg line="pull origin develop"/>
     </exec>
   </target>
-  <target name="remove-old-localhost" depends="checkout">
-    <exec executable="rm" dir="/var/www" failonerror="on">
+  <target name="remove-old-localhost">
+    <exec executable="rm" dir="/var/www">
       <arg line="webroot"/>
     </exec>
   </target>
-  <target name="setup-localhost" depends="remove-old-localhost">
+  <target name="setup-localhost">
     <exec executable="ln" dir="/var/www" failonerror="on">
       <arg line="-s ${basedir}/source/Public webroot"/>
     </exec>
   </target>
-  <target name="setup-ci-shared" depends="remove-ci-shared">
+  <target name="setup-ci-shared">
     <exec executable="ln" dir="${basedir}/source/Public">
       <arg line="-s /var/www/ci_shared/ ci_shared"/>
     </exec>
@@ -29,13 +29,13 @@
       <arg line="./Vendor/zircote/swagger-php/swagger.phar -p ${basedir}/source/App/v1/Resources -o /var/www/ci_shared/jp_api/api_docs -i ${basedir}/source/Vendor/zircote/swagger-php/library/Swagger/Annotations/Api.php"/>
     </exec>
   </target>
-  <target name="get-stats" depends="checkout">
+  <target name="get-stats">
     <exec executable="phploc" dir="${basedir}/source">
       <arg line="--exclude Vendor --exclude Slim ."/>
-      <redirector output="${basedir}/build/stats/results.txt" alwayslog="true"/>
+	<redirector output="${basedir}/build/stats/results.txt" alwayslog="true"/>
     </exec>
   </target>
-  <target name="lint">
+  <target name="lint" depends="setup-localhost">
     <apply executable="php" dir="${basedir}/source" failonerror="on" logerror="on">
       <arg line="-l"/>
       <fileset dir="${basedir}/source/App">
@@ -45,11 +45,11 @@
         <include name="**/*.php"/>
       </fileset>
       <fileset dir="${basedir}/source/Public">
-        <include name="**/*.php"/>
+        <include name="index.php"/>
       </fileset>
     </apply>
   </target>
-  <target name="php-codesniffer" depends="lint">
+   <target name="php-codesniffer">
     <exec executable="phpcs" dir="${basedir}/source" output="${basedir}/build/logs/checkstyle.xml" error="/tmp/checkstyle.error.log">
       <arg line="--report=checkstyle --standard=PSR2 --ignore=Slim,Vendor -n --extensions=php ${basedir}/source"/>
     </exec>
