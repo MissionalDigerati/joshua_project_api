@@ -3,7 +3,7 @@
     <description>
         An API for the Joshua Project ministry data.
   </description>
-  <target name="build" depends="checkout,remove-old-localhost,setup-localhost,setup-ci-shared,setup-swagger-json,lint,php-codesniffer,php-documentor,phpunit,phpmd,phpcpd"/>
+  <target name="build" depends="checkout,remove-old-localhost,setup-localhost,setup-ci-shared,get-stats,setup-swagger-json,lint,php-codesniffer,php-documentor,phpunit,phpmd,phpcpd"/>
   <target name="checkout">
     <exec executable="git" dir="${basedir}/source" failonerror="on">
       <arg line="pull origin develop"/>
