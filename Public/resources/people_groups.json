@@ -1,5 +1,5 @@
 {
-    "basePath": "http://jpapi.codingstudio.org/v1",
+    "basePath": "http://api.joshuaproject.net/v1",
     "swaggerVersion": "1.1",
     "apiVersion": "1",
     "resourcePath": "/people_groups",
@@ -382,7 +382,7 @@
                         },
                         {
                             "name": "country",
-                            "description": "The country's 2 letter ISO Code specified at <a href='http://www.joshuaproject.net/global-countries.php' target='_blank'>http://www.joshuaproject.net/global-countries.php</a>.",
+                            "description": "The country's 2 letter ISO Code specified at <a href='http://goo.gl/31Gf' target='_blank'>http://goo.gl/31Gf</a>.",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
