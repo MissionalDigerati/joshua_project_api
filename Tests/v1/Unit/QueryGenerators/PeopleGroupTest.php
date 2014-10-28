@@ -173,7 +173,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupURL()
     {
         $expected = array('id' => '12662', 'country' => 'CB');
-        $expectedURL = "http://www.joshuaproject.net/people-profile.php?peo3=12662&amp;rog3=cb";
+        $expectedURL = "http://joshuaproject.net/people_groups/12662/cb";
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
@@ -210,7 +210,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectCountryURL()
     {
         $expected = array('id' => '12662', 'country' => 'CB');
-        $expectedURL = "http://www.joshuaproject.net/countries.php?rog3=cb";
+        $expectedURL = "http://joshuaproject.net/countries/cb";
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
@@ -1219,23 +1219,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array(floatval($peopleGroup['JPScale']), $expectedJPScalesArray));
         }
-    }
-    /**
-     * Tests that findAllWithFilters() returns the max number of People Groups if over Max rows
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testFindAllWithFiltersShouldReturnTheMaxNumberOfPeopleGroupsIfLimitIsOverMaxRowsAvailable()
-    {
-        $expectedTotalGroups = $this->db->query("SELECT count(*) FROM jppeoples")->fetchColumn();
-        $requestedLimit = $expectedTotalGroups+15;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('limit' => $requestedLimit));
-        $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertEquals($expectedTotalGroups, count($data));
     }
     /**
       * Tests that findAllWithFilters() throws the correct error if one of the jpscale parameters is not a 
