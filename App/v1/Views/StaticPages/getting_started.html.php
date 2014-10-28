@@ -322,9 +322,9 @@
         "PCRomanCatholic": "30",
         "RegionCode": "2",
         "Window1040": "Y",
-        "PeopleGroupURL": "http://www.joshuaproject.net/people-profile.php?peo3=14966&rog3=LA",
+        "PeopleGroupURL": "http://joshuaproject.net/people_groups/14966/LA",
         "PeopleGroupPhotoURL": "http://www.joshuaproject.net/profiles/photos/p14966.jpg",
-        "CountryURL": "http://www.joshuaproject.net/countries.php?rog3=LA",
+        "CountryURL": "http://joshuaproject.net/countries/LA",
         "JPScaleText": "Unreached",
         "JPScaleImageURL": "http://www.joshuaproject.net/images/scale1.jpg",
         "ProfileText": [
@@ -598,12 +598,12 @@
             &lt;RegionCode&gt;2&lt;/RegionCode&gt;
             &lt;Window1040&gt;Y&lt;/Window1040&gt;
             &lt;PeopleGroupURL&gt;
-            http://www.joshuaproject.net/people-profile.php?peo3=14966&amp;rog3=LA
+            http://joshuaproject.net/people_groups/14966/LA
             &lt;/PeopleGroupURL&gt;
             &lt;PeopleGroupPhotoURL&gt;
             http://www.joshuaproject.net/profiles/photos/p14966.jpg
             &lt;/PeopleGroupPhotoURL&gt;
-            &lt;CountryURL&gt;http://www.joshuaproject.net/countries.php?rog3=LA&lt;/CountryURL&gt;
+            &lt;CountryURL&gt;http://joshuaproject.net/countries/LA&lt;/CountryURL&gt;
             &lt;JPScaleText&gt;Unreached&lt;/JPScaleText&gt;
             &lt;JPScaleImageURL&gt;http://www.joshuaproject.net/images/scale1.jpg&lt;/JPScaleImageURL&gt;
             &lt;ProfileText&gt;
