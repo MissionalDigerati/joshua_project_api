@@ -17,10 +17,28 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
+/**
+ * Set the default time zone
+ */
+date_default_timezone_set('America/Denver');
 $DS = DIRECTORY_SEPARATOR;
+/**
+ * The URL for the testing server
+ *
+ * @param string
+ * @author Johnathan Pulos
+ */
+$SITE_URL = $_ENV['site_url'];
+/**
+ * The version of the API to test for (ex. v1)
+ *
+ * @param string
+ * @author Johnathan Pulos
+ */
+$API_VERSION = "v1";
 /**
  * Load up the Aura Auto Loader
  *
@@ -32,7 +50,7 @@ $PHPToolboxDirectory =
     "PHPToolbox" . $DS .
     "src" . $DS;
 require_once("Tests" . $DS . "Support" . $DS . "HelperFunctions.php");
-require_once("App" . $DS . "Includes" . $DS . "CommonFunctions.php");
+require_once("App" . $DS . $API_VERSION . $DS . "Includes" . $DS . "CommonFunctions.php");
 /**
  * Load up the Aura Auto Loader
  *
@@ -66,7 +84,28 @@ $loader->add("JPAPI\DatabaseSettings", __DIR__ . $DS . ".." . $DS . "Config");
  * @author Johnathan Pulos
  */
 $loader->add("PHPToolbox\PDODatabase\PDODatabaseConnect", $PHPToolboxDirectory);
-$loader->add("QueryGenerators\PeopleGroup", __DIR__ . $DS . ".." . $DS . "App");
+/**
+ * AutoLoad the Utilities
+ *
+ * @return void
+ * @author Johnathan Pulos
+ */
+$loader->add("Utilities\Validator", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+$loader->add("Utilities\Sanitizer", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+/**
+ * AutoLoad the Query Generators
+ *
+ * @return void
+ * @author Johnathan Pulos
+ */
+$loader->add("QueryGenerators\QueryGenerator", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+$loader->add("QueryGenerators\PeopleGroup", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+$loader->add("QueryGenerators\ProfileText", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+$loader->add("QueryGenerators\Resource", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+$loader->add("QueryGenerators\Country", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+$loader->add("QueryGenerators\Language", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+$loader->add("QueryGenerators\Continent", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+$loader->add("QueryGenerators\Region", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
 /**
  * preload source files
  *

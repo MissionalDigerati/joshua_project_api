@@ -1,0 +1,240 @@
+{
+    "basePath": "http://api.joshuaproject.net/v1",
+    "swaggerVersion": "1.1",
+    "apiVersion": "1",
+    "resourcePath": "/languages",
+    "apis": [
+        {
+            "path": "/languages.{format}",
+            "operations": [
+                {
+                    "httpMethod": "GET",
+                    "summary": "Search all Languages with diverse filters (JSON or XML)",
+                    "nickname": "getAllLanguageWithFilters",
+                    "parameters": [
+                        {
+                            "name": "api_key",
+                            "description": "Your Joshua Project API key.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": true
+                        },
+                        {
+                            "name": "countries",
+                            "description": "A bar separated list of one or more countries to filter by. Use the 2 letter ISO code.  See <a href='https://www.iso.org/obp/ui/#search' target='_blank'>ISO.org</a> for the codes.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "has_audio",
+                            "description": "A boolean that states whether you want Languages who have access to audio Bibles. (y or n)",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "has_completed_bible",
+                            "description": "A boolean that states whether you want Languages who have access to a completed Bible. (y or n)",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "has_four_laws",
+                            "description": "A boolean that states whether you want Languages who have access to the 4 Spiritual Laws. (y or n)",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "has_gods_story",
+                            "description": "A boolean that states whether you want Languages who have access to the God's Story resource. (y or n)",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "has_jesus_film",
+                            "description": "A boolean that states whether you want Languages who have access to the Jesus Film. (y or n)",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "has_new_testament",
+                            "description": "A boolean that states whether you want Languages who have access to the New Testament. (y or n)",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "has_portions",
+                            "description": "A boolean that states whether you want Languages who have access to the portions of the Bible. (y or n)",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "ids",
+                            "description": "A bar separated list of one or more language codes to filter by. Use the 3 letter ISO code.  See <a href='http://goo.gl/EQn1RL' target='_blank'>this chart</a> for the codes.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "jpscale",
+                            "description": "A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1.1, 1.2, 2.1, 2.2, 3.1, 3.2.  For more information check out <a href='http://joshuaproject.net/progress-scale-definition.php' target='_blank'>http://joshuaproject.net/progress-scale-definition.php</a>.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "least_reached",
+                            "description": "A boolean that states whether you want Languages that are least reached. (y or n)",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "limit",
+                            "description": "The maximum results to return. (Defaults to 100)",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "needs_translation_questionable",
+                            "description": "A boolean that states whether you want Languages whose need for Bible translation is questionable. (y or n)",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "page",
+                            "description": "The page of results to display  (Defaults to 1)",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "pc_adherent",
+                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Adherents.(min-max) You can supply just the minimum to get Languages matching that percentage.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "pc_evangelical",
+                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "population",
+                            "description": "A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get Languages matching that number.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "primary_religions",
+                            "description": "A bar separated list of one or more primary religions to filter by. Use the following numbers:<br><ul><li>1 - Christianity</li><li>2 - Buddhism</li><li>4 - Ethnic Religions</li><li>5 - Hinduism</li><li>6 - Islam</li><li>7 - Non-Religious</li><li>8 - Other/Small</li><li>9 - Unknown</li></ul>",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "world_speakers",
+                            "description": "A dashed seperated range specifying the minimum and maximum number of world speakers.(min-max) You can supply just the minimum to get Languages matching that number of world speakers.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        }
+                    ],
+                    "errorResponses": [
+                        {
+                            "reason": "Bad request.  Your request is malformed in some way.  Check your supplied parameters.",
+                            "code": 400
+                        },
+                        {
+                            "reason": "Unauthorized.  Your missing your API key, or it has been suspended.",
+                            "code": 401
+                        },
+                        {
+                            "reason": "Not found.  Your search ended up with no results.",
+                            "code": 404
+                        }
+                    ],
+                    "notes": "Retrieve a list of Languages that match your filter settings."
+                }
+            ],
+            "description": "Find all Languages that match your filter criteria."
+        },
+        {
+            "path": "/languages/{id}.{format}",
+            "operations": [
+                {
+                    "httpMethod": "GET",
+                    "summary": "Retrieve the details of a specific Language (JSON or XML)",
+                    "nickname": "languageShow",
+                    "parameters": [
+                        {
+                            "name": "api_key",
+                            "description": "Your Joshua Project API key.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": true
+                        },
+                        {
+                            "name": "id",
+                            "description": "The 3 letter ISO 639-2 Language Code for the Language you want to view. [<a href='http://goo.gl/gbkgo4' target='_blank'>View all Language Codes</a>]",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "path",
+                            "required": true
+                        }
+                    ],
+                    "errorResponses": [
+                        {
+                            "reason": "Bad request.  Your request is malformed in some way.  Check your supplied parameters.",
+                            "code": 400
+                        },
+                        {
+                            "reason": "Unauthorized.  Your missing your API key, or it has been suspended.",
+                            "code": 401
+                        },
+                        {
+                            "reason": "Not found.  Your search ended up with no results.",
+                            "code": 404
+                        }
+                    ],
+                    "notes": "Retrieve the details of a specific Language by supplying the language's 3 letter ISO 639-2 Code (id)."
+                }
+            ],
+            "description": "Retrieve the details of a specific Language."
+        }
+    ]
+}

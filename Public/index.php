@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
- * @copyright Copyright 2013 Missional Digerati
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
 /**
@@ -26,13 +26,51 @@
  * @author Johnathan Pulos
  */
 /**
+ * Set the timezone
+ */
+date_default_timezone_set('America/Denver');
+/**
  * Set whether to use Memcached for caching the queries.  Most queries are cached for 1 day.
  *
  * @var boolean
  * @author Johnathan Pulos
  */
-$useCaching = true;
+$useCaching = false;
+$googleDocTitle = '';
 $DS = DIRECTORY_SEPARATOR;
+$DOMAIN_ADDRESS = $_SERVER['SERVER_NAME'];
+if ((substr_compare($DOMAIN_ADDRESS, "http://", 0, 7)) !== 0) {
+    $DOMAIN_ADDRESS = "http://" . $DOMAIN_ADDRESS;
+}
+if (strpos($DOMAIN_ADDRESS, 'joshua.api.local') !== false) {
+    $GOOGLE_TRACKING_ID = 'UA-49359140-2';
+} elseif (strpos($DOMAIN_ADDRESS, 'jpapi.codingstudio.org') !== false) {
+    $GOOGLE_TRACKING_ID = 'UA-49359140-1';
+} else {
+    $GOOGLE_TRACKING_ID = '';
+}
+/**
+ * Set the Public directory path
+ *
+ * @var string
+ * @author Johnathan Pulos
+ */
+$PUBLIC_DIRECTORY = dirname(__FILE__);
+/**
+ * Lets get the version of the API based on the URL (
+ * http://joshua.api.local/v12/people_groups/daily_unreached.json?api_key=37e24112caae
+ * ) It will default to the latest API.  You must provide an API Version if you are accessing the data.  The default is 
+ * only for static pages
+ *
+ * @author Johnathan Pulos
+ */
+$pattern = '/([v]+[1-9]+)/';
+preg_match($pattern, $_SERVER['REQUEST_URI'], $matches);
+if (empty($matches)) {
+    $API_VERSION = "v1";
+} else {
+    $API_VERSION = $matches[0];
+}
 $bypassExtTest = false;
 if ($useCaching === true) {
     $cache = new Memcached();
@@ -41,13 +79,20 @@ if ($useCaching === true) {
     $cache = '';
 }
 /**
+ * Set the Template View directory path
+ *
+ * @var string
+ * @author Johnathan Pulos
+ */
+$VIEW_DIRECTORY = $PUBLIC_DIRECTORY . "/../App/" . $API_VERSION . "/Views/";
+/**
  * Get the Slim Framework, and instantiate the class
  *
  * @author Johnathan Pulos
  */
 require(__DIR__ . $DS . ".." . $DS . "Slim" . $DS . "Slim.php");
 \Slim\Slim::registerAutoloader();
-$app = new \Slim\Slim(array('templates.path' => "../App/Views/"));
+$app = new \Slim\Slim(array('templates.path' => $VIEW_DIRECTORY));
 /**
  * Load up the Aura Auto Loader
  *
@@ -79,11 +124,11 @@ $db = $pdoDb->getDatabaseInstance();
  **/
 $loader->add("Slim\Extras\Middleware\HttpBasicAuth", $vendorDirectory . "SlimExtras");
 /**
- * Include common functions
+ * Autoload the PHPMailer
  *
  * @author Johnathan Pulos
- */
-require(__DIR__."/../App/Includes/CommonFunctions.php");
+ **/
+$loader->add("PHPMailer", $vendorDirectory . "phpmailer");
 /**
  * Get the current request to determine which PHP file to load.  Do not load all files, because it can take longer to
  * load.
@@ -93,14 +138,38 @@ require(__DIR__."/../App/Includes/CommonFunctions.php");
 $appRequest = $app->request();
 $requestedUrl = $appRequest->getResourceUri();
 /**
- * Handle the visual HTML for handling the API Key Requests
+ * Include common functions
  *
  * @author Johnathan Pulos
- **/
-if ($requestedUrl == "/") {
-    require(__DIR__."/../App/Resources/StaticPages.php");
+ */
+require(__DIR__."/../App/" . $API_VERSION . "/Includes/CommonFunctions.php");
+require(__DIR__."/../App/" . $API_VERSION . "/Includes/EmailFunctions.php");
+/**
+ * Are we on a static page?
+ *
+ * @author Johnathan Pulos
+ */
+$staticPages = array("/", "/get_my_api_key", "/resend_activation_links", "/getting_started");
+if (in_array($requestedUrl, $staticPages)) {
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/StaticPages.php");
     $bypassExtTest = true;
+    $googleDocTitle = "Requesting a Static Page";
 }
+/**
+ * Are we on a documentation page?
+ *
+ * @author Johnathan Pulos
+ */
+if (strpos($requestedUrl, '/docs') !== false) {
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/Docs.php");
+    $bypassExtTest = true;
+    $googleDocTitle = "Requesting Documentation";
+}
+/**
+ * Are we on a API Key page?
+ *
+ * @author Johnathan Pulos
+ */
 if (strpos($requestedUrl, '/api_keys') !== false) {
     /**
      * We need to lock out all PUT and GET requests for api_keys.  These are the admin users.
@@ -115,13 +184,19 @@ if (strpos($requestedUrl, '/api_keys') !== false) {
          */
         $loader->add("JPAPI\AdminSettings", __DIR__ . $DS . ".." . $DS . "Config");
         $adminSettings = new \JPAPI\AdminSettings;
-        $app->add(new Slim\Extras\Middleware\HttpBasicAuth($adminSettings->default['username'], $adminSettings->default['password']));
+        $app->add(
+            new Slim\Extras\Middleware\HttpBasicAuth(
+                $adminSettings->default['username'],
+                $adminSettings->default['password']
+            )
+        );
     }
-    require(__DIR__."/../App/Resources/APIKeys.php");
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/APIKeys.php");
     $bypassExtTest = true;
+    $googleDocTitle = "Requesting Admin Area";
 }
 /**
- * Make sure they only supply supported formats
+ * We must be on an API Request.  Make sure they only supply supported formats.
  *
  * @author Johnathan Pulos
  */
@@ -146,6 +221,7 @@ if ($bypassExtTest === false) {
      * Find the API Key in the database, and validate it
      *
      * @author Johnathan Pulos
+     * @todo put a try block here
      **/
     $query = "SELECT * FROM md_api_keys where api_key = :api_key LIMIT 1";
     $statement = $db->prepare($query);
@@ -155,24 +231,144 @@ if ($bypassExtTest === false) {
         $app->render("/errors/401." . $ext . ".php");
         exit;
     }
-    if ($apiKeyData[0]['suspended'] == 1) {
+    if ($apiKeyData[0]['status'] == 0 || $apiKeyData[0]['status'] == 2) {
+        /**
+         * Pending (0) or Suspended (2)
+         *
+         * @author Johnathan Pulos
+         */
         $app->render("/errors/401." . $ext . ".php");
         exit;
     }
 }
 /**
- * Check if the request is for People Groups
+ * Load the Utilities
  *
  * @author Johnathan Pulos
  */
-if (strpos($requestedUrl, 'people_groups/') !== false) {
+$loader->add("Utilities\Validator", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+$loader->add("Utilities\Sanitizer", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+/**
+ * Load the Parent QueryGenerator class
+ *
+ * @author Johnathan Pulos
+ */
+$loader->add("QueryGenerators\QueryGenerator", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+/**
+ * Are we searching API for People Groups?
+ *
+ * @author Johnathan Pulos
+ */
+if (strpos($requestedUrl, 'people_groups') !== false) {
+    /**
+     * Load the Query Generator for People Groups, ProfileText, and Resources
+     *
+     * @author Johnathan Pulos
+     */
+    $loader->add("QueryGenerators\PeopleGroup", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    $loader->add("QueryGenerators\ProfileText", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    $loader->add("QueryGenerators\Resource", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/PeopleGroups.php");
+    $googleDocTitle = "API Request for People Group Data.";
+}
+/**
+ * Are we searching API for Countries?
+ *
+ * @author Johnathan Pulos
+ */
+if (strpos($requestedUrl, 'countries') !== false) {
     /**
      * Load the Query Generator for People Groups
      *
      * @author Johnathan Pulos
      */
-    $loader->add("QueryGenerators", __DIR__ . $DS . ".." . $DS . "App");
-    require(__DIR__."/../App/Resources/PeopleGroups.php");
+    $loader->add("QueryGenerators\Country", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/Countries.php");
+    $googleDocTitle = "API Request for Country Data.";
+}
+/**
+ * Are we searching API for Languages?
+ *
+ * @author Johnathan Pulos
+ */
+if (strpos($requestedUrl, 'languages') !== false) {
+    /**
+     * Load the Query Generator for Languages
+     *
+     * @author Johnathan Pulos
+     */
+    $loader->add("QueryGenerators\Language", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/Languages.php");
+    $googleDocTitle = "API Request for Language Data.";
+}
+/**
+ * Are we searching API for Continents?
+ *
+ * @author Johnathan Pulos
+ */
+if (strpos($requestedUrl, 'continents') !== false) {
+    /**
+     * Load the Query Generator for Continents
+     *
+     * @author Johnathan Pulos
+     */
+    $loader->add("QueryGenerators\Continent", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/Continents.php");
+    $googleDocTitle = "API Request for Continent Data.";
+}
+/**
+ * Are we searching API for Regions?
+ *
+ * @author Johnathan Pulos
+ */
+if (strpos($requestedUrl, 'regions') !== false) {
+    /**
+     * Load the Query Generator for Regions
+     *
+     * @author Johnathan Pulos
+     */
+    $loader->add("QueryGenerators\Region", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
+    require(__DIR__."/../App/" . $API_VERSION . "/Resources/Regions.php");
+    $googleDocTitle = "API Request for Continent Data.";
+}
+/**
+ * Send the request to Google Analytics
+ *
+ * @author Johnathan Pulos
+ */
+/**
+ * Autoload the Google Analytics Class
+ *
+ * @author Johnathan Pulos
+ */
+if ($GOOGLE_TRACKING_ID != '') {
+    $loader->add("PHPToolbox\CachedRequest\CurlUtility", $vendorDirectory . "PHPToolbox" . $DS . "src");
+    $loader->add("PHPToolbox\GoogleAnalytics\GoogleAnalytics", $vendorDirectory . "PHPToolbox" . $DS . "src");
+    $googleAnalytics = new \PHPToolbox\GoogleAnalytics\GoogleAnalytics($GOOGLE_TRACKING_ID);
+    /**
+     * Construct the Payload
+     */
+    if (isset($_SERVER['REQUEST_URI'])) {
+        $dp = $_SERVER['REQUEST_URI'];
+    } else {
+        $dp = '';
+    }
+    if ((isset($APIKey)) && ($APIKey != '')) {
+        $cid = $APIKey;
+    } else {
+        $cid = 'Site Visitor';
+    }
+    $payload = array(
+        'cid'   =>  $cid,
+        't'     =>  'pageview',
+        'dh'    =>  $DOMAIN_ADDRESS,
+        'dp'    =>  $dp,
+        'dt'    =>  $googleDocTitle
+    );
+    /**
+     * Send the payload
+     */
+    $googleAnalytics->save($payload);
 }
 /**
  * Now run the Slim Framework rendering

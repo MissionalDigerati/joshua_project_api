@@ -1,0 +1,26 @@
+{
+    "apiVersion": "1",
+    "swaggerVersion": "1.1",
+    "apis": [
+        {
+            "path": "/resources/continents.{format}",
+            "description": "Retrieve the details of a specific Continent."
+        },
+        {
+            "path": "/resources/countries.{format}",
+            "description": "Find all Countries that match your filter criteria."
+        },
+        {
+            "path": "/resources/languages.{format}",
+            "description": "Find all Languages that match your filter criteria."
+        },
+        {
+            "path": "/resources/people_groups.{format}",
+            "description": "Find all People Groups that match your filter criteria."
+        },
+        {
+            "path": "/resources/regions.{format}",
+            "description": "Retrieve the details of a specific Region."
+        }
+    ]
+}
