@@ -11,6 +11,16 @@ This tool uses [Composer](http://getcomposer.org/) to install the project specif
 
 Questions or problems? Please post them on the [issue tracker](https://github.com/MissionalDigerati/vts_cakephp_plugin/issues). You can contribute changes by forking the project and submitting a pull request.
 
+Deployment
+----------
+
+There are several things you need to do to deploy this code.
+
+1) Copy Config/JPAPI/AdminSettings.sample.php to Config/JPAPI/AdminSettings.php and set the admin settings in the new file.
+2) Copy Config/JPAPI/DatabaseSettings.sample.php to Config/JPAPI/DatabaseSettings.php and set the database settings in the new file.
+3) Copy phpunit.sample.xml to phpunit.xml.
+4) Install the vendor files with `composer install`.
+
 PHP Settings
 ------------
 In your `php.ini` file you will need to set the following values equal to or greater than the value provided:
