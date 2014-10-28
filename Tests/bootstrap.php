@@ -20,6 +20,10 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
+/**
+ * Set the default time zone
+ */
+date_default_timezone_set('America/Denver');
 $DS = DIRECTORY_SEPARATOR;
 /**
  * The URL for the testing server
