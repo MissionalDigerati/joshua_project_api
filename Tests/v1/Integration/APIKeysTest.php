@@ -264,7 +264,6 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
         );
         $statement = $this->db->query("SELECT * from `md_api_keys` WHERE `name` = 'i_should_become_active'");
         $actualData = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertNull($actualData[0]['authorize_token']);
         $this->assertEquals($expectedStatus, $actualData[0]['status']);
     }
     
@@ -295,7 +294,6 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
         );
         $statement = $this->db->query("SELECT * from `md_api_keys` WHERE `name` = 'i_should_stay_suspended'");
         $actualData = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertNull($actualData[0]['authorize_token']);
         $this->assertEquals($expectedStatus, $actualData[0]['status']);
     }
 }

@@ -103,7 +103,7 @@ $app->get(
                         break;
                 }
                 $statement = $db->prepare(
-                    "UPDATE `md_api_keys` SET authorize_token = NULL, status = :status WHERE id = :id"
+                    "UPDATE `md_api_keys` SET status = :status WHERE id = :id"
                 );
                 $statement->execute(array('id' => $data[0]['id'], 'status' => $status));
             } catch (Exception $e) {
