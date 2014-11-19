@@ -267,7 +267,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectJPScaleImageURL()
     {
-        $paramData = array('id' => '16153', 'country' => 'IN');
+        $paramData = array('id' => '10350', 'country' => 'AA');
         $peopleGroup = new \QueryGenerators\PeopleGroup($paramData);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
@@ -316,7 +316,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     public function testFindByIdShouldReturnTheCorrectPeopleGroups()
     {
         $expected = array('id' => '12662');
-        $expectedPeopleGroups = 11;
+        $expectedPeopleGroups = 14;
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findById();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
