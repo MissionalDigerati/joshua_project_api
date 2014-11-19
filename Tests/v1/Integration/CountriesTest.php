@@ -650,7 +650,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-     * GET /countries.json?jpscale=2.1
+     * GET /countries.json?jpscale=2.2
      * test page filters by JPScale
      *
      * @return void
@@ -659,8 +659,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      */
     public function testIndexRequestsShouldReturnCountriesFilteredByJPScale()
     {
-        $expectedJPScale = "2.1";
-        $expectedJPScalesArray = array(2.1);
+        $expectedJPScale = "2.2";
+        $expectedJPScalesArray = array(2.2);
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'jpscale' => $expectedJPScale),
