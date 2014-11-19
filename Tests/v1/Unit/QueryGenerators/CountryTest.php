@@ -380,7 +380,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
     public function testFindAllWithFiltersShouldFilterByPercentHindu()
     {
         $expectedMin = 50;
-        $expectedMax = 80;
+        $expectedMax = 90;
         $country = new \QueryGenerators\Country(array('pc_hindu' => $expectedMin . '-' . $expectedMax));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
@@ -531,7 +531,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
     public function testCountryQueryGeneratorShouldSetJPScaleTextToNominalChurch()
     {
         $expectedJPScaleText = "nominal church";
-        $country = new \QueryGenerators\Country(array('jpscale' => '2.1'));
+        $country = new \QueryGenerators\Country(array('jpscale' => '2.2'));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);

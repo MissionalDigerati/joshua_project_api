@@ -334,7 +334,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      **/
     public function testFindAllWithFiltersShouldFilterByWorldSpeakers()
     {
-        $expected = array('world_speakers'   =>  '1');
+        $expected = array('world_speakers'   =>  '10');
         $language = new \QueryGenerators\Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
@@ -342,7 +342,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
-            $this->assertEquals(1, intval($lang['WorldSpeakers']));
+            $this->assertEquals(intval($expected['world_speakers']), intval($lang['WorldSpeakers']));
         }
     }
     /**
