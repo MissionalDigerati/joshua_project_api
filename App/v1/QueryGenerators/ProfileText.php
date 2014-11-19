@@ -57,7 +57,7 @@ class ProfileText extends QueryGenerator
      * @access  protected
      */
     protected $fieldsToSelectArray = array(
-        'jpprofiletext.ProfileID', 'jpprofiletext.ROL3', 'jpprofiletext.Active', 'jpprofiletext.Format',
+        'jpprofiletopeople.ROL3Profile', 'jpprofiletext.ProfileID', 'jpprofiletext.Format',
         'jpprofiletext.FileName', 'jpprofiletext.IntroductionHistory', 'jpprofiletext.WhereLocated',
         'jpprofiletext.LivesLike', 'jpprofiletext.Beliefs', 'jpprofiletext.Needs', 'jpprofiletext.Prayer',
         'jpprofiletext.Reference', 'jpprofiletext.Summary', 'jpprofiletext.ScriptureFocus', 'jpprofiletext.Obstacles',
@@ -105,7 +105,8 @@ class ProfileText extends QueryGenerator
         $country = strtoupper($this->providedParams['country']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement .
             " FROM jpprofiletopeople JOIN jpprofiletext ON jpprofiletopeople.ProfileID = jpprofiletext.ProfileID " .
-            "WHERE jpprofiletopeople.PeopleID3 = :id AND jpprofiletopeople.ROG3 = :country";
+            "WHERE jpprofiletopeople.PeopleID3 = :id AND jpprofiletopeople.ROG3 = :country " .
+            "AND jpprofiletopeople.ROL3Profile = 'eng'";
         $this->preparedVariables = array('id' => $id, 'country' => $country);
     }
 }
