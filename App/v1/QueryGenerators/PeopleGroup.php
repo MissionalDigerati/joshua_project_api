@@ -1,24 +1,24 @@
 <?php
 /**
  * This file is part of Joshua Project API.
- * 
+ *
  * Joshua Project API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Joshua Project API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see 
+ * along with this program.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * 
+ *
  */
 namespace QueryGenerators;
 
@@ -66,11 +66,11 @@ class PeopleGroup extends QueryGenerator
         'LeastReachedPGAC', 'GSEC', 'Unengaged', 'JF', 'AudioRecordings', 'NTOnline', 'GospelRadio', 'RLG3', 'RLG3PC',
         'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC', 'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision',
         'PCIslam', 'PCNonReligious', 'PCUnknown', 'PCAnglican', 'PCIndependent', 'PCProtestant', 'PCOrthodox',
-        'PCOtherChristian', 'StonyGround', 'SecurityLevel', 'RaceCode', 'LRWebProfile', 'LRofTheDayMonth',
+        'PCOtherChristian', 'SecurityLevel', 'RaceCode', 'LRWebProfile', 'LRofTheDayMonth',
         'LRofTheDayDay', 'LRTop100', 'PhotoAddress', 'PhotoWidth', 'PhotoHeight', 'PhotoCredits', 'PhotoCreditURL',
         'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission', 'ProfileTextExists', 'Top10Ranking',
         'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation', 'RankMinistryTools', 'CountOfCountries',
-        'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'V59Country', 'Longitude', 'Latitude', 'UNMap','Ctry',
+        'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'Longitude', 'Latitude', 'UNMap','Ctry',
         'IndigenousCode', 'ROL3', 'PercentAdherents', 'PercentChristianPC', 'PercentChristianPGAC',
         'PercentEvangelical', 'PercentEvangelicalPC', 'PercentEvangelicalPGAC', 'PCBuddhism', 'PCDblyProfessing',
         'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'PCRomanCatholic', 'RegionCode'
@@ -146,7 +146,7 @@ class PeopleGroup extends QueryGenerator
      * Find the daily unreached people Group based on the month and day that you specify.
      * <br><br><strong>Requires $providedParams['month']:</strong> The specific month of the unreached.
      * <br><strong>Requires $providedParams['day']:</strong> The specific month of the unreached.
-     * 
+     *
      * @return  void
      * @access  public
      * @throws  \InvalidArgumentException   If the 'month' key is not set or it is not between 1-12.

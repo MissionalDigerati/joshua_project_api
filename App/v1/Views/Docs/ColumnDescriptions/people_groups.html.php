@@ -437,11 +437,6 @@
                     <td>Does this group speak the national language?</td>
                 </tr>
                 <tr>
-                    <td>StonyGround</td>
-                    <td>Is this country stony ground for evangelism? If If "Y" the default for people groups in this 
-                        country with unknown % Evangelical and % Christian Adherents is "Unreached"</td>
-                </tr>
-                <tr>
                     <td>Top10Ranking</td>
                     <td>Priority Ranking top ten - assigned based on overall ranking and manual process</td>
                 </tr>

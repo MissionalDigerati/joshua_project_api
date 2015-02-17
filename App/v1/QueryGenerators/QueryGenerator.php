@@ -1,24 +1,24 @@
 <?php
 /**
  * This file is part of Joshua Project API.
- * 
+ *
  * Joshua Project API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Joshua Project API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see 
+ * along with this program.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * 
+ *
  */
 namespace QueryGenerators;
 
@@ -91,7 +91,7 @@ class QueryGenerator
      */
     protected $providedParams = array();
     /**
-     * An array of column names for this database table that we want to select in searches. 
+     * An array of column names for this database table that we want to select in searches.
      * Simply remove fields you do not want to expose.
      *
      * @var     array
@@ -144,7 +144,7 @@ class QueryGenerator
     /**
      * Construct the QueryGenerator class.
      *
-     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.  
+     * During construction,  the $getParams are checked and inserted in the $providedParams class variable.
      * Some of the methods in the child classes require certain keys to be set, or it will throw an error.
      * The comments will state the required keys.
      *
@@ -179,8 +179,8 @@ class QueryGenerator
     /**
      * Add a MySQL LIMIT based on the $providedParams class variable.
      *
-     * Checks the given $providedParams class variable for keys <strong>limit</strong> and <strong>page</strong>.  
-     * If they exist, then this method will generate the appropriate MySQL syntax for the LIMIT attribute. 
+     * Checks the given $providedParams class variable for keys <strong>limit</strong> and <strong>page</strong>.
+     * If they exist, then this method will generate the appropriate MySQL syntax for the LIMIT attribute.
      * It appends the LIMIT string to the $preparedStatement class variable.
      *
      * @return void
@@ -205,7 +205,7 @@ class QueryGenerator
     /**
      * Generates an IN () statement from a piped string.
      *
-     * Generates the MySQL IN() syntax from a supplied a pipe (bar) seperated string.  So a $str of 17|23|12 will 
+     * Generates the MySQL IN() syntax from a supplied a pipe (bar) seperated string.  So a $str of 17|23|12 will
      * return $columnName IN (17, 23, 12).
      *
      * @param   string  $str        The piped/barred string.
@@ -231,7 +231,7 @@ class QueryGenerator
      * Generates a BETWEEN statement using a dash separated string.
      *
      * Generates the MySQL BETWEEN statement from a dash seperated string.  If $str is a single integer, it will
-     * generate an EQUALITY MySQL statement.  If you supply 2 integers seperated by a dash,  it will generate a MySQL 
+     * generate an EQUALITY MySQL statement.  If you supply 2 integers seperated by a dash,  it will generate a MySQL
      * BETWEEN statement.  For example, 10-20, will return $columnName BETWEEN 10 AND 20.
      *
      * @param   string  $str        Either a single integer or a dash separated string (min-max).
@@ -284,7 +284,7 @@ class QueryGenerator
             $this->preparedVariables[$suffix] = $val;
             return $columnName . " = :" . $suffix;
         } elseif ($val == 'N') {
-            return "(" . $columnName . " IS NULL OR " . $columnName . " = '')";
+            return "(" . $columnName . " IS NULL OR " . $columnName . " = '' OR " . $columnName . " = 'N')";
         } else {
             throw new \InvalidArgumentException("A boolean was set with the wrong value.");
         }
@@ -292,7 +292,7 @@ class QueryGenerator
     /**
      * Generates the WHERE statement for a boolean based on wether the column has content or not.
      *
-     * Generates a MySQL WHERE statement for a boolean value check.  If $str equals Y,  it looks for a value that is 
+     * Generates a MySQL WHERE statement for a boolean value check.  If $str equals Y,  it looks for a value that is
      * NOT NULL or EMPTY.  If $str equals N, it looks for a NULL or EMPTY value.
      *
      * @param   string  $str            The value your looking for. (Y or N)
@@ -314,10 +314,10 @@ class QueryGenerator
         }
     }
     /**
-     * Generates column name aliases based on the key and values of the $aliasFields class variable. 
+     * Generates column name aliases based on the key and values of the $aliasFields class variable.
      *
-     * Using the key and values of the $aliasFields class variable, it generates the column names to SELECT using the 
-     * following format: key AS value.  So with multiple values, you will receive key AS value, key AS value, key AS 
+     * Using the key and values of the $aliasFields class variable, it generates the column names to SELECT using the
+     * following format: key AS value.  So with multiple values, you will receive key AS value, key AS value, key AS
      * value etc.
      *
      * @return string   The MySQL statement.
