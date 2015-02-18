@@ -1,0 +1,7 @@
+Version 0.2.2
+
+We removed columns from People Group Results: StonyGround and V59Country.  We also removed columns
+from Country Results: USAPostalSystem, StonyGround, IsCountry, and LibraryCongressReportExists.  Finally,
+all columns that used to return null now return N.  The effected columns for People Groups: IndigenousCode,
+LeastReached, Window1040, and Unengaged.  For the Languages results: AudioRecordings, FourLaws, GodsStory,
+JF, LeastReached, and TranslationNeedQuestionable.
