@@ -1,24 +1,24 @@
 <?php
 /**
  * This file is part of Joshua Project API.
- * 
+ *
  * Joshua Project API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Joshua Project API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see 
+ * along with this program.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * 
+ *
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
@@ -180,7 +180,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedValues, array_values($queryGenerator->preparedVariables));
     }
     /**
-     * generateBetweenStatementFromDashSeperatedString() should generate an appropriate BETWEEN statement with a max 
+     * generateBetweenStatementFromDashSeperatedString() should generate an appropriate BETWEEN statement with a max
      * and minimum
      *
      * @return void
@@ -228,7 +228,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @access public
      * @author Johnathan Pulos
-     * 
+     *
      * @expectedException InvalidArgumentException
      */
     public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMoreMinThanMaxGiven()
@@ -245,7 +245,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @access public
      * @author Johnathan Pulos
-     * 
+     *
      * @expectedException InvalidArgumentException
      */
     public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMinGreaterThanMax()
@@ -286,7 +286,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForNo()
     {
-        $expectedStatement = "(10_40Window IS NULL OR 10_40Window = '')";
+        $expectedStatement = "(10_40Window IS NULL OR 10_40Window = '' OR 10_40Window = 'N')";
         $queryGenerator = new \QueryGenerators\QueryGenerator(array());
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('generateWhereStatementForBoolean');
@@ -301,7 +301,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @access public
      * @author Johnathan Pulos
-     * 
+     *
      * @expectedException InvalidArgumentException
      */
     public function testGenerateWhereStatementFromBooleanShouldThrowErrorIfParamInvalid()

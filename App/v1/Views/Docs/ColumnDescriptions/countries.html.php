@@ -63,10 +63,6 @@
                     <td>Internet Country Code</td>
                 </tr>
                 <tr>
-                    <td>IsCountry</td>
-                    <td>Is this  a country?</td>
-                </tr>
-                <tr>
                     <td>ISO2</td>
                     <td>ISO 2 character code for country</td>
                 </tr>
@@ -78,10 +74,6 @@
                     <td>JPScaleCtry</td>
                     <td>Joshua Project Progress Scale for this country, derived from the people group data in 
                         this country.</td>
-                </tr>
-                <tr>
-                    <td>LibraryCongressReportExists</td>
-                    <td>Library of Congress Country Study exists for this country</td>
                 </tr>
                 <tr>
                     <td>LiteracyCategory</td>
@@ -250,17 +242,8 @@
                     <td>Code for URL link to current Report on International Religious Freedom</td>
                 </tr>
                 <tr>
-                    <td>StonyGround</td>
-                    <td>Is this country stony ground for evangelism? If If "Y" the default for people groups in this 
-                        country with unknown % Evangelical and % Christian Adherents is "Unreached"</td>
-                </tr>
-                <tr>
                     <td>UNMap</td>
                     <td>Link to UN Political map in PDF format</td>
-                </tr>
-                <tr>
-                    <td>USAPostalSystem</td>
-                    <td>Is this country covered by the U.S. Postal Service?</td>
                 </tr>
                 <tr>
                     <td>WINCountryProfile</td>
