@@ -62,10 +62,10 @@ class Country extends QueryGenerator
         'PercentOtherSmall', 'PercentOrthodox', 'PercentOther', 'PercentProtestant', 'PercentRomanCatholic',
         'PercentUnknown', 'ROL3OfficialLanguage', 'ROL3SecondaryLanguage', 'RLG3Primary', 'RegionCode',
         'InternetCtryCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'AltName', 'Capital', 'Population',
-        'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles', 'AreaSquareKilometers', 'PopulationPerSquareMile',
-        'CountryPhoneCode', 'SecurityLevel', 'ReligionDataYear', 'LiteracyCategory', 'LiteracyRate', 'LiteracyRange',
-        'LiteracySource', 'CountryNotes', 'PercentDoublyProfessing', 'HDIYear', 'HDIValue', 'HDIRank',
-        'StateDeptReligiousFreedom', 'Source', 'UNMap', 'PercentUrbanized', 'PrayercastVideo', 'WINCountryProfile');
+        'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles', 'SecurityLevel', 'ReligionDataYear',
+        'LiteracyCategory', 'LiteracyRate', 'LiteracyRange', 'LiteracySource', 'PercentDoublyProfessing',
+        'HDIYear', 'HDIValue', 'HDIRank', 'StateDeptReligiousFreedom', 'UNMap', 'PercentUrbanized',
+        'PrayercastVideo', 'WINCountryProfile');
     /**
      * The Database table to pull the data from.
      *

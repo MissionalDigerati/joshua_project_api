@@ -22,10 +22,6 @@
                     <td>Alternate Name for Country</td>
                 </tr>
                 <tr>
-                    <td>AreaSquareKilometers</td>
-                    <td>Area of Country in Square Kilometres</td>
-                </tr>
-                <tr>
                     <td>AreaSquareMiles</td>
                     <td>Area of Country in Square Miles</td>
                 </tr>
@@ -36,14 +32,6 @@
                 <tr>
                     <td>Ctry</td>
                     <td>Name of Country</td>
-                </tr>
-                <tr>
-                    <td>CountryNotes</td>
-                    <td>Country Notes</td>
-                </tr>
-                <tr>
-                    <td>CountryPhoneCode</td>
-                    <td>Country Phone Code</td>
                 </tr>
                 <tr>
                     <td>HDIRank</td>
@@ -168,10 +156,6 @@
                     <td>Country Population</td>
                 </tr>
                 <tr>
-                    <td>PopulationPerSquareMile</td>
-                    <td>Population Per Square Mile</td>
-                </tr>
-                <tr>
                     <td>PopulationSource</td>
                     <td>Population Source</td>
                 </tr>
@@ -232,10 +216,6 @@
                 <tr>
                     <td>SecurityLevel</td>
                     <td>0 = no security concerns;  1 = moderate security concerns, 2 = high security concerns</td>
-                </tr>
-                <tr>
-                    <td>Source</td>
-                    <td>Original Source of Information</td>
                 </tr>
                 <tr>
                     <td>StateDeptReligiousFreedom</td>
