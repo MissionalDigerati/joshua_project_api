@@ -1,9 +1,16 @@
 {
+    "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/codemis/php_toolbox.git"
+    }],
     "require": {
-        "phpmailer/phpmailer": "dev-master"
+        "phpmailer/phpmailer": "dev-master",
+        "PHPToolbox/PHPToolbox": ">=2.0.0"
     },
     "require-dev": {
-        "phpdocumentor/phpdocumentor":  "2.*",
-        "zircote/swagger-php": "0.6.1"
+        "phpdocumentor/phpdocumentor": "2.*",
+        "zircote/swagger-php": "0.6.1",
+        "phpunit/phpunit": "4.4.*"
     }
 }

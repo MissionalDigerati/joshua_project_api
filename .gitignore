@@ -4,3 +4,4 @@ Config/JPAPI/AdminSettings.php
 .DS_Store
 phpunit.xml
 php_error.log
+composer.lock
