@@ -38,20 +38,10 @@ $SITE_URL = $_ENV['site_url'];
  * @author Johnathan Pulos
  */
 $API_VERSION = "v1";
-/**
- * Load up the Aura Auto Loader
- *
- * @author Johnathan Pulos
- */
-$PHPToolboxDirectory =
-    __DIR__ . $DS . ".." .
-    $DS . "Vendor" . $DS .
-    "PHPToolbox" . $DS .
-    "src" . $DS;
 require_once("Tests" . $DS . "Support" . $DS . "HelperFunctions.php");
 require_once("App" . $DS . $API_VERSION . $DS . "Includes" . $DS . "CommonFunctions.php");
 /**
- * Load up the Aura Auto Loader
+ * Load up the Composer autoloader
  *
  * @author Johnathan Pulos
  */
@@ -95,24 +85,3 @@ $loader->add("QueryGenerators\Country", __DIR__ . $DS . ".." . $DS . "App" . $DS
 $loader->add("QueryGenerators\Language", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
 $loader->add("QueryGenerators\Continent", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
 $loader->add("QueryGenerators\Region", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
-/**
- * preload source files
- *
- * @author Johnathan Pulos
- */
-/**
- * autoload models & test files
- *
- * @package default
- * @author Johnathan Pulos
- */
-spl_autoload_register(
-    function ($class) {
-        $file = dirname(__DIR__). DIRECTORY_SEPARATOR
-              . 'tests' . DIRECTORY_SEPARATOR
-              . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
-        if (file_exists($file)) {
-            require $file;
-        }
-    }
-);
