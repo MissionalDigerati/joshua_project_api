@@ -1,6 +1,0 @@
-# Ignore everything
-*
-# Except Libraries needed for deployment.
-!.gitignore
-!Aura.Autoload/
-!SlimExtras/

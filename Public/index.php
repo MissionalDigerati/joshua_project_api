@@ -85,15 +85,7 @@ if ($useCaching === true) {
  */
 $VIEW_DIRECTORY = $PUBLIC_DIRECTORY . "/../App/" . $API_VERSION . "/Views/";
 /**
- * Get the Slim Framework, and instantiate the class
- *
- * @author Johnathan Pulos
- */
-require(__DIR__ . $DS . ".." . $DS . "Slim" . $DS . "Slim.php");
-\Slim\Slim::registerAutoloader();
-$app = new \Slim\Slim(array('templates.path' => $VIEW_DIRECTORY));
-/**
- * Load up the Aura Auto Loader
+ * Load up the Composer AutoLoader
  *
  * @author Johnathan Pulos
  */
@@ -101,7 +93,9 @@ $vendorDirectory = __DIR__ . $DS . ".." . $DS . "Vendor" . $DS;
 
 require $vendorDirectory . 'autoload.php';
 
-$loader = require $vendorDirectory . "Aura.Autoload" . $DS . "scripts" . $DS . "instance.php";
+$app = new \Slim\Slim(array('templates.path' => $VIEW_DIRECTORY));
+
+$loader = new \Aura\Autoload\Loader;
 $loader->register();
 /**
  * Setup the database object
