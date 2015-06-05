@@ -101,7 +101,7 @@ $vendorDirectory = __DIR__ . $DS . ".." . $DS . "Vendor" . $DS;
 
 require $vendorDirectory . 'autoload.php';
 
-$loader = require $vendorDirectory . "Aura.Autoload" . $DS . "scripts" . $DS . "instance.php";
+$loader = new \Aura\Autoload\Loader;
 $loader->register();
 /**
  * Setup the database object

@@ -1,10 +1,14 @@
 {
+    "config": {
+        "vendor-dir": "Vendor"
+    },
     "repositories": [
     {
       "type": "vcs",
       "url": "https://github.com/codemis/php_toolbox.git"
     }],
     "require": {
+        "aura/autoload": "1.0.*",
         "phpmailer/phpmailer": "dev-master",
         "PHPToolbox/PHPToolbox": ">=2.0.0"
     },
