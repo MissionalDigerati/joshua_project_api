@@ -3,6 +3,4 @@
 # Except Libraries needed for deployment.
 !.gitignore
 !Aura.Autoload/
-!phpmailer/
-!PHPToolbox/
 !SlimExtras/

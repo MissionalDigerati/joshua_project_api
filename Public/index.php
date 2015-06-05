@@ -1,24 +1,23 @@
 <?php
 /**
  * This file is part of Joshua Project API.
- * 
+ *
  * Joshua Project API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Joshua Project API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see 
- * <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * 
+ *
  */
 /**
  * This requires PDO MySQL Support.
@@ -59,7 +58,7 @@ $PUBLIC_DIRECTORY = dirname(__FILE__);
 /**
  * Lets get the version of the API based on the URL (
  * http://joshua.api.local/v12/people_groups/daily_unreached.json?api_key=37e24112caae
- * ) It will default to the latest API.  You must provide an API Version if you are accessing the data.  The default is 
+ * ) It will default to the latest API.  You must provide an API Version if you are accessing the data.  The default is
  * only for static pages
  *
  * @author Johnathan Pulos
@@ -99,6 +98,9 @@ $app = new \Slim\Slim(array('templates.path' => $VIEW_DIRECTORY));
  * @author Johnathan Pulos
  */
 $vendorDirectory = __DIR__ . $DS . ".." . $DS . "Vendor" . $DS;
+
+require $vendorDirectory . 'autoload.php';
+
 $loader = require $vendorDirectory . "Aura.Autoload" . $DS . "scripts" . $DS . "instance.php";
 $loader->register();
 /**
@@ -107,12 +109,6 @@ $loader->register();
  * @author Johnathan Pulos
  */
 $loader->add("JPAPI\DatabaseSettings", __DIR__ . $DS . ".." . $DS . "Config");
-/**
- * Autoload the PDO Database Class
- *
- * @author Johnathan Pulos
- */
-$loader->add("PHPToolbox\PDODatabase\PDODatabaseConnect", $vendorDirectory . "PHPToolbox" . $DS . "src");
 
 $pdoDb = \PHPToolbox\PDODatabase\PDODatabaseConnect::getInstance();
 $pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings);
