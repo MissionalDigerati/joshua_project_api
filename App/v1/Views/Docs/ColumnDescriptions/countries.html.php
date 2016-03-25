@@ -39,7 +39,7 @@
                 </tr>
                 <tr>
                     <td>HDIValue</td>
-                    <td>Human Development Index - composite value: combination of LifeExpectancy, 
+                    <td>Human Development Index - composite value: combination of LifeExpectancy,
                         Education and GPD Indexs</td>
                 </tr>
                 <tr>
@@ -60,16 +60,8 @@
                 </tr>
                 <tr>
                     <td>JPScaleCtry</td>
-                    <td>Joshua Project Progress Scale for this country, derived from the people group data in 
+                    <td>Joshua Project Progress Scale for this country, derived from the people group data in
                         this country.</td>
-                </tr>
-                <tr>
-                    <td>LiteracyCategory</td>
-                    <td>LT1=0-20%, LT2=21-40%, LT3=41-60%, LT4=61-80%, LT5=81-100%</td>
-                </tr>
-                <tr>
-                    <td>LiteracyRange</td>
-                    <td>Literacy range</td>
                 </tr>
                 <tr>
                     <td>LiteracyRate</td>
@@ -165,14 +157,14 @@
                 </tr>
                 <tr>
                     <td>PrimaryReligion</td>
-                    <td>Primary religion for this country [1 - Christianity, 2 - Buddhism, 4 - Ethnic Religions, 
+                    <td>Primary religion for this country [1 - Christianity, 2 - Buddhism, 4 - Ethnic Religions,
                         5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 9 - Unknown]</td>
                 </tr>
                 <tr>
                     <td>RegionCode</td>
-                    <td>Region code for this country [1 - South Pacific, 2 - Southeast Asia, 3 - Northeast Asia, 
-                        4 - South Asia, 5 - Central Asia, 6 - Middle East and North Africa, 
-                        7 - East and Southern Africa, 8 - West and Central Africa, 9 - Eastern Europe and Eurasia, 
+                    <td>Region code for this country [1 - South Pacific, 2 - Southeast Asia, 3 - Northeast Asia,
+                        4 - South Asia, 5 - Central Asia, 6 - Middle East and North Africa,
+                        7 - East and Southern Africa, 8 - West and Central Africa, 9 - Eastern Europe and Eurasia,
                         10 - Western Europe, 11 - Central and South America, 12 - North America and Caribbean]</td>
                 </tr>
                 <tr>
@@ -189,8 +181,8 @@
                 </tr>
                 <tr>
                     <td>RLG3Primary</td>
-                    <td>Primary religion of the people group in this country [1 - Christianity, 2 - Buddhism, 
-                        4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 
+                    <td>Primary religion of the people group in this country [1 - Christianity, 2 - Buddhism,
+                        4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small,
                         9 - Unknown]</td>
                 </tr>
                 <tr>
