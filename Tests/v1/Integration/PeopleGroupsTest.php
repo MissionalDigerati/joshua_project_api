@@ -1,24 +1,23 @@
 <?php
 /**
  * This file is part of Joshua Project API.
- * 
+ *
  * Joshua Project API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Joshua Project API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see 
- * <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * 
+ *
  */
 namespace Tests\v1\Integration;
 
@@ -183,7 +182,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(401, $this->cachedRequest->responseCode);
     }
      /**
-      * GET /people_groups/daily_unreached.json 
+      * GET /people_groups/daily_unreached.json
       * test page is available, and delivers JSON
       *
       * @access public
@@ -200,7 +199,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
     }
      /**
-      * GET /people_groups/daily_unreached.xml 
+      * GET /people_groups/daily_unreached.xml
       * test page is available, and delivers XML
       *
       * @access public
@@ -308,7 +307,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(is_array($decodedResponse[0]['Resources']));
     }
      /**
-      * GET /people_groups/[ID].json 
+      * GET /people_groups/[ID].json
       * test page is available, and delivers JSON
       *
       * @access public
@@ -442,7 +441,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldGetCorrectPeopleGroupsWhenIdsOnlyProvided()
     {
         $expectedID = "12662";
-        $expectedPeopleGroups = 14;
+        $expectedPeopleGroups = 13;
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/" . $expectedID . ".json",
             array('api_key' => $this->APIKey),
@@ -847,7 +846,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      */
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByASetPopulation()
     {
-        $expectedPop = 19900;
+        $expectedPop = 79644000;
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
             array('api_key' => $this->APIKey, 'population' => $expectedPop),

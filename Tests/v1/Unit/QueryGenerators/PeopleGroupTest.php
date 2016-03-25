@@ -316,7 +316,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     public function testFindByIdShouldReturnTheCorrectPeopleGroups()
     {
         $expected = array('id' => '12662');
-        $expectedPeopleGroups = 14;
+        $expectedPeopleGroups = 13;
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findById();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
@@ -678,7 +678,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array(strtolower($peopleGroup['PrimaryReligion']), array_values($expectedReligions)));
-            $this->assertTrue(in_array($peopleGroup['RLG3'], array_keys($expectedReligions)));
+            $this->assertEquals(6, $peopleGroup['RLG3']);
         }
     }
     /**
@@ -690,7 +690,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindAllWithFiltersShouldFilterBySinglePopulation()
     {
-        $expectedPop = 19900;
+        $expectedPop = 79644000;
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('population' => $expectedPop));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
