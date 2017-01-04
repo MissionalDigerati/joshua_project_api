@@ -155,9 +155,9 @@ class QueryGenerator
      */
     public function __construct($getParams)
     {
-        $this->JPScaleTextSelectStatement = "CASE  WHEN JPScale = 1.0 OR JPScale = 2.0 THEN 'Status Unavailable' WHEN" .
-            " JPScale = 1.1 OR JPScale = 1.2 THEN 'Unreached' WHEN JPScale = 2.1 OR JPScale = 2.2 THEN" .
-            " 'Nominal Church' ELSE 'Established Church' END";
+        $this->JPScaleTextSelectStatement = "CASE  WHEN JPScale = 1 THEN 'Unreached' WHEN JPScale = 2 THEN" .
+        " 'Minimally Reached' WHEN JPScale = 3 THEN 'Superficially Reached' WHEN JPScale = 4 THEN" .
+        " 'Partially Reached' ELSE 'Significantly Reached' END";
         $this->validator = new \Utilities\Validator();
         $this->sanitizer = new \Utilities\Sanitizer();
         $this->providedParams = $this->sanitizer->cleanArrayValues($getParams);

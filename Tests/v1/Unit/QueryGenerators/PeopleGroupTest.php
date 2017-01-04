@@ -219,46 +219,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedURL, strtolower($data[0]['CountryURL']));
     }
     /**
-     * Should return the correct JPScaleText Equal to Unreached
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testPeopleGroupQueryGeneratorShouldReturnCorrectJPScaleTextEqualToUnreached()
-    {
-        $paramData = array('id' => '12662', 'country' => 'CB');
-        $expectedText = "unreached";
-        $peopleGroup = new \QueryGenerators\PeopleGroup($paramData);
-        $peopleGroup->findByIdAndCountry();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertGreaterThan(1, $data[0]['JPScale']);
-        $this->assertLessThan(2, $data[0]['JPScale']);
-        $this->assertEquals($expectedText, strtolower($data[0]['JPScaleText']));
-    }
-    /**
-     * Should return the correct JPScaleText Equal to Nominal Church
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testPeopleGroupQueryGeneratorShouldReturnCorrectJPScaleTextEqualToNominalChurch()
-    {
-        $paramData = array('id' => '19007', 'country' => 'AE');
-        $expectedText = "nominal church";
-        $peopleGroup = new \QueryGenerators\PeopleGroup($paramData);
-        $peopleGroup->findByIdAndCountry();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertGreaterThan(2, $data[0]['JPScale']);
-        $this->assertLessThan(3, $data[0]['JPScale']);
-        $this->assertEquals($expectedText, strtolower($data[0]['JPScaleText']));
-    }
-    /**
      * Should return the correct JPScaleImageURL
      *
      * @return void
@@ -690,7 +650,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindAllWithFiltersShouldFilterBySinglePopulation()
     {
-        $expectedPop = 79644000;
+        $expectedPop = 3900;
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('population' => $expectedPop));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
@@ -1208,8 +1168,8 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindAllWithFiltersShouldFiltersByJPScale()
     {
-        $expectedJPScales = "1.2|2.1";
-        $expectedJPScalesArray = array(1.2, 2.1);
+        $expectedJPScales = "1|2";
+        $expectedJPScalesArray = array(1, 2);
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('jpscale' => $expectedJPScales));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);

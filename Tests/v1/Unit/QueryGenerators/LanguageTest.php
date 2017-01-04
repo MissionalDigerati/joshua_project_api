@@ -434,7 +434,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      **/
     public function testFindAllWithFiltersShouldFilterByJPScale()
     {
-        $expected = array('jpscale'   =>  '3.1');
+        $expected = array('jpscale'   =>  '3');
         $language = new \QueryGenerators\Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
@@ -442,7 +442,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
-            $this->assertEquals(3.1, floatval($lang['JPScale']));
+            $this->assertEquals(3, floatval($lang['JPScale']));
         }
     }
     /**

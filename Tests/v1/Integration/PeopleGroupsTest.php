@@ -846,7 +846,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      */
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByASetPopulation()
     {
-        $expectedPop = 79644000;
+        $expectedPop = 156000;
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
             array('api_key' => $this->APIKey, 'population' => $expectedPop),
@@ -1268,8 +1268,8 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      */
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByJPScale()
     {
-        $expectedJPScales = "1.1|2.2|3.1";
-        $expectedJPScalesArray = array(1.1, 2.2, 3.1);
+        $expectedJPScales = "1|2|3";
+        $expectedJPScalesArray = array(1, 2, 3);
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
             array('api_key' => $this->APIKey, 'jpscale' => $expectedJPScales),
@@ -1374,7 +1374,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
              *
              * @author Johnathan Pulos
              */
-            $query = "INSERT INTO `md_api_keys` (name, email, organization, website, api_usage, api_key, status) 
+            $query = "INSERT INTO `md_api_keys` (name, email, organization, website, api_usage, api_key, status)
                         VALUES (:name, :email, :organization, :website, :api_usage, :api_key, :status)";
             try {
                 $statement = $this->db->prepare($query);

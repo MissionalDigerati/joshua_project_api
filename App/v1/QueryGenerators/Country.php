@@ -168,7 +168,7 @@ class Country extends QueryGenerator
         if ($this->paramExists('jpscale')) {
             $this->validator->barSeperatedStringProvidesAcceptableValues(
                 $this->providedParams['jpscale'],
-                array('1.1', '1.2', '2.1', '2.2', '3.1', '3.2')
+                array('1', '2', '3', '4', '5')
             );
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";

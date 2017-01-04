@@ -1,24 +1,24 @@
 <?php
 /**
  * This file is part of Joshua Project API.
- * 
+ *
  * Joshua Project API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Joshua Project API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see 
+ * along with this program.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * 
+ *
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
@@ -489,8 +489,8 @@ class CountryTest extends \PHPUnit_Framework_TestCase
      **/
     public function testFindAllWithFiltersShouldFilterByJPScale()
     {
-        $expectedJPScales = "1.2|2.1";
-        $expectedJPScalesArray = array(1.2, 2.1);
+        $expectedJPScales = "1|2";
+        $expectedJPScalesArray = array(1, 2);
         $country = new \QueryGenerators\Country(array('jpscale' => $expectedJPScales));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
@@ -511,7 +511,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
     public function testCountryQueryGeneratorShouldSetJPScaleTextToUnreached()
     {
         $expectedJPScaleText = "unreached";
-        $country = new \QueryGenerators\Country(array('jpscale' => '1.2'));
+        $country = new \QueryGenerators\Country(array('jpscale' => '1'));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -522,16 +522,16 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-     * Country Query Generator should set the JPScaleText to Nominal Church
+     * Country Query Generator should set the JPScaleText to Minimally Reached
      *
      * @return void
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testCountryQueryGeneratorShouldSetJPScaleTextToNominalChurch()
+    public function testCountryQueryGeneratorShouldSetJPScaleTextToMinimallyReached()
     {
-        $expectedJPScaleText = "nominal church";
-        $country = new \QueryGenerators\Country(array('jpscale' => '2.2'));
+        $expectedJPScaleText = "minimally reached";
+        $country = new \QueryGenerators\Country(array('jpscale' => '2'));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -542,16 +542,56 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-     * Country Query Generator should set the JPScaleText to Established Church
+     * Country Query Generator should set the JPScaleText to Superficially Reached
      *
      * @return void
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testCountryQueryGeneratorShouldSetJPScaleTextToEstablishedChurch()
+    public function testCountryQueryGeneratorShouldSetJPScaleTextToSuperficiallyReached()
     {
-        $expectedJPScaleText = "established church";
-        $country = new \QueryGenerators\Country(array('jpscale' => '3.2'));
+        $expectedJPScaleText = "superficially reached";
+        $country = new \QueryGenerators\Country(array('jpscale' => '3'));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertEquals(strtolower($countryData['JPScaleText']), $expectedJPScaleText);
+        }
+    }
+    /**
+     * Country Query Generator should set the JPScaleText to Partially Reached
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testCountryQueryGeneratorShouldSetJPScaleTextToPartiallyReached()
+    {
+        $expectedJPScaleText = "partially reached";
+        $country = new \QueryGenerators\Country(array('jpscale' => '4'));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertEquals(strtolower($countryData['JPScaleText']), $expectedJPScaleText);
+        }
+    }
+    /**
+     * Country Query Generator should set the JPScaleText to Significantly Reached
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testCountryQueryGeneratorShouldSetJPScaleTextToSignificantlyReached()
+    {
+        $expectedJPScaleText = "significantly reached";
+        $country = new \QueryGenerators\Country(array('jpscale' => '5'));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -571,7 +611,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
     public function testCountryQueryGeneratorShouldSetJPScaleImageURLCorrectly()
     {
         $expectedJPScaleText = "established church";
-        $country = new \QueryGenerators\Country(array('jpscale' => '3.2'));
+        $country = new \QueryGenerators\Country(array('jpscale' => '4'));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
