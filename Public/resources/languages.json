@@ -22,7 +22,7 @@
                         },
                         {
                             "name": "countries",
-                            "description": "A bar separated list of one or more countries to filter by. Use the 2 letter ISO code.  See <a href='https://www.iso.org/obp/ui/#search' target='_blank'>ISO.org</a> for the codes.",
+                            "description": "A bar separated list of one or more countries to filter by. Use the 2 letter FIPS 10-4 code. [<a href='https://goo.gl/yYWY4J' target='_blank'>View all Country Codes</a>]",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
@@ -94,7 +94,7 @@
                         },
                         {
                             "name": "jpscale",
-                            "description": "A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1.1, 1.2, 2.1, 2.2, 3.1, 3.2.  For more information check out <a href='http://joshuaproject.net/progress-scale-definition.php' target='_blank'>http://joshuaproject.net/progress-scale-definition.php</a>.",
+                            "description": "A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out <a href='https://joshuaproject.net/global_list/progress' target='_blank'>https://joshuaproject.net/global_list/progress</a>.",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
@@ -231,7 +231,7 @@
                             "code": 404
                         }
                     ],
-                    "notes": "Retrieve the details of a specific Language by supplying the language's 3 letter ISO 639-2 Code (id)."
+                    "notes": "Retrieve the details of a specific Language by supplying the language's <a href='http://goo.gl/gbkgo4' target='_blank'>3 letter ISO 639-2 Code</a> (id)."
                 }
             ],
             "description": "Retrieve the details of a specific Language."

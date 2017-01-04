@@ -1,24 +1,24 @@
 <?php
 /**
  * This file is part of Joshua Project API.
- * 
+ *
  * Joshua Project API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Joshua Project API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see 
- * <http://www.gnu.org/licenses/>. 
+ * along with this program.  If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * 
+ *
  */
 use Swagger\Annotations as SWG;
 
@@ -31,7 +31,7 @@ use Swagger\Annotations as SWG;
  * )
  */
 /**
-  * 
+  *
   * @SWG\API(
   *  path="/languages/{id}.{format}",
   *  description="Retrieve the details of a specific Language.",
@@ -40,7 +40,7 @@ use Swagger\Annotations as SWG;
   *          httpMethod="GET",
   *          nickname="languageShow",
   *          summary="Retrieve the details of a specific Language (JSON or XML)",
-  *          notes="Retrieve the details of a specific Language by supplying the language's 3 letter ISO 639-2 Code (id).",
+  *          notes="Retrieve the details of a specific Language by supplying the language's <a href='http://goo.gl/gbkgo4' target='_blank'>3 letter ISO 639-2 Code</a> (id).",
   *          @SWG\Parameters(
   *              @SWG\Parameter(
   *                  name="api_key",
@@ -76,7 +76,7 @@ use Swagger\Annotations as SWG;
   *      )
   *  )
   * )
-  * 
+  *
   */
 $app->get(
     "/:version/languages/:id\.:format",
@@ -139,7 +139,7 @@ $app->get(
     }
 );
 /**
- * 
+ *
  * @SWG\API(
  *  path="/languages.{format}",
  *  description="Find all Languages that match your filter criteria.",
@@ -160,7 +160,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="countries",
- *                  description="A bar separated list of one or more countries to filter by. Use the 2 letter ISO code.  See <a href='https://www.iso.org/obp/ui/#search' target='_blank'>ISO.org</a> for the codes.",
+ *                  description="A bar separated list of one or more countries to filter by. Use the 2 letter FIPS 10-4 code. [<a href='https://goo.gl/yYWY4J' target='_blank'>View all Country Codes</a>]",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -232,7 +232,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="jpscale",
- *                  description="A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1.1, 1.2, 2.1, 2.2, 3.1, 3.2.  For more information check out <a href='http://joshuaproject.net/progress-scale-definition.php' target='_blank'>http://joshuaproject.net/progress-scale-definition.php</a>.",
+ *                  description="A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out <a href='https://joshuaproject.net/global_list/progress' target='_blank'>https://joshuaproject.net/global_list/progress</a>.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -328,7 +328,7 @@ $app->get(
  *      )
  *  )
  * )
- * 
+ *
  */
 $app->get(
     "/:version/languages\.:format",
