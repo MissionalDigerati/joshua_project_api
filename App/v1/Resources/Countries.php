@@ -1,24 +1,24 @@
 <?php
 /**
  * This file is part of Joshua Project API.
- * 
+ *
  * Joshua Project API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Joshua Project API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see 
+ * along with this program.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * 
+ *
  */
 use Swagger\Annotations as SWG;
 
@@ -31,7 +31,7 @@ use Swagger\Annotations as SWG;
  * )
  */
 /**
-  * 
+  *
   * @SWG\API(
   *  path="/countries/{id}.{format}",
   *  description="Retrieve the details of a specific Country.",
@@ -40,7 +40,7 @@ use Swagger\Annotations as SWG;
   *          httpMethod="GET",
   *          nickname="countryShow",
   *          summary="Retrieve the details of a specific Country (JSON or XML)",
-  *          notes="Retrieve the details of a specific Country by supplying the country's 2 letter ISO Code (id).",
+  *          notes="Retrieve the details of a specific Country by supplying the country's <a href='https://goo.gl/yYWY4J' target='_blank'>2 letter FIPS 10-4 Code</a> (id).",
   *          @SWG\Parameters(
   *              @SWG\Parameter(
   *                  name="api_key",
@@ -52,7 +52,7 @@ use Swagger\Annotations as SWG;
   *              ),
   *              @SWG\Parameter(
   *                  name="id",
-  *                  description="The 2 letter ISO Country Code for the Country you want to view. [<a href='http://goo.gl/1dhC' target='_blank'>View all Country Codes</a>]",
+  *                  description="The 2 letter FIPS 10-4 Country Code for the Country you want to view. [<a href='https://goo.gl/yYWY4J' target='_blank'>View all Country Codes</a>]",
   *                  paramType="path",
   *                  required="true",
   *                  allowMultiple="false",
@@ -76,7 +76,7 @@ use Swagger\Annotations as SWG;
   *      )
   *  )
   * )
-  * 
+  *
   */
 $app->get(
     "/:version/countries/:id\.:format",
@@ -138,7 +138,7 @@ $app->get(
     }
 );
 /**
- * 
+ *
  * @SWG\API(
  *  path="/countries.{format}",
  *  description="Find all Countries that match your filter criteria.",
@@ -167,7 +167,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="ids",
- *                  description="A bar separated list of one or more ISO 2 Letter Country Codes to filter by. See <a href='http://goo.gl/1dhC' target='_blank'>http://goo.gl/31Gf</a>.",
+ *                  description="A bar separated list of one or more FIPS 10-4 Letter Country Codes to filter by. See <a href='https://goo.gl/yYWY4J' target='_blank'>https://goo.gl/yYWY4J</a>.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -175,7 +175,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="jpscale",
- *                  description="A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1.1, 1.2, 2.1, 2.2, 3.1, 3.2.  For more information check out <a href='http://joshuaproject.net/progress-scale-definition.php' target='_blank'>http://joshuaproject.net/progress-scale-definition.php</a>.",
+ *                  description="A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out <a href='https://joshuaproject.net/global_list/progress' target='_blank'>https://joshuaproject.net/global_list/progress</a>.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -375,7 +375,7 @@ $app->get(
  *      )
  *  )
  * )
- * 
+ *
  */
 $app->get(
     "/:version/countries\.:format",

@@ -30,7 +30,7 @@
                         },
                         {
                             "name": "ids",
-                            "description": "A bar separated list of one or more ISO 2 Letter Country Codes to filter by. See <a href='http://goo.gl/1dhC' target='_blank'>http://goo.gl/31Gf</a>.",
+                            "description": "A bar separated list of one or more FIPS 10-4 Letter Country Codes to filter by. See <a href='https://goo.gl/yYWY4J' target='_blank'>https://goo.gl/yYWY4J</a>.",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
@@ -38,7 +38,7 @@
                         },
                         {
                             "name": "jpscale",
-                            "description": "A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1.1, 1.2, 2.1, 2.2, 3.1, 3.2.  For more information check out <a href='http://joshuaproject.net/progress-scale-definition.php' target='_blank'>http://joshuaproject.net/progress-scale-definition.php</a>.",
+                            "description": "A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out <a href='https://joshuaproject.net/global_list/progress' target='_blank'>https://joshuaproject.net/global_list/progress</a>.",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
@@ -258,7 +258,7 @@
                         },
                         {
                             "name": "id",
-                            "description": "The 2 letter ISO Country Code for the Country you want to view. [<a href='http://goo.gl/1dhC' target='_blank'>View all Country Codes</a>]",
+                            "description": "The 2 letter FIPS 10-4 Country Code for the Country you want to view. [<a href='https://goo.gl/yYWY4J' target='_blank'>View all Country Codes</a>]",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "path",
@@ -279,7 +279,7 @@
                             "code": 404
                         }
                     ],
-                    "notes": "Retrieve the details of a specific Country by supplying the country's 2 letter ISO Code (id)."
+                    "notes": "Retrieve the details of a specific Country by supplying the country's <a href='https://goo.gl/yYWY4J' target='_blank'>2 letter FIPS 10-4 Code</a> (id)."
                 }
             ],
             "description": "Retrieve the details of a specific Country."

@@ -1,24 +1,24 @@
 <?php
 /**
  * This file is part of Joshua Project API.
- * 
+ *
  * Joshua Project API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Joshua Project API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see 
+ * along with this program.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * 
+ *
  */
 namespace Tests\v1\Integration;
 
@@ -120,7 +120,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(404, $this->cachedRequest->responseCode);
     }
     /**
-      * GET /countries/usa.json 
+      * GET /countries/usa.json
       * test page is available, and delivers JSON
       *
       * @access public
@@ -138,7 +138,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
     }
     /**
-      * GET /countries/usa.xml 
+      * GET /countries/usa.xml
       * test page is available, and delivers XML
       *
       * @access public
@@ -178,7 +178,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCountry, $decodedResponse[0]['ISO2']);
     }
     /**
-      * GET /countries.json 
+      * GET /countries.json
       * test page is available, and delivers JSON
       *
       * @access public
@@ -195,7 +195,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
     }
     /**
-      * GET /countries.xml 
+      * GET /countries.xml
       * test page is available, and delivers XML
       *
       * @access public
@@ -659,8 +659,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      */
     public function testIndexRequestsShouldReturnCountriesFilteredByJPScale()
     {
-        $expectedJPScale = "2.2";
-        $expectedJPScalesArray = array(2.2);
+        $expectedJPScale = "2";
+        $expectedJPScalesArray = array(2);
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
             array('api_key' => $this->APIKey, 'jpscale' => $expectedJPScale),
@@ -871,7 +871,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
              *
              * @author Johnathan Pulos
              */
-            $query = "INSERT INTO `md_api_keys` (name, email, organization, website, api_usage, api_key, status) 
+            $query = "INSERT INTO `md_api_keys` (name, email, organization, website, api_usage, api_key, status)
                         VALUES (:name, :email, :organization, :website, :api_usage, :api_key, :status)";
             try {
                 $statement = $this->db->prepare($query);

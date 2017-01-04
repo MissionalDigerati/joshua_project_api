@@ -35,5 +35,3 @@ Sample code for PHP, Ruby, Javascript and Python can be found in the following [
 License
 -------
 This script is created by Missional Digerati and is under the [GNU General Public License v3](http://www.gnu.org/licenses/gpl-3.0-standalone.html).
-
-Version: 1

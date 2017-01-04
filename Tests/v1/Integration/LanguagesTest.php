@@ -980,7 +980,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
             array(
                 'api_key'           =>  $this->APIKey,
-                'jpscale'           =>  '2.2|3.1'
+                'jpscale'           =>  '2|3'
             ),
             "should_return_language_based_on_jpscale_index_json"
         );
@@ -988,7 +988,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
         $decodedResponse = json_decode($response, true);
         foreach ($decodedResponse as $lang) {
-            $this->assertTrue(in_array(floatval($lang['JPScale']), array(2.2, 3.1)));
+            $this->assertTrue(in_array(floatval($lang['JPScale']), array(2, 3)));
         }
     }
     /**
@@ -1077,7 +1077,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
              *
              * @author Johnathan Pulos
              */
-            $query = "INSERT INTO `md_api_keys` (name, email, organization, website, api_usage, api_key, status) 
+            $query = "INSERT INTO `md_api_keys` (name, email, organization, website, api_usage, api_key, status)
                         VALUES (:name, :email, :organization, :website, :api_usage, :api_key, :status)";
             try {
                 $statement = $this->db->prepare($query);
