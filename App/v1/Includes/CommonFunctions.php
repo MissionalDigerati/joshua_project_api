@@ -1,24 +1,24 @@
 <?php
 /**
  * This file is part of Joshua Project API.
- * 
+ *
  * Joshua Project API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Joshua Project API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see 
+ * along with this program.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * 
+ *
  */
 /**
  * Convert an array of data to XML.
@@ -69,12 +69,12 @@ function addChildXMLElement($parentElement, $childLabel, $childVal)
             addChildXMLElement($newParentElement, $key, $val);
         }
     } else {
-        $parentElement->addChild($childLabel, $childVal);
+        $parentElement->addChild($childLabel, htmlspecialchars($childVal));
     }
 }
 /**
  * Returns the present value or the default value.
- * 
+ *
  * Checks if $variable is true, if so it returns the $variable.  If variable is false/empty/null it returns $default.
  *
  * @param   mixed   $variable The variable to test if empty/null/false.
@@ -91,7 +91,7 @@ function returnPresentOrDefault($variable, $default)
     }
 }
 /**
- * Returns the present value if the key exists or the default value. 
+ * Returns the present value if the key exists or the default value.
  *
  * Checks if $variable array has the key $key, if so it returns $variable[$key].  If it does not, it returns $default.
  *

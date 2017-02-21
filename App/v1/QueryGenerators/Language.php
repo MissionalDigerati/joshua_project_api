@@ -60,7 +60,8 @@ class Language extends QueryGenerator
         'ROL3', 'Language', 'WebLangText', 'Status', 'ROG3', 'HubCountry', 'WorldSpeakers', 'BibleStatus',
         'TranslationNeedQuestionable', 'BibleYear', 'NTYear', 'PortionsYear', 'ROL3Edition14', 'ROL3Edition14Orig',
         'JF', 'JF_URL', 'JF_ID', 'GRN_URL', 'AudioRecordings','GodsStory', 'FCBH_ID', 'JPScale', 'PercentAdherents',
-        'PercentEvangelical', 'LeastReached', 'JPPopulation', 'RLG3', 'PrimaryReligion', 'NbrPGICs', 'NbrCountries'
+        'PercentEvangelical', 'LeastReached', 'JPPopulation', 'RLG3', 'PrimaryReligion', 'NbrPGICs', 'NbrCountries',
+        'FourLaws', 'FourLaws_URL'
     );
     /**
      * The Database table to pull the data from.
@@ -77,16 +78,6 @@ class Language extends QueryGenerator
      */
     protected $defaultOrderByStatement = "ORDER BY Language ASC";
     /**
-     * An array of table columns (key) and their alias (value).
-     *
-     * @var     array
-     * @access  protected
-     **/
-    protected $aliasFields = array(
-        '4Laws_URL' => 'FourLaws_URL',
-        '4Laws' => 'FourLaws'
-    );
-    /**
      * Construct the Language class.
      *
      * During construction,  the $getParams are checked and inserted in the $providedParams class variable.
@@ -101,8 +92,7 @@ class Language extends QueryGenerator
     public function __construct($getParams)
     {
         parent::__construct($getParams);
-        $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) .
-            ", " . $this->generateAliasSelectStatement();
+        $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
     }
     /**
      * Find a Language by it's id.
@@ -192,7 +182,7 @@ class Language extends QueryGenerator
             }
             $where .= $this->generateWhereStatementForBoolean(
                 $this->providedParams['has_four_laws'],
-                '4Laws',
+                'FourLaws',
                 'has_four_laws'
             );
             $appendAndOnWhere = true;
