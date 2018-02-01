@@ -39,7 +39,7 @@
     $(function () {
         $('li.documentation-nav, li.available-api-requests-nav').addClass('active');
         window.swaggerUi = new SwaggerUi({
-              discoveryUrl:"http://"+document.domain+"/api-docs.json",
+              discoveryUrl:"https://"+document.domain+"/api-docs.json",
               apiKey:"",
               dom_id:"swagger-ui-container",
               supportHeaderParams: false,
