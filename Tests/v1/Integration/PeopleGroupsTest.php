@@ -334,7 +334,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedID = "12662";
         $expectedCountry = "CB";
-        $expectedName = "Khmer, Central";
+        $expectedName = "Khmer";
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/12662.json",
             array('api_key' => $this->APIKey, 'country' => 'CB'),

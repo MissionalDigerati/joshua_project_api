@@ -153,7 +153,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     public function testFindByIdAndCountryShouldReturnTheCorrectPeopleGroup()
     {
         $expected = array('id' => '12662', 'country' => 'CB');
-        $expectedName = "Khmer, Central";
+        $expectedName = "Khmer";
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
