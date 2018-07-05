@@ -3,5 +3,5 @@ Config/JPAPI/DatabaseSettings.php
 Config/JPAPI/AdminSettings.php
 .DS_Store
 phpunit.xml
-php_error.log
+Public/php_errors.log
 composer.lock
