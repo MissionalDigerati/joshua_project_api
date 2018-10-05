@@ -91,7 +91,7 @@
                 </tr>
                 <tr>
                     <td>Latitude</td>
-                    <td>Latitude value of language polygon or highest density district centroid, for Google maps 
+                    <td>Latitude value of language polygon or highest density district centroid, for Google maps
                         colored dots</td>
                 </tr>
                 <tr>
@@ -108,7 +108,7 @@
                 </tr>
                 <tr>
                     <td>LeastReachedPGAC</td>
-                    <td>Is this people group across all countries considered least-reached / unreached? 
+                    <td>Is this people group across all countries considered least-reached / unreached?
                         [JPScale < 2.0]</td>
                 </tr>
                 <tr>
@@ -117,7 +117,7 @@
                 </tr>
                 <tr>
                     <td>Longitude</td>
-                    <td>Longitude value of language polygon or highest density district centroid, for Google maps 
+                    <td>Longitude value of language polygon or highest density district centroid, for Google maps
                         colored dots</td>
                 </tr>
                 <tr>
@@ -127,6 +127,10 @@
                 <tr>
                     <td>LRofTheDayMonth</td>
                     <td>Unreached People of the Day month 1-12</td>
+                </tr>
+                <tr>
+                    <td>LRofTheDaySet</td>
+                    <td>Unreached People of the Day set 1 or 2</td>
                 </tr>
                 <tr>
                     <td>LRTop100</td>
@@ -162,7 +166,7 @@
                 </tr>
                 <tr>
                     <td>PercentAdherentsPGAC</td>
-                    <td>Percent of people in group who are Christian Adherents in all people groups across all 
+                    <td>Percent of people in group who are Christian Adherents in all people groups across all
                         countries</td>
                 </tr>
                 <tr>
@@ -183,7 +187,7 @@
                 </tr>
                 <tr>
                     <td>PercentAdherentsPGAC</td>
-                    <td>Percent of people in group who are Christian Adherents in all people groups across all 
+                    <td>Percent of people in group who are Christian Adherents in all people groups across all
                         countries</td>
                 </tr>
                 <tr>
@@ -196,7 +200,7 @@
                 </tr>
                 <tr>
                     <td>PercentEvangelicalPGAC</td>
-                    <td>Percent of people in group who are Evangelicals in all people groups across all 
+                    <td>Percent of people in group who are Evangelicals in all people groups across all
                         countries</td>
                 </tr>
                 <tr>
@@ -325,8 +329,8 @@
                 </tr>
                 <tr>
                     <td>PrimaryReligion</td>
-                    <td>Primary religion of the people group in this country [1 - Christianity, 2 - Buddhism, 
-                        4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 
+                    <td>Primary religion of the people group in this country [1 - Christianity, 2 - Buddhism,
+                        4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small,
                         9 - Unknown]</td>
                 </tr>
                 <tr>
@@ -367,9 +371,9 @@
                 </tr>
                 <tr>
                     <td>RegionCode</td>
-                    <td>Region code for this people group [1 - South Pacific, 2 - Southeast Asia, 3 - Northeast Asia, 
-                        4 - South Asia, 5 - Central Asia, 6 - Middle East and North Africa, 
-                        7 - East and Southern Africa, 8 - West and Central Africa, 9 - Eastern Europe and Eurasia, 
+                    <td>Region code for this people group [1 - South Pacific, 2 - Southeast Asia, 3 - Northeast Asia,
+                        4 - South Asia, 5 - Central Asia, 6 - Middle East and North Africa,
+                        7 - East and Southern Africa, 8 - West and Central Africa, 9 - Eastern Europe and Eurasia,
                         10 - Western Europe, 11 - Central and South America, 12 - North America and Caribbean]</td>
                 </tr>
                 <tr>
