@@ -441,7 +441,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldGetCorrectPeopleGroupsWhenIdsOnlyProvided()
     {
         $expectedID = "12662";
-        $expectedPeopleGroups = 13;
+        $expectedPeopleGroups = 14;
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/" . $expectedID . ".json",
             array('api_key' => $this->APIKey),

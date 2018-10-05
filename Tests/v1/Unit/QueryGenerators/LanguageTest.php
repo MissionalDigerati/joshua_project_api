@@ -354,7 +354,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      **/
     public function testFindAllWithFiltersShouldFilterByPopulation()
     {
-        $expected = array('population'   =>  '7812');
+        $expected = array('population'   =>  '18000');
         $language = new \QueryGenerators\Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
@@ -362,7 +362,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
-            $this->assertEquals(7812, intval($lang['JPPopulation']));
+            $this->assertEquals(18000, intval($lang['JPPopulation']));
         }
     }
     /**
