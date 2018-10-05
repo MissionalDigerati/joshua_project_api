@@ -1,5 +1,5 @@
 {
-    "basePath": "https://api.joshuaproject.net/v1",
+    "basePath": "/v1",
     "swaggerVersion": "1.1",
     "apiVersion": "1",
     "resourcePath": "/people_groups",
@@ -339,6 +339,14 @@
                         {
                             "name": "month",
                             "description": "The two digit month that you want to receive the information from.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "set",
+                            "description": "The set you would prefer to retrieve. Available sets 1 & 2. (Defaults to 1)",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
