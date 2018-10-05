@@ -67,6 +67,14 @@ use Swagger\Annotations as SWG;
  *                  required="false",
  *                  allowMultiple="false",
  *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="set",
+ *                  description="The set you would prefer to retrieve. Available sets 1 & 2. (Defaults to 1)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
  *              )
  *          ),
  *          @SWG\ErrorResponses(
@@ -98,8 +106,15 @@ $app->get(
          */
         $month = returnPresentOrDefault($appRequest->params('month'), Date('n'));
         $day = returnPresentOrDefault($appRequest->params('day'), Date('j'));
+        $set = returnPresentOrDefault($appRequest->params('set'), '1');
         try {
-            $peopleGroup = new \QueryGenerators\PeopleGroup(array('month' => $month, 'day' => $day));
+            $peopleGroup = new \QueryGenerators\PeopleGroup(
+                array(
+                    'month' => $month,
+                    'day'   => $day,
+                    'set'   => intval($set)
+                )
+            );
             $peopleGroup->dailyUnreached();
             $statement = $db->prepare($peopleGroup->preparedStatement);
             $statement->execute($peopleGroup->preparedVariables);

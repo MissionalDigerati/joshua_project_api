@@ -84,6 +84,40 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected['day'], $data[0]['LRofTheDayDay']);
     }
     /**
+     * Test that we get back the right query for unreached of the day
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testDailyUnreachedRequestsShouldReturnCorrectResultsForSet()
+    {
+        $expected = array('month' => 1, 'day' => 11, 'set'  =>  2);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup->dailyUnreached();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($expected['set'], $data[0]['LRofTheDaySet']);
+    }
+    /**
+     * Test that we get back the right query for unreached of the day
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testDailyUnreachedRequestsShouldReturnCorrectResultsForWrongSet()
+    {
+        $expected = array('month' => 1, 'day' => 11, 'set'  =>  15);
+        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup->dailyUnreached();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals(1, $data[0]['LRofTheDaySet']);
+    }
+    /**
      * We should throw an InvalidArgumentException if I do not send the month to dailyUnreached
      *
      * @return void

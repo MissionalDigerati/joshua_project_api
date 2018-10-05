@@ -66,7 +66,7 @@ class PeopleGroup extends QueryGenerator
         'LeastReachedPGAC', 'GSEC', 'Unengaged', 'JF', 'AudioRecordings', 'NTOnline', 'GospelRadio', 'RLG3', 'RLG3PC',
         'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC', 'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision',
         'PCIslam', 'PCNonReligious', 'PCUnknown', 'PCAnglican', 'PCIndependent', 'PCProtestant', 'PCOrthodox',
-        'PCOtherChristian', 'SecurityLevel', 'RaceCode', 'LRWebProfile', 'LRofTheDayMonth',
+        'PCOtherChristian', 'SecurityLevel', 'RaceCode', 'LRWebProfile', 'LRofTheDayMonth', 'LRofTheDaySet',
         'LRofTheDayDay', 'LRTop100', 'PhotoAddress', 'PhotoWidth', 'PhotoHeight', 'PhotoCredits', 'PhotoCreditURL',
         'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission', 'ProfileTextExists', 'Top10Ranking',
         'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation', 'RankMinistryTools', 'CountOfCountries',
@@ -133,7 +133,7 @@ class PeopleGroup extends QueryGenerator
     {
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " .
-            $this->generateAliasSelectStatement();
+        $this->generateAliasSelectStatement();
         $this->selectFieldsStatement .= ", " . $this->peopleGroupURLSelect . " as PeopleGroupURL";
         $this->selectFieldsStatement .= ", " . $this->peopleGroupPhotoURLSelect . " as PeopleGroupPhotoURL";
         $this->selectFieldsStatement .= ", " . $this->countryURLSelect . " as CountryURL";
@@ -156,13 +156,20 @@ class PeopleGroup extends QueryGenerator
     public function dailyUnreached()
     {
         $this->validator->providedRequiredParams($this->providedParams, array('month', 'day'));
+        $set = 1;
         $month = intval($this->providedParams['month']);
         $day = intval($this->providedParams['day']);
         $this->validator->integerInRange($month, 1, 12);
         $this->validator->integerInRange($day, 1, 31);
+        if ($this->paramExists('set')) {
+            $desiredSet = intval($this->providedParams['set']);
+            if (in_array($desiredSet, [1, 2])) {
+                $set = $desiredSet;
+            }
+        }
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName .
-            " WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
-        $this->preparedVariables = array('month' => $month, 'day' => $day);
+            " WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day AND LRofTheDaySet = :set LIMIT 1";
+        $this->preparedVariables = array('month' => $month, 'day' => $day, 'set' => $set);
     }
     /**
      * Find the People Group by id (PeopleID3), and refine search by the country (ROG3).
