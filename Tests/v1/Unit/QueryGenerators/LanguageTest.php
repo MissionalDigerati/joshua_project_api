@@ -221,7 +221,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
-            $this->assertEquals('N', $lang['TranslationNeedQuestionable']);
+            $this->assertContains($lang['TranslationNeedQuestionable'], ['N', '', null]);
         }
     }
     /**
