@@ -128,6 +128,29 @@ $app->get(
             exit;
         }
         /**
+         * Get the ProfileText and Resources for each of the People Group
+         *
+         * @return void
+         * @author Johnathan Pulos
+         */
+        foreach ($data as $key => $peopleGroupData) {
+            try {
+                $profileText = new \QueryGenerators\ProfileText(
+                    array(
+                        'id'        => $peopleGroupData['PeopleID3'],
+                        'country'   => $peopleGroupData['ROG3'],
+                        'format'    => 'M'
+                    )
+                );
+                $profileText->findAllByIdAndCountry();
+                $statement = $db->prepare($profileText->preparedStatement);
+                $statement->execute($profileText->preparedVariables);
+                $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                $data[$key]['ProfileText'] = array();
+            }
+        }
+        /**
          * Render the final data
          *
          * @author Johnathan Pulos
