@@ -736,7 +736,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      */
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByRegions()
     {
-        $expectedRegions = array(3 => 'northeast asia', 4 => 'south asia');
+        $expectedRegions = array(3 => 'asia, northeast', 4 => 'asia, south');
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
             array('api_key' => $this->APIKey, 'regions' => join("|", array_keys($expectedRegions))),

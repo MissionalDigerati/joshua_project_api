@@ -576,7 +576,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindAllWithFiltersShouldFilterByRegions()
     {
-        $expectedRegions = array(3 => 'northeast asia', 4 => 'south asia');
+        $expectedRegions = array(3 => 'asia, northeast', 4 => 'asia, south');
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('regions' => join("|", array_keys($expectedRegions))));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
