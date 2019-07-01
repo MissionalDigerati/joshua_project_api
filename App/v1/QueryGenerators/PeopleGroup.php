@@ -161,15 +161,9 @@ class PeopleGroup extends QueryGenerator
         $day = intval($this->providedParams['day']);
         $this->validator->integerInRange($month, 1, 12);
         $this->validator->integerInRange($day, 1, 31);
-        if ($this->paramExists('set')) {
-            $desiredSet = intval($this->providedParams['set']);
-            if (in_array($desiredSet, [1, 2])) {
-                $set = $desiredSet;
-            }
-        }
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName .
-            " WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day AND LRofTheDaySet = :set LIMIT 1";
-        $this->preparedVariables = array('month' => $month, 'day' => $day, 'set' => $set);
+            " WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
+        $this->preparedVariables = array('month' => $month, 'day' => $day);
     }
     /**
      * Find the People Group by id (PeopleID3), and refine search by the country (ROG3).
