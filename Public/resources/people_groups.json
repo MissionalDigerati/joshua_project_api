@@ -343,14 +343,6 @@
                             "dataType": "string",
                             "paramType": "query",
                             "required": false
-                        },
-                        {
-                            "name": "set",
-                            "description": "The set you would prefer to retrieve. Available sets 1 & 2. (Defaults to 1)",
-                            "allowMultiple": false,
-                            "dataType": "string",
-                            "paramType": "query",
-                            "required": false
                         }
                     ],
                     "errorResponses": [
