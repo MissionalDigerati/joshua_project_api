@@ -560,30 +560,6 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
     }
     /**
-      * GET /languages.json?needs_translation_questionable=y
-      * Language Index should return only languages with Questionable Translation Need
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
-    public function testIndexRequestsShouldReturnLanguagesWithQuestionableTranslation()
-    {
-        $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
-                'api_key'           =>  $this->APIKey,
-                'needs_translation_questionable'   =>  'Y'
-            ),
-            "should_return_language_with_questionable_index_json"
-        );
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
-        $this->assertTrue(isJSON($response));
-        $decodedResponse = json_decode($response, true);
-        foreach ($decodedResponse as $lang) {
-            $this->assertEquals('Y', $lang['TranslationNeedQuestionable']);
-        }
-    }
-    /**
       * GET /languages.json?needs_translation_questionable=ysss
       * Language Index should return an error if the value is too long
       *

@@ -271,28 +271,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $decodedResponse = json_decode($response, true);
         $this->assertEquals($expectedMonth, $decodedResponse[0]['LRofTheDayMonth']);
         $this->assertEquals($expectedDay, $decodedResponse[0]['LRofTheDayDay']);
-        $this->assertEquals(1, $decodedResponse[0]['LRofTheDaySet']);
-    }
-    /**
-     * A request for Daily Unreached should allow setting the month
-     *
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testShouldGetDailyUnreachedWithCertainSet()
-    {
-        $month = Date('n');
-        $day = Date('j');
-        $expectedSet = 2;
-        $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
-            array('api_key' => $this->APIKey, 'set' => $expectedSet),
-            "up_set"
-        );
-        $decodedResponse = json_decode($response, true);
-        $this->assertEquals($month, $decodedResponse[0]['LRofTheDayMonth']);
-        $this->assertEquals($day, $decodedResponse[0]['LRofTheDayDay']);
-        $this->assertEquals($expectedSet, $decodedResponse[0]['LRofTheDaySet']);
     }
     /**
      * A request for Daily Unreached should provide the ProfileText
@@ -736,7 +714,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      */
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByRegions()
     {
-        $expectedRegions = array(3 => 'northeast asia', 4 => 'south asia');
+        $expectedRegions = array(3 => 'asia, northeast', 4 => 'asia, south');
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
             array('api_key' => $this->APIKey, 'regions' => join("|", array_keys($expectedRegions))),
