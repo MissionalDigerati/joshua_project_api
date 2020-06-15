@@ -106,15 +106,9 @@ class ProfileText extends QueryGenerator
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement .
             " FROM jpprofiletopeople JOIN jpprofiletext ON jpprofiletopeople.ProfileID = jpprofiletext.ProfileID " .
             "WHERE jpprofiletopeople.PeopleID3 = :id AND jpprofiletopeople.ROG3 = :country " .
-            "AND jpprofiletopeople.ROL3Profile = 'eng' AND jpprofiletext.ROL3Profile = 'eng'";
+            "AND jpprofiletopeople.ROL3Profile = 'eng' AND jpprofiletext.ROL3Profile = 'eng' " .
+            "AND jpprofiletext.Format = 'M'";
 
         $this->preparedVariables = array('id' => $id, 'country' => $country);
-        if ($this->paramExists('format')) {
-            $desiredFormat = $this->providedParams['format'];
-            if (in_array($desiredFormat, ['M', 'OC', 'GB'])) {
-                $this->preparedStatement .= " AND jpprofiletext.Format = :format";
-                $this->preparedVariables['format'] = $desiredFormat;
-            }
-        }
     }
 }
