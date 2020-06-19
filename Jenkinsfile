@@ -13,7 +13,7 @@ pipeline {
           agent {
             docker {
               image 'allebb/phptestrunner-56:latest'
-              args '-u root:sudo'
+              args '-u root:sudo --memory-swap=-1'
             }
 
           }
@@ -23,7 +23,7 @@ pipeline {
             echo 'Installing Composer'
             sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer'
             echo 'Installing project composer dependencies...'
-            sh 'cd $WORKSPACE && composer install --no-progress'
+            sh 'cd $WORKSPACE && composer install'
             echo 'Running PHPUnit tests...'
             sh 'php $WORKSPACE/vendor/bin/phpunit --coverage-html $WORKSPACE/report/clover --coverage-clover $WORKSPACE/report/clover.xml --log-junit $WORKSPACE/report/junit.xml'
             sh 'chmod -R a+w $PWD && chmod -R a+w $WORKSPACE'
