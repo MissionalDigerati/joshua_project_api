@@ -24,7 +24,7 @@ pipeline {
             sh 'curl -sS https://getcomposer.org/installer | php'
             sh 'mv composer.phar /usr/local/bin/composer'
             echo 'Installing project composer dependencies...'
-            sh 'cd $WORKSPACE && COMPOSER_MEMORY_LIMIT=-1 ~/bin/composer install --no-progress'
+            sh 'cd $WORKSPACE && COMPOSER_MEMORY_LIMIT=-1 composer install --no-progress'
             echo 'Running PHPUnit tests...'
             sh 'php $WORKSPACE/Vendor/bin/phpunit --coverage-html $WORKSPACE/report/clover --coverage-clover $WORKSPACE/report/clover.xml --log-junit $WORKSPACE/report/junit.xml'
             sh 'chmod -R a+w $PWD && chmod -R a+w $WORKSPACE'
