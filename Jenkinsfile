@@ -21,7 +21,7 @@ pipeline {
             echo 'Running PHP 5.6 tests...'
             sh 'php -v'
             echo 'Installing Composer'
-            sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'
+            sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/var/lib/jenkins/bin --filename=composer'
             echo 'Installing project composer dependencies...'
             sh 'cd $WORKSPACE && COMPOSER_MEMORY_LIMIT=-1 composer install --no-progress'
             echo 'Running PHPUnit tests...'
