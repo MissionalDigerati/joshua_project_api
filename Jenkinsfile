@@ -20,6 +20,7 @@ pipeline {
           steps {
             echo 'Running PHP 5.6 tests...'
             sh 'php -v'
+            sh 'mysqld --version'
             echo 'Installing Composer'
             sh 'curl -sS https://getcomposer.org/installer | php'
             echo 'Installing project composer dependencies...'
