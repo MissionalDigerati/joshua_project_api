@@ -30,6 +30,14 @@
                     <td>Name of Capital City</td>
                 </tr>
                 <tr>
+                    <td>CntPeoples</td>
+                    <td>Total Number of People Groups</td>
+                </tr>
+                <tr>
+                    <td>CntPeoplesLR</td>
+                    <td>Total Number of Unreached People Groups</td>
+                </tr>
+                <tr>
                     <td>Ctry</td>
                     <td>Name of Country</td>
                 </tr>
