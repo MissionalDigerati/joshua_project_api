@@ -38,24 +38,19 @@
     <script type="text/javascript">
     $(function () {
         $('li.documentation-nav, li.available-api-requests-nav').addClass('active');
+        var currentUrl = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
         window.swaggerUi = new SwaggerUi({
-              discoveryUrl:"https://"+document.domain+"/api-docs.json",
+              discoveryUrl:currentUrl+"/api-docs.json",
               apiKey:"",
               dom_id:"swagger-ui-container",
               supportHeaderParams: false,
               supportedSubmitMethods: ['get'],
-              onComplete: function(swaggerApi, swaggerUi){
-                if(console) {
-                      console.log("Loaded SwaggerUI")
-                      console.log(swaggerApi);
-                      console.log(swaggerUi);
-                  }
+              onComplete: function(swaggerApi, swaggerUi) {
                 $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
               },
               onFailure: function(data) {
                 if(console) {
-                      console.log("Unable to Load SwaggerUI");
-                      console.log(data);
+                      console.error("Unable to Load SwaggerUI");
                   }
               },
               docExpansion: "none"
