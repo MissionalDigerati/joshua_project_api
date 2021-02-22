@@ -1,7 +1,7 @@
 <?php
 /**
  * Joshua Project API - An API for accessing Joshua Project Data.
- * 
+ *
  * GNU Public License 3.0
  * Copyright (C) 2013  Missional Digerati
  *
@@ -9,15 +9,15 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  */
 /**
@@ -85,7 +85,7 @@ $app->put(
  *
  * POST /api_keys
  * Available Formats HTML
- * 
+ *
  * @author Johnathan Pulos
  */
 $app->post(
@@ -109,12 +109,13 @@ $app->post(
                                 'website' => $website,
                                 'phone_number' => $cleanedPhoneNumber,
                                 'api_usage' => $formData['usage'],
+                                'resource_used' =>  'API',
                                 'api_key' => $newAPIKey,
                                 'authorize_token' => $authorizeToken,
                                 'status' => 0
                             );
-        $query = "INSERT INTO md_api_keys (name, email, organization, website, phone_number, api_usage, api_key, authorize_token, status, created)" .
-        " VALUES (:name, :email, :organization, :website, :phone_number, :api_usage, :api_key, :authorize_token, :status, NOW())";
+        $query = "INSERT INTO md_api_keys (name, email, organization, website, phone_number, api_usage, api_key, authorize_token, resource_used, status, created)" .
+        " VALUES (:name, :email, :organization, :website, :phone_number, :api_usage, :api_key, :authorize_token, :resource_used, :status, NOW())";
         try {
             $statement = $db->prepare($query);
             $statement->execute($apiKeyValues);
