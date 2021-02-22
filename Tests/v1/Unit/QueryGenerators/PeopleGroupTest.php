@@ -44,9 +44,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $pdoDb = \PHPToolbox\PDODatabase\PDODatabaseConnect::getInstance();
-        $pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings);
-        $this->db = $pdoDb->getDatabaseInstance();
+        $this->db = getDatabaseInstance();
     }
     /**
      * Test that the provided params are sanitized upon intializing the class
