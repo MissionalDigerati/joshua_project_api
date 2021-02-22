@@ -1,24 +1,24 @@
 <?php
 /**
  * This file is part of Joshua Project API.
- * 
+ *
  * Joshua Project API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Joshua Project API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see 
+ * along with this program.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * 
+ *
  */
 namespace Tests\v1\Integration;
 
@@ -78,9 +78,7 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
             DIRECTORY_SEPARATOR . "Support" .
             DIRECTORY_SEPARATOR . "cache" .
             DIRECTORY_SEPARATOR;
-        $pdoDb = \PHPToolbox\PDODatabase\PDODatabaseConnect::getInstance();
-        $pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings);
-        $this->db = $pdoDb->getDatabaseInstance();
+        $this->db = getDatabaseInstance();
     }
     /**
      * Runs at the end of each test
@@ -122,7 +120,7 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
     public function testWebsiteShouldAllowUsersToGetAnAPIKeyIfValidAuthorizationKey()
     {
         $authorizationToken = 'l543g3$4';
-        $expectedAPIKey = 'AKey$43';
+        $expectedAPIKey = generateRandomKey(12);
         $this->db->query(
             "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', '" .
             $expectedAPIKey . "', '" . $authorizationToken . "', 0, NOW())"
@@ -132,6 +130,7 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
             array('authorize_token' => $authorizationToken),
             "get_my_api_key"
         );
+        deleteApiKey($expectedAPIKey);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertNotEquals(false, strpos(strtolower($response), 'api key has been activated'));
     }
@@ -144,16 +143,17 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
     public function testWebsiteShouldTellUsersThatAPIKeyAlreadyUpdated()
     {
         $authorizationToken = 'l543g3$4Ac';
-        $expectedAPIKey = 'AKey$43Ac';
+        $expectedAPIKey = generateRandomKey(12);
         $this->db->query(
-            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', '" .
-            $expectedAPIKey . "', '" . $authorizationToken . "', 1, NOW())"
+            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, resource_used, status, created)" .
+            " VALUES ('testing', '" . $expectedAPIKey . "', '" . $authorizationToken . "', 'testing', 1, NOW())"
         );
         $response = $this->cachedRequest->get(
             $this->siteURL . "/get_my_api_key",
             array('authorize_token' => $authorizationToken),
             "get_my_api_key_active_key"
         );
+        deleteApiKey($expectedAPIKey);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertNotEquals(false, strpos(strtolower($response), 'api key was already activated'));
     }
@@ -166,16 +166,17 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
     public function testWebsiteShouldTellUsersThatAPIKeyIsSuspended()
     {
         $authorizationToken = 'l543g3$4Ac';
-        $expectedAPIKey = 'AKey$43Ac';
+        $expectedAPIKey = generateRandomKey(12);
         $this->db->query(
-            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', '" .
-            $expectedAPIKey . "', '" . $authorizationToken . "', 2, NOW())"
+            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, resource_used, status, created) " .
+            "VALUES ('testing', '" . $expectedAPIKey . "', '" . $authorizationToken . "', 'testing', 2, NOW())"
         );
         $response = $this->cachedRequest->get(
             $this->siteURL . "/get_my_api_key",
             array('authorize_token' => $authorizationToken),
             "get_my_api_key_suspended_key"
         );
+        deleteApiKey($expectedAPIKey);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertNotEquals(false, strpos(strtolower($response), 'api key was suspended'));
     }
@@ -190,14 +191,15 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
         $authorizationToken = 'l543g3$4Ac';
         $expectedAPIKey = 'AKey$43Ac';
         $this->db->query(
-            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', '" .
-            $expectedAPIKey . "', '" . $authorizationToken . "', 2, NOW())"
+            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, resource_used, status, created) " .
+            "VALUES ('testing', '" . $expectedAPIKey . "', '" . $authorizationToken . "', 'testing', 2, NOW())"
         );
         $response = $this->cachedRequest->get(
             $this->siteURL . "/get_my_api_key",
             array('authorize_token' => ''),
             "get_my_api_key_missing_token"
         );
+        deleteApiKey($expectedAPIKey);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertNotEquals(false, strpos(strtolower($response), 'unable to locate your api key'));
     }

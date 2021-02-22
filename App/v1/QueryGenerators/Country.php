@@ -65,7 +65,7 @@ class Country extends QueryGenerator
         'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles', 'SecurityLevel', 'ReligionDataYear',
         'LiteracyRate', 'LiteracySource', 'PercentDoublyProfessing', 'HDIYear', 'HDIValue',
         'HDIRank', 'StateDeptReligiousFreedom', 'UNMap', 'PercentUrbanized', 'PrayercastVideo',
-        'WINCountryProfile');
+        'WINCountryProfile', 'CntPeoples', 'CntPeoplesLR');
     /**
      * The Database table to pull the data from.
      *
