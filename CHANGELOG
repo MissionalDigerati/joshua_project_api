@@ -1,3 +1,7 @@
+Version 1.4.0
+
+Minor fix to API keys.  Updated the URL for documentation.
+
 Version 0.2.2
 
 We removed columns from People Group Results: StonyGround and V59Country.  We also removed columns
