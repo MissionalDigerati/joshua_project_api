@@ -1,31 +1,31 @@
 <?php
 /**
  * This file is part of Joshua Project API.
- * 
+ *
  * Joshua Project API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Joshua Project API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see 
+ * along with this program.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
- * @author Johnathan Pulos <johnathan@missionaldigerati.org> 
+ * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * 
+ *
  */
 /**
  * Get the home page
  *
  * GET /
  * Available Formats HTML
- * 
+ *
  * @author Johnathan Pulos
  */
 $app->get(
@@ -47,7 +47,7 @@ $app->get(
  *
  * GET /getting_started
  * Available Formats HTML
- * 
+ *
  * @author Johnathan Pulos
  */
 $app->get(
@@ -110,7 +110,7 @@ $app->get(
                 $error = "Unable to update your API Key.";
             }
         }
-        
+
         $app->render(
             'StaticPages/get_my_api_key.html.php',
             array('message' => $message, 'error' => $error, 'APIKey' => $APIKey, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
@@ -139,7 +139,7 @@ $app->get(
  */
 $app->post(
     "/resend_activation_links",
-    function () use ($app, $db, $appRequest, $DOMAIN_ADDRESS) {
+    function () use ($app, $db, $appRequest, $DOMAIN_ADDRESS, $VIEW_DIRECTORY) {
         $errors = array();
         $message = '';
         $formData = $appRequest->post();
@@ -152,7 +152,7 @@ $app->post(
                 if (empty($data)) {
                     $errors['find_keys'] = "We were unable to locate your pending API keys.";
                 } else {
-                    sendAuthorizationLinks($formData['email'], $data, $DOMAIN_ADDRESS, new PHPMailer());
+                    sendAuthorizationLinks($formData['email'], $data, $DOMAIN_ADDRESS, null);
                     $message = "Your activation links have been emailed to you.";
                 }
             } catch (Exception $e) {
@@ -161,7 +161,7 @@ $app->post(
         }
         $app->render(
             'StaticPages/resend_activation_links.html.php',
-            array('errors' => $errors, 'data' => $formData, 'message' => $message)
+            array('errors' => $errors, 'data' => $formData, 'message' => $message, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
         );
     }
 );
