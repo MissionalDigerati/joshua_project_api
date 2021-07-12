@@ -1,7 +1,7 @@
 <?php
 /**
  * Joshua Project API - An API for accessing Joshua Project Data.
- * 
+ *
  * GNU Public License 3.0
  * Copyright (C) 2013  Missional Digerati
  *
@@ -9,15 +9,15 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  */
 ?>
@@ -35,7 +35,7 @@
 ?>
     <div class="container">
         <div class="page-header">
-    	   <h2>Existing API Keys</h2>
+            <h2>Existing API Keys</h2>
         </div>
 <?php
 if ((isset($data['saving_error'])) && ($data['saving_error'] == "true")) {
@@ -52,19 +52,19 @@ if ((isset($data['saving_error'])) && ($data['saving_error'] == "true")) {
     <?php
 }
 ?>
-		<table class="table table-bordered table-condensed table-hover">
-			<thead>
-				<tr>
+        <table class="table table-bordered table-condensed table-hover">
+            <thead>
+                <tr>
                     <th>Status</th>
                     <th>Name</th>
-					<th>Contact Info</th>
-					<th>API Key</th>
-					<th>Created</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-<?php 
+                    <th>Contact Info</th>
+                    <th>API Key</th>
+                    <th>Created</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+<?php
 foreach ($api_keys as $api_key) {
     ?>
     <tr>
@@ -123,8 +123,8 @@ foreach ($api_keys as $api_key) {
     <?php
 }
 ?>
-			</tbody>
-		</table>
+            </tbody>
+        </table>
         <div class="clearfix"></div>
     </div>
 <?php

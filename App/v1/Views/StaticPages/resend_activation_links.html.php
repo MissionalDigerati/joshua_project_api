@@ -1,7 +1,7 @@
 <?php
 /**
  * Joshua Project API - An API for accessing Joshua Project Data.
- * 
+ *
  * GNU Public License 3.0
  * Copyright (C) 2013  Missional Digerati
  *
@@ -9,15 +9,15 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  */
 ?>
@@ -60,8 +60,8 @@ if ((!empty($errors)) && (in_array('find_keys', $errors))) {
     <?php
 }
 ?>
-		<form class="form-horizontal" method="POST" action="/resend_activation_links" role="form">
-			<fieldset>
+        <form class="form-horizontal" method="POST" action="/resend_activation_links" role="form">
+            <fieldset>
 <?php
 if ((!empty($errors)) && (in_array('email', $errors))) {
     ?>
@@ -73,8 +73,10 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
     <?php
 }
 ?>
-					<label class="control-label col-lg-2" for="input-email">Email <span class="required-field">*</span></label>
-					<div class="controls col-lg-10">
+                    <label class="control-label col-lg-2" for="input-email">
+                        Email <span class="required-field">*</span>
+                    </label>
+                    <div class="controls col-lg-10">
 <?php
 if ((isset($data['email'])) && ($data['email'] != "")) {
     ?>
@@ -91,16 +93,16 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
     <?php
 }
 ?>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="controls col-lg-offset-2 col-lg-10">
-						<button type="submit" class="btn btn-primary">Resend</button>
-					</div>
-				</div>
-				<span class="required-field">* = Required</span>
-			</fieldset>
-		</form>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="controls col-lg-offset-2 col-lg-10">
+                        <button type="submit" class="btn btn-primary">Resend</button>
+                    </div>
+                </div>
+                <span class="required-field">* = Required</span>
+            </fieldset>
+        </form>
     </div>
 <?php
     include($VIEW_DIRECTORY . '/Partials/footer.html');

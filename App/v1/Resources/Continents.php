@@ -22,6 +22,7 @@
  */
 use Swagger\Annotations as SWG;
 
+// phpcs:disable Generic.Files.LineLength
 /**
  * @SWG\Resource(
  *     apiVersion="1",
@@ -78,6 +79,7 @@ use Swagger\Annotations as SWG;
   * )
   *
   */
+// phpcs:enable Generic.Files.LineLength
 $app->get(
     "/:version/continents/:id\.:format",
     function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {

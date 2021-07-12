@@ -22,6 +22,7 @@
  */
 use Swagger\Annotations as SWG;
 
+// phpcs:disable Generic.Files.LineLength
 /**
  * @SWG\Resource(
  *     apiVersion="1",
@@ -88,6 +89,7 @@ use Swagger\Annotations as SWG;
  * )
  *
  */
+// phpcs:enable Generic.Files.LineLength
 $app->get(
     "/:version/people_groups/daily_unreached.:format",
     function ($version, $format) use ($app, $db, $appRequest) {
@@ -99,13 +101,13 @@ $app->get(
         $month = returnPresentOrDefault($appRequest->params('month'), Date('n'));
         $day = returnPresentOrDefault($appRequest->params('day'), Date('j'));
         try {
-            $peopleGroup = new \QueryGenerators\PeopleGroup(
+            $peopleGroup = new \QueryGenerators\Unreached(
                 array(
                     'month' => $month,
                     'day'   => $day
                 )
             );
-            $peopleGroup->dailyUnreached();
+            $peopleGroup->daily();
             $statement = $db->prepare($peopleGroup->preparedStatement);
             $statement->execute($peopleGroup->preparedVariables);
             $data = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -152,6 +154,7 @@ $app->get(
         }
     }
 );
+// phpcs:disable Generic.Files.LineLength
 /**
   *
   * @SWG\API(
@@ -211,6 +214,7 @@ $app->get(
   * )
   *
   */
+// phpcs:enable Generic.Files.LineLength
 $app->get(
     "/:version/people_groups/:id\.:format",
     function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
@@ -269,7 +273,12 @@ $app->get(
                  */
                 foreach ($data as $key => $peopleGroupData) {
                     try {
-                        $profileText = new \QueryGenerators\ProfileText(array('id' => $peopleGroupData['PeopleID3'], 'country' => $peopleGroupData['ROG3']));
+                        $profileText = new \QueryGenerators\ProfileText(
+                            array(
+                                'id' => $peopleGroupData['PeopleID3'],
+                                'country' => $peopleGroupData['ROG3']
+                            )
+                        );
                         $profileText->findAllByIdAndCountry();
                         $statement = $db->prepare($profileText->preparedStatement);
                         $statement->execute($profileText->preparedVariables);
@@ -320,7 +329,12 @@ $app->get(
                  */
                 foreach ($data as $key => $peopleGroupData) {
                     try {
-                        $profileText = new \QueryGenerators\ProfileText(array('id' => $peopleGroupData['PeopleID3'], 'country' => $peopleGroupData['ROG3']));
+                        $profileText = new \QueryGenerators\ProfileText(
+                            array(
+                                'id' => $peopleGroupData['PeopleID3'],
+                                'country' => $peopleGroupData['ROG3']
+                            )
+                        );
                         $profileText->findAllByIdAndCountry();
                         $statement = $db->prepare($profileText->preparedStatement);
                         $statement->execute($profileText->preparedVariables);
@@ -364,6 +378,7 @@ $app->get(
         }
     }
 );
+// phpcs:disable Generic.Files.LineLength
 /**
  *
  * @SWG\API(
@@ -676,6 +691,7 @@ $app->get(
  * )
  *
  */
+// phpcs:enable Generic.Files.LineLength
 $app->get(
     "/:version/people_groups\.:format",
     function ($version, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
@@ -712,7 +728,12 @@ $app->get(
              */
             foreach ($data as $key => $peopleGroupData) {
                 try {
-                    $profileText = new \QueryGenerators\ProfileText(array('id' => $peopleGroupData['PeopleID3'], 'country' => $peopleGroupData['ROG3']));
+                    $profileText = new \QueryGenerators\ProfileText(
+                        array(
+                            'id' => $peopleGroupData['PeopleID3'],
+                            'country' => $peopleGroupData['ROG3']
+                        )
+                    );
                     $profileText->findAllByIdAndCountry();
                     $statement = $db->prepare($profileText->preparedStatement);
                     $statement->execute($profileText->preparedVariables);
