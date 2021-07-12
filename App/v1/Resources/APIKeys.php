@@ -41,7 +41,10 @@ $app->get(
             echo $e;
             exit;
         }
-        $app->render('APIKeys/index.html.php', array('api_keys' => $api_keys, 'data' => $data, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY));
+        $app->render(
+            'APIKeys/index.html.php',
+            array('api_keys' => $api_keys, 'data' => $data, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
+        );
     }
 );
 /**
@@ -74,7 +77,7 @@ $app->put(
         }
         if ($formData['state'] == 1) {
             $keyState = "activated or reinstated";
-        } else if ($formData['state'] == 2) {
+        } elseif ($formData['state'] == 2) {
             $keyState = "suspended";
         }
         $app->redirect("/api_keys?saved=true&key_state=" . $keyState);
@@ -114,8 +117,9 @@ $app->post(
                                 'authorize_token' => $authorizeToken,
                                 'status' => 0
                             );
-        $query = "INSERT INTO md_api_keys (name, email, organization, website, phone_number, api_usage, api_key, authorize_token, resource_used, status, created)" .
-        " VALUES (:name, :email, :organization, :website, :phone_number, :api_usage, :api_key, :authorize_token, :resource_used, :status, NOW())";
+        $query = "INSERT INTO md_api_keys (name, email, organization, website, phone_number, api_usage, api_key, " .
+        "authorize_token, resource_used, status, created) VALUES (:name, :email, :organization, :website, " .
+        ":phone_number, :api_usage, :api_key, :authorize_token, :resource_used, :status, NOW())";
         try {
             $statement = $db->prepare($query);
             $statement->execute($apiKeyValues);
@@ -128,7 +132,7 @@ $app->post(
          * @author Johnathan Pulos
          */
         $authorizeUrl = $DOMAIN_ADDRESS . "/get_my_api_key?authorize_token=" . $authorizeToken;
-        sendAuthorizeToken($formData['email'], $authorizeUrl, null);
+        Utilities\Mailer::sendAuthorizeToken($formData['email'], $authorizeUrl, null);
         $redirectURL = generateRedirectURL("/", array('api_key' => 'true'), array());
         $app->redirect($redirectURL);
     }

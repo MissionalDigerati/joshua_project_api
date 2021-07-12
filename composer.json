@@ -1,22 +1,38 @@
 {
     "config": {
-        "vendor-dir": "Vendor"
+        "vendor-dir": "Vendor",
+        "platform": {
+          "php": "5.6"
+        }
     },
     "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/codemis/php_toolbox.git"
-    }],
+        {
+            "type": "vcs",
+            "url": "https://github.com/codemis/php_toolbox.git"
+        }
+    ],
     "require": {
-        "aura/autoload": "1.0.*",
-        "phpmailer/phpmailer": "dev-master",
-        "PHPToolbox/PHPToolbox": ">=2.0.0",
+        "phptoolbox/phptoolbox": "^2.0",
         "slim/slim": "2.0.*",
-        "slim/extras": "2.0.*"
+        "slim/extras": "2.0.*",
+        "phpmailer/phpmailer": "^6.5",
+        "squizlabs/php_codesniffer": "*"
     },
     "require-dev": {
-        "phpdocumentor/phpdocumentor": "2.*",
         "zircote/swagger-php": "0.6.1",
-        "phpunit/phpunit": "4.4.*"
+        "phpunit/phpunit": "4.*"
+    },
+    "scripts": {
+      "lint": "phpcs --standard=PSR2 Public/index.php App/",
+      "test": "phpunit Tests/"
+    },
+    "autoload": {
+        "psr-4": {
+            "JPAPI\\": "Config/JPAPI",
+            "Utilities\\": "App/v1/Utilities",
+            "QueryGenerators\\": "App/v1/QueryGenerators",
+            "Resources\\": "App/v1/Resources",
+            "Views\\": "App/v1/Views"
+        }
     }
 }

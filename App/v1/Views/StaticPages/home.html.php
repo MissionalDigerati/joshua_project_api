@@ -1,7 +1,7 @@
 <?php
 /**
  * Joshua Project API - An API for accessing Joshua Project Data.
- * 
+ *
  * GNU Public License 3.0
  * Copyright (C) 2013  Missional Digerati
  *
@@ -9,15 +9,15 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  */
 ?>
@@ -38,11 +38,11 @@
                 <div class="page-header">
                     <h2>Welcome to the Joshua Project API</h2>
                 </div>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Joshua Project is a research initiative seeking to highlight the 
-                    ethnic people groups of the world with the fewest followers of Christ.  This API was developed to 
-                    provide believers easier access to the Joshua Project's rich data.  Once you request and receive an 
-                    API key you will have access to data regarding people groups, countries and languages throughout 
-                    the world.  You will also have access to current missional work being done in those areas.  If you 
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Joshua Project is a research initiative seeking to highlight the
+                    ethnic people groups of the world with the fewest followers of Christ.  This API was developed to
+                    provide believers easier access to the Joshua Project's rich data.  Once you request and receive an
+                    API key you will have access to data regarding people groups, countries and languages throughout
+                    the world.  You will also have access to current missional work being done in those areas.  If you
                     would like to know more, check out the links below!</p>
                 <div class="beginner_panel row">
                     <div class="col-sm-6">
@@ -51,8 +51,8 @@
                             <h3 class="panel-title"><img src="img/compass.png" alt="compass"> Getting Started</h3>
                           </div>
                           <div class="panel-body">
-                            <p>If you are new to API development,  this tutorial will walk you through the basics of 
-                                using the Joshua Project API.  We offer the tutorial in PHP, Javascript, Ruby, and 
+                            <p>If you are new to API development,  this tutorial will walk you through the basics of
+                                using the Joshua Project API.  We offer the tutorial in PHP, Javascript, Ruby, and
                                 Python.  So buckle up and prepare to learn API development.</p>
                           </div>
                           <div class="panel-footer">
@@ -67,9 +67,9 @@
                             <h3 class="panel-title"><img src="img/computer.png" alt="computer"> Sample Code</h3>
                           </div>
                           <div class="panel-body">
-                            <p>If you need to see working examples of the Joshua Project API,  you can visit our 
-                                <a href="/docs/v1/sample_code">Sample Code</a> section.  Here you can browse the 
-                                repository of sample code, and find examples written in PHP, Javascript, Ruby, and 
+                            <p>If you need to see working examples of the Joshua Project API,  you can visit our
+                                <a href="/docs/v1/sample_code">Sample Code</a> section.  Here you can browse the
+                                repository of sample code, and find examples written in PHP, Javascript, Ruby, and
                                 Python.</p>
                           </div>
                           <div class="panel-footer">
@@ -86,8 +86,8 @@
                             <h3 class="panel-title"><img src="img/documents.png" alt="documents"> Documentation</h3>
                           </div>
                           <div class="panel-body">
-                            <p>To get a better understanding of the API, we highly encourage you to look over the 
-                                documentation.  The documentation will show you all the resources available to you.  
+                            <p>To get a better understanding of the API, we highly encourage you to look over the
+                                documentation.  The documentation will show you all the resources available to you.
                                 Make sure you have an API Key to use the interactive documentation.</p>
                           </div>
                             <div class="panel-footer">
@@ -103,9 +103,9 @@
                             <h3 class="panel-title"><img src="img/people.png" alt="people"> Learn More</h3>
                           </div>
                           <div class="panel-body">
-                            <p>Joshua Project is a research initiative seeking to highlight the ethnic people groups of 
-                                the world with the fewest followers of Christ. Accurate, regularly updated ethnic 
-                                people group information is critical for understanding and completing the Great 
+                            <p>Joshua Project is a research initiative seeking to highlight the ethnic people groups of
+                                the world with the fewest followers of Christ. Accurate, regularly updated ethnic
+                                people group information is critical for understanding and completing the Great
                                 Commission.</p>
                           </div>
                           <div class="panel-footer">
@@ -122,7 +122,7 @@
 if ((isset($data['api_key'])) && ($data['api_key'] == 'true')) {
     ?>
                 <div class="alert alert-success">
-                    Thank you!  We made you a shiny new API key.  Before you can retrieve it,  please visit the email 
+                    Thank you!  We made you a shiny new API key.  Before you can retrieve it,  please visit the email
                     you provided and click the link in the email we sent you.  Happy programming!
                 </div>
     <?php
@@ -131,7 +131,7 @@ if ((isset($data['api_key'])) && ($data['api_key'] == 'true')) {
                 <div class="page-header">
                     <h2>Request An API Key</h2>
                 </div>
-                <p>If you would like to get an API key, please complete the form below and verify your email 
+                <p>If you would like to get an API key, please complete the form below and verify your email
                     address.</p>
                 <form class="form-horizontal" method="POST" action="api_keys" role="form">
                     <fieldset>
@@ -146,7 +146,7 @@ if ((!empty($errors)) && (in_array('name', $errors))) {
     <?php
 }
 ?>
-                            <label class="control-label col-lg-4" for="input-name">Name 
+                            <label class="control-label col-lg-4" for="input-name">Name
                                 <span class="required-field">*</span></label>
                             <div class="controls col-lg-8">
 <?php
@@ -204,7 +204,7 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
 <?php
 if ((isset($data['organization'])) && ($data['organization'] != "")) {
     ?>
-    <input type="text" name="organization" id="input-organization"  value="<?php echo $data['organization']; ?>" 
+    <input type="text" name="organization" id="input-organization"  value="<?php echo $data['organization']; ?>"
     class="form-control">
     <?php
 } else {
@@ -212,7 +212,7 @@ if ((isset($data['organization'])) && ($data['organization'] != "")) {
         <input type="text" name="organization" id="input-organization" placeholder="Organization" class="form-control">
     <?php
 }
-    ?>
+?>
                             </div>
                         </div>
                         <div class="form-group">
@@ -237,7 +237,7 @@ if ((isset($data['website'])) && ($data['website'] != "")) {
 <?php
 if ((isset($data['phone_number'])) && ($data['phone_number'] != "")) {
     ?>
-    <input type="text" name="phone_number" id="input-phone_number"  value="<?php echo $data['phone_number']; ?>" 
+    <input type="text" name="phone_number" id="input-phone_number"  value="<?php echo $data['phone_number']; ?>"
     class="form-control">
     <?php
 } else {
@@ -259,7 +259,7 @@ if ((!empty($errors)) && (in_array('usage', $errors))) {
     <?php
 }
 ?>
-                            <label class="control-label col-lg-4" for="input-usage">How Will You Use the API? 
+                            <label class="control-label col-lg-4" for="input-usage">How Will You Use the API?
                                 <span class="required-field">*</span></label>
                             <div class="controls col-lg-8">
 <?php
