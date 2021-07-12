@@ -66,14 +66,14 @@ class PeopleGroup extends QueryGenerator
         'LeastReachedPGAC', 'GSEC', 'Unengaged', 'JF', 'AudioRecordings', 'NTOnline', 'GospelRadio', 'RLG3', 'RLG3PC',
         'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC', 'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision',
         'PCIslam', 'PCNonReligious', 'PCUnknown', 'PCAnglican', 'PCIndependent', 'PCProtestant', 'PCOrthodox',
-        'PCOtherChristian', 'SecurityLevel', 'RaceCode', 'LRWebProfile', 'LRofTheDayMonth', 'LRofTheDaySet',
-        'LRofTheDayDay', 'LRTop100', 'PhotoAddress', 'PhotoWidth', 'PhotoHeight', 'PhotoCredits', 'PhotoCreditURL',
-        'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission', 'ProfileTextExists', 'Top10Ranking',
-        'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation', 'RankMinistryTools', 'CountOfCountries',
-        'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'Longitude', 'Latitude', 'UNMap','Ctry',
-        'IndigenousCode', 'ROL3', 'PercentAdherents', 'PercentChristianPC', 'PercentChristianPGAC',
-        'PercentEvangelical', 'PercentEvangelicalPC', 'PercentEvangelicalPGAC', 'PCBuddhism', 'PCDblyProfessing',
-        'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'PCRomanCatholic', 'RegionCode'
+        'PCOtherChristian', 'SecurityLevel', 'RaceCode', 'LRTop100', 'PhotoAddress', 'PhotoWidth',
+        'PhotoHeight', 'PhotoCredits', 'PhotoCreditURL', 'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission',
+        'ProfileTextExists', 'Top10Ranking', 'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation',
+        'RankMinistryTools', 'CountOfCountries', 'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'Longitude',
+        'Latitude', 'UNMap','Ctry', 'IndigenousCode', 'ROL3', 'PercentAdherents', 'PercentChristianPC',
+        'PercentChristianPGAC', 'PercentEvangelical', 'PercentEvangelicalPC', 'PercentEvangelicalPGAC',
+        'PCBuddhism', 'PCDblyProfessing', 'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'PCRomanCatholic',
+        'RegionCode'
     );
     /**
      * The database table to pull the data from.
@@ -95,21 +95,21 @@ class PeopleGroup extends QueryGenerator
      * @var     string
      * @access  private
      */
-    private $peopleGroupURLSelect = "CONCAT('http://joshuaproject.net/people_groups/', PeopleID3, '/', ROG3)";
+    protected $peopleGroupURLSelect = "CONCAT('http://joshuaproject.net/people_groups/', PeopleID3, '/', ROG3)";
     /**
      * The MySQL CONCAT statement for generating the PeopleGroupPhotoURL.
      *
      * @var     string
      * @access  private
      */
-    private $peopleGroupPhotoURLSelect = "CONCAT('http://www.joshuaproject.net/profiles/photos/', PhotoAddress)";
+    protected $peopleGroupPhotoURLSelect = "CONCAT('http://www.joshuaproject.net/profiles/photos/', PhotoAddress)";
     /**
      * The MySQL CONCAT statement for generating the CountryURL.
      *
      * @var     string
      * @access  private
      */
-    private $countryURLSelect = "CONCAT('http://joshuaproject.net/countries/', ROG3)";
+    protected $countryURLSelect = "CONCAT('http://joshuaproject.net/countries/', ROG3)";
     /**
      * An array of table columns (key) and their alias (value).
      *
@@ -139,31 +139,6 @@ class PeopleGroup extends QueryGenerator
         $this->selectFieldsStatement .= ", " . $this->countryURLSelect . " as CountryURL";
         $this->selectFieldsStatement .= ", " . $this->JPScaleTextSelectStatement . " as JPScaleText";
         $this->selectFieldsStatement .= ", " . $this->JPScaleImageURLSelectStatement . " as JPScaleImageURL";
-    }
-    /**
-     * Find the daily unreached People Group.
-     *
-     * Find the daily unreached people Group based on the month and day that you specify.
-     * <br><br><strong>Requires $providedParams['month']:</strong> The specific month of the unreached.
-     * <br><strong>Requires $providedParams['day']:</strong> The specific month of the unreached.
-     *
-     * @return  void
-     * @access  public
-     * @throws  \InvalidArgumentException   If the 'month' key is not set or it is not between 1-12.
-     * @throws  \InvalidArgumentException   If the 'day' key is not set or it is not between 1-31.
-     * @author  Johnathan Pulos
-     */
-    public function dailyUnreached()
-    {
-        $this->validator->providedRequiredParams($this->providedParams, array('month', 'day'));
-        $set = 1;
-        $month = intval($this->providedParams['month']);
-        $day = intval($this->providedParams['day']);
-        $this->validator->integerInRange($month, 1, 12);
-        $this->validator->integerInRange($day, 1, 31);
-        $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName .
-            " WHERE LRofTheDayMonth = :month AND LRofTheDayDay = :day LIMIT 1";
-        $this->preparedVariables = array('month' => $month, 'day' => $day);
     }
     /**
      * Find the People Group by id (PeopleID3), and refine search by the country (ROG3).
