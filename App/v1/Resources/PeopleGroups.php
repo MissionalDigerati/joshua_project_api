@@ -101,13 +101,13 @@ $app->get(
         $month = returnPresentOrDefault($appRequest->params('month'), Date('n'));
         $day = returnPresentOrDefault($appRequest->params('day'), Date('j'));
         try {
-            $peopleGroup = new \QueryGenerators\PeopleGroup(
+            $peopleGroup = new \QueryGenerators\Unreached(
                 array(
                     'month' => $month,
                     'day'   => $day
                 )
             );
-            $peopleGroup->dailyUnreached();
+            $peopleGroup->daily();
             $statement = $db->prepare($peopleGroup->preparedStatement);
             $statement->execute($peopleGroup->preparedVariables);
             $data = $statement->fetchAll(PDO::FETCH_ASSOC);
