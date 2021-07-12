@@ -94,31 +94,10 @@ $vendorDirectory = __DIR__ . $DS . ".." . $DS . "Vendor" . $DS;
 require $vendorDirectory . 'autoload.php';
 
 $app = new \Slim\Slim(array('templates.path' => $VIEW_DIRECTORY));
-
-$loader = new \Aura\Autoload\Loader;
-$loader->register();
-/**
- * Setup the database object
- *
- * @author Johnathan Pulos
- */
-$loader->add("JPAPI\DatabaseSettings", __DIR__ . $DS . ".." . $DS . "Config");
-
+$settings = new JPAPI\DatabaseSettings();
 $pdoDb = \PHPToolbox\PDODatabase\PDODatabaseConnect::getInstance();
 $pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings);
 $db = $pdoDb->getDatabaseInstance();
-/**
- * Autoload the HTTP basic authentication
- *
- * @author Johnathan Pulos
- **/
-$loader->add("Slim\Extras\Middleware\HttpBasicAuth", $vendorDirectory . "SlimExtras");
-/**
- * Autoload the PHPMailer
- *
- * @author Johnathan Pulos
- **/
-$loader->add("PHPMailer", $vendorDirectory . "phpmailer");
 /**
  * Get the current request to determine which PHP file to load.  Do not load all files, because it can take longer to
  * load.
@@ -133,7 +112,6 @@ $requestedUrl = $appRequest->getResourceUri();
  * @author Johnathan Pulos
  */
 require(__DIR__."/../App/" . $API_VERSION . "/Includes/CommonFunctions.php");
-require(__DIR__."/../App/" . $API_VERSION . "/Includes/EmailFunctions.php");
 /**
  * Are we on a static page?
  *
@@ -167,12 +145,6 @@ if (strpos($requestedUrl, '/api_keys') !== false) {
      * @author Johnathan Pulos
      **/
     if (($appRequest->isGet()) || ($appRequest->isPut())) {
-        /**
-         * Autoload the Admin settings
-         *
-         * @author Johnathan Pulos
-         */
-        $loader->add("JPAPI\AdminSettings", __DIR__ . $DS . ".." . $DS . "Config");
         $adminSettings = new \JPAPI\AdminSettings;
         $app->add(
             new Slim\Extras\Middleware\HttpBasicAuth(
@@ -232,19 +204,6 @@ if ($bypassExtTest === false) {
     }
 }
 /**
- * Load the Utilities
- *
- * @author Johnathan Pulos
- */
-$loader->add("Utilities\Validator", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
-$loader->add("Utilities\Sanitizer", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
-/**
- * Load the Parent QueryGenerator class
- *
- * @author Johnathan Pulos
- */
-$loader->add("QueryGenerators\QueryGenerator", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
-/**
  * Are we searching API for People Groups?
  *
  * @author Johnathan Pulos
@@ -255,9 +214,6 @@ if (strpos($requestedUrl, 'people_groups') !== false) {
      *
      * @author Johnathan Pulos
      */
-    $loader->add("QueryGenerators\PeopleGroup", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
-    $loader->add("QueryGenerators\ProfileText", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
-    $loader->add("QueryGenerators\Resource", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/PeopleGroups.php");
     $googleDocTitle = "API Request for People Group Data.";
 }
@@ -272,7 +228,6 @@ if (strpos($requestedUrl, 'countries') !== false) {
      *
      * @author Johnathan Pulos
      */
-    $loader->add("QueryGenerators\Country", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Countries.php");
     $googleDocTitle = "API Request for Country Data.";
 }
@@ -287,7 +242,6 @@ if (strpos($requestedUrl, 'languages') !== false) {
      *
      * @author Johnathan Pulos
      */
-    $loader->add("QueryGenerators\Language", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Languages.php");
     $googleDocTitle = "API Request for Language Data.";
 }
@@ -302,7 +256,6 @@ if (strpos($requestedUrl, 'continents') !== false) {
      *
      * @author Johnathan Pulos
      */
-    $loader->add("QueryGenerators\Continent", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Continents.php");
     $googleDocTitle = "API Request for Continent Data.";
 }
@@ -317,7 +270,6 @@ if (strpos($requestedUrl, 'regions') !== false) {
      *
      * @author Johnathan Pulos
      */
-    $loader->add("QueryGenerators\Region", __DIR__ . $DS . ".." . $DS . "App" . $DS . $API_VERSION);
     require(__DIR__."/../App/" . $API_VERSION . "/Resources/Regions.php");
     $googleDocTitle = "API Request for Continent Data.";
 }
@@ -332,8 +284,6 @@ if (strpos($requestedUrl, 'regions') !== false) {
  * @author Johnathan Pulos
  */
 if ($GOOGLE_TRACKING_ID != '') {
-    $loader->add("PHPToolbox\CachedRequest\CurlUtility", $vendorDirectory . "PHPToolbox" . $DS . "src");
-    $loader->add("PHPToolbox\GoogleAnalytics\GoogleAnalytics", $vendorDirectory . "PHPToolbox" . $DS . "src");
     $googleAnalytics = new \PHPToolbox\GoogleAnalytics\GoogleAnalytics($GOOGLE_TRACKING_ID);
     /**
      * Construct the Payload

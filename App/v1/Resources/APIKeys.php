@@ -128,7 +128,7 @@ $app->post(
          * @author Johnathan Pulos
          */
         $authorizeUrl = $DOMAIN_ADDRESS . "/get_my_api_key?authorize_token=" . $authorizeToken;
-        sendAuthorizeToken($formData['email'], $authorizeUrl, null);
+        Utilities\Mailer::sendAuthorizeToken($formData['email'], $authorizeUrl, null);
         $redirectURL = generateRedirectURL("/", array('api_key' => 'true'), array());
         $app->redirect($redirectURL);
     }

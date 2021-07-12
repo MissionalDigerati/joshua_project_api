@@ -7,3 +7,4 @@ Public/php_errors.log
 php_error.log
 php_errors.log
 composer.lock
+_docker/

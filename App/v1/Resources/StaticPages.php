@@ -152,7 +152,7 @@ $app->post(
                 if (empty($data)) {
                     $errors['find_keys'] = "We were unable to locate your pending API keys.";
                 } else {
-                    sendAuthorizationLinks($formData['email'], $data, $DOMAIN_ADDRESS, null);
+                    Utilities\Mailer::sendAuthorizationLinks($formData['email'], $data, $DOMAIN_ADDRESS, null);
                     $message = "Your activation links have been emailed to you.";
                 }
             } catch (Exception $e) {
