@@ -171,8 +171,6 @@ class Unreached extends PeopleGroup
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jpupgotd AS jpupgotd JOIN " .
             "jppeoples AS jppeoples ON jpupgotd.PeopleID3 = jppeoples.PeopleID3 WHERE " .
             "jpupgotd.LRofTheDayMonth = :month AND jpupgotd.LRofTheDayDay = :day AND ROL3Profile = 'eng' LIMIT 1";
-        echo $this->preparedStatement;
-        exit;
         $this->preparedVariables = array('month' => $month, 'day' => $day);
     }
 }
