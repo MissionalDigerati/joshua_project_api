@@ -1,24 +1,24 @@
 <?php
 /**
  * This file is part of Joshua Project API.
- * 
+ *
  * Joshua Project API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Joshua Project API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see 
+ * along with this program.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * 
+ *
  */
 namespace QueryGenerators;
 
@@ -75,7 +75,7 @@ class Resource extends QueryGenerator
      * Construct the Resource class.
      *
      * During construction,  the $getParams are checked and inserted in the $providedParams class variable.
-     * Some of the methods in this class require certain keys to be set, or it will throw an error.  The comments will 
+     * Some of the methods in this class require certain keys to be set, or it will throw an error.  The comments will
      * state the required keys.
      *
      * @param   array   $getParams  The GET params to use for the query.
@@ -91,7 +91,7 @@ class Resource extends QueryGenerator
     /**
      * Find Resources for a specific Language.
      *
-     * Find all Resources associated with a specific language by providing it's 
+     * Find all Resources associated with a specific language by providing it's
      * <a href='http://goo.gl/gbkgo4' target='_blank'>3 Letter ISO code</a> or Joshua Projects ROL3 code.
      * <br><br><strong>Requires $providedParams['id']:</strong> The three letter ISO code or Joshua Projects ROL3 code.
      *

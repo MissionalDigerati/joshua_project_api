@@ -9,23 +9,27 @@
         }
     ],
     "require": {
-        "aura/autoload": "1.0.*",
         "phptoolbox/phptoolbox": "^2.0",
         "slim/slim": "2.0.*",
         "slim/extras": "2.0.*",
-        "phpmailer/phpmailer": "^6.5"
+        "phpmailer/phpmailer": "^6.5",
+        "squizlabs/php_codesniffer": "*"
     },
     "require-dev": {
         "zircote/swagger-php": "0.6.1",
         "phpunit/phpunit": "4.4.*"
     },
+    "scripts": {
+      "lint": "phpcs --standard=PSR2 Public/index.php App/",
+      "test": "phpunit Tests/"
+    },
     "autoload": {
-      "psr-4": {
-        "JPAPI\\": "Config/JPAPI",
-        "Utilities\\": "App/v1/Utilities",
-        "QueryGenerators\\": "App/v1/QueryGenerators",
-        "Resources\\": "App/v1/Resources",
-        "Views\\": "App/v1/Views"
-      }
+        "psr-4": {
+            "JPAPI\\": "Config/JPAPI",
+            "Utilities\\": "App/v1/Utilities",
+            "QueryGenerators\\": "App/v1/QueryGenerators",
+            "Resources\\": "App/v1/Resources",
+            "Views\\": "App/v1/Views"
+        }
     }
 }
