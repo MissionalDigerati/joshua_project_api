@@ -1,6 +1,7 @@
 Vendor/
 Config/JPAPI/DatabaseSettings.php
 Config/JPAPI/AdminSettings.php
+Config/JPAPI/MailSettings.php
 .DS_Store
 phpunit.xml
 Public/php_errors.log
