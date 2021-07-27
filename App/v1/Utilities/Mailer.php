@@ -100,9 +100,6 @@ class Mailer
         $mail->isHTML(true);
         $mailSettings = new MailSettings();
         $settings = $mailSettings->default;
-        if (!$settings->use_smtp) {
-            return $mail;
-        }
         $mail->IsSMTP();
         $mail->SMTPAuth = true;
         $mail->SMTPSecure = 'ssl';
