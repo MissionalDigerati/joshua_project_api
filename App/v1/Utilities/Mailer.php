@@ -22,6 +22,7 @@
  */
 namespace Utilities;
 
+use JPAPI\MailSettings;
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
@@ -45,7 +46,7 @@ class Mailer
      */
     public static function sendAuthorizeToken($email, $authorizeUrl, $mail)
     {
-        $mail = new PHPMailer(true);
+        $mail = self::getMailInstance();
         $mail->Subject = 'Joshua Project API Key';
         $mail->setFrom('info@joshuaproject.net', 'Joshua Project', 0);
         $mail->addAddress($email);
@@ -54,7 +55,6 @@ class Mailer
         $emailMessage .= "<a href='" . $authorizeUrl . "'>" . $authorizeUrl . "</a><br>";
         $emailMessage .= "Take care, and God Bless.<br>Sincerely,<br>Joshua Project API";
         $mail->Body = $emailMessage;
-        $mail->isHTML(true);
         $mail->send();
     }
 
@@ -72,7 +72,7 @@ class Mailer
      */
     public static function sendAuthorizationLinks($email, $apiKeys, $domain, $mail)
     {
-        $mail = new PHPMailer(true);
+        $mail = self::getMailInstance();
         $mail->Subject = 'Joshua Project API Key';
         $mail->setFrom('info@joshuaproject.net', 'Joshua Project', 0);
         $mail->addAddress($email);
@@ -86,7 +86,30 @@ class Mailer
         }
         $emailMessage .= "<br><br>Take care, and God Bless.<br>Sincerely,<br>Joshua Project API";
         $mail->Body = $emailMessage;
-        $mail->isHTML(true);
         $mail->send();
+    }
+
+    /**
+     * Get the instance of the mailer to send.
+     *
+     * @return PHPMailer    The PHPMailer instance
+     */
+    private static function getMailInstance()
+    {
+        $mail = new PHPMailer(true);
+        $mail->isHTML(true);
+        $mailSettings = new MailSettings();
+        $settings = $mailSettings->default;
+        if (!$settings->use_smtp) {
+            return $mail;
+        }
+        $mail->IsSMTP();
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = 'ssl';
+        $mail->Host = $settings->host;
+        $mail->Port = $settings->port;
+        $mail->Username = $settings->username;
+        $mail->Password = $settings->password;
+        return $mail;
     }
 }
