@@ -37,6 +37,7 @@ class MailSettings
      * @access public
      */
     public $default = array(
+                                'use_smtp'  =>  true,
                                 'host'      =>  'HOST',
                                 'username'  =>  'USERNAME',
                                 'password'  =>  'PASSWORD',
