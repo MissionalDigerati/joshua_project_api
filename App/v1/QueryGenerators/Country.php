@@ -63,7 +63,7 @@ class Country extends QueryGenerator
         'PercentUnknown', 'ROL3OfficialLanguage', 'ROL3SecondaryLanguage', 'RLG3Primary', 'RegionCode',
         'InternetCtryCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'AltName', 'Capital', 'Population',
         'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles', 'SecurityLevel', 'ReligionDataYear',
-        'LiteracyRate', 'LiteracySource', 'PercentDoublyProfessing', 'HDIYear', 'HDIValue',
+        'LiteracyRate', 'LiteracySource', 'HDIYear', 'HDIValue',
         'HDIRank', 'StateDeptReligiousFreedom', 'UNMap', 'PercentUrbanized', 'PrayercastVideo',
         'WINCountryProfile', 'CntPeoples', 'CntPeoplesLR');
     /**
