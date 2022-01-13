@@ -68,7 +68,7 @@
                           </div>
                           <div class="panel-body">
                             <p>If you need to see working examples of the Joshua Project API,  you can visit our
-                                <a href="/docs/v1/sample_code">Sample Code</a> section.  Here you can browse the
+                                <a href="/v1/docs/sample_code">Sample Code</a> section.  Here you can browse the
                                 repository of sample code, and find examples written in PHP, Javascript, Ruby, and
                                 Python.</p>
                           </div>
