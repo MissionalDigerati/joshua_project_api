@@ -189,7 +189,7 @@
                             <tr>
                                 <td>resource_path</td>
                                 <td>The path to the data you want to retreived.  You can see available resource paths
-                                    in <a href="/docs/v1/#!/countries">the documentation</a>.</td>
+                                    in <a href="/v1/docs/available_api_requests">the documentation</a>.</td>
                             </tr>
                             <tr>
                                 <td>format</td>
