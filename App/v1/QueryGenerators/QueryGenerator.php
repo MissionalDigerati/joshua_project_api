@@ -195,11 +195,15 @@ class QueryGenerator
             $this->preparedVariables['limit'] = 100;
         }
         if (($this->paramExists('page')) && intval($this->providedParams['page']) > 0) {
-            $starting = (intval($this->providedParams['page'])*$this->preparedVariables['limit'])-1;
+            // since page starts with 1, but the database starts with 0, we need to minus 1 from page.
+            $page = intval($this->providedParams['page']) - 1;
+            $starting = $page * $this->preparedVariables['limit'];
             $this->preparedVariables['starting'] = $starting;
         } else {
             $this->preparedVariables['starting'] = 0;
         }
+        // print_r($this->preparedVariables);
+        // exit;
         $this->preparedStatement .= "LIMIT :starting, :limit";
     }
     /**

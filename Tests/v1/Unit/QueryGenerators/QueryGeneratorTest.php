@@ -139,22 +139,34 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAddLimitFilterShouldSetTheStartingPreparedVariablesBasedOnGivenLimitAndPageParams()
+    public function testAddLimitFilterShouldSetTheStartingPreparedVariablesForPageOne()
     {
-        $params = array('limit' => 10, 'page' => 3);
-        /**
-         * (10 * 3) -1 = 29
-         * Since DB calls always stat with a 0 starting, we minus 1
-         *
-         * @author Johnathan Pulos
-         **/
-        $expectedStarting = ($params['limit']*$params['page'])-1;
+        $params = array('limit' => 10, 'page' => 1);
         $queryGenerator = new \QueryGenerators\QueryGenerator($params);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('addLimitFilter');
         $method->setAccessible(true);
         $method->invoke($queryGenerator);
-        $this->assertEquals($expectedStarting, $queryGenerator->preparedVariables['starting']);
+        $this->assertEquals(0, $queryGenerator->preparedVariables['starting']);
+        $this->assertEquals(10, $queryGenerator->preparedVariables['limit']);
+    }
+    /**
+     * addLimitFilter() should set the starting param based on the limit and page param
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testAddLimitFilterShouldSetTheStartingPreparedVariablesBasedOnGivenLimitAndPageParams()
+    {
+        $params = array('limit' => 10, 'page' => 3);
+        $queryGenerator = new \QueryGenerators\QueryGenerator($params);
+        $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
+        $method = $reflectionOfQueryGenerator->getMethod('addLimitFilter');
+        $method->setAccessible(true);
+        $method->invoke($queryGenerator);
+        $this->assertEquals(20, $queryGenerator->preparedVariables['starting']);
+        $this->assertEquals(10, $queryGenerator->preparedVariables['limit']);
     }
     /**
      * Tests that generateInStatementFromPipedString() returns the correct statement, and the variables exists
