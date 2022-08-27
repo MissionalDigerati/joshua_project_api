@@ -32,6 +32,11 @@ Sample Code
 
 Sample code for PHP, Ruby, Javascript and Python can be found in the following [Github Repo](https://github.com/MissionalDigerati/joshua_project_api_sample_code).
 
+Update on JP Server
+-------------------
+
+To update the submodule, use the following command: `git submodule update --recursive --remote`.
+
 License
 -------
 This script is created by Missional Digerati and is under the [GNU General Public License v3](http://www.gnu.org/licenses/gpl-3.0-standalone.html).
