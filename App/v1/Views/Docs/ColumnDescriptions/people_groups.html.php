@@ -141,6 +141,14 @@
                     <td>Does an Unreached People of the Day profile exist?</td>
                 </tr>
                 <tr>
+                    <td>NaturalName</td>
+                    <td>The PeopNameAcrossCountries presented in a more display friendly way.</td>
+                </tr>
+                <tr>
+                    <td>NaturalPronunciation</td>
+                    <td>The pronunciation of the natural name.</td>
+                </tr>
+                <tr>
                     <td>NTOnline</td>
                     <td>Does Bible.is have an online NT?</td>
                 </tr>

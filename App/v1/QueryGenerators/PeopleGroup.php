@@ -71,9 +71,9 @@ class PeopleGroup extends QueryGenerator
         'ProfileTextExists', 'Top10Ranking', 'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation',
         'RankMinistryTools', 'CountOfCountries', 'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'Longitude',
         'Latitude', 'UNMap','Ctry', 'IndigenousCode', 'ROL3', 'PercentAdherents', 'PercentChristianPC',
-        'PercentChristianPGAC', 'PercentEvangelical', 'PercentEvangelicalPC', 'PercentEvangelicalPGAC',
-        'PCBuddhism', 'PCDblyProfessing', 'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'PCRomanCatholic',
-        'RegionCode'
+        'NaturalName', 'NaturalPronunciation', 'PercentChristianPGAC', 'PercentEvangelical', 'PercentEvangelicalPC',
+        'PercentEvangelicalPGAC', 'PCBuddhism', 'PCDblyProfessing', 'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall',
+        'PCRomanCatholic', 'RegionCode'
     );
     /**
      * The database table to pull the data from.
@@ -116,7 +116,9 @@ class PeopleGroup extends QueryGenerator
      * @var     array
      * @access  protected
      **/
-    protected $aliasFields = array('10_40Window'    =>  'Window1040');
+    protected $aliasFields = array(
+        '10_40Window'           =>  'Window1040'
+    );
     /**
      * Construct the People Group class.
      *
