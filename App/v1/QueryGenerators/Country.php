@@ -58,7 +58,7 @@ class Country extends QueryGenerator
      */
     protected $fieldsToSelectArray = array('JPScaleCtry', 'Ctry', 'ReligionPrimary', 'RLG3Primary', 'RLG4Primary',
         'ROG2', 'ROG3', 'PercentBuddhism', 'PercentChristianity', 'PercentEthnicReligions',
-        'PercentEvangelical', 'PercentHinduism', 'PercentIndependent', 'PercentIslam', 'PercentNonReligious',
+        'PercentEvangelical', 'PercentHinduism', 'PercentIslam', 'PercentNonReligious',
         'PercentOtherSmall', 'PercentOrthodox', 'PercentOther', 'PercentProtestant', 'PercentRomanCatholic',
         'PercentUnknown', 'ROL3OfficialLanguage', 'ROL3SecondaryLanguage', 'RLG3Primary', 'RegionCode',
         'InternetCtryCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'AltName', 'Capital', 'Population',
@@ -228,17 +228,6 @@ class Country extends QueryGenerator
                 $this->providedParams['pc_hindu'],
                 'PercentHinduism',
                 'pc_hindu'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_independent')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_independent'],
-                'PercentIndependent',
-                'pc_independent'
             );
             $appendAndOnWhere = true;
         }

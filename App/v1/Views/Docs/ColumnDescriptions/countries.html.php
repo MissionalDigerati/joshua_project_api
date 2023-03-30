@@ -100,10 +100,6 @@
                     <td>Percent of people in this country who are Hindu</td>
                 </tr>
                 <tr>
-                    <td>PercentIndependent</td>
-                    <td>Percent of people in this country who are Independent</td>
-                </tr>
-                <tr>
                     <td>PercentIslam</td>
                     <td>Percent of people in this country who are Muslim</td>
                 </tr>

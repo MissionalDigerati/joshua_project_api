@@ -2,6 +2,8 @@ Unreleased
 
 REMOVED PercentAnglican from all countries endpoints.
 REMOVED pc_anglican argument from /countries endpoint.
+REMOVED PercentIndependent from all countries endpoints.
+REMOVED pc_independent argument from /countries endpoint.
 
 Version 1.4.0
 
