@@ -59,12 +59,11 @@ class Country extends QueryGenerator
     protected $fieldsToSelectArray = array('JPScaleCtry', 'Ctry', 'ReligionPrimary', 'RLG3Primary', 'RLG4Primary',
         'ROG2', 'ROG3', 'PercentBuddhism', 'PercentChristianity', 'PercentEthnicReligions', 'PercentEvangelical',
         'PercentHinduism', 'PercentIslam', 'PercentNonReligious', 'PercentOtherSmall', 'PercentOther',
-        'PercentRomanCatholic', 'PercentUnknown', 'ROL3OfficialLanguage', 'ROL3SecondaryLanguage',
-        'RLG3Primary', 'RegionCode', 'InternetCtryCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName',
-        'AltName', 'Capital', 'Population', 'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles',
-        'SecurityLevel', 'ReligionDataYear', 'LiteracyRate', 'LiteracySource', 'HDIYear', 'HDIValue',
-        'HDIRank', 'StateDeptReligiousFreedom', 'UNMap', 'PercentUrbanized', 'PrayercastVideo',
-        'WINCountryProfile', 'CntPeoples', 'CntPeoplesLR');
+        'PercentUnknown', 'ROL3OfficialLanguage', 'ROL3SecondaryLanguage', 'RLG3Primary', 'RegionCode',
+        'InternetCtryCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'AltName', 'Capital', 'Population',
+        'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles', 'SecurityLevel', 'ReligionDataYear',
+        'LiteracyRate', 'LiteracySource', 'HDIYear', 'HDIValue', 'HDIRank', 'StateDeptReligiousFreedom',
+        'UNMap', 'PercentUrbanized', 'PrayercastVideo', 'WINCountryProfile', 'CntPeoples', 'CntPeoplesLR');
     /**
      * The Database table to pull the data from.
      *
@@ -271,17 +270,6 @@ class Country extends QueryGenerator
                 $this->providedParams['pc_other_christian'],
                 'PercentOther',
                 'pc_other_christian'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_rcatholic')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_rcatholic'],
-                'PercentRomanCatholic',
-                'pc_rcatholic'
             );
             $appendAndOnWhere = true;
         }

@@ -8,6 +8,8 @@ REMOVED PercentProtestant from all countries endpoints.
 REMOVED pc_protestant argument from /countries endpoint.
 REMOVED PercentOrthodox from all countries endpoints.
 REMOVED pc_orthodox argument from /countries endpoint.
+REMOVED PercentRomanCatholic from all countries endpoints.
+REMOVED pc_rcatholic argument from /countries endpoint.
 
 Version 1.4.0
 
