@@ -1,5 +1,7 @@
 Unreleased
 
+The following items were removed because the data was outdated:
+
 REMOVED PercentAnglican from all countries endpoints.
 REMOVED pc_anglican argument from /countries endpoint.
 REMOVED PercentIndependent from all countries endpoints.
@@ -18,6 +20,8 @@ REMOVED PCIndependent from all people_groups endpoints.
 REMOVED pc_independent argument from /people_groups endpoint.
 REMOVED PCProtestant from all people_groups endpoints.
 REMOVED pc_protestant argument from /people_groups endpoint.
+REMOVED PCOrthodox from all people_groups endpoints.
+REMOVED pc_orthodox argument from /people_groups endpoint.
 
 Version 1.4.0
 

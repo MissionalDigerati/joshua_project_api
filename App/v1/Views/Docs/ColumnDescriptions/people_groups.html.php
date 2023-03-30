@@ -220,10 +220,6 @@
                     <td>Percent of people in group who are  Non-religious</td>
                 </tr>
                 <tr>
-                    <td>PCOrthodox</td>
-                    <td>Percent of people in group who are Orthodox</td>
-                </tr>
-                <tr>
                     <td>PCOtherChristian</td>
                     <td>Percent of people in group who are another form of Christian</td>
                 </tr>

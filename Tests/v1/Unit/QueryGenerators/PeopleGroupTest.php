@@ -864,32 +864,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-     * Tests that findAllWithFilters() filters by a percent of Orthodox
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testFindAllWithFiltersShouldFilterByPercentOfOrthodox()
-    {
-        $expectedPercentMin = 22.43;
-        $expectedPercentMax = 74.56;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
-            array(
-                'pc_orthodox' => $expectedPercentMin."-".$expectedPercentMax
-            )
-        );
-        $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCOrthodox']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCOrthodox']));
-        }
-    }
-    /**
      * Tests that findAllWithFilters() filters by a percent of Roman Catholic
      *
      * @return void
