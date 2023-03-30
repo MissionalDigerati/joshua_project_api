@@ -212,10 +212,6 @@
                     <td>Percent of people in group who are Hindu</td>
                 </tr>
                 <tr>
-                    <td>PCIndependent</td>
-                    <td>Percent of people in group who are Independent</td>
-                </tr>
-                <tr>
                     <td>PCIslam</td>
                     <td>Percent of people in group who are Muslim</td>
                 </tr>

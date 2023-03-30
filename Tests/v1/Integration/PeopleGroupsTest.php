@@ -1103,6 +1103,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
             "filter_by_percent_anglican_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse['api']));
         $this->assertEquals('error', $decodedResponse['api']['status']);
         $this->assertFalse(empty($decodedResponse['api']['error']));
@@ -1113,28 +1114,28 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     }
     /**
      * GET /people_groups.json?pc_independent=3.45-90.1
-     * test page filters by percentage of Independents
+     * test page no longer supports percentage of Independents
      *
      * @return void
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfIndependents()
+    public function testIndexRequestsShouldReturnUnsupportedPercentageOfIndependents()
     {
-        $expectedPercentMin = 8.7;
-        $expectedPercentMax = 40.1;
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_independent' => $expectedPercentMin . "-" . $expectedPercentMax),
+            array('api_key' => $this->APIKey, 'pc_independent' => "8.7-40.1"),
             "filter_by_percent_independent_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
-        $this->assertFalse(empty($decodedResponse));
-        foreach ($decodedResponse as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCIndependent']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCIndependent']));
-        }
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse['api']));
+        $this->assertEquals('error', $decodedResponse['api']['status']);
+        $this->assertFalse(empty($decodedResponse['api']['error']));
+        $this->assertEquals(
+            'Sorry, these parameters are no longer supported: pc_independent',
+            $decodedResponse['api']['error']['details']
+        );
     }
     /**
      * GET /people_groups.json?pc_protestant=55.5-87.77

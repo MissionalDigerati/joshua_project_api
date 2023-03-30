@@ -504,14 +504,6 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
- *                  name="pc_independent",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Independents.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
  *                  name="pc_islam",
  *                  description="A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
  *                  paramType="query",
@@ -690,7 +682,7 @@ $app->get(
         $data = array();
         $gotCachedData = false;
         $noLongerSupportedParams = array(
-            'pc_anglican'
+            'pc_anglican', 'pc_independent'
         );
         $requestKeys = array_keys($appRequest->params());
         $check = array_intersect($requestKeys, $noLongerSupportedParams);
