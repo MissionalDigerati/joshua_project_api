@@ -22,6 +22,8 @@ REMOVED PCProtestant from all people_groups endpoints.
 REMOVED pc_protestant argument from /people_groups endpoint.
 REMOVED PCOrthodox from all people_groups endpoints.
 REMOVED pc_orthodox argument from /people_groups endpoint.
+REMOVED PCRomanCatholic from all people_groups endpoints.
+REMOVED pc_rcatholic argument from /people_groups endpoint.
 
 Version 1.4.0
 

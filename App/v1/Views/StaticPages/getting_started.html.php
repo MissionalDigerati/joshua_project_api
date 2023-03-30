@@ -315,7 +315,6 @@
         "PCEthnicReligions": "9.8",
         "PCHinduism": "0",
         "PCOtherSmall": "0",
-        "PCRomanCatholic": "30",
         "RegionCode": "2",
         "Window1040": "Y",
         "PeopleGroupURL": "http://joshuaproject.net/people_groups/14966/LA",
@@ -586,7 +585,6 @@
             &lt;PCEthnicReligions&gt;9.8&lt;/PCEthnicReligions&gt;
             &lt;PCHinduism&gt;0&lt;/PCHinduism&gt;
             &lt;PCOtherSmall&gt;0&lt;/PCOtherSmall&gt;
-            &lt;PCRomanCatholic&gt;30&lt;/PCRomanCatholic&gt;
             &lt;RegionCode&gt;2&lt;/RegionCode&gt;
             &lt;Window1040&gt;Y&lt;/Window1040&gt;
             &lt;PeopleGroupURL&gt;

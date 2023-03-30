@@ -82,8 +82,7 @@ class Unreached extends PeopleGroup
         'jppeoples.CountOfProvinces', 'jppeoples.EthnolinguisticMap', 'jppeoples.MapID', 'jppeoples.UNMap',
         'jppeoples.IndigenousCode', 'jppeoples.PercentChristianPC', 'jppeoples.PercentChristianPGAC',
         'jppeoples.PercentEvangelicalPC', 'jppeoples.PercentEvangelicalPGAC', 'jppeoples.PCBuddhism',
-        'jppeoples.PCDblyProfessing', 'jppeoples.PCEthnicReligions', 'jppeoples.PCHinduism', 'jppeoples.PCOtherSmall',
-        'jppeoples.PCRomanCatholic'
+        'jppeoples.PCDblyProfessing', 'jppeoples.PCEthnicReligions', 'jppeoples.PCHinduism', 'jppeoples.PCOtherSmall'
     );
     /**
      * The database table to pull the data from.

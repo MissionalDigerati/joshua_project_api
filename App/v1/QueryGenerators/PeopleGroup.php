@@ -73,7 +73,7 @@ class PeopleGroup extends QueryGenerator
         'Latitude', 'UNMap','Ctry', 'IndigenousCode', 'ROL3', 'PercentAdherents', 'PercentChristianPC',
         'NaturalName', 'NaturalPronunciation', 'PercentChristianPGAC', 'PercentEvangelical', 'PercentEvangelicalPC',
         'PercentEvangelicalPGAC', 'PCBuddhism', 'PCDblyProfessing', 'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall',
-        'PCRomanCatholic', 'RegionCode'
+        'RegionCode'
     );
     /**
      * The database table to pull the data from.
@@ -393,17 +393,6 @@ class PeopleGroup extends QueryGenerator
                 $this->providedParams['pc_other_religion'],
                 'PCOtherSmall',
                 'pc_other_religion'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_rcatholic')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_rcatholic'],
-                'PCRomanCatholic',
-                'pc_rcatholic'
             );
             $appendAndOnWhere = true;
         }

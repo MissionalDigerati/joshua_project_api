@@ -228,10 +228,6 @@
                     <td>Percent of people in group who practice Other or Smaller Religions</td>
                 </tr>
                 <tr>
-                    <td>PCRomanCatholic</td>
-                    <td>Percent of people in group who are Roman Catholic</td>
-                </tr>
-                <tr>
                     <td>PCUnknown</td>
                     <td>Percent of people in group who's religious background is unknown</td>
                 </tr>
