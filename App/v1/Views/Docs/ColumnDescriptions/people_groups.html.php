@@ -178,10 +178,6 @@
                         countries</td>
                 </tr>
                 <tr>
-                    <td>PCAnglican</td>
-                    <td>Percent of people in group who are Anglican</td>
-                </tr>
-                <tr>
                     <td>PCBuddhism</td>
                     <td>Percent of people in group who are Buddhist</td>
                 </tr>
@@ -216,10 +212,6 @@
                     <td>Percent of people in group who are Hindu</td>
                 </tr>
                 <tr>
-                    <td>PCIndependent</td>
-                    <td>Percent of people in group who are Independent</td>
-                </tr>
-                <tr>
                     <td>PCIslam</td>
                     <td>Percent of people in group who are Muslim</td>
                 </tr>
@@ -228,24 +220,8 @@
                     <td>Percent of people in group who are  Non-religious</td>
                 </tr>
                 <tr>
-                    <td>PCOrthodox</td>
-                    <td>Percent of people in group who are Orthodox</td>
-                </tr>
-                <tr>
-                    <td>PCOtherChristian</td>
-                    <td>Percent of people in group who are another form of Christian</td>
-                </tr>
-                <tr>
                     <td>PCOtherSmall</td>
                     <td>Percent of people in group who practice Other or Smaller Religions</td>
-                </tr>
-                <tr>
-                    <td>PCProtestant</td>
-                    <td>Percent of people in group who are Protestant</td>
-                </tr>
-                <tr>
-                    <td>PCRomanCatholic</td>
-                    <td>Percent of people in group who are Roman Catholic</td>
                 </tr>
                 <tr>
                     <td>PCUnknown</td>

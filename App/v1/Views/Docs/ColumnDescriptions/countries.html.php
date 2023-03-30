@@ -80,10 +80,6 @@
                     <td>Literacy source</td>
                 </tr>
                 <tr>
-                    <td>PercentAnglican</td>
-                    <td>Percent of people in this country who are Christian Anglican</td>
-                </tr>
-                <tr>
                     <td>PercentBuddhism</td>
                     <td>Percent of people in this country who are Buddhist</td>
                 </tr>
@@ -104,10 +100,6 @@
                     <td>Percent of people in this country who are Hindu</td>
                 </tr>
                 <tr>
-                    <td>PercentIndependent</td>
-                    <td>Percent of people in this country who are Independent</td>
-                </tr>
-                <tr>
                     <td>PercentIslam</td>
                     <td>Percent of people in this country who are Muslim</td>
                 </tr>
@@ -116,24 +108,8 @@
                     <td>Percent of people in this country who are Non-Religious</td>
                 </tr>
                 <tr>
-                    <td>PercentOrthodox</td>
-                    <td>Percent of people in this country who are Orthodox</td>
-                </tr>
-                <tr>
-                    <td>PercentOther</td>
-                    <td>Percent of people in this country who are another forms of Christian</td>
-                </tr>
-                <tr>
                     <td>PercentOtherSmall</td>
                     <td>Percent of people in this country who practice Other or Smaller Religions</td>
-                </tr>
-                <tr>
-                    <td>PercentProtestant</td>
-                    <td>Percent of people in this country who are Protestant</td>
-                </tr>
-                <tr>
-                    <td>PercentRomanCatholic</td>
-                    <td>Percent of people in this country who are Roman Catholic</td>
                 </tr>
                 <tr>
                     <td>PctChristianDoublyProfessing</td>

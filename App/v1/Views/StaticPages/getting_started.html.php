@@ -271,11 +271,6 @@
         "PCIslam": "0",
         "PCNonReligious": "0",
         "PCUnknown": "0",
-        "PCAnglican": "0",
-        "PCIndependent": "0",
-        "PCProtestant": "70",
-        "PCOrthodox": "0",
-        "PCOtherChristian": "0",
         "StonyGround": "Y",
         "SecurityLevel": "2",
         "RaceCode": "AUG03z",
@@ -319,7 +314,6 @@
         "PCEthnicReligions": "9.8",
         "PCHinduism": "0",
         "PCOtherSmall": "0",
-        "PCRomanCatholic": "30",
         "RegionCode": "2",
         "Window1040": "Y",
         "PeopleGroupURL": "http://joshuaproject.net/people_groups/14966/LA",
@@ -544,11 +538,6 @@
             &lt;PCIslam&gt;0&lt;/PCIslam&gt;
             &lt;PCNonReligious&gt;0&lt;/PCNonReligious&gt;
             &lt;PCUnknown&gt;0&lt;/PCUnknown&gt;
-            &lt;PCAnglican&gt;0&lt;/PCAnglican&gt;
-            &lt;PCIndependent&gt;0&lt;/PCIndependent&gt;
-            &lt;PCProtestant&gt;70&lt;/PCProtestant&gt;
-            &lt;PCOrthodox&gt;0&lt;/PCOrthodox&gt;
-            &lt;PCOtherChristian&gt;0&lt;/PCOtherChristian&gt;
             &lt;StonyGround&gt;Y&lt;/StonyGround&gt;
             &lt;SecurityLevel&gt;2&lt;/SecurityLevel&gt;
             &lt;RaceCode&gt;AUG03z&lt;/RaceCode&gt;
@@ -594,7 +583,6 @@
             &lt;PCEthnicReligions&gt;9.8&lt;/PCEthnicReligions&gt;
             &lt;PCHinduism&gt;0&lt;/PCHinduism&gt;
             &lt;PCOtherSmall&gt;0&lt;/PCOtherSmall&gt;
-            &lt;PCRomanCatholic&gt;30&lt;/PCRomanCatholic&gt;
             &lt;RegionCode&gt;2&lt;/RegionCode&gt;
             &lt;Window1040&gt;Y&lt;/Window1040&gt;
             &lt;PeopleGroupURL&gt;

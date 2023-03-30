@@ -26,8 +26,9 @@
         "phpunit/phpunit": "4.*"
     },
     "scripts": {
-      "lint": "phpcs --standard=PSR2 Public/index.php App/",
-      "test": "phpunit Tests/"
+        "docs": "swagger -p ./App/v1/Resources -o ./Public",
+        "lint": "phpcs --standard=PSR2 Public/index.php App/",
+        "test": "phpunit Tests/"
     },
     "autoload": {
         "psr-4": {

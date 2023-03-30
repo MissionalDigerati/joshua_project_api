@@ -65,15 +65,14 @@ class PeopleGroup extends QueryGenerator
         'JPScale', 'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedBasis', 'LeastReachedPC',
         'LeastReachedPGAC', 'GSEC', 'Unengaged', 'JF', 'AudioRecordings', 'NTOnline', 'GospelRadio', 'RLG3', 'RLG3PC',
         'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC', 'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision',
-        'PCIslam', 'PCNonReligious', 'PCUnknown', 'PCAnglican', 'PCIndependent', 'PCProtestant', 'PCOrthodox',
-        'PCOtherChristian', 'SecurityLevel', 'RaceCode', 'LRTop100', 'PhotoAddress', 'PhotoWidth',
+        'PCIslam', 'PCNonReligious', 'PCUnknown', 'SecurityLevel', 'RaceCode', 'LRTop100', 'PhotoAddress', 'PhotoWidth',
         'PhotoHeight', 'PhotoCredits', 'PhotoCreditURL', 'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission',
         'ProfileTextExists', 'Top10Ranking', 'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation',
         'RankMinistryTools', 'CountOfCountries', 'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'Longitude',
         'Latitude', 'UNMap','Ctry', 'IndigenousCode', 'ROL3', 'PercentAdherents', 'PercentChristianPC',
         'NaturalName', 'NaturalPronunciation', 'PercentChristianPGAC', 'PercentEvangelical', 'PercentEvangelicalPC',
         'PercentEvangelicalPGAC', 'PCBuddhism', 'PCDblyProfessing', 'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall',
-        'PCRomanCatholic', 'RegionCode'
+        'RegionCode'
     );
     /**
      * The database table to pull the data from.
@@ -297,17 +296,6 @@ class PeopleGroup extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id3'], 'PeopleID3');
             $appendAndOnWhere = true;
         }
-        if ($this->paramExists('pc_anglican')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_anglican'],
-                'PCAnglican',
-                'pc_anglican'
-            );
-            $appendAndOnWhere = true;
-        }
         if ($this->paramExists('pc_adherent')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -363,17 +351,6 @@ class PeopleGroup extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
-        if ($this->paramExists('pc_independent')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_independent'],
-                'PCIndependent',
-                'pc_independent'
-            );
-            $appendAndOnWhere = true;
-        }
         if ($this->paramExists('pc_islam')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -396,28 +373,6 @@ class PeopleGroup extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
-        if ($this->paramExists('pc_orthodox')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_orthodox'],
-                'PCOrthodox',
-                'pc_orthodox'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_other_christian')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_other_christian'],
-                'PCOtherChristian',
-                'pc_other_christian'
-            );
-            $appendAndOnWhere = true;
-        }
         if ($this->paramExists('pc_other_religion')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -426,28 +381,6 @@ class PeopleGroup extends QueryGenerator
                 $this->providedParams['pc_other_religion'],
                 'PCOtherSmall',
                 'pc_other_religion'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_protestant')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_protestant'],
-                'PCProtestant',
-                'pc_protestant'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_rcatholic')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_rcatholic'],
-                'PCRomanCatholic',
-                'pc_rcatholic'
             );
             $appendAndOnWhere = true;
         }

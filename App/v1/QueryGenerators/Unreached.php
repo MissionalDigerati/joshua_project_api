@@ -75,16 +75,14 @@ class Unreached extends PeopleGroup
         'jppeoples.LeastReachedBasis', 'jppeoples.LeastReachedPC', 'jppeoples.LeastReachedPGAC', 'jppeoples.GSEC',
         'jppeoples.Unengaged', 'jppeoples.RLG3PC', 'jppeoples.RLG3PGAC', 'jppeoples.PrimaryReligionPC',
         'jppeoples.PrimaryReligionPGAC', 'jppeoples.RLG4', 'jppeoples.ReligionSubdivision', 'jppeoples.PCIslam',
-        'jppeoples.PCNonReligious', 'jppeoples.PCUnknown', 'jppeoples.PCAnglican', 'jppeoples.PCIndependent',
-        'jppeoples.PCProtestant', 'jppeoples.PCOrthodox', 'jppeoples.PCOtherChristian', 'jppeoples.SecurityLevel',
+        'jppeoples.PCNonReligious', 'jppeoples.PCUnknown', 'jppeoples.SecurityLevel',
         'jppeoples.RaceCode', 'jppeoples.LRTop100', 'jppeoples.PhotoWidth', 'jppeoples.PhotoHeight',
         'jppeoples.ProfileTextExists', 'jppeoples.Top10Ranking', 'jppeoples.RankOverall', 'jppeoples.RankProgress',
         'jppeoples.RankPopulation', 'jppeoples.RankLocation', 'jppeoples.RankMinistryTools',
         'jppeoples.CountOfProvinces', 'jppeoples.EthnolinguisticMap', 'jppeoples.MapID', 'jppeoples.UNMap',
         'jppeoples.IndigenousCode', 'jppeoples.PercentChristianPC', 'jppeoples.PercentChristianPGAC',
         'jppeoples.PercentEvangelicalPC', 'jppeoples.PercentEvangelicalPGAC', 'jppeoples.PCBuddhism',
-        'jppeoples.PCDblyProfessing', 'jppeoples.PCEthnicReligions', 'jppeoples.PCHinduism', 'jppeoples.PCOtherSmall',
-        'jppeoples.PCRomanCatholic'
+        'jppeoples.PCDblyProfessing', 'jppeoples.PCEthnicReligions', 'jppeoples.PCHinduism', 'jppeoples.PCOtherSmall'
     );
     /**
      * The database table to pull the data from.

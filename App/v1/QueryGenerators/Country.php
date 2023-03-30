@@ -57,15 +57,13 @@ class Country extends QueryGenerator
      * @access  protected
      */
     protected $fieldsToSelectArray = array('JPScaleCtry', 'Ctry', 'ReligionPrimary', 'RLG3Primary', 'RLG4Primary',
-        'ROG2', 'ROG3', 'PercentAnglican', 'PercentBuddhism', 'PercentChristianity', 'PercentEthnicReligions',
-        'PercentEvangelical', 'PercentHinduism', 'PercentIndependent', 'PercentIslam', 'PercentNonReligious',
-        'PercentOtherSmall', 'PercentOrthodox', 'PercentOther', 'PercentProtestant', 'PercentRomanCatholic',
+        'ROG2', 'ROG3', 'PercentBuddhism', 'PercentChristianity', 'PercentEthnicReligions', 'PercentEvangelical',
+        'PercentHinduism', 'PercentIslam', 'PercentNonReligious', 'PercentOtherSmall',
         'PercentUnknown', 'ROL3OfficialLanguage', 'ROL3SecondaryLanguage', 'RLG3Primary', 'RegionCode',
         'InternetCtryCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'AltName', 'Capital', 'Population',
         'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles', 'SecurityLevel', 'ReligionDataYear',
-        'LiteracyRate', 'LiteracySource', 'HDIYear', 'HDIValue',
-        'HDIRank', 'StateDeptReligiousFreedom', 'UNMap', 'PercentUrbanized', 'PrayercastVideo',
-        'WINCountryProfile', 'CntPeoples', 'CntPeoplesLR');
+        'LiteracyRate', 'LiteracySource', 'HDIYear', 'HDIValue', 'HDIRank', 'StateDeptReligiousFreedom',
+        'UNMap', 'PercentUrbanized', 'PrayercastVideo', 'WINCountryProfile', 'CntPeoples', 'CntPeoplesLR');
     /**
      * The Database table to pull the data from.
      *
@@ -176,17 +174,6 @@ class Country extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['jpscale'], 'JPScaleCtry');
             $appendAndOnWhere = true;
         }
-        if ($this->paramExists('pc_anglican')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_anglican'],
-                'PercentAnglican',
-                'pc_anglican'
-            );
-            $appendAndOnWhere = true;
-        }
         if ($this->paramExists('pc_buddhist')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -242,17 +229,6 @@ class Country extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
-        if ($this->paramExists('pc_independent')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_independent'],
-                'PercentIndependent',
-                'pc_independent'
-            );
-            $appendAndOnWhere = true;
-        }
         if ($this->paramExists('pc_islam')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -283,50 +259,6 @@ class Country extends QueryGenerator
                 $this->providedParams['pc_other_religion'],
                 'PercentOtherSmall',
                 'pc_other_religion'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_orthodox')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_orthodox'],
-                'PercentOrthodox',
-                'pc_orthodox'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_other_christian')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_other_christian'],
-                'PercentOther',
-                'pc_other_christian'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_protestant')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_protestant'],
-                'PercentProtestant',
-                'pc_protestant'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_rcatholic')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_rcatholic'],
-                'PercentRomanCatholic',
-                'pc_rcatholic'
             );
             $appendAndOnWhere = true;
         }

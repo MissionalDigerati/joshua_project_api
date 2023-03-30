@@ -244,7 +244,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
      **/
     public function testFindAllWithFiltersShouldFilterByExactPopulation()
     {
-        $expectedPopulation = 77000;
+        $expectedPopulation = 44000;
         $country = new \QueryGenerators\Country(array('population' => $expectedPopulation));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
@@ -618,138 +618,6 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         foreach ($data as $countryData) {
             $expectedImageURL = "http://www.joshuaproject.net/images/scale".round($countryData['JPScaleCtry']).".jpg";
             $this->assertEquals(strtolower($countryData['JPScaleImageURL']), $expectedImageURL);
-        }
-    }
-    /**
-     * findAllWithFilters() should filter countries by percent of Anglican
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByPCAnglican()
-    {
-        $expectedMin = 30;
-        $expectedMax = 34;
-        $country = new \QueryGenerators\Country(array('pc_anglican' => $expectedMin . '-' . $expectedMax));
-        $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentAnglican']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentAnglican']));
-        }
-    }
-    /**
-     * findAllWithFilters() should filter countries by percent of Independent
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByPCIndependent()
-    {
-        $expectedMin = 83;
-        $expectedMax = 90.1;
-        $country = new \QueryGenerators\Country(array('pc_independent' => $expectedMin . '-' . $expectedMax));
-        $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentIndependent']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentIndependent']));
-        }
-    }
-    /**
-     * findAllWithFilters() should filter countries by percent of Protestant
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByPCProtestant()
-    {
-        $expectedMin = 83;
-        $expectedMax = 90.1;
-        $country = new \QueryGenerators\Country(array('pc_protestant' => $expectedMin . '-' . $expectedMax));
-        $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentProtestant']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentProtestant']));
-        }
-    }
-    /**
-     * findAllWithFilters() should filter countries by percent of Orthodox
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByPCOrthodox()
-    {
-        $expectedMin = 94;
-        $expectedMax = 97;
-        $country = new \QueryGenerators\Country(array('pc_orthodox' => $expectedMin . '-' . $expectedMax));
-        $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentOrthodox']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentOrthodox']));
-        }
-    }
-    /**
-     * findAllWithFilters() should filter countries by percent of Roman Catholic
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByPCRCatholic()
-    {
-        $expectedMin = 84;
-        $expectedMax = 87;
-        $country = new \QueryGenerators\Country(array('pc_rcatholic' => $expectedMin . '-' . $expectedMax));
-        $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentRomanCatholic']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentRomanCatholic']));
-        }
-    }
-    /**
-     * findAllWithFilters() should filter countries by percent of Other Christians
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByPercentOtherChristians()
-    {
-        $expectedMin = 33;
-        $expectedMax = 34;
-        $country = new \QueryGenerators\Country(array('pc_other_christian' => $expectedMin . '-' . $expectedMax));
-        $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentOther']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentOther']));
         }
     }
 }

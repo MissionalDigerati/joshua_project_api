@@ -1,3 +1,32 @@
+Unreleased
+
+The following items were removed because the data was outdated:
+
+REMOVED PercentAnglican from all countries endpoints.
+REMOVED pc_anglican argument from /countries endpoint.
+REMOVED PercentIndependent from all countries endpoints.
+REMOVED pc_independent argument from /countries endpoint.
+REMOVED PercentProtestant from all countries endpoints.
+REMOVED pc_protestant argument from /countries endpoint.
+REMOVED PercentOrthodox from all countries endpoints.
+REMOVED pc_orthodox argument from /countries endpoint.
+REMOVED PercentRomanCatholic from all countries endpoints.
+REMOVED pc_rcatholic argument from /countries endpoint.
+REMOVED PercentOther from all countries endpoints.
+REMOVED pc_other_christian argument from /countries endpoint.
+REMOVED PCAnglican from all people_groups endpoints.
+REMOVED pc_anglican argument from /people_groups endpoint.
+REMOVED PCIndependent from all people_groups endpoints.
+REMOVED pc_independent argument from /people_groups endpoint.
+REMOVED PCProtestant from all people_groups endpoints.
+REMOVED pc_protestant argument from /people_groups endpoint.
+REMOVED PCOrthodox from all people_groups endpoints.
+REMOVED pc_orthodox argument from /people_groups endpoint.
+REMOVED PCRomanCatholic from all people_groups endpoints.
+REMOVED pc_rcatholic argument from /people_groups endpoint.
+REMOVED PCOtherChristian from all people_groups endpoints.
+REMOVED pc_other_christian argument from /people_groups endpoint.
+
 Version 1.4.0
 
 Minor fix to API keys.  Updated the URL for documentation.
