@@ -16,6 +16,8 @@ REMOVED PCAnglican from all people_groups endpoints.
 REMOVED pc_anglican argument from /people_groups endpoint.
 REMOVED PCIndependent from all people_groups endpoints.
 REMOVED pc_independent argument from /people_groups endpoint.
+REMOVED PCProtestant from all people_groups endpoints.
+REMOVED pc_protestant argument from /people_groups endpoint.
 
 Version 1.4.0
 

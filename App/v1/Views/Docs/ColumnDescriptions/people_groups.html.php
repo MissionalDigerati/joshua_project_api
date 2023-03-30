@@ -232,10 +232,6 @@
                     <td>Percent of people in group who practice Other or Smaller Religions</td>
                 </tr>
                 <tr>
-                    <td>PCProtestant</td>
-                    <td>Percent of people in group who are Protestant</td>
-                </tr>
-                <tr>
                     <td>PCRomanCatholic</td>
                     <td>Percent of people in group who are Roman Catholic</td>
                 </tr>

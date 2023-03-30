@@ -1139,28 +1139,28 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     }
     /**
      * GET /people_groups.json?pc_protestant=55.5-87.77
-     * test page filters by percentage of Protestants
+     * test page no longer supports percentage of Protestants
      *
      * @return void
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfProtestants()
+    public function testIndexRequestsShouldReturnUnsupportedPercentageOfProtestants()
     {
-        $expectedPercentMin = 55.5;
-        $expectedPercentMax = 87.77;
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_protestant' => $expectedPercentMin . "-" . $expectedPercentMax),
+            array('api_key' => $this->APIKey, 'pc_protestant' => "55.5-87.7"),
             "filter_by_percent_protestant_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
-        $this->assertFalse(empty($decodedResponse));
-        foreach ($decodedResponse as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCProtestant']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCProtestant']));
-        }
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse['api']));
+        $this->assertEquals('error', $decodedResponse['api']['status']);
+        $this->assertFalse(empty($decodedResponse['api']['error']));
+        $this->assertEquals(
+            'Sorry, these parameters are no longer supported: pc_protestant',
+            $decodedResponse['api']['error']['details']
+        );
     }
     /**
      * GET /people_groups.json?pc_orthodox=31.4-56.7

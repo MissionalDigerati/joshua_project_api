@@ -65,7 +65,7 @@ class PeopleGroup extends QueryGenerator
         'JPScale', 'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedBasis', 'LeastReachedPC',
         'LeastReachedPGAC', 'GSEC', 'Unengaged', 'JF', 'AudioRecordings', 'NTOnline', 'GospelRadio', 'RLG3', 'RLG3PC',
         'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC', 'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision',
-        'PCIslam', 'PCNonReligious', 'PCUnknown', 'PCProtestant', 'PCOrthodox',
+        'PCIslam', 'PCNonReligious', 'PCUnknown', 'PCOrthodox',
         'PCOtherChristian', 'SecurityLevel', 'RaceCode', 'LRTop100', 'PhotoAddress', 'PhotoWidth',
         'PhotoHeight', 'PhotoCredits', 'PhotoCreditURL', 'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission',
         'ProfileTextExists', 'Top10Ranking', 'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation',
@@ -404,17 +404,6 @@ class PeopleGroup extends QueryGenerator
                 $this->providedParams['pc_other_religion'],
                 'PCOtherSmall',
                 'pc_other_religion'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_protestant')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_protestant'],
-                'PCProtestant',
-                'pc_protestant'
             );
             $appendAndOnWhere = true;
         }

@@ -76,7 +76,7 @@ class Unreached extends PeopleGroup
         'jppeoples.Unengaged', 'jppeoples.RLG3PC', 'jppeoples.RLG3PGAC', 'jppeoples.PrimaryReligionPC',
         'jppeoples.PrimaryReligionPGAC', 'jppeoples.RLG4', 'jppeoples.ReligionSubdivision', 'jppeoples.PCIslam',
         'jppeoples.PCNonReligious', 'jppeoples.PCUnknown',
-        'jppeoples.PCProtestant', 'jppeoples.PCOrthodox', 'jppeoples.PCOtherChristian', 'jppeoples.SecurityLevel',
+        'jppeoples.PCOrthodox', 'jppeoples.PCOtherChristian', 'jppeoples.SecurityLevel',
         'jppeoples.RaceCode', 'jppeoples.LRTop100', 'jppeoples.PhotoWidth', 'jppeoples.PhotoHeight',
         'jppeoples.ProfileTextExists', 'jppeoples.Top10Ranking', 'jppeoples.RankOverall', 'jppeoples.RankProgress',
         'jppeoples.RankPopulation', 'jppeoples.RankLocation', 'jppeoples.RankMinistryTools',
