@@ -769,28 +769,27 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     }
     /**
      * GET /countries.json?pc_orthodox=70-74
-     * test page filters by a range of percentage of Orthodox
+     * test page no longer supports percentage of Orthodox
      *
      * @return void
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCOrthodox()
+    public function testIndexRequestsShouldReturnUnsupportedPCOrthodoxForCountries()
     {
-        $expectedMin = 70;
-        $expectedMax = 74;
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_orthodox' => $expectedMin . '-' . $expectedMax),
+            array('api_key' => $this->APIKey, 'pc_orthodox' => '70-74'),
             "filter_by_range_pc_orthodox_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
-        $this->assertFalse(empty($decodedResponse));
-        foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentOrthodox']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentOrthodox']));
-        }
+        $this->assertFalse(empty($decodedResponse['api']));
+        $this->assertEquals('error', $decodedResponse['api']['status']);
+        $this->assertFalse(empty($decodedResponse['api']['error']));
+        $this->assertEquals(
+            'Sorry, these parameters are no longer supported: pc_orthodox',
+            $decodedResponse['api']['error']['details']
+        );
     }
     /**
      * GET /countries.json?pc_rcatholic=20-25

@@ -57,13 +57,12 @@ class Country extends QueryGenerator
      * @access  protected
      */
     protected $fieldsToSelectArray = array('JPScaleCtry', 'Ctry', 'ReligionPrimary', 'RLG3Primary', 'RLG4Primary',
-        'ROG2', 'ROG3', 'PercentBuddhism', 'PercentChristianity', 'PercentEthnicReligions',
-        'PercentEvangelical', 'PercentHinduism', 'PercentIslam', 'PercentNonReligious',
-        'PercentOtherSmall', 'PercentOrthodox', 'PercentOther', 'PercentRomanCatholic',
-        'PercentUnknown', 'ROL3OfficialLanguage', 'ROL3SecondaryLanguage', 'RLG3Primary', 'RegionCode',
-        'InternetCtryCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'AltName', 'Capital', 'Population',
-        'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles', 'SecurityLevel', 'ReligionDataYear',
-        'LiteracyRate', 'LiteracySource', 'HDIYear', 'HDIValue',
+        'ROG2', 'ROG3', 'PercentBuddhism', 'PercentChristianity', 'PercentEthnicReligions', 'PercentEvangelical',
+        'PercentHinduism', 'PercentIslam', 'PercentNonReligious', 'PercentOtherSmall', 'PercentOther',
+        'PercentRomanCatholic', 'PercentUnknown', 'ROL3OfficialLanguage', 'ROL3SecondaryLanguage',
+        'RLG3Primary', 'RegionCode', 'InternetCtryCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName',
+        'AltName', 'Capital', 'Population', 'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles',
+        'SecurityLevel', 'ReligionDataYear', 'LiteracyRate', 'LiteracySource', 'HDIYear', 'HDIValue',
         'HDIRank', 'StateDeptReligiousFreedom', 'UNMap', 'PercentUrbanized', 'PrayercastVideo',
         'WINCountryProfile', 'CntPeoples', 'CntPeoplesLR');
     /**
@@ -261,17 +260,6 @@ class Country extends QueryGenerator
                 $this->providedParams['pc_other_religion'],
                 'PercentOtherSmall',
                 'pc_other_religion'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_orthodox')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_orthodox'],
-                'PercentOrthodox',
-                'pc_orthodox'
             );
             $appendAndOnWhere = true;
         }

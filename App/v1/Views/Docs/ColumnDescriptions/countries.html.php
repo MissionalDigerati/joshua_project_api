@@ -108,10 +108,6 @@
                     <td>Percent of people in this country who are Non-Religious</td>
                 </tr>
                 <tr>
-                    <td>PercentOrthodox</td>
-                    <td>Percent of people in this country who are Orthodox</td>
-                </tr>
-                <tr>
                     <td>PercentOther</td>
                     <td>Percent of people in this country who are another forms of Christian</td>
                 </tr>
