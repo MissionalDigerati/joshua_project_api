@@ -733,6 +733,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
             "filter_by_range_pc_independent_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse['api']));
         $this->assertEquals('error', $decodedResponse['api']['status']);
         $this->assertFalse(empty($decodedResponse['api']['error']));
@@ -759,6 +760,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
             "filter_by_range_pc_protestant_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse['api']));
         $this->assertEquals('error', $decodedResponse['api']['status']);
         $this->assertFalse(empty($decodedResponse['api']['error']));
@@ -783,6 +785,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
             "filter_by_range_pc_orthodox_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse['api']));
         $this->assertEquals('error', $decodedResponse['api']['status']);
         $this->assertFalse(empty($decodedResponse['api']['error']));
@@ -807,6 +810,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
             "filter_by_range_pc_rcatholic_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse['api']));
         $this->assertEquals('error', $decodedResponse['api']['status']);
         $this->assertFalse(empty($decodedResponse['api']['error']));
@@ -831,6 +835,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
             "filter_by_range_pc_other_christian_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse['api']));
         $this->assertEquals('error', $decodedResponse['api']['status']);
         $this->assertFalse(empty($decodedResponse['api']['error']));
