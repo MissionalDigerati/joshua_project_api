@@ -701,11 +701,9 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      */
     public function testIndexRequestsShouldReturnUnsupportedPCAnglicanForCountries()
     {
-        $expectedMin = 20;
-        $expectedMax = 25;
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_anglican' => $expectedMin . '-' . $expectedMax),
+            array('api_key' => $this->APIKey, 'pc_anglican' => '20-25'),
             "filter_by_range_pc_anglican_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -729,11 +727,9 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
      */
     public function testIndexRequestsShouldReturnUnsupportedPCIndependentForCountries()
     {
-        $expectedMin = 20;
-        $expectedMax = 25;
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_independent' => $expectedMin . '-' . $expectedMax),
+            array('api_key' => $this->APIKey, 'pc_independent' => '20-25'),
             "filter_by_range_pc_independent_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -747,28 +743,29 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     }
     /**
      * GET /countries.json?pc_protestant=10-15
-     * test page filters by a range of percentage of Protestant
+     * test page no longer supports percentage of Protestant
      *
      * @return void
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCProtestant()
+    public function testIndexRequestsShouldReturnUnsupportedPCProtestantForCountries()
     {
         $expectedMin = 10;
         $expectedMax = 15;
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_protestant' => $expectedMin . '-' . $expectedMax),
+            array('api_key' => $this->APIKey, 'pc_protestant' => '10-15'),
             "filter_by_range_pc_protestant_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
-        $this->assertFalse(empty($decodedResponse));
-        foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentProtestant']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentProtestant']));
-        }
+        $this->assertFalse(empty($decodedResponse['api']));
+        $this->assertEquals('error', $decodedResponse['api']['status']);
+        $this->assertFalse(empty($decodedResponse['api']['error']));
+        $this->assertEquals(
+            'Sorry, these parameters are no longer supported: pc_protestant',
+            $decodedResponse['api']['error']['details']
+        );
     }
     /**
      * GET /countries.json?pc_orthodox=70-74

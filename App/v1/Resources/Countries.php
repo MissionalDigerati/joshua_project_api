@@ -371,7 +371,7 @@ $app->get(
     function ($version, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
         $data = array();
         $gotCachedData = false;
-        $noLongerSupportedParams = array('pc_anglican', 'pc_independent');
+        $noLongerSupportedParams = array('pc_anglican', 'pc_independent', 'pc_protestant');
         $requestKeys = array_keys($appRequest->params());
         $check = array_intersect($requestKeys, $noLongerSupportedParams);
         if (!empty($check)) {
