@@ -271,7 +271,6 @@
         "PCIslam": "0",
         "PCNonReligious": "0",
         "PCUnknown": "0",
-        "PCAnglican": "0",
         "PCIndependent": "0",
         "PCProtestant": "70",
         "PCOrthodox": "0",
@@ -544,7 +543,6 @@
             &lt;PCIslam&gt;0&lt;/PCIslam&gt;
             &lt;PCNonReligious&gt;0&lt;/PCNonReligious&gt;
             &lt;PCUnknown&gt;0&lt;/PCUnknown&gt;
-            &lt;PCAnglican&gt;0&lt;/PCAnglican&gt;
             &lt;PCIndependent&gt;0&lt;/PCIndependent&gt;
             &lt;PCProtestant&gt;70&lt;/PCProtestant&gt;
             &lt;PCOrthodox&gt;0&lt;/PCOrthodox&gt;

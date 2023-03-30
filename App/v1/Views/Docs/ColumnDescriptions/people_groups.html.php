@@ -178,10 +178,6 @@
                         countries</td>
                 </tr>
                 <tr>
-                    <td>PCAnglican</td>
-                    <td>Percent of people in group who are Anglican</td>
-                </tr>
-                <tr>
                     <td>PCBuddhism</td>
                     <td>Percent of people in group who are Buddhist</td>
                 </tr>
