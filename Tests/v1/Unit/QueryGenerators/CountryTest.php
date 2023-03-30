@@ -244,7 +244,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
      **/
     public function testFindAllWithFiltersShouldFilterByExactPopulation()
     {
-        $expectedPopulation = 77000;
+        $expectedPopulation = 44000;
         $country = new \QueryGenerators\Country(array('population' => $expectedPopulation));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
