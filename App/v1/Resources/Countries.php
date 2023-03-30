@@ -202,14 +202,6 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
- *                  name="pc_anglican",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Anglicans.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
  *                  name="pc_buddhist",
  *                  description="A dashed seperated range specifying the minimum and maximum percentage of Buddhist.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
@@ -387,6 +379,19 @@ $app->get(
     function ($version, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
         $data = array();
         $gotCachedData = false;
+        $noLongerSupportedParams = array('pc_anglican');
+        $requestKeys = array_keys($appRequest->params());
+        $check = array_intersect($requestKeys, $noLongerSupportedParams);
+        if (!empty($check)) {
+            $unsupported = join(', ', $check);
+            $app->render(
+                "/errors/400." . $format . ".php",
+                array(
+                    "details" => "Sorry, these parameters are no longer supported: " . $unsupported
+                )
+            );
+            exit;
+        }
         if ($useCaching === true) {
             /**
              * Check the cache

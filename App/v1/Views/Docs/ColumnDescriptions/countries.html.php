@@ -80,10 +80,6 @@
                     <td>Literacy source</td>
                 </tr>
                 <tr>
-                    <td>PercentAnglican</td>
-                    <td>Percent of people in this country who are Christian Anglican</td>
-                </tr>
-                <tr>
                     <td>PercentBuddhism</td>
                     <td>Percent of people in this country who are Buddhist</td>
                 </tr>

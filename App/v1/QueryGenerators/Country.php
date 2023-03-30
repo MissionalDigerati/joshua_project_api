@@ -57,7 +57,7 @@ class Country extends QueryGenerator
      * @access  protected
      */
     protected $fieldsToSelectArray = array('JPScaleCtry', 'Ctry', 'ReligionPrimary', 'RLG3Primary', 'RLG4Primary',
-        'ROG2', 'ROG3', 'PercentAnglican', 'PercentBuddhism', 'PercentChristianity', 'PercentEthnicReligions',
+        'ROG2', 'ROG3', 'PercentBuddhism', 'PercentChristianity', 'PercentEthnicReligions',
         'PercentEvangelical', 'PercentHinduism', 'PercentIndependent', 'PercentIslam', 'PercentNonReligious',
         'PercentOtherSmall', 'PercentOrthodox', 'PercentOther', 'PercentProtestant', 'PercentRomanCatholic',
         'PercentUnknown', 'ROL3OfficialLanguage', 'ROL3SecondaryLanguage', 'RLG3Primary', 'RegionCode',
@@ -174,17 +174,6 @@ class Country extends QueryGenerator
                 $where .= " AND ";
             }
             $where .= $this->generateInStatementFromPipedString($this->providedParams['jpscale'], 'JPScaleCtry');
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_anglican')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_anglican'],
-                'PercentAnglican',
-                'pc_anglican'
-            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('pc_buddhist')) {

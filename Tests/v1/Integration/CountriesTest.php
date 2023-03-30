@@ -693,13 +693,13 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
     }
     /**
      * GET /countries.json?pc_anglicans=20-25
-     * test page filters by a range of percentage of Anglicals
+     * test page api no longer supports percentage of Anglicals
      *
      * @return void
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCAnglican()
+    public function testIndexRequestsShouldReturnUnsupportedPCAnglicanForCountries()
     {
         $expectedMin = 20;
         $expectedMax = 25;
@@ -709,12 +709,15 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
             "filter_by_range_pc_anglican_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
-        foreach ($decodedResponse as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentAnglican']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentAnglican']));
-        }
+        $this->assertFalse(empty($decodedResponse['api']));
+        $this->assertEquals('error', $decodedResponse['api']['status']);
+        $this->assertFalse(empty($decodedResponse['api']['error']));
+        $this->assertEquals(
+            'Sorry, these parameters are no longer supported: pc_anglican',
+            $decodedResponse['api']['error']['details']
+        );
     }
     /**
      * GET /countries.json?pc_independent=20-25
