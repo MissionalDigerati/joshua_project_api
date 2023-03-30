@@ -520,14 +520,6 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
- *                  name="pc_other_christian",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Other Christian Denominations.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
  *                  name="pc_other_religion",
  *                  description="A dashed seperated range specifying the minimum and maximum percentage of Other Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
  *                  paramType="query",
@@ -658,7 +650,8 @@ $app->get(
         $data = array();
         $gotCachedData = false;
         $noLongerSupportedParams = array(
-            'pc_anglican', 'pc_independent', 'pc_protestant', 'pc_orthodox', 'pc_rcatholic'
+            'pc_anglican', 'pc_independent', 'pc_protestant', 'pc_orthodox', 'pc_rcatholic',
+            'pc_other_christian'
         );
         $requestKeys = array_keys($appRequest->params());
         $check = array_intersect($requestKeys, $noLongerSupportedParams);

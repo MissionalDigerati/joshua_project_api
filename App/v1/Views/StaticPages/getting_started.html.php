@@ -271,7 +271,6 @@
         "PCIslam": "0",
         "PCNonReligious": "0",
         "PCUnknown": "0",
-        "PCOtherChristian": "0",
         "StonyGround": "Y",
         "SecurityLevel": "2",
         "RaceCode": "AUG03z",
@@ -539,7 +538,6 @@
             &lt;PCIslam&gt;0&lt;/PCIslam&gt;
             &lt;PCNonReligious&gt;0&lt;/PCNonReligious&gt;
             &lt;PCUnknown&gt;0&lt;/PCUnknown&gt;
-            &lt;PCOtherChristian&gt;0&lt;/PCOtherChristian&gt;
             &lt;StonyGround&gt;Y&lt;/StonyGround&gt;
             &lt;SecurityLevel&gt;2&lt;/SecurityLevel&gt;
             &lt;RaceCode&gt;AUG03z&lt;/RaceCode&gt;

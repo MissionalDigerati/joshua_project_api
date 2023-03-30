@@ -65,8 +65,7 @@ class PeopleGroup extends QueryGenerator
         'JPScale', 'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedBasis', 'LeastReachedPC',
         'LeastReachedPGAC', 'GSEC', 'Unengaged', 'JF', 'AudioRecordings', 'NTOnline', 'GospelRadio', 'RLG3', 'RLG3PC',
         'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC', 'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision',
-        'PCIslam', 'PCNonReligious', 'PCUnknown',
-        'PCOtherChristian', 'SecurityLevel', 'RaceCode', 'LRTop100', 'PhotoAddress', 'PhotoWidth',
+        'PCIslam', 'PCNonReligious', 'PCUnknown', 'SecurityLevel', 'RaceCode', 'LRTop100', 'PhotoAddress', 'PhotoWidth',
         'PhotoHeight', 'PhotoCredits', 'PhotoCreditURL', 'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission',
         'ProfileTextExists', 'Top10Ranking', 'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation',
         'RankMinistryTools', 'CountOfCountries', 'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'Longitude',
@@ -371,17 +370,6 @@ class PeopleGroup extends QueryGenerator
                 $this->providedParams['pc_non_religious'],
                 'PCNonReligious',
                 'pc_non_religious'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_other_christian')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_other_christian'],
-                'PCOtherChristian',
-                'pc_other_christian'
             );
             $appendAndOnWhere = true;
         }
