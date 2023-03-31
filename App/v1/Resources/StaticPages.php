@@ -33,7 +33,8 @@ use Slim\Http\Response;
  */
 $app->get(
     "/",
-    function (Request $req, Response $res, $args = []) use ($VIEW_DIRECTORY) {
+    function (Request $req, Response $res, $args = []) {
+        $viewDirectory = $this->view->getTemplatePath();
         $data = $req->getQueryParams();
         $errors = array();
         if ((isset($data['required_fields'])) && ($data['required_fields'] !="")) {
@@ -42,7 +43,7 @@ $app->get(
         return $this->view->render(
             $res,
             'StaticPages/home.html.php',
-            array('data' => $data, 'errors' => $errors, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
+            array('data' => $data, 'errors' => $errors, 'viewDirectory' => $viewDirectory)
         );
     }
 );
@@ -56,11 +57,12 @@ $app->get(
  */
 $app->get(
     "/getting_started",
-    function (Request $req, Response $res, $args = []) use ($DOMAIN_ADDRESS, $VIEW_DIRECTORY) {
+    function (Request $req, Response $res, $args = []) use ($DOMAIN_ADDRESS) {
+        $viewDirectory = $this->view->getTemplatePath();
         return $this->view->render(
             $res,
             'StaticPages/getting_started.html.php',
-            array('DOMAIN_ADDRESS' => $DOMAIN_ADDRESS, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
+            array('DOMAIN_ADDRESS' => $DOMAIN_ADDRESS, 'viewDirectory' => $viewDirectory)
         );
     }
 );
@@ -73,7 +75,8 @@ $app->get(
  */
 $app->get(
     "/get_my_api_key",
-    function (Request $req, Response $res, $args = []) use ($VIEW_DIRECTORY) {
+    function (Request $req, Response $res, $args = []) {
+        $viewDirectory = $this->view->getTemplatePath();
         $APIKey = "";
         $message = "";
         $error = "";
@@ -119,7 +122,7 @@ $app->get(
         return $this->view->render(
             $res,
             'StaticPages/get_my_api_key.html.php',
-            array('message' => $message, 'error' => $error, 'APIKey' => $APIKey, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
+            array('message' => $message, 'error' => $error, 'APIKey' => $APIKey, 'viewDirectory' => $viewDirectory)
         );
     }
 );
@@ -132,11 +135,12 @@ $app->get(
  */
 $app->get(
     "/resend_activation_links",
-    function (Request $req, Response $res, $args = []) use ($VIEW_DIRECTORY) {
+    function (Request $req, Response $res, $args = []) {
+        $viewDirectory = $this->view->getTemplatePath();
         return $this->view->render(
             $res,
             'StaticPages/resend_activation_links.html.php',
-            array('VIEW_DIRECTORY' => $VIEW_DIRECTORY)
+            array('viewDirectory' => $viewDirectory)
         );
     }
 );
@@ -149,7 +153,8 @@ $app->get(
  */
 $app->post(
     "/resend_activation_links",
-    function (Request $req, Response $res, $args = []) use ($DOMAIN_ADDRESS, $VIEW_DIRECTORY) {
+    function (Request $req, Response $res, $args = []) use ($DOMAIN_ADDRESS) {
+        $viewDirectory = $this->view->getTemplatePath();
         $errors = array();
         $message = '';
         $formData = $req->getParsedBody();
@@ -174,7 +179,7 @@ $app->post(
         return $this->view->render(
             $res,
             'StaticPages/resend_activation_links.html.php',
-            array('errors' => $errors, 'data' => $formData, 'message' => $message, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
+            array('errors' => $errors, 'data' => $formData, 'message' => $message, 'viewDirectory' => $viewDirectory)
         );
     }
 );
