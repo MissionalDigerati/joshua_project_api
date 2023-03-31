@@ -99,7 +99,7 @@ $app->put(
  */
 $app->post(
     "/api_keys/new",
-    function (Request $req, Response $res, $args = []) use ($DOMAIN_ADDRESS) {
+    function (Request $req, Response $res, $args = []) {
         $formData = $req->getParsedBody();
         $invalidFields = validatePresenceOf(array("name", "email", "usage"), $formData);
         $redirectURL = generateRedirectURL("/", $formData, $invalidFields);
@@ -137,7 +137,8 @@ $app->post(
          *
          * @author Johnathan Pulos
          */
-        $authorizeUrl = $DOMAIN_ADDRESS . "/get_my_api_key?authorize_token=" . $authorizeToken;
+        $siteURL = getSiteURL();
+        $authorizeUrl = $siteURL . "/get_my_api_key?authorize_token=" . $authorizeToken;
         $this->mailer->sendAuthorizeToken($formData['email'], $authorizeUrl);
         $redirectURL = generateRedirectURL("/", array('api_key' => 'true'), array());
         return $res

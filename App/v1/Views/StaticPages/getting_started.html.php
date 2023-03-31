@@ -169,10 +169,10 @@
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Below is a typical request for data from the Joshua Project API.
                         In this example,  we will request the Joshua Project's unreached people group of the day for
                         January 11th.</p>
-    <pre><?php echo $DOMAIN_ADDRESS; ?>/v1/people_groups/daily_unreached.json?api_key=233f76f4c84e&month=01&day=11</pre>
+    <pre><?php echo $siteURL; ?>/v1/people_groups/daily_unreached.json?api_key=233f76f4c84e&month=01&day=11</pre>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is a breakdown of the URL structure:</p>
 <pre>
-<?php echo $DOMAIN_ADDRESS; ?>/[api_version_number]/[resource_path].[format]?api_key=[your_api_key]&[other_parameters]
+<?php echo $siteURL; ?>/[api_version_number]/[resource_path].[format]?api_key=[your_api_key]&[other_parameters]
 </pre>
                     <table id="url_definitions" class="table table-bordered">
                         <thead>
@@ -986,7 +986,7 @@ a#progress-scale-image img {
                         domain name, and your API key.  <strong>Remember to add your API key!</strong></p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    <span class="code_highlight">var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    <span class="code_highlight">var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";</span>
     jQuery(document).ready(function($) {
 
@@ -1009,7 +1009,7 @@ a#progress-scale-image img {
                         loaded:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         <span class="code_highlight">$.ajax({
@@ -1045,7 +1045,7 @@ a#progress-scale-image img {
                             <tr>
                                 <td>url</td>
                                 <td><strong>
-                                    <?php echo $DOMAIN_ADDRESS; ?>/v1/people_groups/daily_unreached.json
+                                    <?php echo $siteURL; ?>/v1/people_groups/daily_unreached.json
                                 </strong> - The URL of the web page to request. (See the
                                 <a href="#overview-url-structure">URL Structure</a> section)</td>
                             </tr>
@@ -1079,7 +1079,7 @@ a#progress-scale-image img {
                         error message at the top of the page.  Here is the updated code:</p>
                                         <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1131,7 +1131,7 @@ a#progress-scale-image img {
                         ).  Here is the code:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1163,7 +1163,7 @@ a#progress-scale-image img {
                     first object of the array (<code>data[0]</code>) like this:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1335,7 +1335,7 @@ a#progress-scale-image img {
                         code:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1425,7 +1425,7 @@ a#progress-scale-image img {
                         Here is the code:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1509,7 +1509,7 @@ a#progress-scale-image img {
                         Here is the code:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1586,7 +1586,7 @@ a#progress-scale-image img {
                          element.  Here is the code:<p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1660,7 +1660,7 @@ a#progress-scale-image img {
         Regular Expressions</a> to format it.  Here is the code:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1712,7 +1712,7 @@ a#progress-scale-image img {
                         element.</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1843,7 +1843,7 @@ a#progress-scale-image img {
                         widget when we finished setting it up.</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1916,7 +1916,7 @@ a#progress-scale-image img {
                         the following code to the top of the <code>index.php</code> file:</p>
                     <pre>
 &lt;?php
-<span class="code_highlight">$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+<span class="code_highlight">$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;</span>
 ?&gt;
@@ -1934,7 +1934,7 @@ $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;</
                         <a href="http://www.php.net/manual/en/function.curl-init.php" target="_blank">PHP DOCS</a>).</p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 <span class="code_highlight">/**
@@ -1951,7 +1951,7 @@ $ch = curl_init();</span>
                     </p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -1985,7 +1985,7 @@ curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');</span>
                                 <td><code>CURLOPT_URL</code></td>
                                 <td>The URL to fetch</td>
                                 <td>
-                            <?php echo $DOMAIN_ADDRESS; ?>/v1/people_groups/daily_unreached.json?api_key=YOUR_API_KEY
+                            <?php echo $siteURL; ?>/v1/people_groups/daily_unreached.json?api_key=YOUR_API_KEY
                                 </td>
                             </tr>
                             <tr>
@@ -2014,7 +2014,7 @@ curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');</span>
                         can access the JSON response.</p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -2046,7 +2046,7 @@ $result = curl_exec($ch) or die(curl_error($ch));</span>
                     </p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -2082,7 +2082,7 @@ curl_close($ch);</span>
                         to verify we have the data.  We will remove this code before moving forward.</p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -2133,7 +2133,7 @@ exit();</span>
     <a href="http://php.net/manual/en/function.json-decode.php" target="_blank">PHP DOCS</a>)</p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -2178,7 +2178,7 @@ $decoded_json = json_decode($result, true);</span>
     PHP Docs</a>) to do the check.</p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -2226,7 +2226,7 @@ $decoded_json = json_decode($result, true);
     <code>$decoded_json[0]</code>.  We will set this to a variable for easy access.</p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -2284,7 +2284,7 @@ $unreached = $decoded_json[0];</span>
                         null.  Here is the code:</p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -2518,7 +2518,7 @@ import urllib.error
 import string
 import sys
 <span class="code_highlight"># set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key</span>
                     </pre>
@@ -2537,7 +2537,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 <span class="code_highlight">try:
@@ -2569,7 +2569,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -2598,7 +2598,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -2633,7 +2633,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -2668,7 +2668,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -2706,7 +2706,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -2750,7 +2750,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -2790,7 +2790,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -2945,7 +2945,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -2989,7 +2989,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -3036,7 +3036,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -3089,7 +3089,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:

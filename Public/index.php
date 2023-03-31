@@ -50,17 +50,6 @@ date_default_timezone_set('America/Denver');
  */
 $useCaching = false;
 $googleDocTitle = '';
-$DOMAIN_ADDRESS = $_SERVER['SERVER_NAME'];
-if ((substr_compare($DOMAIN_ADDRESS, "http://", 0, 7)) !== 0) {
-    $DOMAIN_ADDRESS = "http://" . $DOMAIN_ADDRESS;
-}
-if (strpos($DOMAIN_ADDRESS, 'joshua.api.local') !== false) {
-    $GOOGLE_TRACKING_ID = 'UA-49359140-2';
-} elseif (strpos($DOMAIN_ADDRESS, 'jpapi.codingstudio.org') !== false) {
-    $GOOGLE_TRACKING_ID = 'UA-49359140-1';
-} else {
-    $GOOGLE_TRACKING_ID = '';
-}
 /**
  * Lets get the version of the API based on the URL (
  * http://joshua.api.local/v12/people_groups/daily_unreached.json?api_key=37e24112caae
@@ -125,6 +114,14 @@ $app->add(new HttpBasicAuthentication($authSettings));
  * @author Johnathan Pulos
  */
 require($APP_FILES_DIRECTORY . $DS . "Includes" . $DS . "CommonFunctions.php");
+$siteURL = getSiteURL();
+if (strpos($siteURL, 'joshua.api.local') !== false) {
+    $GOOGLE_TRACKING_ID = 'UA-49359140-2';
+} elseif (strpos($siteURL, 'jpapi.codingstudio.org') !== false) {
+    $GOOGLE_TRACKING_ID = 'UA-49359140-1';
+} else {
+    $GOOGLE_TRACKING_ID = '';
+}
 /**
  * Include our resources
  *

@@ -57,12 +57,13 @@ $app->get(
  */
 $app->get(
     "/getting_started",
-    function (Request $req, Response $res, $args = []) use ($DOMAIN_ADDRESS) {
+    function (Request $req, Response $res, $args = []) {
+        $siteURL = getSiteURL();
         $viewDirectory = $this->view->getTemplatePath();
         return $this->view->render(
             $res,
             'StaticPages/getting_started.html.php',
-            array('DOMAIN_ADDRESS' => $DOMAIN_ADDRESS, 'viewDirectory' => $viewDirectory)
+            array('siteURL' => $siteURL, 'viewDirectory' => $viewDirectory)
         );
     }
 );
@@ -153,8 +154,9 @@ $app->get(
  */
 $app->post(
     "/resend_activation_links",
-    function (Request $req, Response $res, $args = []) use ($DOMAIN_ADDRESS) {
+    function (Request $req, Response $res, $args = []) {
         $viewDirectory = $this->view->getTemplatePath();
+        $siteURL = getSiteURL();
         $errors = array();
         $message = '';
         $formData = $req->getParsedBody();
@@ -167,7 +169,7 @@ $app->post(
                 if (empty($data)) {
                     $errors['find_keys'] = "We were unable to locate your pending API keys.";
                 } else {
-                    $this->mailer->sendAuthorizationLinks($formData['email'], $data, $DOMAIN_ADDRESS, null);
+                    $this->mailer->sendAuthorizationLinks($formData['email'], $data, $siteURL);
                     $message = "Your activation links have been emailed to you.";
                 }
             } catch (Exception $e) {
