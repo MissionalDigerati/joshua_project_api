@@ -40,11 +40,10 @@ class Mailer
      *
      * @param   string      $email          The email address to send the email to.
      * @param   string      $authorizeUrl   The url for authorizing the email.
-     * @param   PHPMailer   $mail           The PHPMailer Object for sending the email.
      * @return  void
      * @author  Johnathan Pulos
      */
-    public static function sendAuthorizeToken($email, $authorizeUrl, $mail)
+    public static function sendAuthorizeToken($email, $authorizeUrl)
     {
         $mail = self::getMailInstance();
         $mail->Subject = 'Joshua Project API Key';
