@@ -90,15 +90,15 @@ $app->put(
     }
 );
 /**
- * Create an API key
+ * Create an API key (We appended /new so it can bypass auth requirement)
  *
- * POST /api_keys
+ * POST /api_keys/new
  * Available Formats HTML
  *
  * @author Johnathan Pulos
  */
 $app->post(
-    "/api_keys",
+    "/api_keys/new",
     function (Request $req, Response $res, $args = []) use ($db, $DOMAIN_ADDRESS) {
         $formData = $req->getParsedBody();
         $invalidFields = validatePresenceOf(array("name", "email", "usage"), $formData);
@@ -141,7 +141,6 @@ $app->post(
         Utilities\Mailer::sendAuthorizeToken($formData['email'], $authorizeUrl);
         $redirectURL = generateRedirectURL("/", array('api_key' => 'true'), array());
         return $res
-        ->withHeader('Location', $redirectURL)
-        ->withStatus(200);
+        ->withHeader('Location', $redirectURL);
     }
 );

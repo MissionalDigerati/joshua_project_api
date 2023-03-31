@@ -80,10 +80,10 @@ class Mailer
         $emailMessage .= "Please click the following links to activate your key:<br><br>";
         foreach ($apiKeys as $apiKey) {
             $authorizationUrl = $domain . "/get_my_api_key?authorize_token=" . $apiKey['authorize_token'];
-            $emailMessage .= $apiKey['api_usage'] . ":<br><br>";
-            $emailMessage .= "<a href='" . $authorizationUrl . "'>" . $authorizationUrl . "</a>";
+            $emailMessage .= $apiKey['api_usage'];
+            $emailMessage .= ": <a href='" . $authorizationUrl . "'>" . $authorizationUrl . "</a><br><br>";
         }
-        $emailMessage .= "<br><br>Take care, and God Bless.<br>Sincerely,<br>Joshua Project API";
+        $emailMessage .= "Take care, and God Bless.<br>Sincerely,<br>Joshua Project API";
         $mail->Body = $emailMessage;
         $mail->send();
     }

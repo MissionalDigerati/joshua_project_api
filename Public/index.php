@@ -104,7 +104,8 @@ $container['view'] = new PhpRenderer($VIEW_DIRECTORY);
  */
 $adminSettings = new \JPAPI\AdminSettings();
 $authSettings = array(
-    'path'  =>  array('/api_keys')
+    'path'  =>  array('/api_keys'),
+    'passthrough'   =>  array('/api_keys/new')
 );
 $authSettings['users'][$adminSettings->default['username']] = $adminSettings->default['password'];
 $app->add(new HttpBasicAuthentication($authSettings));

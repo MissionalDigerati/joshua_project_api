@@ -133,7 +133,7 @@ if ((isset($data['api_key'])) && ($data['api_key'] == 'true')) {
                 </div>
                 <p>If you would like to get an API key, please complete the form below and verify your email
                     address.</p>
-                <form class="form-horizontal" method="POST" action="api_keys" role="form">
+                <form class="form-horizontal" method="POST" action="/api_keys/new" role="form">
                     <fieldset>
 <?php
 if ((!empty($errors)) && (in_array('name', $errors))) {

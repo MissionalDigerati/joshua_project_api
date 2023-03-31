@@ -20,6 +20,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+use Slim\Http\Request;
+use Slim\Http\Response;
+
 /**
  * Get the home page
  *
@@ -30,13 +33,14 @@
  */
 $app->get(
     "/",
-    function () use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
-        $data = $appRequest->get();
+    function (Request $req, Response $res, $args = []) use ($VIEW_DIRECTORY) {
+        $data = $req->getQueryParams();
         $errors = array();
         if ((isset($data['required_fields'])) && ($data['required_fields'] !="")) {
             $errors = explode("|", $data['required_fields']);
         }
-        $app->render(
+        return $this->view->render(
+            $res,
             'StaticPages/home.html.php',
             array('data' => $data, 'errors' => $errors, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
         );
@@ -52,8 +56,9 @@ $app->get(
  */
 $app->get(
     "/getting_started",
-    function () use ($app, $db, $appRequest, $DOMAIN_ADDRESS, $VIEW_DIRECTORY) {
-        $app->render(
+    function (Request $req, Response $res, $args = []) use ($DOMAIN_ADDRESS, $VIEW_DIRECTORY) {
+        return $this->view->render(
+            $res,
             'StaticPages/getting_started.html.php',
             array('DOMAIN_ADDRESS' => $DOMAIN_ADDRESS, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
         );
@@ -68,17 +73,17 @@ $app->get(
  */
 $app->get(
     "/get_my_api_key",
-    function () use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
+    function (Request $req, Response $res, $args = []) use ($db, $VIEW_DIRECTORY) {
         $APIKey = "";
         $message = "";
         $error = "";
-        $getData = $appRequest->get();
-        if ($getData['authorize_token'] == '') {
+        $token = $req->getParam('authorize_token');
+        if ($token == '') {
             $error = "Unable to locate your API key.";
         } else {
             try {
                 $statement = $db->prepare("SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token");
-                $statement->execute(array('authorize_token' => $getData['authorize_token']));
+                $statement->execute(array('authorize_token' => $token));
                 $data = $statement->fetchAll(PDO::FETCH_ASSOC);
             } catch (Exception $e) {
                 $error = "Unable to locate your API key.";
@@ -111,7 +116,8 @@ $app->get(
             }
         }
 
-        $app->render(
+        return $this->view->render(
+            $res,
             'StaticPages/get_my_api_key.html.php',
             array('message' => $message, 'error' => $error, 'APIKey' => $APIKey, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
         );
@@ -126,8 +132,12 @@ $app->get(
  */
 $app->get(
     "/resend_activation_links",
-    function () use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
-        $app->render('StaticPages/resend_activation_links.html.php', array('VIEW_DIRECTORY' => $VIEW_DIRECTORY));
+    function (Request $req, Response $res, $args = []) use ($VIEW_DIRECTORY) {
+        return $this->view->render(
+            $res,
+            'StaticPages/resend_activation_links.html.php',
+            array('VIEW_DIRECTORY' => $VIEW_DIRECTORY)
+        );
     }
 );
 /**
@@ -139,12 +149,12 @@ $app->get(
  */
 $app->post(
     "/resend_activation_links",
-    function () use ($app, $db, $appRequest, $DOMAIN_ADDRESS, $VIEW_DIRECTORY) {
+    function (Request $req, Response $res, $args = []) use ($db, $DOMAIN_ADDRESS, $VIEW_DIRECTORY) {
         $errors = array();
         $message = '';
-        $formData = $appRequest->post();
-        $errors = validatePresenceOf(array("email"), $formData);
-        if (empty($errors)) {
+        $formData = $req->getParsedBody();
+        $invalidFields = validatePresenceOf(array("email"), $formData);
+        if (empty($invalidFields)) {
             try {
                 $statement = $db->prepare("SELECT * FROM `md_api_keys` WHERE email = :email AND status = 0");
                 $statement->execute(array('email' => $formData['email']));
@@ -158,8 +168,11 @@ $app->post(
             } catch (Exception $e) {
                 $errors['find_keys'] = "We were unable to locate your pending API keys.";
             }
+        } else {
+            $errors['invalid'] = $invalidFields;
         }
-        $app->render(
+        return $this->view->render(
+            $res,
             'StaticPages/resend_activation_links.html.php',
             array('errors' => $errors, 'data' => $formData, 'message' => $message, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
         );
