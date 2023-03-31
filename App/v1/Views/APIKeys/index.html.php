@@ -94,7 +94,8 @@ foreach ($api_keys as $api_key) {
         <td><?php echo $api_key['api_key']; ?></td>
         <td><?php echo date("M j, Y g:i a", strtotime($api_key['created'])); ?></td>
         <td>
-            <form method="post" action="/api_keys/<?php echo $api_key['id']; ?>">
+            <form method="post" action="/api_keys/<?php echo $api_key['id']; ?>" 
+            enctype="application/x-www-form-urlencoded">
                 <input type="hidden" name="_METHOD" value="PUT">
     <?php
     if ($api_key['status'] == 2) {

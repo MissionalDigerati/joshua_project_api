@@ -1,4 +1,7 @@
 <?php
+use Slim\Http\Request;
+use Slim\Http\Response;
+
 /**
  * Joshua Project API - An API for accessing Joshua Project Data.
  *
@@ -30,8 +33,8 @@
  **/
 $app->get(
     "/api_keys",
-    function () use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
-        $data = $appRequest->get();
+    function (Request $req, Response $res, $args = []) use ($db, $VIEW_DIRECTORY) {
+        $data = $req->getQueryParams();
         $query = "SELECT * FROM md_api_keys ORDER BY created DESC";
         try {
             $statement = $db->prepare($query);
@@ -41,7 +44,8 @@ $app->get(
             echo $e;
             exit;
         }
-        $app->render(
+        return $this->view->render(
+            $res,
             'APIKeys/index.html.php',
             array('api_keys' => $api_keys, 'data' => $data, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
         );
@@ -57,11 +61,12 @@ $app->get(
  * @todo verify this works with the new status column
  **/
 $app->put(
-    "/api_keys/:id",
-    function ($id) use ($app, $db, $appRequest) {
-        $formData = $appRequest->put();
-        if (!isset($formData['state'])) {
-            $app->redirect("/api_keys?saving_error=true");
+    "/api_keys/{id}",
+    function (Request $req, Response $res, $args = []) use ($db) {
+        $id = $args['id'];
+        $state = $req->getParam('state');
+        if (!$state) {
+            return $res->withHeader('Location', "/api_keys?saving_error=true");
         }
         $query = "UPDATE md_api_keys SET status = :state WHERE id = :id";
         try {
@@ -69,18 +74,19 @@ $app->put(
             $statement->execute(
                 array(
                     'id' => $id,
-                    'state' => $formData['state']
+                    'state' => $state
                 )
             );
         } catch (PDOException $e) {
-            $app->redirect("/api_keys?saving_error=true");
+            return $res->withHeader('Location', "/api_keys?saving_error=true");
         }
-        if ($formData['state'] == 1) {
+        if (intval($state) === 1) {
             $keyState = "activated or reinstated";
-        } elseif ($formData['state'] == 2) {
+        } elseif (intval($state) === 2) {
             $keyState = "suspended";
         }
-        $app->redirect("/api_keys?saved=true&key_state=" . $keyState);
+        return $res
+        ->withHeader('Location', "/api_keys?saved=true&key_state=" . $keyState);
     }
 );
 /**
@@ -93,12 +99,12 @@ $app->put(
  */
 $app->post(
     "/api_keys",
-    function () use ($app, $db, $appRequest, $DOMAIN_ADDRESS) {
-        $formData = $appRequest->post();
+    function (Request $req, Response $res, $args = []) use ($db, $DOMAIN_ADDRESS) {
+        $formData = $req->getParsedBody();
         $invalidFields = validatePresenceOf(array("name", "email", "usage"), $formData);
         $redirectURL = generateRedirectURL("/", $formData, $invalidFields);
         if (!empty($invalidFields)) {
-            $app->redirect($redirectURL);
+            return $res->withHeader('Location', $redirectURL);
         }
         $newAPIKey = generateRandomKey(12);
         $authorizeToken = generateRandomKey(12);
@@ -124,7 +130,7 @@ $app->post(
             $statement = $db->prepare($query);
             $statement->execute($apiKeyValues);
         } catch (PDOException $e) {
-            $app->redirect("/?saving_error=true");
+            return $res->withHeader('Location', "/?saving_error=true");
         }
         /**
          * Send the email with the authorization url
@@ -132,8 +138,10 @@ $app->post(
          * @author Johnathan Pulos
          */
         $authorizeUrl = $DOMAIN_ADDRESS . "/get_my_api_key?authorize_token=" . $authorizeToken;
-        Utilities\Mailer::sendAuthorizeToken($formData['email'], $authorizeUrl, null);
+        Utilities\Mailer::sendAuthorizeToken($formData['email'], $authorizeUrl);
         $redirectURL = generateRedirectURL("/", array('api_key' => 'true'), array());
-        $app->redirect($redirectURL);
+        return $res
+        ->withHeader('Location', $redirectURL)
+        ->withStatus(200);
     }
 );

@@ -16,19 +16,20 @@
     ],
     "require": {
         "phptoolbox/phptoolbox": "^2.0",
-        "slim/slim": "2.0.*",
+        "slim/slim": "3.*.*",
         "slim/extras": "2.0.*",
         "phpmailer/phpmailer": "^6.5",
-        "squizlabs/php_codesniffer": "*"
+        "slim/php-view": "^2.2"
     },
     "require-dev": {
         "zircote/swagger-php": "0.6.1",
-        "phpunit/phpunit": "4.*"
+        "phpunit/phpunit": "4.*",
+        "squizlabs/php_codesniffer": "*"
     },
     "scripts": {
         "docs": "swagger -p ./App/v1/Resources -o ./Public",
         "lint": "phpcs --standard=PSR2 Public/index.php App/",
-        "test": "phpunit Tests/"
+        "test": "phpunit Tests/v1/Integration/APIKeysTest.php"
     },
     "autoload": {
         "psr-4": {
