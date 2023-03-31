@@ -19,6 +19,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+use Slim\Middleware\HttpBasicAuthentication;
 use Slim\Views\PhpRenderer;
 
 $DS = DIRECTORY_SEPARATOR;
@@ -98,6 +99,15 @@ $app = new \Slim\App([
 ]);
 $container = $app->getContainer();
 $container['view'] = new PhpRenderer($VIEW_DIRECTORY);
+/**
+ * Setup Basic Auth on specific routes
+ */
+$adminSettings = new \JPAPI\AdminSettings();
+$authSettings = array(
+    'path'  =>  array('/api_keys')
+);
+$authSettings['users'][$adminSettings->default['username']] = $adminSettings->default['password'];
+$app->add(new HttpBasicAuthentication($authSettings));
 $settings = new JPAPI\DatabaseSettings();
 $pdoDb = \PHPToolbox\PDODatabase\PDODatabaseConnect::getInstance();
 $pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings);
@@ -115,20 +125,6 @@ require($APP_FILES_DIRECTORY . $DS . "Includes" . $DS . "CommonFunctions.php");
  */
 require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "StaticPages.php");
 require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Docs.php");
-/**
- * We need to lock out all PUT and GET requests for api_keys.  These are the admin users.
- *
- * @author Johnathan Pulos
- **/
-// if (($appRequest->isGet()) || ($appRequest->isPut())) {
-//     $adminSettings = new \JPAPI\AdminSettings;
-//     $app->add(
-//         new Slim\Extras\Middleware\HttpBasicAuth(
-//             $adminSettings->default['username'],
-//             $adminSettings->default['password']
-//         )
-//     );
-// }
 require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "APIKeys.php");
 require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "PeopleGroups.php");
 require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Countries.php");

@@ -17,9 +17,9 @@
     "require": {
         "phptoolbox/phptoolbox": "^2.0",
         "slim/slim": "3.*.*",
-        "slim/extras": "2.0.*",
         "phpmailer/phpmailer": "^6.5",
-        "slim/php-view": "^2.2"
+        "slim/php-view": "^2.2",
+        "tuupola/slim-basic-auth": "^2.3"
     },
     "require-dev": {
         "zircote/swagger-php": "0.6.1",
