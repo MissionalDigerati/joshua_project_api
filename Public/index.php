@@ -97,8 +97,16 @@ $app = new \Slim\App([
         'whoops.editor'       => 'sublime',
     ]
 ]);
+/**
+ * Add several services to our container for easy use
+ */
 $container = $app->getContainer();
 $container['view'] = new PhpRenderer($VIEW_DIRECTORY);
+$container['db'] = function () {
+    $pdoDb = \PHPToolbox\PDODatabase\PDODatabaseConnect::getInstance();
+    $pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings());
+    return $pdoDb->getDatabaseInstance();
+};
 /**
  * Setup Basic Auth on specific routes
  */
@@ -109,10 +117,6 @@ $authSettings = array(
 );
 $authSettings['users'][$adminSettings->default['username']] = $adminSettings->default['password'];
 $app->add(new HttpBasicAuthentication($authSettings));
-$settings = new JPAPI\DatabaseSettings();
-$pdoDb = \PHPToolbox\PDODatabase\PDODatabaseConnect::getInstance();
-$pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings);
-$db = $pdoDb->getDatabaseInstance();
 /**
  * Include common functions
  *

@@ -73,7 +73,7 @@ $app->get(
  */
 $app->get(
     "/get_my_api_key",
-    function (Request $req, Response $res, $args = []) use ($db, $VIEW_DIRECTORY) {
+    function (Request $req, Response $res, $args = []) use ($VIEW_DIRECTORY) {
         $APIKey = "";
         $message = "";
         $error = "";
@@ -82,7 +82,7 @@ $app->get(
             $error = "Unable to locate your API key.";
         } else {
             try {
-                $statement = $db->prepare("SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token");
+                $statement = $this->db->prepare("SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token");
                 $statement->execute(array('authorize_token' => $token));
                 $data = $statement->fetchAll(PDO::FETCH_ASSOC);
             } catch (Exception $e) {
@@ -107,7 +107,7 @@ $app->get(
                         $error = "Your API Key was suspended!";
                         break;
                 }
-                $statement = $db->prepare(
+                $statement = $this->db->prepare(
                     "UPDATE `md_api_keys` SET status = :status WHERE id = :id"
                 );
                 $statement->execute(array('id' => $data[0]['id'], 'status' => $status));
@@ -149,14 +149,14 @@ $app->get(
  */
 $app->post(
     "/resend_activation_links",
-    function (Request $req, Response $res, $args = []) use ($db, $DOMAIN_ADDRESS, $VIEW_DIRECTORY) {
+    function (Request $req, Response $res, $args = []) use ($DOMAIN_ADDRESS, $VIEW_DIRECTORY) {
         $errors = array();
         $message = '';
         $formData = $req->getParsedBody();
         $invalidFields = validatePresenceOf(array("email"), $formData);
         if (empty($invalidFields)) {
             try {
-                $statement = $db->prepare("SELECT * FROM `md_api_keys` WHERE email = :email AND status = 0");
+                $statement = $this->db->prepare("SELECT * FROM `md_api_keys` WHERE email = :email AND status = 0");
                 $statement->execute(array('email' => $formData['email']));
                 $data = $statement->fetchAll(PDO::FETCH_ASSOC);
                 if (empty($data)) {

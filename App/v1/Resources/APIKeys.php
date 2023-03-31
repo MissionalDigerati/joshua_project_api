@@ -33,11 +33,11 @@ use Slim\Http\Response;
  **/
 $app->get(
     "/api_keys",
-    function (Request $req, Response $res, $args = []) use ($db, $VIEW_DIRECTORY) {
+    function (Request $req, Response $res, $args = []) use ($VIEW_DIRECTORY) {
         $data = $req->getQueryParams();
         $query = "SELECT * FROM md_api_keys ORDER BY created DESC";
         try {
-            $statement = $db->prepare($query);
+            $statement = $this->db->prepare($query);
             $statement->execute(array());
             $api_keys = $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -58,11 +58,10 @@ $app->get(
  * Available Formats HTML
  *
  * @author Johnathan Pulos
- * @todo verify this works with the new status column
  **/
 $app->put(
     "/api_keys/{id}",
-    function (Request $req, Response $res, $args = []) use ($db) {
+    function (Request $req, Response $res, $args = []) {
         $id = $args['id'];
         $state = $req->getParam('state');
         if (!$state) {
@@ -70,7 +69,7 @@ $app->put(
         }
         $query = "UPDATE md_api_keys SET status = :state WHERE id = :id";
         try {
-            $statement = $db->prepare($query);
+            $statement = $this->db->prepare($query);
             $statement->execute(
                 array(
                     'id' => $id,
@@ -99,7 +98,7 @@ $app->put(
  */
 $app->post(
     "/api_keys/new",
-    function (Request $req, Response $res, $args = []) use ($db, $DOMAIN_ADDRESS) {
+    function (Request $req, Response $res, $args = []) use ($DOMAIN_ADDRESS) {
         $formData = $req->getParsedBody();
         $invalidFields = validatePresenceOf(array("name", "email", "usage"), $formData);
         $redirectURL = generateRedirectURL("/", $formData, $invalidFields);
@@ -127,7 +126,7 @@ $app->post(
         "authorize_token, resource_used, status, created) VALUES (:name, :email, :organization, :website, " .
         ":phone_number, :api_usage, :api_key, :authorize_token, :resource_used, :status, NOW())";
         try {
-            $statement = $db->prepare($query);
+            $statement = $this->db->prepare($query);
             $statement->execute($apiKeyValues);
         } catch (PDOException $e) {
             return $res->withHeader('Location', "/?saving_error=true");
