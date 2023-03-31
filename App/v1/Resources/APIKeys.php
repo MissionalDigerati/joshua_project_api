@@ -33,7 +33,8 @@ use Slim\Http\Response;
  **/
 $app->get(
     "/api_keys",
-    function (Request $req, Response $res, $args = []) use ($VIEW_DIRECTORY) {
+    function (Request $req, Response $res, $args = []) {
+        $viewDirectory = $this->view->getTemplatePath();
         $data = $req->getQueryParams();
         $query = "SELECT * FROM md_api_keys ORDER BY created DESC";
         try {
@@ -47,7 +48,7 @@ $app->get(
         return $this->view->render(
             $res,
             'APIKeys/index.html.php',
-            array('api_keys' => $api_keys, 'data' => $data, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
+            array('api_keys' => $api_keys, 'data' => $data, 'viewDirectory' => $viewDirectory)
         );
     }
 );
