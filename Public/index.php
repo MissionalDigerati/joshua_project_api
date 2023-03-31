@@ -21,6 +21,7 @@
  */
 use Slim\Middleware\HttpBasicAuthentication;
 use Slim\Views\PhpRenderer;
+use Utilities\Mailer;
 
 $DS = DIRECTORY_SEPARATOR;
 $ROOT_DIRECTORY = dirname(__DIR__);
@@ -107,6 +108,7 @@ $container['db'] = function () {
     $pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings());
     return $pdoDb->getDatabaseInstance();
 };
+$container['mailer'] = new Mailer();
 /**
  * Setup Basic Auth on specific routes
  */

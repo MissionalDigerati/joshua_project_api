@@ -1,7 +1,4 @@
 <?php
-use Slim\Http\Request;
-use Slim\Http\Response;
-
 /**
  * Joshua Project API - An API for accessing Joshua Project Data.
  *
@@ -23,6 +20,9 @@ use Slim\Http\Response;
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  */
+use Slim\Http\Request;
+use Slim\Http\Response;
+
 /**
  * Lists all the current API Keys
  *
@@ -138,7 +138,7 @@ $app->post(
          * @author Johnathan Pulos
          */
         $authorizeUrl = $DOMAIN_ADDRESS . "/get_my_api_key?authorize_token=" . $authorizeToken;
-        Utilities\Mailer::sendAuthorizeToken($formData['email'], $authorizeUrl);
+        $this->mailer->sendAuthorizeToken($formData['email'], $authorizeUrl);
         $redirectURL = generateRedirectURL("/", array('api_key' => 'true'), array());
         return $res
         ->withHeader('Location', $redirectURL);
