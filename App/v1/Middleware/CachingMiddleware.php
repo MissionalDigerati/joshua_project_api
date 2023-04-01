@@ -53,6 +53,12 @@ class CachingMiddleware
      */
     protected $isCaching = false;
 
+    /**
+     * Build the middleware
+     *
+     * @param boolean $isCaching    Do you want to enable caching? (default: false)
+     * @param array   $options      The array of options.
+     */
     public function __construct($isCaching = false, $options = [])
     {
         /**
