@@ -20,6 +20,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+header("Content-type: text/xml");
 header('HTTP/1.1 404 Not Found');
 ?>
 <api>

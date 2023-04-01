@@ -20,6 +20,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+header('Content-Type: application/json; charset=utf-8');
 header('HTTP/1.1 400 Bad Request');
 echo json_encode(
     array('api' =>
