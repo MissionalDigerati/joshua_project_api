@@ -22,6 +22,7 @@
 use JPAPI\AdminSettings;
 use JPAPI\DatabaseSettings;
 use Middleware\APIAuthMiddleware;
+use Middleware\APIStandardsMiddleware;
 use Middleware\CachingMiddleware;
 use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use Slim\Middleware\HttpBasicAuthentication;
@@ -126,33 +127,39 @@ $pathSettings = array(
 );
 $app->add(new APIAuthMiddleware($container['db'], $pathSettings));
 $app->add(new CachingMiddleware(false, $pathSettings));
-/**
- * Include common functions
- *
- * @author Johnathan Pulos
- */
-require($APP_FILES_DIRECTORY . $DS . "Includes" . $DS . "CommonFunctions.php");
-$siteURL = getSiteURL();
-if (strpos($siteURL, 'joshua.api.local') !== false) {
-    $GOOGLE_TRACKING_ID = 'UA-49359140-2';
-} elseif (strpos($siteURL, 'jpapi.codingstudio.org') !== false) {
-    $GOOGLE_TRACKING_ID = 'UA-49359140-1';
-} else {
-    $GOOGLE_TRACKING_ID = '';
+$standardSettings = $pathSettings;
+$standardSettings['formats'] = ['json', 'xml'];
+$standardSettings['versions'] = ['v1'];
+$app->add(new APIStandardsMiddleware($standardSettings));
+if (file_exists($APP_FILES_DIRECTORY)) {
+    /**
+     * Include common functions
+     *
+     * @author Johnathan Pulos
+     */
+    require($APP_FILES_DIRECTORY . $DS . "Includes" . $DS . "CommonFunctions.php");
+    $siteURL = getSiteURL();
+    if (strpos($siteURL, 'joshua.api.local') !== false) {
+        $GOOGLE_TRACKING_ID = 'UA-49359140-2';
+    } elseif (strpos($siteURL, 'jpapi.codingstudio.org') !== false) {
+        $GOOGLE_TRACKING_ID = 'UA-49359140-1';
+    } else {
+        $GOOGLE_TRACKING_ID = '';
+    }
+    /**
+     * Include our resources
+     *
+     * @author Johnathan Pulos
+     */
+    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "StaticPages.php");
+    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Docs.php");
+    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "APIKeys.php");
+    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "PeopleGroups.php");
+    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Countries.php");
+    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Languages.php");
+    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Continents.php");
+    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Regions.php");
 }
-/**
- * Include our resources
- *
- * @author Johnathan Pulos
- */
-require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "StaticPages.php");
-require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Docs.php");
-require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "APIKeys.php");
-require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "PeopleGroups.php");
-require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Countries.php");
-require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Languages.php");
-require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Continents.php");
-require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Regions.php");
 
 /**
  * Now run the Slim Framework rendering
