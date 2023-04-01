@@ -22,6 +22,7 @@
 use JPAPI\AdminSettings;
 use JPAPI\DatabaseSettings;
 use Middleware\APIAuthMiddleware;
+use Middleware\CachingMiddleware;
 use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use Slim\Middleware\HttpBasicAuthentication;
 use Slim\Views\PhpRenderer;
@@ -78,12 +79,17 @@ if (empty($matches)) {
  */
 $APP_FILES_DIRECTORY = $ROOT_DIRECTORY . $DS . "App" . $DS . $API_VERSION;
 $VIEW_DIRECTORY = $APP_FILES_DIRECTORY . $DS . "Views";
-
+/**
+ * determineRouteBeforeAppMiddleware setting
+ *
+ * @link https://www.slimframework.com/docs/v3/start/upgrade.html#getting-the-current-route
+ */
 $app = new \Slim\App([
     'settings' => [
-        'displayErrorDetails' => true,
-        'debug'               => true,
-        'whoops.editor'       => 'sublime',
+        'determineRouteBeforeAppMiddleware' =>  true,
+        'displayErrorDetails'               => true,
+        'debug'                             => true,
+        'whoops.editor'                     => 'sublime',
     ]
 ]);
 /**
@@ -111,7 +117,9 @@ $app->add(new HttpBasicAuthentication($authSettings));
 
 require($APP_FILES_DIRECTORY . $DS . "Middleware" . $DS . "PathBasedTrait.php");
 require($APP_FILES_DIRECTORY . $DS . "Middleware" . $DS . "APIAuthMiddleware.php");
-$apiAuthMiddlewareSettings = array(
+require($APP_FILES_DIRECTORY . $DS . "Middleware" . $DS . "CachingMiddleware.php");
+
+$pathSettings = array(
     'passthrough' => array('/v\d+/docs/column_descriptions'),
     'paths'  =>  array(
         '/v\d+/continents',
@@ -121,7 +129,8 @@ $apiAuthMiddlewareSettings = array(
         '/v\d+/regions'
     )
 );
-$app->add(new APIAuthMiddleware($container['db'], $apiAuthMiddlewareSettings));
+$app->add(new APIAuthMiddleware($container['db'], $pathSettings));
+$app->add(new CachingMiddleware(false, $pathSettings));
 /**
  * Include common functions
  *

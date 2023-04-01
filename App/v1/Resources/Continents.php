@@ -88,9 +88,7 @@ use Swagger\Annotations as SWG;
 // phpcs:enable Generic.Files.LineLength
 $app->get(
     "/{version}/continents/{id}.{format}",
-    function (Request $req, Response $res, $args = []) use ($useCaching, $cache) {
-        $data = array();
-        $gotCachedData = false;
+    function (Request $req, Response $res, $args = []) {
         /**
          * Make sure we have an ID, else crash.
          * This expression ("/\PL/u") removes all non-letter characters
@@ -107,51 +105,29 @@ $app->get(
                 $res
             );
         }
-        if ($useCaching === true) {
-            /**
-             * Check the cache
-             *
-             * @author Johnathan Pulos
-             */
-            $cacheKey = md5("ContinentShowId_".$continentId);
-            $data = $cache->get($cacheKey);
-            if ((is_array($data)) && (!empty($data))) {
-                $gotCachedData = true;
-            }
-        }
-        if (empty($data)) {
-            try {
-                $continent = new \QueryGenerators\Continent(array('id' => $continentId));
-                $continent->findById();
-                $statement = $this->db->prepare($continent->preparedStatement);
-                $statement->execute($continent->preparedVariables);
-                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-                if (empty($data)) {
-                    return $this->errorResponder->get(
-                        404,
-                        'The continent does not exist for the given id.',
-                        $args['format'],
-                        'Not Found',
-                        $res
-                    );
-                }
-            } catch (Exception $e) {
+        try {
+            $continent = new \QueryGenerators\Continent(array('id' => $continentId));
+            $continent->findById();
+            $statement = $this->db->prepare($continent->preparedStatement);
+            $statement->execute($continent->preparedVariables);
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($data)) {
                 return $this->errorResponder->get(
-                    500,
-                    $e->getMessage(),
+                    404,
+                    'The continent does not exist for the given id.',
                     $args['format'],
-                    'Internal Server Error',
+                    'Not Found',
                     $res
                 );
             }
-        }
-        if (($useCaching === true) && ($gotCachedData === false)) {
-            /**
-             * Set the data to the cache using it's cache key, and expire it in 1 day
-             *
-             * @author Johnathan Pulos
-             */
-            $cache->set($cacheKey, $data, 86400);
+        } catch (Exception $e) {
+            return $this->errorResponder->get(
+                500,
+                $e->getMessage(),
+                $args['format'],
+                'Internal Server Error',
+                $res
+            );
         }
         /**
          * Render the final data
