@@ -35,6 +35,7 @@
         "psr-4": {
             "JPAPI\\": "Config/JPAPI",
             "Utilities\\": "App/v1/Utilities",
+            "Middleware\\": "App/v1/Middleware",
             "QueryGenerators\\": "App/v1/QueryGenerators",
             "Resources\\": "App/v1/Resources",
             "Views\\": "App/v1/Views"

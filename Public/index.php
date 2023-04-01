@@ -114,11 +114,6 @@ $authSettings = array(
 );
 $authSettings['users'][$adminSettings->default['username']] = $adminSettings->default['password'];
 $app->add(new HttpBasicAuthentication($authSettings));
-
-require($APP_FILES_DIRECTORY . $DS . "Middleware" . $DS . "PathBasedTrait.php");
-require($APP_FILES_DIRECTORY . $DS . "Middleware" . $DS . "APIAuthMiddleware.php");
-require($APP_FILES_DIRECTORY . $DS . "Middleware" . $DS . "CachingMiddleware.php");
-
 $pathSettings = array(
     'passthrough' => array('/v\d+/docs/column_descriptions'),
     'paths'  =>  array(
