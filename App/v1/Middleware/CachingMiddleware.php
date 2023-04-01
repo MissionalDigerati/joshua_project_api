@@ -22,6 +22,7 @@
  */
 namespace Middleware;
 
+use Middleware\Traits\PathBasedTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
