@@ -31,22 +31,16 @@ use Psr\Http\Message\ResponseInterface;
 class APIAuthMiddleware
 {
     /**
+     * This is a path based middleware
+     */
+    use PathBasedTrait;
+
+    /**
      * Our database
      *
      * @var \PDO
      */
     private $db;
-
-    /**
-     * The available options for our middleware
-     *
-     * paths: All the pathes that require an API key
-     * passthrough: All the pathes to allow to bypass check that might match the path
-     */
-    private $options = [
-        'paths'          =>  [],
-        'passthrough'   =>  []
-    ];
 
     /**
      * Set up the middleware
@@ -75,7 +69,7 @@ class APIAuthMiddleware
         callable $next
     ) {
         $params = $req->getQueryParams();
-        if (!$this->shouldAuthenticate($req)) {
+        if (!$this->shouldProcess($req)) {
             return $next($req, $res);
         }
         if (empty($params)) {
@@ -154,38 +148,6 @@ class APIAuthMiddleware
             return false;
         }
         return true;
-    }
-
-    /**
-     * Should we authenticate the user?
-     *
-     * @param  ServerRequestInterface $request  PSR7 request
-     *
-     * @return  boolean                         yes|no
-     */
-    private function shouldAuthenticate(ServerRequestInterface $req)
-    {
-        $uri = "/" . $req->getUri()->getPath();
-        $uri = preg_replace("#/+#", "/", $uri);
-        /* If request path is matches passthrough should not authenticate. */
-        foreach ($this->options["passthrough"] as $passthrough) {
-            $passthrough = rtrim($passthrough, "/");
-            /* The !! turns the preg_match result into a boolean */
-            /* The @ symbol is the delimeter for the regular expression */
-            if (!!preg_match("@^{$passthrough}(/.*)?$@", $uri)) {
-                return false;
-            }
-        }
-        /* Otherwise check if path matches and we should authenticate. */
-        foreach ($this->options["paths"] as $path) {
-            $path = rtrim($path, "/");
-            /* The !! turns the preg_match result into a boolean */
-            /* The @ symbol is the delimeter for the regular expression */
-            if (!!preg_match("@^{$path}(/.*)?$@", $uri)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

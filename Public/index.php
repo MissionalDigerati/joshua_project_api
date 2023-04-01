@@ -70,12 +70,6 @@ if (empty($matches)) {
 } else {
     $API_VERSION = $matches[0];
 }
-if ($useCaching === true) {
-    $cache = new Memcached();
-    $cache->addServer('localhost', 11211) or die('Memcached not found');
-} else {
-    $cache = '';
-}
 /**
  * Set our directories
  *
@@ -115,6 +109,7 @@ $authSettings = array(
 $authSettings['users'][$adminSettings->default['username']] = $adminSettings->default['password'];
 $app->add(new HttpBasicAuthentication($authSettings));
 
+require($APP_FILES_DIRECTORY . $DS . "Middleware" . $DS . "PathBasedTrait.php");
 require($APP_FILES_DIRECTORY . $DS . "Middleware" . $DS . "APIAuthMiddleware.php");
 $apiAuthMiddlewareSettings = array(
     'passthrough' => array('/v\d+/docs/column_descriptions'),
