@@ -79,30 +79,27 @@ class APIAuthMiddleware
             return $next($req, $res);
         }
         if (empty($params)) {
-            $msg = $this->getResponse(
+            $msg = $this->getResponseError(
                 401,
                 'You are missing your API key.',
-                'Unauthorized',
-                'error'
+                'Unauthorized'
             );
             return $this->returnJsonResponse(401, $msg, $res);
         }
         $apiKey = strip_tags($params['api_key']);
         if ((!isset($apiKey)) || (empty($apiKey))) {
-            $msg = $this->getResponse(
+            $msg = $this->getResponseError(
                 401,
                 'You are missing your API key.',
-                'Unauthorized',
-                'error'
+                'Unauthorized'
             );
             return $this->returnJsonResponse(401, $msg, $res);
         }
         if (!$this->isValidKey($apiKey)) {
-            $msg = $this->getResponse(
+            $msg = $this->getResponseError(
                 401,
                 'The provided API key is invalid.',
-                'Unauthorized',
-                'error'
+                'Unauthorized'
             );
             return $this->returnJsonResponse(401, $msg, $res);
         }
@@ -120,11 +117,11 @@ class APIAuthMiddleware
      *
      * @return array                The message
      */
-    private function getResponse($code, $details, $message, $status)
+    private function getResponseError($code, $details, $message)
     {
         return array(
             'api'   =>  array(
-                'status'        =>  $status,
+                'status'        =>  'error',
                 'error'         =>  array(
                     'code'      =>  $code,
                     'message'   =>  $message,
