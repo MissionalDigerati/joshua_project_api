@@ -223,7 +223,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
             array('api_key' => $this->APIKey),
             "show_with_bad_id"
         );
-        $this->assertEquals(404, $this->cachedRequest->responseCode);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
     }
     /**

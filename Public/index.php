@@ -25,6 +25,7 @@ use Middleware\APIAuthMiddleware;
 use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use Slim\Middleware\HttpBasicAuthentication;
 use Slim\Views\PhpRenderer;
+use Utilities\APIErrorResponder;
 use Utilities\Mailer;
 
 $DS = DIRECTORY_SEPARATOR;
@@ -102,6 +103,7 @@ $container['db'] = function () {
     return $pdoDb->getDatabaseInstance();
 };
 $container['mailer'] = new Mailer();
+$container['errorResponder'] = new APIErrorResponder();
 /**
  * Setup Middleware
  */

@@ -20,6 +20,8 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+use Slim\Http\Request;
+use Slim\Http\Response;
 use Swagger\Annotations as SWG;
 
 // phpcs:disable Generic.Files.LineLength
@@ -71,7 +73,11 @@ use Swagger\Annotations as SWG;
   *              ),
   *              @SWG\ErrorResponse(
   *                  code="404",
-  *                  reason="Not found.  Your search ended up with no results."
+  *                  reason="Not found.  The requested route was not found."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="500",
+  *                  reason="Internal server error.  Please try again later."
   *              )
   *          )
   *      )
@@ -81,19 +87,25 @@ use Swagger\Annotations as SWG;
   */
 // phpcs:enable Generic.Files.LineLength
 $app->get(
-    "/:version/continents/:id\.:format",
-    function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
+    "/{version}/continents/{id}.{format}",
+    function (Request $req, Response $res, $args = []) use ($useCaching, $cache) {
         $data = array();
         $gotCachedData = false;
         /**
-         * Make sure we have an ID, else crash
+         * Make sure we have an ID, else crash.
+         * This expression ("/\PL/u") removes all non-letter characters
          *
          * @author Johnathan Pulos
          */
-        $continentId = preg_replace("/\PL/u", "", strip_tags($id));
+        $continentId = preg_replace("/\PL/u", "", strip_tags(strtoupper($args['id'])));
         if ((empty($continentId)) || (strlen($continentId) != 3)) {
-            $app->render("/errors/404." . $format . ".php");
-            exit;
+            return $this->errorResponder->get(
+                400,
+                'You provided an invalid continent id.',
+                $args['format'],
+                'Bad Request',
+                $res
+            );
         }
         if ($useCaching === true) {
             /**
@@ -101,7 +113,7 @@ $app->get(
              *
              * @author Johnathan Pulos
              */
-            $cacheKey = md5("ContinentShowId_".$languageId);
+            $cacheKey = md5("ContinentShowId_".$continentId);
             $data = $cache->get($cacheKey);
             if ((is_array($data)) && (!empty($data))) {
                 $gotCachedData = true;
@@ -111,12 +123,26 @@ $app->get(
             try {
                 $continent = new \QueryGenerators\Continent(array('id' => $continentId));
                 $continent->findById();
-                $statement = $db->prepare($continent->preparedStatement);
+                $statement = $this->db->prepare($continent->preparedStatement);
                 $statement->execute($continent->preparedVariables);
                 $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+                if (empty($data)) {
+                    return $this->errorResponder->get(
+                        404,
+                        'The continent does not exist for the given id.',
+                        $args['format'],
+                        'Not Found',
+                        $res
+                    );
+                }
             } catch (Exception $e) {
-                $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
-                exit;
+                return $this->errorResponder->get(
+                    500,
+                    $e->getMessage(),
+                    $args['format'],
+                    'Internal Server Error',
+                    $res
+                );
             }
         }
         if (($useCaching === true) && ($gotCachedData === false)) {
@@ -132,10 +158,12 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
-        if ($format == 'json') {
-            echo json_encode($data);
+        if ($args['format'] == 'json') {
+            return $res->withJson($data);
         } else {
-            echo arrayToXML($data, "continents", "continent");
+            return $res
+                ->withHeader('Content-type', 'text/xml')
+                ->write(arrayToXML($data, "continents", "continent"));
         }
     }
 );
