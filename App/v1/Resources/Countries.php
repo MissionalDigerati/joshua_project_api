@@ -71,7 +71,7 @@ use Swagger\Annotations as SWG;
   *              ),
   *              @SWG\ErrorResponse(
   *                  code="404",
-  *                  reason="Not found.  Your search ended up with no results."
+  *                  reason="Not found.  The requested route was not found."
   *              )
   *          )
   *      )
@@ -333,7 +333,7 @@ $app->get(
  *              ),
  *              @SWG\ErrorResponse(
  *                  code="404",
- *                  reason="Not found.  Your search ended up with no results."
+ *                  reason="Not found.  The requested route was not found."
  *              )
  *          )
  *      )
