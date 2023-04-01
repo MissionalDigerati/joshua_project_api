@@ -51,7 +51,7 @@ class APIAuthMiddleware
     /**
      * Set up the middleware
      *
-     * @param \PDo      $db         The database
+     * @param \PDO      $db         The database
      * @param array     $options    The options
      */
     public function __construct(\PDO $db, $options = [])
