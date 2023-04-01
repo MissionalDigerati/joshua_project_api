@@ -138,7 +138,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/languages/aar.json",
+            $this->siteURL . "/" . $this->APIVersion . "/languages/aar.json",
             array('api_key' => $this->APIKey),
             "non_active_key_json"
         );
@@ -154,7 +154,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/languages/aar.json",
+            $this->siteURL . "/" . $this->APIVersion . "/languages/aar.json",
             array('api_key' => $this->APIKey),
             "suspended_key_json"
         );
@@ -290,7 +290,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/languages.json",
+            $this->siteURL . "/" . $this->APIVersion . "/languages.json",
             array('api_key' => $this->APIKey),
             "index_non_active_key_json"
         );
@@ -306,7 +306,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/languages.json",
+            $this->siteURL . "/" . $this->APIVersion . "/languages.json",
             array('api_key' => $this->APIKey),
             "index_suspended_key_json"
         );

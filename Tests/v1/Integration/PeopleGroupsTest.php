@@ -137,7 +137,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/people_groups/daily_unreached.json",
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
             array('api_key' => $this->APIKey),
             "versioning_json"
         );
@@ -153,7 +153,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/people_groups/daily_unreached.json",
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
             array('api_key' => $this->APIKey),
             "versioning_json"
         );

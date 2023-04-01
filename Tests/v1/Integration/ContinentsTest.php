@@ -137,7 +137,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $this->cachedRequest->get(
-            $this->siteURL . "/continents/3.json",
+            $this->siteURL . "/" . $this->APIVersion . "/continents/3.json",
             array('api_key' => $this->APIKey),
             "non_active_key_json"
         );
@@ -153,7 +153,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $this->cachedRequest->get(
-            $this->siteURL . "/continents/2.json",
+            $this->siteURL . "/" . $this->APIVersion . "/continents/3.json",
             array('api_key' => $this->APIKey),
             "suspended_key_json"
         );
