@@ -51,10 +51,10 @@ class APIAuthMiddleware
     /**
      * Set up the middleware
      *
-     * @param PDO       $db         The database
+     * @param \PDo      $db         The database
      * @param array     $options    The options
      */
-    public function __construct(PDO $db, $options = [])
+    public function __construct(\PDO $db, $options = [])
     {
         $this->db = $db;
         $this->options = array_merge($this->options, $options);
@@ -146,7 +146,7 @@ class APIAuthMiddleware
         $query = "SELECT * FROM md_api_keys where api_key = :api_key LIMIT 1";
         $statement = $this->db->prepare($query);
         $statement->execute(array('api_key' => $apiKey));
-        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         if (empty($data)) {
             return false;
         }
