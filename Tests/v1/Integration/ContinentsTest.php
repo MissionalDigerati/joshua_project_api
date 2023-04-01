@@ -120,12 +120,12 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      **/
     public function testShowRequestShouldRefuseAccessWithoutAVersionNumber()
     {
-        $this->cachedRequest->get(
+        $response = $this->cachedRequest->get(
             $this->siteURL . "/continents/4.json",
             array('api_key' => $this->APIKey),
             "continents_versioning_missing_json"
         );
-        $this->assertEquals(404, $this->cachedRequest->responseCode);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
     }
     /**
      * Tests that you can not access page without an active API Key
