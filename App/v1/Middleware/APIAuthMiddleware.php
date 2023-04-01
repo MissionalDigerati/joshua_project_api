@@ -36,6 +36,11 @@ class APIAuthMiddleware
     use PathBasedTrait;
 
     /**
+     * This returns errors for the API
+     */
+    use ReturnsErrorsTrait;
+
+    /**
      * Our database
      *
      * @var \PDO
@@ -69,60 +74,40 @@ class APIAuthMiddleware
         callable $next
     ) {
         $params = $req->getQueryParams();
+        $format = $req->getAttribute('route')->getArgument('format');
         if (!$this->shouldProcess($req)) {
             return $next($req, $res);
         }
         if (empty($params)) {
-            $msg = $this->getResponseError(
+            return $this->sendError(
                 401,
                 'You are missing your API key.',
-                'Unauthorized'
+                $format,
+                'Unauthorized',
+                $res
             );
-            return $this->returnJsonResponse(401, $msg, $res);
         }
         $apiKey = strip_tags($params['api_key']);
         if ((!isset($apiKey)) || (empty($apiKey))) {
-            $msg = $this->getResponseError(
+            return $this->sendError(
                 401,
                 'You are missing your API key.',
-                'Unauthorized'
+                $format,
+                'Unauthorized',
+                $res
             );
-            return $this->returnJsonResponse(401, $msg, $res);
         }
         if (!$this->isValidKey($apiKey)) {
-            $msg = $this->getResponseError(
+            return $this->sendError(
                 401,
                 'The provided API key is invalid.',
-                'Unauthorized'
+                $format,
+                'Unauthorized',
+                $res
             );
-            return $this->returnJsonResponse(401, $msg, $res);
         }
 
         return $next($req, $res);
-    }
-
-    /**
-     * Get a response for the given parameters
-     *
-     * @param int       $code       The HTTP status code
-     * @param string    $details    The details for the message
-     * @param string    $message    The message
-     * @param string    $status     The status of the request (success or error)
-     *
-     * @return array                The message
-     */
-    private function getResponseError($code, $details, $message)
-    {
-        return array(
-            'api'   =>  array(
-                'status'        =>  'error',
-                'error'         =>  array(
-                    'code'      =>  $code,
-                    'message'   =>  $message,
-                    'details'   =>  $details
-                )
-            )
-        );
     }
 
     /**
@@ -148,21 +133,5 @@ class APIAuthMiddleware
             return false;
         }
         return true;
-    }
-
-    /**
-     * Return a JSON response
-     *
-     * @param array                 $msg    The message to send
-     * @param ResponseInterface     $res    The response
-     *
-     * @return ResponseInterface            The modified response
-     */
-    private function returnJsonResponse($code, $msg, ResponseInterface $res)
-    {
-        $res->getBody()->write(json_encode($msg));
-        return $res
-            ->withHeader('Content-Type', 'application/json')
-            ->withStatus($code);
     }
 }
