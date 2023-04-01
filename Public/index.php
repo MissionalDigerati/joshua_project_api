@@ -58,7 +58,7 @@ $useCaching = false;
 $googleDocTitle = '';
 /**
  * Lets get the version of the API based on the URL (
- * http://joshua.api.local/v12/people_groups/daily_unreached.json?api_key=37e24112caae
+ * http://joshua.api.local/v12/people_groups/daily_unreached.json?api_key=KEY
  * ) It will default to the latest API.  You must provide an API Version if you are accessing the data.  The default is
  * only for static pages
  *
