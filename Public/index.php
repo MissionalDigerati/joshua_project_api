@@ -19,6 +19,10 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+use JPAPI\AdminSettings;
+use JPAPI\DatabaseSettings;
+use Middleware\APIAuthMiddleware;
+use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use Slim\Middleware\HttpBasicAuthentication;
 use Slim\Views\PhpRenderer;
 use Utilities\Mailer;
@@ -93,21 +97,34 @@ $app = new \Slim\App([
 $container = $app->getContainer();
 $container['view'] = new PhpRenderer($VIEW_DIRECTORY);
 $container['db'] = function () {
-    $pdoDb = \PHPToolbox\PDODatabase\PDODatabaseConnect::getInstance();
-    $pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings());
+    $pdoDb = PDODatabaseConnect::getInstance();
+    $pdoDb->setDatabaseSettings(new DatabaseSettings());
     return $pdoDb->getDatabaseInstance();
 };
 $container['mailer'] = new Mailer();
 /**
- * Setup Basic Auth on specific routes
+ * Setup Middleware
  */
-$adminSettings = new \JPAPI\AdminSettings();
+$adminSettings = new AdminSettings();
 $authSettings = array(
-    'path'  =>  array('/api_keys'),
+    'path'          =>  array('/api_keys'),
     'passthrough'   =>  array('/api_keys/new')
 );
 $authSettings['users'][$adminSettings->default['username']] = $adminSettings->default['password'];
 $app->add(new HttpBasicAuthentication($authSettings));
+
+require($APP_FILES_DIRECTORY . $DS . "Middleware" . $DS . "APIAuthMiddleware.php");
+$apiAuthMiddlewareSettings = array(
+    'passthrough' => array('/v\d+/docs/column_descriptions'),
+    'paths'  =>  array(
+        '/v\d+/continents',
+        '/v\d+/countries',
+        '/v\d+/languages',
+        '/v\d+/people_groups',
+        '/v\d+/regions'
+    )
+);
+$app->add(new APIAuthMiddleware($container['db'], $apiAuthMiddlewareSettings));
 /**
  * Include common functions
  *
