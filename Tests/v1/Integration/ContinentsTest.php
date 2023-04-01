@@ -105,7 +105,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      **/
     public function testShowRequestShouldRefuseAccessWithoutAnAPIKey()
     {
-        $response = $this->cachedRequest->get(
+        $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/4.json",
             array(),
             "continent_show_up_json"
@@ -120,7 +120,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      **/
     public function testShowRequestShouldRefuseAccessWithoutAVersionNumber()
     {
-        $response = $this->cachedRequest->get(
+        $this->cachedRequest->get(
             $this->siteURL . "/continents/4.json",
             array('api_key' => $this->APIKey),
             "continents_versioning_missing_json"
@@ -136,7 +136,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestShouldRefuseAccessWithoutActiveAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
-        $response = $this->cachedRequest->get(
+        $this->cachedRequest->get(
             $this->siteURL . "/continents/3.json",
             array('api_key' => $this->APIKey),
             "non_active_key_json"
@@ -152,7 +152,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestShouldRefuseAccessToSuspendedAPIKeys()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
-        $response = $this->cachedRequest->get(
+        $this->cachedRequest->get(
             $this->siteURL . "/continents/2.json",
             array('api_key' => $this->APIKey),
             "suspended_key_json"
@@ -167,7 +167,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      **/
     public function testShowRequestShouldRefuseAccessWithABadAPIKeys()
     {
-        $response = $this->cachedRequest->get(
+        $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/1.json",
             array('api_key' => 'BADKEY'),
             "bad_key_json"
