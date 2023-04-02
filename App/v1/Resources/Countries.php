@@ -392,7 +392,7 @@ $app->get(
          * @author Johnathan Pulos
          */
         if ($args['format'] === 'json') {
-            echo json_encode($data);
+            return $res->withJson($data);
         } else {
             return $res
                 ->withHeader('Content-type', 'text/xml')
