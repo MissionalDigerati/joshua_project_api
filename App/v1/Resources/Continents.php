@@ -20,6 +20,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+use QueryGenerators\Continent;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Swagger\Annotations as SWG;
@@ -106,7 +107,7 @@ $app->get(
             );
         }
         try {
-            $continent = new \QueryGenerators\Continent(array('id' => $continentId));
+            $continent = new Continent(array('id' => $continentId));
             $continent->findById();
             $statement = $this->db->prepare($continent->preparedStatement);
             $statement->execute($continent->preparedVariables);
