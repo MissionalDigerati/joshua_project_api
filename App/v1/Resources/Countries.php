@@ -90,7 +90,6 @@ use Swagger\Annotations as SWG;
 $app->get(
     "/{version}/countries/{id}.{format}",
     function (Request $req, Response $res, $args = []) {
-        $data = array();
         /**
          * Make sure we have an ID, else crash
          * This expression ("/\PL/u") removes all non-letter characters
