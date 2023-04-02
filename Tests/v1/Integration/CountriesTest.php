@@ -110,7 +110,11 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
             array('api_key' => $this->APIKey),
             "country_show_without_id"
         );
-        $this->assertEquals(404, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertEquals('You provided an invalid country id.', $decoded['api']['error']['details']);
+        $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
+        $this->assertTrue(isJSON($response));
     }
     /**
       * GET /countries/usa.json
@@ -177,7 +181,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testIndexRequestShouldBeAccessableByJSON()
+    public function testIndexRequestShouldBeAccessibleByJSON()
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",

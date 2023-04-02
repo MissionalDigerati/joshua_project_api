@@ -20,6 +20,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+use QueryGenerators\Country;
+use Slim\Http\Request;
+use Slim\Http\Response;
 use Swagger\Annotations as SWG;
 
 // phpcs:disable Generic.Files.LineLength
@@ -72,6 +75,10 @@ use Swagger\Annotations as SWG;
   *              @SWG\ErrorResponse(
   *                  code="404",
   *                  reason="Not found.  The requested route was not found."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="500",
+  *                  reason="Internal server error.  Please try again later."
   *              )
   *          )
   *      )
@@ -81,61 +88,60 @@ use Swagger\Annotations as SWG;
   */
 // phpcs:enable Generic.Files.LineLength
 $app->get(
-    "/:version/countries/:id\.:format",
-    function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
+    "/{version}/countries/{id}.{format}",
+    function (Request $req, Response $res, $args = []) {
         $data = array();
-        $gotCachedData = false;
         /**
          * Make sure we have an ID, else crash
+         * This expression ("/\PL/u") removes all non-letter characters
          *
          * @author Johnathan Pulos
          */
-        $countryId = preg_replace("/\PL/u", "", strip_tags($id));
+        $countryId = preg_replace("/\PL/u", "", strip_tags(strtoupper($args['id'])));
         if (empty($countryId)) {
-            $app->render("/errors/404." . $format . ".php");
-            exit;
+            return $this->errorResponder->get(
+                400,
+                'You provided an invalid country id.',
+                $args['format'],
+                'Bad Request',
+                $res
+            );
         }
-        if ($useCaching === true) {
-            /**
-             * Check the cache
-             *
-             * @author Johnathan Pulos
-             */
-            $cacheKey = md5("CountryShowId_".$countryId);
-            $data = $cache->get($cacheKey);
-            if ((is_array($data)) && (!empty($data))) {
-                $gotCachedData = true;
+        try {
+            $country = new Country(array('id' => $countryId));
+            $country->findById();
+            $statement = $this->db->prepare($country->preparedStatement);
+            $statement->execute($country->preparedVariables);
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($data)) {
+                return $this->errorResponder->get(
+                    404,
+                    'The country does not exist for the given id.',
+                    $args['format'],
+                    'Not Found',
+                    $res
+                );
             }
-        }
-        if (empty($data)) {
-            try {
-                $country = new \QueryGenerators\Country(array('id' => $countryId));
-                $country->findById();
-                $statement = $db->prepare($country->preparedStatement);
-                $statement->execute($country->preparedVariables);
-                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-            } catch (Exception $e) {
-                $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
-                exit;
-            }
-        }
-        if (($useCaching === true) && ($gotCachedData === false)) {
-            /**
-             * Set the data to the cache using it's cache key, and expire it in 1 day
-             *
-             * @author Johnathan Pulos
-             */
-            $cache->set($cacheKey, $data, 86400);
+        } catch (Exception $e) {
+            return $this->errorResponder->get(
+                500,
+                $e->getMessage(),
+                $args['format'],
+                'Internal Server Error',
+                $res
+            );
         }
         /**
          * Render the final data
          *
          * @author Johnathan Pulos
          */
-        if ($format == 'json') {
-            echo json_encode($data);
+        if ($args['format'] === 'json') {
+            return $res->withJson($data);
         } else {
-            echo arrayToXML($data, "countries", "country");
+            return $res
+                ->withHeader('Content-type', 'text/xml')
+                ->write(arrayToXML($data, "countries", "country"));
         }
     }
 );
@@ -334,6 +340,10 @@ $app->get(
  *              @SWG\ErrorResponse(
  *                  code="404",
  *                  reason="Not found.  The requested route was not found."
+ *              ),
+ *              @SWG\ErrorResponse(
+ *                  code="500",
+ *                  reason="Internal server error.  Please try again later."
  *              )
  *          )
  *      )
@@ -343,67 +353,51 @@ $app->get(
  */
 // phpcs:enable Generic.Files.LineLength
 $app->get(
-    "/:version/countries\.:format",
-    function ($version, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
-        $data = array();
-        $gotCachedData = false;
+    "/{version}/countries.{format}",
+    function (Request $req, Response $res, $args = []) {
         $noLongerSupportedParams = array(
             'pc_anglican', 'pc_independent', 'pc_protestant', 'pc_orthodox', 'pc_rcatholic',
             'pc_other_christian'
         );
-        $requestKeys = array_keys($appRequest->params());
+        $params = $req->getQueryParams();
+        $requestKeys = array_keys($params);
         $check = array_intersect($requestKeys, $noLongerSupportedParams);
         if (!empty($check)) {
             $unsupported = join(', ', $check);
-            $app->render(
-                "/errors/400." . $format . ".php",
-                array(
-                    "details" => "Sorry, these parameters are no longer supported: " . $unsupported
-                )
+            return $this->errorResponder->get(
+                400,
+                'Sorry, these parameters are no longer supported: ' . $unsupported,
+                $args['format'],
+                'Bad Request',
+                $res
             );
-            exit;
         }
-        if ($useCaching === true) {
-            /**
-             * Check the cache
-             *
-             * @author Johnathan Pulos
-             */
-            $cacheKey = md5("CountryIndex");
-            $data = $cache->get($cacheKey);
-            if ((is_array($data)) && (!empty($data))) {
-                $gotCachedData = true;
-            }
-        }
-        if (empty($data)) {
-            try {
-                $country = new \QueryGenerators\Country($appRequest->params());
-                $country->findAllWithFilters();
-                $statement = $db->prepare($country->preparedStatement);
-                $statement->execute($country->preparedVariables);
-                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-            } catch (Exception $e) {
-                $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
-                exit;
-            }
-        }
-        if (($useCaching === true) && ($gotCachedData === false)) {
-            /**
-             * Set the data to the cache using it's cache key, and expire it in 1 day
-             *
-             * @author Johnathan Pulos
-             */
-            $cache->set($cacheKey, $data, 86400);
+        try {
+            $country = new Country($params);
+            $country->findAllWithFilters();
+            $statement = $this->db->prepare($country->preparedStatement);
+            $statement->execute($country->preparedVariables);
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return $this->errorResponder->get(
+                500,
+                $e->getMessage(),
+                $args['format'],
+                'Internal Server Error',
+                $res
+            );
         }
         /**
          * Render the final data
          *
          * @author Johnathan Pulos
          */
-        if ($format == 'json') {
+        if ($args['format'] === 'json') {
             echo json_encode($data);
         } else {
-            echo arrayToXML($data, "countries", "country");
+            return $res
+                ->withHeader('Content-type', 'text/xml')
+                ->write(arrayToXML($data, "countries", "country"));
         }
     }
 );
