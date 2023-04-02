@@ -68,7 +68,7 @@ trait PathBasedTrait
             $path = rtrim($path, "/");
             /* The !! turns the preg_match result into a boolean */
             /* The @ symbol is the delimeter for the regular expression */
-            if (!!preg_match("@^{$path}(/.*)?$@", $uri)) {
+            if (!!preg_match("@^{$path}(\.[^.]+)?(/.*)?$@", $uri)) {
                 return true;
             }
         }
