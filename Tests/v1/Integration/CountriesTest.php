@@ -117,6 +117,24 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
     }
     /**
+     * Tests that you can only access page with an API Key
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testIndexRequestsShouldRefuseAccessWithoutAnAPIKey()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(),
+            "index_country_up_test_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals('You are missing your API key.', $decoded['api']['error']['details']);
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+    }
+    /**
       * GET /countries/usa.json
       * test page is available, and delivers JSON
       *
