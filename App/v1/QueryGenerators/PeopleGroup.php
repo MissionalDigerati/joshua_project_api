@@ -62,17 +62,15 @@ class PeopleGroup extends QueryGenerator
         'PeopNameAcrossCountries', 'Population', 'PopulationPercentUN', 'Category', 'ROL3', 'PrimaryLanguageName',
         'ROL4', 'PrimaryLanguageDialect', 'NumberLanguagesSpoken', 'ROL3OfficialLanguage', 'OfficialLang',
         'SpeakNationalLang', 'BibleStatus', 'BibleYear', 'NTYear', 'PortionsYear', 'TranslationNeedQuestionable',
-        'JPScale', 'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedBasis', 'LeastReachedPC',
-        'LeastReachedPGAC', 'GSEC', 'Unengaged', 'JF', 'AudioRecordings', 'NTOnline', 'GospelRadio', 'RLG3', 'RLG3PC',
-        'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC', 'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision',
-        'PCIslam', 'PCNonReligious', 'PCUnknown', 'SecurityLevel', 'RaceCode', 'LRTop100', 'PhotoAddress', 'PhotoWidth',
-        'PhotoHeight', 'PhotoCredits', 'PhotoCreditURL', 'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission',
-        'ProfileTextExists', 'Top10Ranking', 'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation',
-        'RankMinistryTools', 'CountOfCountries', 'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'Longitude',
-        'Latitude', 'UNMap','Ctry', 'IndigenousCode', 'ROL3', 'PercentAdherents', 'PercentChristianPC',
-        'NaturalName', 'NaturalPronunciation', 'PercentChristianPGAC', 'PercentEvangelical', 'PercentEvangelicalPC',
-        'PercentEvangelicalPGAC', 'PCBuddhism', 'PCDblyProfessing', 'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall',
-        'RegionCode'
+        'JPScale', 'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedPC', 'LeastReachedPGAC', 'GSEC', 'JF',
+        'AudioRecordings', 'NTOnline', 'RLG3', 'RLG3PC', 'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC',
+        'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision', 'PCIslam', 'PCNonReligious', 'PCUnknown', 'SecurityLevel',
+        'RaceCode', 'LRTop100', 'PhotoAddress', 'PhotoWidth', 'PhotoHeight', 'PhotoCredits', 'PhotoCreditURL',
+        'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission', 'ProfileTextExists', 'CountOfCountries',
+        'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'Longitude', 'Latitude', 'Ctry', 'IndigenousCode', 'ROL3',
+        'PercentAdherents', 'PercentChristianPC', 'NaturalName', 'NaturalPronunciation', 'PercentChristianPGAC',
+        'PercentEvangelical', 'PercentEvangelicalPC', 'PercentEvangelicalPGAC', 'PCBuddhism', 'PCDblyProfessing',
+        'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'RegionCode'
     );
     /**
      * The database table to pull the data from.
@@ -450,18 +448,6 @@ class PeopleGroup extends QueryGenerator
                 $where .= " AND ";
             }
             $where .= $this->generateInStatementFromPipedString($this->providedParams['rop3'], 'ROP3');
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('unengaged')) {
-            $this->validator->stringLength($this->providedParams['unengaged'], 1);
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateWhereStatementForBoolean(
-                $this->providedParams['unengaged'],
-                'Unengaged',
-                'unengaged'
-            );
             $appendAndOnWhere = true;
         }
         if ($where != "") {

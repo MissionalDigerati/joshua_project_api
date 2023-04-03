@@ -62,7 +62,7 @@ class Unreached extends PeopleGroup
         'jpupgotd.PeopleCluster', 'jpupgotd.PeopNameAcrossCountries', 'jpupgotd.Population', 'jpupgotd.ROL3',
         'jpupgotd.PrimaryLanguageName', 'jpupgotd.BibleYear', 'jpupgotd.NTYear', 'jpupgotd.PortionsYear',
         'jpupgotd.JPScale', 'jpupgotd.LeastReached', 'jpupgotd.JF', 'jpupgotd.AudioRecordings', 'jpupgotd.NTOnline',
-        'jpupgotd.GospelRadio', 'jpupgotd.RLG3', 'jpupgotd.PrimaryReligion', 'jpupgotd.LRofTheDayMonth',
+        'jpupgotd.RLG3', 'jpupgotd.PrimaryReligion', 'jpupgotd.LRofTheDayMonth',
         'jpupgotd.LRofTheDaySet', 'jpupgotd.LRofTheDayDay', 'jpupgotd.PhotoAddress', 'jpupgotd.PhotoCredits',
         'jpupgotd.PhotoCreditURL', 'jpupgotd.PhotoCreativeCommons', 'jpupgotd.PhotoCopyright',
         'jpupgotd.PhotoPermission', 'jpupgotd.CountOfCountries', 'jpupgotd.Longitude', 'jpupgotd.Latitude',
@@ -72,17 +72,15 @@ class Unreached extends PeopleGroup
         'jppeoples.PrimaryLanguageDialect', 'jppeoples.NumberLanguagesSpoken', 'jppeoples.ROL3OfficialLanguage',
         'jppeoples.OfficialLang', 'jppeoples.SpeakNationalLang', 'jppeoples.BibleStatus',
         'jppeoples.TranslationNeedQuestionable', 'jppeoples.JPScalePC', 'jppeoples.JPScalePGAC',
-        'jppeoples.LeastReachedBasis', 'jppeoples.LeastReachedPC', 'jppeoples.LeastReachedPGAC', 'jppeoples.GSEC',
-        'jppeoples.Unengaged', 'jppeoples.RLG3PC', 'jppeoples.RLG3PGAC', 'jppeoples.PrimaryReligionPC',
-        'jppeoples.PrimaryReligionPGAC', 'jppeoples.RLG4', 'jppeoples.ReligionSubdivision', 'jppeoples.PCIslam',
-        'jppeoples.PCNonReligious', 'jppeoples.PCUnknown', 'jppeoples.SecurityLevel',
-        'jppeoples.RaceCode', 'jppeoples.LRTop100', 'jppeoples.PhotoWidth', 'jppeoples.PhotoHeight',
-        'jppeoples.ProfileTextExists', 'jppeoples.Top10Ranking', 'jppeoples.RankOverall', 'jppeoples.RankProgress',
-        'jppeoples.RankPopulation', 'jppeoples.RankLocation', 'jppeoples.RankMinistryTools',
-        'jppeoples.CountOfProvinces', 'jppeoples.EthnolinguisticMap', 'jppeoples.MapID', 'jppeoples.UNMap',
-        'jppeoples.IndigenousCode', 'jppeoples.PercentChristianPC', 'jppeoples.PercentChristianPGAC',
-        'jppeoples.PercentEvangelicalPC', 'jppeoples.PercentEvangelicalPGAC', 'jppeoples.PCBuddhism',
-        'jppeoples.PCDblyProfessing', 'jppeoples.PCEthnicReligions', 'jppeoples.PCHinduism', 'jppeoples.PCOtherSmall'
+        'jppeoples.LeastReachedPC', 'jppeoples.LeastReachedPGAC', 'jppeoples.GSEC', 'jppeoples.RLG3PC',
+        'jppeoples.RLG3PGAC', 'jppeoples.PrimaryReligionPC', 'jppeoples.PrimaryReligionPGAC', 'jppeoples.RLG4',
+        'jppeoples.ReligionSubdivision', 'jppeoples.PCIslam', 'jppeoples.PCNonReligious', 'jppeoples.PCUnknown',
+        'jppeoples.SecurityLevel', 'jppeoples.RaceCode', 'jppeoples.LRTop100', 'jppeoples.PhotoWidth',
+        'jppeoples.PhotoHeight', 'jppeoples.ProfileTextExists', 'jppeoples.CountOfProvinces',
+        'jppeoples.EthnolinguisticMap', 'jppeoples.MapID', 'jppeoples.IndigenousCode', 'jppeoples.PercentChristianPC',
+        'jppeoples.PercentChristianPGAC', 'jppeoples.PercentEvangelicalPC', 'jppeoples.PercentEvangelicalPGAC',
+        'jppeoples.PCBuddhism', 'jppeoples.PCDblyProfessing', 'jppeoples.PCEthnicReligions', 'jppeoples.PCHinduism',
+        'jppeoples.PCOtherSmall'
     );
     /**
      * The database table to pull the data from.

@@ -574,14 +574,6 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
- *                  name="unengaged",
- *                  description="A boolean that states whether you want People Groups that are unengaged. (y or n)",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
  *                  name="window1040",
  *                  description="A boolean that states whether you want People Groups in the 1040 Window. (y or n)",
  *                  paramType="query",
@@ -619,7 +611,7 @@ $app->get(
     function (Request $req, Response $res, $args = []) {
         $noLongerSupportedParams = array(
             'pc_anglican', 'pc_independent', 'pc_protestant', 'pc_orthodox', 'pc_rcatholic',
-            'pc_other_christian'
+            'pc_other_christian', 'unengaged'
         );
         $params = $req->getQueryParams();
         $requestKeys = array_keys($params);

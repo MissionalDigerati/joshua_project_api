@@ -251,15 +251,12 @@
         "JPScalePC": "3.1",
         "JPScalePGAC": "1.2",
         "LeastReached": "Y",
-        "LeastReachedBasis": "2",
         "LeastReachedPC": null,
         "LeastReachedPGAC": "Y",
         "GSEC": "2",
-        "Unengaged": "",
         "JF": "",
         "AudioRecordings": "Y",
         "NTOnline": "",
-        "GospelRadio": "",
         "RLG3": "2",
         "RLG3PC": "2",
         "RLG3PGAC": "2",
@@ -287,12 +284,6 @@
         "PhotoCopyright": null,
         "PhotoPermission": null,
         "ProfileTextExists": "Y",
-        "Top10Ranking": null,
-        "RankOverall": "73",
-        "RankProgress": "26",
-        "RankPopulation": "19",
-        "RankLocation": "18",
-        "RankMinistryTools": "10",
         "CountOfCountries": "2",
         "CountOfProvinces": "2",
         "EthnolinguisticMap": "http://www.lib.utexas.edu/maps/middle_east_and_asia/indochina_eth_1970.jpg",
@@ -300,7 +291,6 @@
         "V59Country": null,
         "Longitude": "105.427040000396",
         "Latitude": "17.0162099995918",
-        "UNMap": "http://www.un.org/Depts/Cartographic/map/profile/laos.pdf",
         "Ctry": "Laos",
         "IndigenousCode": "Y",
         "PercentAdherents": "0.2",
@@ -518,15 +508,12 @@
             &lt;JPScalePC&gt;3.1&lt;/JPScalePC&gt;
             &lt;JPScalePGAC&gt;1.2&lt;/JPScalePGAC&gt;
             &lt;LeastReached&gt;Y&lt;/LeastReached&gt;
-            &lt;LeastReachedBasis&gt;2&lt;/LeastReachedBasis&gt;
             &lt;LeastReachedPC /&gt;
             &lt;LeastReachedPGAC&gt;Y&lt;/LeastReachedPGAC&gt;
             &lt;GSEC&gt;2&lt;/GSEC&gt;
-            &lt;Unengaged /&gt;
             &lt;JF /&gt;
             &lt;AudioRecordings&gt;Y&lt;/AudioRecordings&gt;
             &lt;NTOnline /&gt;
-            &lt;GospelRadio /&gt;
             &lt;RLG3&gt;2&lt;/RLG3&gt;
             &lt;RLG3PC&gt;2&lt;/RLG3PC&gt;
             &lt;RLG3PGAC&gt;2&lt;/RLG3PGAC&gt;
@@ -554,12 +541,6 @@
             &lt;PhotoCopyright /&gt;
             &lt;PhotoPermission /&gt;
             &lt;ProfileTextExists&gt;Y&lt;/ProfileTextExists&gt;
-            &lt;Top10Ranking /&gt;
-            &lt;RankOverall&gt;73&lt;/RankOverall&gt;
-            &lt;RankProgress&gt;26&lt;/RankProgress&gt;
-            &lt;RankPopulation&gt;19&lt;/RankPopulation&gt;
-            &lt;RankLocation&gt;18&lt;/RankLocation&gt;
-            &lt;RankMinistryTools&gt;10&lt;/RankMinistryTools&gt;
             &lt;CountOfCountries&gt;2&lt;/CountOfCountries&gt;
             &lt;CountOfProvinces&gt;2&lt;/CountOfProvinces&gt;
             &lt;EthnolinguisticMap&gt;
@@ -569,7 +550,6 @@
             &lt;V59Country /&gt;
             &lt;Longitude&gt;105.427040000396&lt;/Longitude&gt;
             &lt;Latitude&gt;17.0162099995918&lt;/Latitude&gt;
-            &lt;UNMap&gt;http://www.un.org/Depts/Cartographic/map/profile/laos.pdf&lt;/UNMap&gt;
             &lt;Ctry&gt;Laos&lt;/Ctry&gt;
             &lt;IndigenousCode&gt;Y&lt;/IndigenousCode&gt;
             &lt;PercentAdherents&gt;0.2&lt;/PercentAdherents&gt;

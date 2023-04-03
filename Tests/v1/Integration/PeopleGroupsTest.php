@@ -348,6 +348,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         );
         $decodedResponse = json_decode($response, true);
         $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertFalse(empty($decodedResponse));
         $this->assertEquals($expectedID, $decodedResponse[0]['PeopleID3']);
         $this->assertEquals($expectedCountry, $decodedResponse[0]['ROG3']);
         $this->assertEquals($expectedName, $decodedResponse[0]['PeopNameInCountry']);
@@ -1222,7 +1223,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfRomanCatholic()
+    public function testIndexRequestsShouldReturnUnsupportedPercentageOfRomanCatholic()
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
@@ -1344,7 +1345,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByUnengaged()
+    public function testIndexRequestsShouldReturnUnsupportedUnengaged()
     {
         $expectedUnengagedStatus = 'y';
         $response = $this->cachedRequest->get(
@@ -1352,11 +1353,99 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
             array('api_key' => $this->APIKey, 'unengaged' => $expectedUnengagedStatus),
             "filter_by_unengaged_status_on_index_json"
         );
-        $decodedResponse = json_decode($response, true);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded['api']));
+        $this->assertEquals('error', $decoded['api']['status']);
+        $this->assertFalse(empty($decoded['api']['error']));
+        $this->assertEquals(
+            'Sorry, these parameters are no longer supported: unengaged',
+            $decoded['api']['error']['details']
+        );
+    }
+    /**
+     * A request for Daily Unreached should provide the ProfileText
+     *
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testDailyUnreachedShouldNotProvideRemovedFields()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
+            array('api_key' => $this->APIKey),
+            "unreached_no_old_fields"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertFalse(empty($decoded));
+        $this->assertFalse(array_key_exists('Top10Ranking', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankOverall', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankProgress', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankPopulation', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankLocation', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankMinistryTools', $decoded[0]));
+        $this->assertFalse(array_key_exists('UNMap', $decoded[0]));
+        $this->assertFalse(array_key_exists('LeastReachedBasis', $decoded[0]));
+        $this->assertFalse(array_key_exists('GospelRadio', $decoded[0]));
+        $this->assertFalse(array_key_exists('Unengaged', $decoded[0]));
+    }
+    /**
+     * GET /people_groups/[ID].json?country=CB
+     * test page no longer provides removed outdated fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testShowRequestsShouldNotProvideRemovedFields()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/12662.json",
+            array('api_key' => $this->APIKey),
+            "show_old_fields_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertFalse(empty($decoded));
+        $this->assertFalse(array_key_exists('Top10Ranking', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankOverall', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankProgress', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankPopulation', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankLocation', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankMinistryTools', $decoded[0]));
+        $this->assertFalse(array_key_exists('UNMap', $decoded[0]));
+        $this->assertFalse(array_key_exists('LeastReachedBasis', $decoded[0]));
+        $this->assertFalse(array_key_exists('GospelRadio', $decoded[0]));
+        $this->assertFalse(array_key_exists('Unengaged', $decoded[0]));
+    }
+    /**
+     * GET /people_groups.json?unengaged=y
+     * test page no longer provides removed outdated fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexRequestsShouldNotProvideRemovedFields()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array('api_key' => $this->APIKey),
+            "index_old_fields_json"
+        );
+        $decoded = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
-        $this->assertFalse(empty($decodedResponse));
-        foreach ($decodedResponse as $peopleGroup) {
-            $this->assertEquals($expectedUnengagedStatus, strtolower($peopleGroup['Unengaged']));
-        }
+        $this->assertFalse(empty($decoded));
+        $this->assertFalse(array_key_exists('Top10Ranking', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankOverall', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankPopulation', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankProgress', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankLocation', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankMinistryTools', $decoded[0]));
+        $this->assertFalse(array_key_exists('UNMap', $decoded[0]));
+        $this->assertFalse(array_key_exists('LeastReachedBasis', $decoded[0]));
+        $this->assertFalse(array_key_exists('GospelRadio', $decoded[0]));
+        $this->assertFalse(array_key_exists('Unengaged', $decoded[0]));
     }
 }

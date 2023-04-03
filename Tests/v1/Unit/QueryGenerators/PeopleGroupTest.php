@@ -904,26 +904,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-     * Tests that findAllWithFilters() filters out Unengaged Groups
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testFindAllWithFiltersShouldFilterOutUnengagedPeopleGroups()
-    {
-        $expectedUnengagedStatus = 'n';
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('unengaged' => $expectedUnengagedStatus));
-        $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $peopleGroup) {
-            $this->assertEquals('N', $peopleGroup['Unengaged']);
-        }
-    }
-    /**
      * Tests that findAllWithFilters() filters by JPScale
      *
      * @return void

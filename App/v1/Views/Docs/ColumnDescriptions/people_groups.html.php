@@ -58,10 +58,6 @@
                     <td>Ethnolinguistic map URL</td>
                 </tr>
                 <tr>
-                    <td>GospelRadio</td>
-                    <td>Gospel radio available in this language?</td>
-                </tr>
-                <tr>
                     <td>GSEC</td>
                     <td>Global Status of Evangelical Christianity, see http://www.joshuaproject.net/definitions.php</td>
                 </tr>
@@ -97,10 +93,6 @@
                 <tr>
                     <td>LeastReached</td>
                     <td>Is this people group considered least-reached / unreached? [JPScale < 2.0]</td>
-                </tr>
-                <tr>
-                    <td>LeastReachedBasis</td>
-                    <td>Basis for establishing least-reached</td>
                 </tr>
                 <tr>
                     <td>LeastReachedPC</td>
@@ -334,26 +326,6 @@
                     <td>Ethnicity code from WCD data</td>
                 </tr>
                 <tr>
-                    <td>RankLocation</td>
-                    <td>Priority Ranking location score</td>
-                </tr>
-                <tr>
-                    <td>RankMinistryTools</td>
-                    <td>Priority Ranking ministry tools score</td>
-                </tr>
-                <tr>
-                    <td>RankOverall</td>
-                    <td>Priority Ranking overall score 0 to 100, 100 most needy</td>
-                </tr>
-                <tr>
-                    <td>RankPopulation</td>
-                    <td>Priority Ranking population score</td>
-                </tr>
-                <tr>
-                    <td>RankProgress</td>
-                    <td>Priority Ranking progress score</td>
-                </tr>
-                <tr>
                     <td>RegionCode</td>
                     <td>Region code for this people group [1 - South Pacific, 2 - Southeast Asia, 3 - Northeast Asia,
                         4 - South Asia, 5 - Central Asia, 6 - Middle East and North Africa,
@@ -425,20 +397,8 @@
                     <td>Does this group speak the national language?</td>
                 </tr>
                 <tr>
-                    <td>Top10Ranking</td>
-                    <td>Priority Ranking top ten - assigned based on overall ranking and manual process</td>
-                </tr>
-                <tr>
                     <td>TranslationNeedQuestionable</td>
                     <td>Is the need for translation in this language questionable?</td>
-                </tr>
-                <tr>
-                    <td>Unengaged</td>
-                    <td>Is this People group unengaged i.e. no known on-site workers or indigenous church?</td>
-                </tr>
-                <tr>
-                    <td>UNMap</td>
-                    <td>URL for UN map</td>
                 </tr>
                 <tr>
                     <td>Window1040</td>

@@ -4,30 +4,53 @@ Unreleased
 
 The following items were removed because the data was outdated:
 
-REMOVED PercentAnglican from all countries endpoints.
+## Country Endpoint Parameters:
+
 REMOVED pc_anglican argument from /countries endpoint.
-REMOVED PercentIndependent from all countries endpoints.
 REMOVED pc_independent argument from /countries endpoint.
-REMOVED PercentProtestant from all countries endpoints.
 REMOVED pc_protestant argument from /countries endpoint.
-REMOVED PercentOrthodox from all countries endpoints.
 REMOVED pc_orthodox argument from /countries endpoint.
-REMOVED PercentRomanCatholic from all countries endpoints.
 REMOVED pc_rcatholic argument from /countries endpoint.
-REMOVED PercentOther from all countries endpoints.
 REMOVED pc_other_christian argument from /countries endpoint.
-REMOVED PCAnglican from all people_groups endpoints.
+
+## People Group Endpoint Parameters:
+
 REMOVED pc_anglican argument from /people_groups endpoint.
-REMOVED PCIndependent from all people_groups endpoints.
 REMOVED pc_independent argument from /people_groups endpoint.
-REMOVED PCProtestant from all people_groups endpoints.
 REMOVED pc_protestant argument from /people_groups endpoint.
-REMOVED PCOrthodox from all people_groups endpoints.
 REMOVED pc_orthodox argument from /people_groups endpoint.
-REMOVED PCRomanCatholic from all people_groups endpoints.
-REMOVED pc_rcatholic argument from /people_groups endpoint.
-REMOVED PCOtherChristian from all people_groups endpoints.
 REMOVED pc_other_christian argument from /people_groups endpoint.
+REMOVED pc_rcatholic argument from /people_groups endpoint.
+REMOVED unengaged argument from /people_groups endpoint.
+
+## Country Columns:
+
+REMOVED PercentAnglican from all countries endpoints.
+REMOVED PercentIndependent from all countries endpoints.
+REMOVED PercentProtestant from all countries endpoints.
+REMOVED PercentOrthodox from all countries endpoints.
+REMOVED PercentOther from all countries endpoints.
+REMOVED PercentRomanCatholic from all countries endpoints.
+
+## People Group Columns:
+
+REMOVED PCAnglican from all people_groups endpoints.
+REMOVED PCIndependent from all people_groups endpoints.
+REMOVED PCProtestant from all people_groups endpoints.
+REMOVED PCOrthodox from all people_groups endpoints.
+REMOVED PCRomanCatholic from all people_groups endpoints.
+REMOVED PCOtherChristian from all people_groups endpoints.
+REMOVED Top10Ranking from all people_groups endpoints.
+REMOVED RankOverall from all people_groups endpoints.
+REMOVED RankProgress from all people_groups endpoints.
+REMOVED RankPopulation from all people_groups endpoints.
+REMOVED RankLocation from all people_groups endpoints.
+REMOVED RankMinistryTools from all people_groups endpoints.
+REMOVED UNMap from all people_groups endpoints.
+REMOVED LeastReachedBasis from all people_groups endpoints.
+REMOVED GospelRadio from all people_groups endpoints.
+REMOVED Unengaged from all people_groups endpoints.
+
 
 Version 1.4.0
 
