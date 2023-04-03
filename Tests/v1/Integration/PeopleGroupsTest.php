@@ -1364,7 +1364,8 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         );
     }
     /**
-     * A request for Daily Unreached should provide the ProfileText
+     * GET: /people_groups/daily_unreached.json
+     * test page no longer provides removed outdated fields
      *
      * @access public
      * @author Johnathan Pulos
@@ -1391,7 +1392,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('Unengaged', $decoded[0]));
     }
     /**
-     * GET /people_groups/[ID].json?country=CB
+     * GET /people_groups/[ID].json
      * test page no longer provides removed outdated fields
      *
      * @return void
