@@ -39,8 +39,12 @@
                             "code": 401
                         },
                         {
-                            "reason": "Not found.  Your search ended up with no results.",
+                            "reason": "Not found.  The requested route was not found.",
                             "code": 404
+                        },
+                        {
+                            "reason": "Internal server error.  Please try again later.",
+                            "code": 500
                         }
                     ],
                     "notes": "Retrieve the details of a specific Continent by supplying a three letter ISO Continent code (id).  Use the following codes:<br><ul><li>AFR - Africa</li><li>ASI  - Asia</li><li>AUS - Australia</li><li>EUR - Europe</li><li>NAR - North America</li><li>SOP - Oceania (South Pacific)</li><li>LAM - South America</li></ul>"

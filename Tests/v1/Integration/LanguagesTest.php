@@ -126,7 +126,13 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             array('api_key' => $this->APIKey),
             "versioning_missing_json"
         );
-        $this->assertEquals(404, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertEquals(
+            'You are requesting an unavailable API version number.',
+            $decoded['api']['error']['details']
+        );
+        $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
     }
     /**
      * Tests that you can not access page without an active API Key
@@ -137,8 +143,8 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldRefuseAccessWithoutAnActiveAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
-        $response = $this->cachedRequest->get(
-            $this->siteURL . "/languages/aar.json",
+        $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/languages/aar.json",
             array('api_key' => $this->APIKey),
             "non_active_key_json"
         );
@@ -153,8 +159,8 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldRefuseAccessWithSuspendedAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
-        $response = $this->cachedRequest->get(
-            $this->siteURL . "/languages/aar.json",
+        $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/languages/aar.json",
             array('api_key' => $this->APIKey),
             "suspended_key_json"
         );
@@ -168,7 +174,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      **/
     public function testShowRequestsShouldRefuseAccessWithABadAPIKey()
     {
-        $response = $this->cachedRequest->get(
+        $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages/aar.json",
             array('api_key' => 'BADKEY'),
             "bad_key_json"
@@ -220,12 +226,15 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestsShouldThrowErrorIfBadIdProvided()
     {
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->APIVersion . "/languages/bad_id.json",
+            $this->siteURL . "/" . $this->APIVersion . "/languages/1223.json",
             array('api_key' => $this->APIKey),
             "show_with_bad_id"
         );
-        $this->assertEquals(404, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
+        $this->assertEquals('You provided an invalid language id.', $decoded['api']['error']['details']);
+        $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
     }
     /**
      * GET /languages/[id].json
@@ -261,9 +270,12 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
             array(),
-            "index_up_json"
+            "index_lang_up_test_json"
         );
+        $decoded = json_decode($response, true);
         $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals('You are missing your API key.', $decoded['api']['error']['details']);
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
     }
     /**
      * Tests that you can only access page with a version number
@@ -278,7 +290,13 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             array('api_key' => $this->APIKey),
             "index_versioning_missing_json"
         );
-        $this->assertEquals(404, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertEquals(
+            'You are requesting an unavailable API version number.',
+            $decoded['api']['error']['details']
+        );
+        $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
     }
     /**
      * Tests that you can not access page without an active API Key
@@ -290,7 +308,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/languages.json",
+            $this->siteURL . "/" . $this->APIVersion . "/languages.json",
             array('api_key' => $this->APIKey),
             "index_non_active_key_json"
         );
@@ -306,7 +324,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/languages.json",
+            $this->siteURL . "/" . $this->APIVersion . "/languages.json",
             array('api_key' => $this->APIKey),
             "index_suspended_key_json"
         );
@@ -417,8 +435,10 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             ),
             "should_return_language_by_wrong_ids_index_json"
         );
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
+        $this->assertEquals('One of your parameters are not the correct length.', $decoded['api']['error']['details']);
     }
     /**
       * GET /languages.json?has_new_testament=y
@@ -461,8 +481,10 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             ),
             "should_return_language_by_wrong_value_index_json"
         );
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
+        $this->assertEquals('One of your parameters are not the correct length.', $decoded['api']['error']['details']);
     }
     /**
       * GET /languages.json?has_portions=y
@@ -505,8 +527,10 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             ),
             "should_return_language_by_has_portions_wrong_value_index_json"
         );
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
+        $this->assertEquals('One of your parameters are not the correct length.', $decoded['api']['error']['details']);
     }
     /**
       * GET /languages.json?has_completed_bible=y
@@ -545,12 +569,14 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
             array(
                 'api_key'               =>  $this->APIKey,
-                'has_completed_bible'   =>  'NNN'
+                'has_completed_bible'   =>  'B'
             ),
             "should_return_language_by_has_completed_wrong_value_index_json"
         );
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
+        $this->assertEquals('A boolean was set with the wrong value.', $decoded['api']['error']['details']);
     }
     /**
       * GET /languages.json?needs_translation_questionable=ysss
@@ -565,12 +591,14 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
             array(
                 'api_key'               =>  $this->APIKey,
-                'needs_translation_questionable'   =>  'NNN'
+                'needs_translation_questionable'   =>  'G'
             ),
             "should_return_language_by_has_questionable_wrong_value_index_json"
         );
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
+        $this->assertEquals('A boolean was set with the wrong value.', $decoded['api']['error']['details']);
     }
     /**
       * GET /languages.json?has_audio=y
@@ -609,12 +637,14 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
             array(
                 'api_key'     =>  $this->APIKey,
-                'has_audio'   =>  'NNN'
+                'has_audio'   =>  'T'
             ),
             "should_return_language_by_has_audio_wrong_value_index_json"
         );
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
+        $this->assertEquals('A boolean was set with the wrong value.', $decoded['api']['error']['details']);
     }
     /**
       * GET /languages.json?has_four_laws=y
@@ -653,12 +683,14 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
             array(
                 'api_key'           =>  $this->APIKey,
-                'has_four_laws'     =>  'NNN'
+                'has_four_laws'     =>  'T'
             ),
             "should_return_language_by_has_four_laws_wrong_value_index_json"
         );
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
+        $this->assertEquals('A boolean was set with the wrong value.', $decoded['api']['error']['details']);
     }
     /**
       * GET /languages.json?has_jesus_film=y
@@ -697,12 +729,14 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
             array(
                 'api_key'           =>  $this->APIKey,
-                'has_jesus_film'    =>  'NNN'
+                'has_jesus_film'    =>  'Q'
             ),
             "should_return_language_by_has_jesus_film_wrong_value_index_json"
         );
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
+        $this->assertEquals('A boolean was set with the wrong value.', $decoded['api']['error']['details']);
     }
     /**
       * GET /languages.json?has_gods_story=y
@@ -741,12 +775,14 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
             array(
                 'api_key'           =>  $this->APIKey,
-                'has_gods_story'    =>  'NNN'
+                'has_gods_story'    =>  'W'
             ),
             "should_return_language_by_has_gods_story_wrong_value_index_json"
         );
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
+        $this->assertEquals('A boolean was set with the wrong value.', $decoded['api']['error']['details']);
     }
     /**
       * GET /languages.json?countries=af|cn
@@ -790,8 +826,10 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             ),
             "should_return_language_by_countries_wrong_value_index_json"
         );
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
+        $this->assertEquals('One of your parameters are not the correct length.', $decoded['api']['error']['details']);
     }
     /**
       * GET /languages.json?world_speakers=1-10
@@ -934,8 +972,10 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             ),
             "should_return_language_by_primary_religions_wrong_value_index_json"
         );
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
+        $this->assertEquals('One of the provided integers are out of range.', $decoded['api']['error']['details']);
     }
     /**
       * GET /languages.json?jpscale=2-4
@@ -977,8 +1017,13 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             ),
             "should_return_language_by_jpscale_wrong_value_index_json"
         );
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
+        $this->assertEquals(
+            'A bar seperated parameter has the wrong permitted value.',
+            $decoded['api']['error']['details']
+        );
     }
     /**
       * GET /languages.json?least_reached=n
@@ -1016,11 +1061,13 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
             array(
                 'api_key'           =>  $this->APIKey,
-                'least_reached'     =>  'NNNNNN'
+                'least_reached'     =>  'G'
             ),
             "should_return_language_by_least_reached_wrong_value_index_json"
         );
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
+        $this->assertEquals('A boolean was set with the wrong value.', $decoded['api']['error']['details']);
     }
 }

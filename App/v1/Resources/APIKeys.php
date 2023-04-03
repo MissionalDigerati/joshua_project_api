@@ -20,6 +20,9 @@
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  */
+use Slim\Http\Request;
+use Slim\Http\Response;
+
 /**
  * Lists all the current API Keys
  *
@@ -30,20 +33,22 @@
  **/
 $app->get(
     "/api_keys",
-    function () use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
-        $data = $appRequest->get();
+    function (Request $req, Response $res, $args = []) {
+        $viewDirectory = $this->view->getTemplatePath();
+        $data = $req->getQueryParams();
         $query = "SELECT * FROM md_api_keys ORDER BY created DESC";
         try {
-            $statement = $db->prepare($query);
+            $statement = $this->db->prepare($query);
             $statement->execute(array());
             $api_keys = $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             echo $e;
             exit;
         }
-        $app->render(
+        return $this->view->render(
+            $res,
             'APIKeys/index.html.php',
-            array('api_keys' => $api_keys, 'data' => $data, 'VIEW_DIRECTORY' => $VIEW_DIRECTORY)
+            array('api_keys' => $api_keys, 'data' => $data, 'viewDirectory' => $viewDirectory)
         );
     }
 );
@@ -54,51 +59,52 @@ $app->get(
  * Available Formats HTML
  *
  * @author Johnathan Pulos
- * @todo verify this works with the new status column
  **/
 $app->put(
-    "/api_keys/:id",
-    function ($id) use ($app, $db, $appRequest) {
-        $formData = $appRequest->put();
-        if (!isset($formData['state'])) {
-            $app->redirect("/api_keys?saving_error=true");
+    "/api_keys/{id}",
+    function (Request $req, Response $res, $args = []) {
+        $id = $args['id'];
+        $state = $req->getParam('state');
+        if (!$state) {
+            return $res->withHeader('Location', "/api_keys?saving_error=true");
         }
         $query = "UPDATE md_api_keys SET status = :state WHERE id = :id";
         try {
-            $statement = $db->prepare($query);
+            $statement = $this->db->prepare($query);
             $statement->execute(
                 array(
                     'id' => $id,
-                    'state' => $formData['state']
+                    'state' => $state
                 )
             );
         } catch (PDOException $e) {
-            $app->redirect("/api_keys?saving_error=true");
+            return $res->withHeader('Location', "/api_keys?saving_error=true");
         }
-        if ($formData['state'] == 1) {
+        if (intval($state) === 1) {
             $keyState = "activated or reinstated";
-        } elseif ($formData['state'] == 2) {
+        } elseif (intval($state) === 2) {
             $keyState = "suspended";
         }
-        $app->redirect("/api_keys?saved=true&key_state=" . $keyState);
+        return $res
+        ->withHeader('Location', "/api_keys?saved=true&key_state=" . $keyState);
     }
 );
 /**
- * Create an API key
+ * Create an API key (We appended /new so it can bypass auth requirement)
  *
- * POST /api_keys
+ * POST /api_keys/new
  * Available Formats HTML
  *
  * @author Johnathan Pulos
  */
 $app->post(
-    "/api_keys",
-    function () use ($app, $db, $appRequest, $DOMAIN_ADDRESS) {
-        $formData = $appRequest->post();
+    "/api_keys/new",
+    function (Request $req, Response $res, $args = []) {
+        $formData = $req->getParsedBody();
         $invalidFields = validatePresenceOf(array("name", "email", "usage"), $formData);
         $redirectURL = generateRedirectURL("/", $formData, $invalidFields);
         if (!empty($invalidFields)) {
-            $app->redirect($redirectURL);
+            return $res->withHeader('Location', $redirectURL);
         }
         $newAPIKey = generateRandomKey(12);
         $authorizeToken = generateRandomKey(12);
@@ -121,19 +127,21 @@ $app->post(
         "authorize_token, resource_used, status, created) VALUES (:name, :email, :organization, :website, " .
         ":phone_number, :api_usage, :api_key, :authorize_token, :resource_used, :status, NOW())";
         try {
-            $statement = $db->prepare($query);
+            $statement = $this->db->prepare($query);
             $statement->execute($apiKeyValues);
         } catch (PDOException $e) {
-            $app->redirect("/?saving_error=true");
+            return $res->withHeader('Location', "/?saving_error=true");
         }
         /**
          * Send the email with the authorization url
          *
          * @author Johnathan Pulos
          */
-        $authorizeUrl = $DOMAIN_ADDRESS . "/get_my_api_key?authorize_token=" . $authorizeToken;
-        Utilities\Mailer::sendAuthorizeToken($formData['email'], $authorizeUrl, null);
+        $siteURL = getSiteURL();
+        $authorizeUrl = $siteURL . "/get_my_api_key?authorize_token=" . $authorizeToken;
+        $this->mailer->sendAuthorizeToken($formData['email'], $authorizeUrl);
         $redirectURL = generateRedirectURL("/", array('api_key' => 'true'), array());
-        $app->redirect($redirectURL);
+        return $res
+        ->withHeader('Location', $redirectURL);
     }
 );

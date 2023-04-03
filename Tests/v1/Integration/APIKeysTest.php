@@ -103,7 +103,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     {
         $expectedURL = $this->siteURL . "/?required_fields=name|email|usage";
         $this->cachedRequest->post(
-            $this->siteURL . "/api_keys",
+            $this->siteURL . "/api_keys/new",
             array('name' => '', 'email' => '', 'usage' => ''),
             "api_keys_required_fields"
         );
@@ -121,8 +121,8 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredNameFieldInURL()
     {
         $expectedURL = $this->siteURL . "/?required_fields=name&email=joe%40yahoo.com&usage=testing";
-        $this->cachedRequest->post(
-            $this->siteURL . "/api_keys",
+        $response = $this->cachedRequest->post(
+            $this->siteURL . "/api_keys/new",
             array('name' => '', 'email' => 'joe@yahoo.com', 'usage' => 'testing'),
             "api_keys_required_fields"
         );
@@ -141,7 +141,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     {
         $expectedURL = $this->siteURL . "/?required_fields=email&name=joe&usage=testing";
         $this->cachedRequest->post(
-            $this->siteURL . "/api_keys",
+            $this->siteURL . "/api_keys/new",
             array('name' => 'joe', 'email' => '', 'usage' => 'testing'),
             "api_keys_required_fields"
         );
@@ -160,7 +160,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     {
         $expectedURL = $this->siteURL . "/?required_fields=usage&name=joe&email=joe%40yahoo.com";
         $this->cachedRequest->post(
-            $this->siteURL . "/api_keys",
+            $this->siteURL . "/api_keys/new",
             array('name' => 'joe', 'email' => 'joe@yahoo.com', 'usage' => ''),
             "api_keys_required_fields"
         );
@@ -179,7 +179,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     {
         $usage = generateRandomKey(12);
         $this->cachedRequest->post(
-            $this->siteURL . "/api_keys",
+            $this->siteURL . "/api_keys/new",
             array('name' => 'used', 'email' => 'joe@yahoo.com', 'usage' => $usage),
             "api_keys_required_fields"
         );
@@ -202,7 +202,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     {
         $usage = generateRandomKey(12);
         $content = $this->cachedRequest->post(
-            $this->siteURL . "/api_keys",
+            $this->siteURL . "/api_keys/new",
             array('name' => 'status_should_be_zero', 'email' => 'joe@yahoo.com', 'usage' => $usage),
             "status_should_be_zero"
         );
@@ -223,7 +223,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     {
         $usage = generateRandomKey(12);
         $this->cachedRequest->post(
-            $this->siteURL . "/api_keys",
+            $this->siteURL . "/api_keys/new",
             array('name' => 'should_set_authorize_token', 'email' => 'joe@gmail.com', 'usage' => $usage),
             "should_set_authorize_token"
         );
@@ -248,7 +248,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
         $usage = generateRandomKey(12);
         $expectedStatus = 1;
         $this->cachedRequest->post(
-            $this->siteURL . "/api_keys",
+            $this->siteURL . "/api_keys/new",
             array('name' => 'i_should_become_active', 'email' => 'joe@gmail.com', 'usage' => $usage),
             "i_should_become_active"
         );
@@ -279,7 +279,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
         $usage = generateRandomKey(12);
         $expectedStatus = 2;
         $this->cachedRequest->post(
-            $this->siteURL . "/api_keys",
+            $this->siteURL . "/api_keys/new",
             array('name' => 'i_should_stay_suspended', 'email' => 'joe@gmail.com', 'usage' => $usage),
             "i_should_stay_suspended"
         );

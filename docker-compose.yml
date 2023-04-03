@@ -4,6 +4,11 @@ networks:
   jp_api_v1:
 
 services:
+  memcached:
+    image: memcached:latest
+    networks:
+      - jp_api_v1
+
   mysql:
     image: mysql:5.7.22
     container_name: jp_api_mysql

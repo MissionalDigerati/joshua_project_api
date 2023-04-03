@@ -111,7 +111,12 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
             array(),
             "region_show_up_json"
         );
+        $decoded = json_decode($response, true);
         $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('You are missing your API key.', $decoded['api']['error']['details']);
     }
     /**
      * Tests that you can only access page with a version number
@@ -126,7 +131,15 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
             array('api_key' => $this->APIKey),
             "regions_versioning_missing_json"
         );
-        $this->assertEquals(404, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
+        $this->assertEquals(
+            'You are requesting an unavailable API version number.',
+            $decoded['api']['error']['details']
+        );
     }
     /**
      * Tests that you can not access page without an active API Key
@@ -138,11 +151,16 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/regions/3.json",
+            $this->siteURL . "/" . $this->APIVersion . "/regions/3.json",
             array('api_key' => $this->APIKey),
             "non_active_key_json"
         );
+        $decoded = json_decode($response, true);
         $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
     }
     /**
      * Tests that you can not access page with a suspended API Key
@@ -154,11 +172,16 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/regions/2.json",
+            $this->siteURL . "/" . $this->APIVersion . "/regions/2.json",
             array('api_key' => $this->APIKey),
             "suspended_key_json"
         );
+        $decoded = json_decode($response, true);
         $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
     }
     /**
      * Tests that you can only access page with a valid API Key
@@ -173,7 +196,12 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
             array('api_key' => 'BADKEY'),
             "bad_key_json"
         );
+        $decoded = json_decode($response, true);
         $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
     }
     /**
       * GET /regions/[id].json

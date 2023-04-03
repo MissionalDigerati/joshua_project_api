@@ -73,6 +73,21 @@ function addChildXMLElement($parentElement, $childLabel, $childVal)
     }
 }
 /**
+ * Get the URL for the site
+ *
+ * @return string   The site URL
+ * @author  Johnathan Pulos
+ * @link    https://gist.github.com/ChrisMcKee/1284052
+ */
+function getSiteURL()
+{
+    $protocol = "http://";
+    if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) {
+        $protocol = "https://";
+    }
+    return $protocol . $_SERVER['HTTP_HOST'];
+}
+/**
  * Returns the present value or the default value.
  *
  * Checks if $variable is true, if so it returns the $variable.  If variable is false/empty/null it returns $default.

@@ -110,7 +110,50 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
             array('api_key' => $this->APIKey),
             "country_show_without_id"
         );
-        $this->assertEquals(404, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertEquals('You provided an invalid country id.', $decoded['api']['error']['details']);
+        $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
+        $this->assertTrue(isJSON($response));
+    }
+    /**
+     * Tests that you can only access page with a version number
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testShowRequestsShouldRefuseAccessWithoutAVersionNumber()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/countries/us.json",
+            array('api_key' => $this->APIKey),
+            "versioning_missing_countries_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertEquals(
+            'You are requesting an unavailable API version number.',
+            $decoded['api']['error']['details']
+        );
+        $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
+    }
+    /**
+     * Tests that you can only access page with an API Key
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testIndexRequestsShouldRefuseAccessWithoutAnAPIKey()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(),
+            "index_country_up_test_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals('You are missing your API key.', $decoded['api']['error']['details']);
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
     }
     /**
       * GET /countries/usa.json
@@ -177,7 +220,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testIndexRequestShouldBeAccessableByJSON()
+    public function testIndexRequestShouldBeAccessibleByJSON()
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
