@@ -125,7 +125,15 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
             array('api_key' => $this->APIKey),
             "continents_versioning_missing_json"
         );
+        $decoded = json_decode($response, true);
         $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
+        $this->assertEquals(
+            'You are requesting an unavailable API version number.',
+            $decoded['api']['error']['details']
+        );
     }
     /**
      * Tests that you can not access page without an active API Key
@@ -136,12 +144,17 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestShouldRefuseAccessWithoutActiveAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
-        $this->cachedRequest->get(
+        $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/3.json",
             array('api_key' => $this->APIKey),
             "non_active_key_json"
         );
+        $decoded = json_decode($response, true);
         $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
     }
     /**
      * Tests that you can not access page with a suspended API Key
@@ -152,12 +165,17 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
     public function testShowRequestShouldRefuseAccessToSuspendedAPIKeys()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
-        $this->cachedRequest->get(
+        $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/3.json",
             array('api_key' => $this->APIKey),
             "suspended_key_json"
         );
+        $decoded = json_decode($response, true);
         $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
     }
     /**
      * Tests that you can only access page with a valid API Key
@@ -167,12 +185,17 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      **/
     public function testShowRequestShouldRefuseAccessWithABadAPIKeys()
     {
-        $this->cachedRequest->get(
+        $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/1.json",
             array('api_key' => 'BADKEY'),
             "bad_key_json"
         );
+        $decoded = json_decode($response, true);
         $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
     }
     /**
       * GET /continents/[id].json

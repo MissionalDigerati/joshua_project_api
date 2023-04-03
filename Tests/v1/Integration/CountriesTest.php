@@ -117,6 +117,27 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
     }
     /**
+     * Tests that you can only access page with a version number
+     *
+     * @return void
+     * @author Johnathan Pulos
+     **/
+    public function testShowRequestsShouldRefuseAccessWithoutAVersionNumber()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/countries/us.json",
+            array('api_key' => $this->APIKey),
+            "versioning_missing_countries_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertEquals(
+            'You are requesting an unavailable API version number.',
+            $decoded['api']['error']['details']
+        );
+        $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
+    }
+    /**
      * Tests that you can only access page with an API Key
      *
      * @return void
