@@ -19,10 +19,13 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+use Dotenv\Dotenv;
+
 /**
  * Set the default time zone
  */
 date_default_timezone_set('America/Denver');
+$ROOT_DIRECTORY = dirname(__DIR__);
 $DS = DIRECTORY_SEPARATOR;
 /**
  * The URL for the testing server
@@ -38,13 +41,18 @@ $SITE_URL = $_ENV['site_url'];
  * @author Johnathan Pulos
  */
 $API_VERSION = "v1";
-require_once("Tests" . $DS . "Support" . $DS . "HelperFunctions.php");
-require_once("App" . $DS . $API_VERSION . $DS . "Includes" . $DS . "CommonFunctions.php");
 /**
- * Load up the Composer autoloader
+ * Load up the Composer AutoLoader
  *
  * @author Johnathan Pulos
  */
-$vendorDirectory = __DIR__ . $DS . ".." . $DS . "Vendor" . $DS;
-
-require $vendorDirectory . 'autoload.php';
+require $ROOT_DIRECTORY . $DS . "Vendor" . $DS . "autoload.php";
+/**
+ * Load env variables
+ *
+ * @author Johnathan Pulos
+ */
+$dotenv = Dotenv::createImmutable($ROOT_DIRECTORY, '.env.testing');
+$dotenv->load();
+require_once("Tests" . $DS . "Support" . $DS . "HelperFunctions.php");
+require_once("App" . $DS . $API_VERSION . $DS . "Includes" . $DS . "CommonFunctions.php");
