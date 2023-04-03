@@ -19,8 +19,8 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+use Dotenv\Dotenv;
 use JPAPI\AdminSettings;
-use JPAPI\DatabaseSettings;
 use Middleware\APIAuthMiddleware;
 use Middleware\APIStandardsMiddleware;
 use Middleware\CachingMiddleware;
@@ -50,13 +50,12 @@ require $ROOT_DIRECTORY . $DS . "Vendor" . $DS . "autoload.php";
  */
 date_default_timezone_set('America/Denver');
 /**
- * Set whether to use Memcached for caching the queries.  Most queries are cached for 1 day.
+ * Load env variables
  *
- * @var boolean
  * @author Johnathan Pulos
  */
-$useCaching = false;
-$googleDocTitle = '';
+$dotenv = Dotenv::createImmutable($ROOT_DIRECTORY);
+$dotenv->load();
 /**
  * Lets get the version of the API based on the URL (
  * http://joshua.api.local/v12/people_groups/daily_unreached.json?api_key=KEY
@@ -88,9 +87,9 @@ $VIEW_DIRECTORY = $APP_FILES_DIRECTORY . $DS . "Views";
 $app = new \Slim\App([
     'settings' => [
         'determineRouteBeforeAppMiddleware' =>  true,
-        'displayErrorDetails'               => true,
-        'debug'                             => true,
-        'whoops.editor'                     => 'sublime',
+        'displayErrorDetails'               =>  true,
+        'debug'                             =>  true,
+        'whoops.editor'                     =>  'sublime',
     ]
 ]);
 /**
@@ -99,8 +98,15 @@ $app = new \Slim\App([
 $container = $app->getContainer();
 $container['view'] = new PhpRenderer($VIEW_DIRECTORY);
 $container['db'] = function () {
+    $dbSettings = new \stdClass();
+    $dbSettings->default = array(
+        'host'      =>  $_ENV['DB_HOST'],
+        'name'      =>  $_ENV['DB_NAME'],
+        'username'  =>  $_ENV['DB_USERNAME'],
+        'password'  =>  $_ENV['DB_PASSWORD']
+    );
     $pdoDb = PDODatabaseConnect::getInstance();
-    $pdoDb->setDatabaseSettings(new DatabaseSettings());
+    $pdoDb->setDatabaseSettings($dbSettings);
     return $pdoDb->getDatabaseInstance();
 };
 $container['mailer'] = new Mailer();
