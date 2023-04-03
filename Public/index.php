@@ -114,12 +114,11 @@ $container['errorResponder'] = new APIErrorResponder();
 /**
  * Setup Middleware
  */
-$adminSettings = new AdminSettings();
 $authSettings = array(
     'path'          =>  array('/api_keys'),
     'passthrough'   =>  array('/api_keys/new')
 );
-$authSettings['users'][$adminSettings->default['username']] = $adminSettings->default['password'];
+$authSettings['users'][$_ENV['ADMIN_USERNAME']] = $_ENV['ADMIN_PASSWORD'];
 $app->add(new HttpBasicAuthentication($authSettings));
 $pathSettings = array(
     'passthrough' => array('/v\d+/docs/column_descriptions'),
