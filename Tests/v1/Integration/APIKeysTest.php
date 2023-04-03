@@ -103,7 +103,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     {
         $expectedURL = $this->siteURL . "/?required_fields=name|email|usage";
         $this->cachedRequest->post(
-            $this->siteURL . "/api_keys",
+            $this->siteURL . "/api_keys/new",
             array('name' => '', 'email' => '', 'usage' => ''),
             "api_keys_required_fields"
         );
@@ -121,8 +121,8 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
     public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredNameFieldInURL()
     {
         $expectedURL = $this->siteURL . "/?required_fields=name&email=joe%40yahoo.com&usage=testing";
-        $this->cachedRequest->post(
-            $this->siteURL . "/api_keys",
+        $response = $this->cachedRequest->post(
+            $this->siteURL . "/api_keys/new",
             array('name' => '', 'email' => 'joe@yahoo.com', 'usage' => 'testing'),
             "api_keys_required_fields"
         );
