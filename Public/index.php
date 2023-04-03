@@ -20,7 +20,6 @@
  *
  */
 use Dotenv\Dotenv;
-use JPAPI\AdminSettings;
 use Middleware\APIAuthMiddleware;
 use Middleware\APIStandardsMiddleware;
 use Middleware\CachingMiddleware;
