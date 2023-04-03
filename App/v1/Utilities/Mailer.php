@@ -22,7 +22,6 @@
  */
 namespace Utilities;
 
-use JPAPI\MailSettings;
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
@@ -42,10 +41,28 @@ class Mailer
 
     /**
      * Build the mailer class
+     *
+     * @param string    $host       The SMTP host (default: '')
+     * @param string    $username   The SMTP username (default: '')
+     * @param string    $password   The SMTP password (default: '')
+     * @param integer   $port       The SMTP port (default: 465)
+     * @param boolean   $useSMTP    Do you want to use a SMTP server? (default: false)
      */
-    public function __construct()
-    {
-        $this->mailer = $this->getMailInstance();
+    public function __construct(
+        $host = '',
+        $username = '',
+        $password = '',
+        $port = 465,
+        $useSMTP = false
+    ) {
+        $settings = array(
+            'host'      =>  $host,
+            'username'  =>  $username,
+            'password'  =>  $password,
+            'port'      =>  $port,
+            'use_smtp'  =>  $useSMTP
+        );
+        $this->mailer = $this->getMailInstance($settings);
     }
 
     /**
@@ -106,12 +123,10 @@ class Mailer
      *
      * @return PHPMailer    The PHPMailer instance
      */
-    private function getMailInstance()
+    private function getMailInstance($settings)
     {
         $mail = new PHPMailer(true);
         $mail->isHTML(true);
-        $mailSettings = new MailSettings();
-        $settings = $mailSettings->default;
         if (!$settings['use_smtp']) {
             return $mail;
         }

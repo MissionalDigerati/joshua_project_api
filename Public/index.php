@@ -109,7 +109,14 @@ $container['db'] = function () {
     $pdoDb->setDatabaseSettings($dbSettings);
     return $pdoDb->getDatabaseInstance();
 };
-$container['mailer'] = new Mailer();
+$useSMTP = ($_ENV['EMAIL_USE_SMTP'] === 'true');
+$container['mailer'] = new Mailer(
+    $_ENV['EMAIL_HOST'],
+    $_ENV['EMAIL_USERNAME'],
+    $_ENV['EMAIL_PASSWORD'],
+    $_ENV['EMAIL_PORT'],
+    $useSMTP
+);
 $container['errorResponder'] = new APIErrorResponder();
 /**
  * Setup Middleware
