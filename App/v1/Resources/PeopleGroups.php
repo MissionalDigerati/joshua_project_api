@@ -20,6 +20,12 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+use QueryGenerators\PeopleGroup;
+use QueryGenerators\ProfileText;
+use QueryGenerators\Resource;
+use QueryGenerators\Unreached;
+use Slim\Http\Request;
+use Slim\Http\Response;
 use Swagger\Annotations as SWG;
 
 // phpcs:disable Generic.Files.LineLength
@@ -82,7 +88,11 @@ use Swagger\Annotations as SWG;
  *              @SWG\ErrorResponse(
  *                  code="404",
  *                  reason="Not found.  The requested route was not found."
- *              )
+ *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="500",
+  *                  reason="Internal server error.  Please try again later."
+  *              )
  *          )
  *      )
  *  )
@@ -91,33 +101,43 @@ use Swagger\Annotations as SWG;
  */
 // phpcs:enable Generic.Files.LineLength
 $app->get(
-    "/:version/people_groups/daily_unreached.:format",
-    function ($version, $format) use ($app, $db, $appRequest) {
+    "/{version}/people_groups/daily_unreached.{format}",
+    function (Request $req, Response $res, $args = []) {
         /**
          * Get the given parameters, and clean them
          *
          * @author Johnathan Pulos
          */
-        $month = returnPresentOrDefault($appRequest->params('month'), Date('n'));
-        $day = returnPresentOrDefault($appRequest->params('day'), Date('j'));
+        $month = returnPresentOrDefault($req->getParam('month'), Date('n'));
+        $day = returnPresentOrDefault($req->getParam('day'), Date('j'));
         try {
-            $peopleGroup = new \QueryGenerators\Unreached(
+            $peopleGroup = new Unreached(
                 array(
                     'month' => $month,
                     'day'   => $day
                 )
             );
             $peopleGroup->daily();
-            $statement = $db->prepare($peopleGroup->preparedStatement);
+            $statement = $this->db->prepare($peopleGroup->preparedStatement);
             $statement->execute($peopleGroup->preparedVariables);
             $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($data)) {
+                return $this->errorResponder->get(
+                    404,
+                    'The people group does not exist for the given month and day.',
+                    $args['format'],
+                    'Not Found',
+                    $res
+                );
+            }
         } catch (Exception $e) {
-            $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
-            exit;
-        }
-        if (empty($data)) {
-            $app->render("/errors/404." . $format . ".php");
-            exit;
+            return $this->errorResponder->get(
+                500,
+                $e->getMessage(),
+                $args['format'],
+                'Internal Server Error',
+                $res
+            );
         }
         /**
          * Get the ProfileText and Resources for each of the People Group
@@ -127,7 +147,7 @@ $app->get(
          */
         foreach ($data as $key => $peopleGroupData) {
             try {
-                $profileText = new \QueryGenerators\ProfileText(
+                $profileText = new ProfileText(
                     array(
                         'id'        => $peopleGroupData['PeopleID3'],
                         'country'   => $peopleGroupData['ROG3'],
@@ -135,7 +155,7 @@ $app->get(
                     )
                 );
                 $profileText->findAllByIdAndCountry();
-                $statement = $db->prepare($profileText->preparedStatement);
+                $statement = $this->db->prepare($profileText->preparedStatement);
                 $statement->execute($profileText->preparedVariables);
                 $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
             } catch (Exception $e) {
@@ -147,10 +167,12 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
-        if ($format == 'json') {
-            echo json_encode($data);
+        if ($args['format'] == 'json') {
+            return $res->withJson($data);
         } else {
-            echo arrayToXML($data, "people_groups", "people_group");
+            return $res
+                ->withHeader('Content-type', 'text/xml')
+                ->write(arrayToXML($data, "people_groups", "people_group"));
         }
     }
 );
@@ -207,6 +229,10 @@ $app->get(
   *              @SWG\ErrorResponse(
   *                  code="404",
   *                  reason="Not found.  The requested route was not found."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="500",
+  *                  reason="Internal server error.  Please try again later."
   *              )
   *          )
   *      )
@@ -216,165 +242,105 @@ $app->get(
   */
 // phpcs:enable Generic.Files.LineLength
 $app->get(
-    "/:version/people_groups/:id\.:format",
-    function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
-        $data = array();
-        $gotCachedData = false;
+    "/{version}/people_groups/{id}.{format}",
+    function (Request $req, Response $res, $args = []) {
         /**
          * Make sure we have an ID, else crash
          *
          * @author Johnathan Pulos
          */
-        $peopleId = intval(strip_tags($id));
-        $country = $appRequest->params('country');
+        $peopleId = intval(strip_tags($args['id']));
         if (empty($peopleId)) {
-            $app->render("/errors/404." . $format . ".php");
-            exit;
+            return $this->errorResponder->get(
+                400,
+                'You provided an invalid PeopleID3.',
+                $args['format'],
+                'Bad Request',
+                $res
+            );
         }
-        /**
-         * Determine the data we need to return
-         *
-         * @author Johnathan Pulos
-         */
-        if ($country) {
-            if ($useCaching === true) {
-                /**
-                 * Check the cache
-                 *
-                 * @author Johnathan Pulos
-                 */
-                $cacheKey = md5("PeopleGroupShowId_".$peopleId."_InCountry_".$country);
-                $data = $cache->get($cacheKey);
-                if ((is_array($data)) && (!empty($data))) {
-                    $gotCachedData = true;
-                }
-            }
-            if (empty($data)) {
+        $country = $req->getParam('country');
+        try {
+            if ($country) {
                 /**
                  * Get the people group in a specific country
                  *
                  * @author Johnathan Pulos
                  */
-                try {
-                    $peopleGroup = new \QueryGenerators\PeopleGroup(array('id' => $peopleId, 'country' => $country));
-                    $peopleGroup->findByIdAndCountry();
-                    $statement = $db->prepare($peopleGroup->preparedStatement);
-                    $statement->execute($peopleGroup->preparedVariables);
-                    $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-                } catch (Exception $e) {
-                    $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
-                    exit;
-                }
-                /**
-                 * Get the ProfileText for each of the People Group
-                 *
-                 * @return void
-                 * @author Johnathan Pulos
-                 */
-                foreach ($data as $key => $peopleGroupData) {
-                    try {
-                        $profileText = new \QueryGenerators\ProfileText(
-                            array(
-                                'id' => $peopleGroupData['PeopleID3'],
-                                'country' => $peopleGroupData['ROG3']
-                            )
-                        );
-                        $profileText->findAllByIdAndCountry();
-                        $statement = $db->prepare($profileText->preparedStatement);
-                        $statement->execute($profileText->preparedVariables);
-                        $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
-                    } catch (Exception $e) {
-                        $data[$key]['ProfileText'] = array();
-                    }
-                    try {
-                        $resource = new \QueryGenerators\Resource(array('id' => $peopleGroupData['ROL3']));
-                        $resource->findAllByLanguageId();
-                        $statement = $db->prepare($resource->preparedStatement);
-                        $statement->execute($resource->preparedVariables);
-                        $data[$key]['Resources'] = $statement->fetchAll(PDO::FETCH_ASSOC);
-                    } catch (Exception $e) {
-                        $data[$key]['Resources'] = array();
-                    }
-                }
-            }
-        } else {
-            if ($useCaching === true) {
-                $cacheKey = md5("PeopleGroupShowId_".$peopleId);
-                $data = $cache->get($cacheKey);
-                if ((is_array($data)) && (!empty($data))) {
-                    $gotCachedData = true;
-                }
-            }
-            if (empty($data)) {
+                $peopleGroup = new PeopleGroup(array('id' => $peopleId, 'country' => $country));
+                $peopleGroup->findByIdAndCountry();
+            } else {
                 /**
                  * Get all the countries the people group exists in, and some basic stats
                  *
                  * @author Johnathan Pulos
                  */
-                try {
-                    $peopleGroup = new \QueryGenerators\PeopleGroup(array('id' => $peopleId));
-                    $peopleGroup->findById();
-                    $statement = $db->prepare($peopleGroup->preparedStatement);
-                    $statement->execute($peopleGroup->preparedVariables);
-                    $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-                } catch (Exception $e) {
-                    $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
-                    exit;
-                }
-                /**
-                 * Get the ProfileText for each of the People Group
-                 *
-                 * @return void
-                 * @author Johnathan Pulos
-                 */
-                foreach ($data as $key => $peopleGroupData) {
-                    try {
-                        $profileText = new \QueryGenerators\ProfileText(
-                            array(
-                                'id' => $peopleGroupData['PeopleID3'],
-                                'country' => $peopleGroupData['ROG3']
-                            )
-                        );
-                        $profileText->findAllByIdAndCountry();
-                        $statement = $db->prepare($profileText->preparedStatement);
-                        $statement->execute($profileText->preparedVariables);
-                        $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
-                    } catch (Exception $e) {
-                        $data[$key]['ProfileText'] = array();
-                    }
-                    try {
-                        $resource = new \QueryGenerators\Resource(array('id' => $peopleGroupData['ROL3']));
-                        $resource->findAllByLanguageId();
-                        $statement = $db->prepare($resource->preparedStatement);
-                        $statement->execute($resource->preparedVariables);
-                        $data[$key]['Resources'] = $statement->fetchAll(PDO::FETCH_ASSOC);
-                    } catch (Exception $e) {
-                        $data[$key]['Resources'] = array();
-                    }
-                }
+                $peopleGroup = new PeopleGroup(array('id' => $peopleId));
+                $peopleGroup->findById();
             }
+            $statement = $this->db->prepare($peopleGroup->preparedStatement);
+            $statement->execute($peopleGroup->preparedVariables);
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($data)) {
+                return $this->errorResponder->get(
+                    404,
+                    'The people group does not exist for the given PeopleID3/country.',
+                    $args['format'],
+                    'Not Found',
+                    $res
+                );
+            }
+        } catch (Exception $e) {
+            return $this->errorResponder->get(
+                500,
+                $e->getMessage(),
+                $args['format'],
+                'Internal Server Error',
+                $res
+            );
         }
-        if (empty($data)) {
-            $app->render("/errors/404." . $format . ".php");
-            exit;
-        }
-        if (($useCaching === true) && ($gotCachedData === false)) {
-            /**
-             * Set the data to the cache using it's cache key, and expire it in 1 day
-             *
-             * @author Johnathan Pulos
-             */
-            $cache->set($cacheKey, $data, 86400);
+        /**
+         * Get the ProfileText for each of the People Group
+         *
+         * @return void
+         * @author Johnathan Pulos
+         */
+        foreach ($data as $key => $peopleGroupData) {
+            try {
+                $profileText = new ProfileText(
+                    array(
+                        'id' => $peopleGroupData['PeopleID3'],
+                        'country' => $peopleGroupData['ROG3']
+                    )
+                );
+                $profileText->findAllByIdAndCountry();
+                $statement = $this->db->prepare($profileText->preparedStatement);
+                $statement->execute($profileText->preparedVariables);
+                $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                $data[$key]['ProfileText'] = array();
+            }
+            try {
+                $resource = new Resource(array('id' => $peopleGroupData['ROL3']));
+                $resource->findAllByLanguageId();
+                $statement = $this->db->prepare($resource->preparedStatement);
+                $statement->execute($resource->preparedVariables);
+                $data[$key]['Resources'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                $data[$key]['Resources'] = array();
+            }
         }
         /**
          * Render the final data
          *
          * @author Johnathan Pulos
          */
-        if ($format == 'json') {
-            echo json_encode($data);
+        if ($args['format'] == 'json') {
+            return $res->withJson($data);
         } else {
-            echo arrayToXML($data, "people_groups", "people_group");
+            return $res
+                ->withHeader('Content-type', 'text/xml')
+                ->write(arrayToXML($data, "people_groups", "people_group"));
         }
     }
 );
@@ -636,6 +602,10 @@ $app->get(
  *              @SWG\ErrorResponse(
  *                  code="404",
  *                  reason="Not found.  The requested route was not found."
+ *              ),
+ *              @SWG\ErrorResponse(
+ *                  code="500",
+ *                  reason="Internal server error.  Please try again later."
  *              )
  *          )
  *      )
@@ -645,98 +615,82 @@ $app->get(
  */
 // phpcs:enable Generic.Files.LineLength
 $app->get(
-    "/:version/people_groups\.:format",
-    function ($version, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
-        $data = array();
-        $gotCachedData = false;
+    "/{version}/people_groups.{format}",
+    function (Request $req, Response $res, $args = []) {
         $noLongerSupportedParams = array(
             'pc_anglican', 'pc_independent', 'pc_protestant', 'pc_orthodox', 'pc_rcatholic',
             'pc_other_christian'
         );
-        $requestKeys = array_keys($appRequest->params());
+        $params = $req->getQueryParams();
+        $requestKeys = array_keys($params);
         $check = array_intersect($requestKeys, $noLongerSupportedParams);
         if (!empty($check)) {
             $unsupported = join(', ', $check);
-            $app->render(
-                "/errors/400." . $format . ".php",
-                array(
-                    "details" => "Sorry, these parameters are no longer supported: " . $unsupported
-                )
+            return $this->errorResponder->get(
+                400,
+                "Sorry, these parameters are no longer supported: " . $unsupported,
+                $args['format'],
+                'Bad Request',
+                $res
             );
-            exit;
         }
-        if ($useCaching === true) {
-            /**
-             * Check the cache
-             *
-             * @author Johnathan Pulos
-             */
-            $cacheKey = md5("PeopleGroupIndex");
-            $data = $cache->get($cacheKey);
-            if ((is_array($data)) && (!empty($data))) {
-                $gotCachedData = true;
-            }
+        try {
+            $peopleGroup = new PeopleGroup($params);
+            $peopleGroup->findAllWithFilters();
+            $statement = $this->db->prepare($peopleGroup->preparedStatement);
+            $statement->execute($peopleGroup->preparedVariables);
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return $this->errorResponder->get(
+                500,
+                $e->getMessage(),
+                $args['format'],
+                'Internal Server Error',
+                $res
+            );
         }
-        if (empty($data)) {
+        /**
+         * Get the ProfileText for each of the People Group
+         *
+         * @return void
+         * @author Johnathan Pulos
+         */
+        foreach ($data as $key => $peopleGroupData) {
             try {
-                $peopleGroup = new \QueryGenerators\PeopleGroup($appRequest->params());
-                $peopleGroup->findAllWithFilters();
-                $statement = $db->prepare($peopleGroup->preparedStatement);
-                $statement->execute($peopleGroup->preparedVariables);
-                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $profileText = new ProfileText(
+                    array(
+                        'id' => $peopleGroupData['PeopleID3'],
+                        'country' => $peopleGroupData['ROG3']
+                    )
+                );
+                $profileText->findAllByIdAndCountry();
+                $statement = $this->db->prepare($profileText->preparedStatement);
+                $statement->execute($profileText->preparedVariables);
+                $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
             } catch (Exception $e) {
-                $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
-                exit;
+                $data[$key]['ProfileText'] = array();
             }
-            /**
-             * Get the ProfileText for each of the People Group
-             *
-             * @return void
-             * @author Johnathan Pulos
-             */
-            foreach ($data as $key => $peopleGroupData) {
-                try {
-                    $profileText = new \QueryGenerators\ProfileText(
-                        array(
-                            'id' => $peopleGroupData['PeopleID3'],
-                            'country' => $peopleGroupData['ROG3']
-                        )
-                    );
-                    $profileText->findAllByIdAndCountry();
-                    $statement = $db->prepare($profileText->preparedStatement);
-                    $statement->execute($profileText->preparedVariables);
-                    $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
-                } catch (Exception $e) {
-                    $data[$key]['ProfileText'] = array();
-                }
-                try {
-                    $resource = new \QueryGenerators\Resource(array('id' => $peopleGroupData['ROL3']));
-                    $resource->findAllByLanguageId();
-                    $statement = $db->prepare($resource->preparedStatement);
-                    $statement->execute($resource->preparedVariables);
-                    $data[$key]['Resources'] = $statement->fetchAll(PDO::FETCH_ASSOC);
-                } catch (Exception $e) {
-                    $data[$key]['Resources'] = array();
-                }
+            try {
+                $resource = new Resource(array('id' => $peopleGroupData['ROL3']));
+                $resource->findAllByLanguageId();
+                $statement = $this->db->prepare($resource->preparedStatement);
+                $statement->execute($resource->preparedVariables);
+                $data[$key]['Resources'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                $data[$key]['Resources'] = array();
             }
-        }
-        if (($useCaching === true) && ($gotCachedData === false)) {
-            /**
-             * Set the data to the cache using it's cache key, and expire it in 1 day
-             *
-             * @author Johnathan Pulos
-             */
-            $cache->set($cacheKey, $data, 86400);
         }
         /**
          * Render the final data
          *
          * @author Johnathan Pulos
          */
-        if ($format == 'json') {
-            echo json_encode($data);
+        if ($args['format'] == 'json') {
+            return $res->withJson($data);
         } else {
-            echo arrayToXML($data, "people_groups", "people_group");
+            return $res
+                ->withHeader('Content-type', 'text/xml')
+                ->write(arrayToXML($data, "people_groups", "people_group"));
         }
     }
 );

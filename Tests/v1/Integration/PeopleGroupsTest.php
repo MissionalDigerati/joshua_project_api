@@ -125,7 +125,15 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
             array('api_key' => $this->APIKey),
             "versioning_json"
         );
-        $this->assertEquals(404, $this->cachedRequest->responseCode);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
+        $this->assertEquals(
+            'You are requesting an unavailable API version number.',
+            $decoded['api']['error']['details']
+        );
     }
     /**
      * Tests that you can not access page without an active API Key
@@ -141,7 +149,12 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
             array('api_key' => $this->APIKey),
             "versioning_json"
         );
+        $decoded = json_decode($response, true);
         $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
     }
     /**
      * Tests that you can not access page with a suspended API Key
@@ -157,7 +170,12 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
             array('api_key' => $this->APIKey),
             "versioning_json"
         );
+        $decoded = json_decode($response, true);
         $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
     }
     /**
      * Tests that you can only access page with a valid API Key
@@ -172,7 +190,12 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
             array(),
             "up_json"
         );
+        $decoded = json_decode($response, true);
         $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
     }
      /**
       * GET /people_groups/daily_unreached.json
@@ -299,8 +322,12 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
             array('api_key' => $this->APIKey),
             "wrong_id_request"
         );
-        $this->assertEquals(404, $this->cachedRequest->responseCode);
-        $this->assertTrue(isJSON($response));
+        $decoded = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
+        $this->assertEquals('You provided an invalid PeopleID3.', $decoded['api']['error']['details']);
     }
      /**
       * GET /people_groups/[ID].json?country=CB
