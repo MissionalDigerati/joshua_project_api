@@ -255,8 +255,12 @@
                             "code": 401
                         },
                         {
-                            "reason": "Not found.  Your search ended up with no results.",
+                            "reason": "Not found.  The requested route was not found.",
                             "code": 404
+                        },
+                        {
+                            "reason": "Internal server error.  Please try again later.",
+                            "code": 500
                         }
                     ],
                     "notes": "Retrieve a list of People Groups that match your filter settings."
@@ -307,8 +311,12 @@
                             "code": 401
                         },
                         {
-                            "reason": "Not found.  Your search ended up with no results.",
+                            "reason": "Not found.  The requested route was not found.",
                             "code": 404
+                        },
+                        {
+                            "reason": "Internal server error.  Please try again later.",
+                            "code": 500
                         }
                     ],
                     "notes": "You have two options when retrieving the Unreached of the Day.  1) Get today's Unreached of the Day.  This is the default if you do not send parameters.\n         2) You can specify the month and day parameter to get a specific day of the year. For example, /daily_unreached.json?month=01&day=31 will\n         get the people group for Jan. 31st.  You must provide both parameters!"
@@ -359,8 +367,12 @@
                             "code": 401
                         },
                         {
-                            "reason": "Not found.  Your search ended up with no results.",
+                            "reason": "Not found.  The requested route was not found.",
                             "code": 404
+                        },
+                        {
+                            "reason": "Internal server error.  Please try again later.",
+                            "code": 500
                         }
                     ],
                     "notes": "Retrieve the details of a specific People Group around the world or in a specific country.  You can either\n                1) get a summary of all occurances of the People Group by supplying the PeopleGroup.id (PeopleID3) only, or\n                2) Get the details of a specific people group in a specific country by providing the PeopleGroup.id (PeopleID3)\n                and the country's <a href='https://goo.gl/yYWY4J' target='_blank'>2 letter FIPS 10-4 Code</a>."
