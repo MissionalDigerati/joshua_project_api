@@ -14,12 +14,13 @@ Questions or problems? Please post them on the [issue tracker](https://github.co
 Deployment
 ----------
 
-There are several things you need to do to deploy this code.
+To deploy this code, simply follow these steps:
 
-1) Copy Config/JPAPI/AdminSettings.sample.php to Config/JPAPI/AdminSettings.php and set the admin settings in the new file.
-2) Copy Config/JPAPI/DatabaseSettings.sample.php to Config/JPAPI/DatabaseSettings.php and set the database settings in the new file.
-3) Copy phpunit.sample.xml to phpunit.xml.
-4) Install the vendor files with `composer install`.
+1. Clone the code to your server.
+2. Copy the file `.env.example` to `.env`.
+3. Open the file, and set the appropriate settings.
+4. Install [Composer](https://getcomposer.org/) on your server.
+5. Install all the required librarues with `composer install`.
 
 PHP Settings
 ------------

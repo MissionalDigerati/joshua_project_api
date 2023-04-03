@@ -1,5 +1,7 @@
 Unreleased
 
+- Updated PHP's Slim library to version 3.12.4
+
 The following items were removed because the data was outdated:
 
 REMOVED PercentAnglican from all countries endpoints.
