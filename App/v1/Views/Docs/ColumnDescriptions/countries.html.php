@@ -42,19 +42,6 @@
                     <td>Name of Country</td>
                 </tr>
                 <tr>
-                    <td>HDIRank</td>
-                    <td>Human Development Index - ranking</td>
-                </tr>
-                <tr>
-                    <td>HDIValue</td>
-                    <td>Human Development Index - composite value: combination of LifeExpectancy,
-                        Education and GPD Indexs</td>
-                </tr>
-                <tr>
-                    <td>HDIYear</td>
-                    <td>Human Development Index - year</td>
-                </tr>
-                <tr>
                     <td>InternetCtryCode</td>
                     <td>Internet Country Code</td>
                 </tr>
@@ -70,14 +57,6 @@
                     <td>JPScaleCtry</td>
                     <td>Joshua Project Progress Scale for this country, derived from the people group data in
                         this country.</td>
-                </tr>
-                <tr>
-                    <td>LiteracyRate</td>
-                    <td>One percentage. Midpoint if a range was supplied.</td>
-                </tr>
-                <tr>
-                    <td>LiteracySource</td>
-                    <td>Literacy source</td>
                 </tr>
                 <tr>
                     <td>PercentBuddhism</td>
@@ -200,10 +179,6 @@
                 <tr>
                     <td>UNMap</td>
                     <td>Link to UN Political map in PDF format</td>
-                </tr>
-                <tr>
-                    <td>WINCountryProfile</td>
-                    <td>Window Internationial Network country profile link</td>
                 </tr>
                 <tr>
                     <td>Window1040</td>

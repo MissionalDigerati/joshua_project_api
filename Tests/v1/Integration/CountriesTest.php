@@ -887,4 +887,54 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
             $decodedResponse['api']['error']['details']
         );
     }
+    /**
+     * GET /countries.json
+     * test page no longer provides removed outdated columns
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexRequestsShouldNotReturnRemovedColumns()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey),
+            "no_removed_fields_on_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertFalse(array_key_exists('HDIYear', $decoded[0]));
+        $this->assertFalse(array_key_exists('HDIRank', $decoded[0]));
+        $this->assertFalse(array_key_exists('HDIValue', $decoded[0]));
+        $this->assertFalse(array_key_exists('WINCountryProfile', $decoded[0]));
+        $this->assertFalse(array_key_exists('LiteracyRate', $decoded[0]));
+        $this->assertFalse(array_key_exists('LiteracySource', $decoded[0]));
+    }
+    /**
+     * GET /countries/ID.json
+     * test page no longer provides removed outdated columns
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testCountryShowRequestsShouldNotReturnRemovedColumns()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries/US.json",
+            array('api_key' => $this->APIKey),
+            "no_removed_fields_country_show_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertFalse(array_key_exists('HDIYear', $decoded[0]));
+        $this->assertFalse(array_key_exists('HDIRank', $decoded[0]));
+        $this->assertFalse(array_key_exists('HDIValue', $decoded[0]));
+        $this->assertFalse(array_key_exists('WINCountryProfile', $decoded[0]));
+        $this->assertFalse(array_key_exists('LiteracyRate', $decoded[0]));
+        $this->assertFalse(array_key_exists('LiteracySource', $decoded[0]));
+    }
 }
