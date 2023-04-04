@@ -1458,13 +1458,15 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      */
     public function testDailyUnreachedShouldProvideNewFields()
     {
-        $expectedPop = 2122900;
+        $expectedPop = 263000;
         $expectedFrontier = 'Y';
-        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m15727_gy.png';
-        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m15727_gy.pdf';
+        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m10252_gm.png';
+        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m10252_gm.pdf';
+        $expectedPhotoCCVersionText = 'CC BY-SA 4.0';
+        $expectedPhotoCCVersionURL = 'https://creativecommons.org/licenses/by-sa/4.0/';
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
-            array('api_key' => $this->APIKey, 'month' => '01', 'day'    =>  '11'),
+            array('api_key' => $this->APIKey, 'month' => '05', 'day'    =>  '31'),
             "unreached_no_new_fields"
         );
         $decoded = json_decode($response, true);
@@ -1474,10 +1476,14 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(array_key_exists('PopulationPGAC', $decoded[0]));
         $this->assertTrue(array_key_exists('PeopleGroupMapURL', $decoded[0]));
         $this->assertTrue(array_key_exists('PeopleGroupMapExpandedURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('PhotoCCVersionText', $decoded[0]));
+        $this->assertTrue(array_key_exists('PhotoCCVersionURL', $decoded[0]));
         $this->assertEquals($expectedFrontier, $decoded[0]['Frontier']);
         $this->assertEquals($expectedPop, $decoded[0]['PopulationPGAC']);
         $this->assertEquals($expectedMapUrl, $decoded[0]['PeopleGroupMapURL']);
         $this->assertEquals($expectedMapExpandedUrl, $decoded[0]['PeopleGroupMapExpandedURL']);
+        $this->assertEquals($expectedPhotoCCVersionText, $decoded[0]['PhotoCCVersionText']);
+        $this->assertEquals($expectedPhotoCCVersionURL, $decoded[0]['PhotoCCVersionURL']);
     }
     /**
      * GET /people_groups/[ID].json
@@ -1489,14 +1495,16 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      */
     public function testShowRequestsShouldProvideNewFields()
     {
-        $expectedPop = 15960800;
-        $expectedFrontier = 'N';
-        $expectedMapAddress = 'm12662_cb.png';
-        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m12662_cb.png';
-        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m12662_cb.pdf';
+        $expectedPop = 1719400;
+        $expectedFrontier = 'Y';
+        $expectedMapAddress = 'm00324_aj.png';
+        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m00324_aj.png';
+        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m00324_aj.pdf';
+        $expectedPhotoCCVersionText = 'CC BY-NC-SA 2.0';
+        $expectedPhotoCCVersionURL = 'https://creativecommons.org/licenses/by-nc-sa/2.0/';
         $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->APIVersion . "/people_groups/12662.json",
-            array('api_key' => $this->APIKey, 'country' =>  'CB'),
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/11317.json",
+            array('api_key' => $this->APIKey, 'country' =>  'AJ'),
             "show_new_fields_json"
         );
         $decoded = json_decode($response, true);
@@ -1508,11 +1516,15 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(array_key_exists('PopulationPGAC', $decoded[0]));
         $this->assertTrue(array_key_exists('PeopleGroupMapURL', $decoded[0]));
         $this->assertTrue(array_key_exists('PeopleGroupMapExpandedURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('PhotoCCVersionText', $decoded[0]));
+        $this->assertTrue(array_key_exists('PhotoCCVersionURL', $decoded[0]));
         $this->assertEquals($expectedFrontier, $decoded[0]['Frontier']);
         $this->assertEquals($expectedPop, $decoded[0]['PopulationPGAC']);
         $this->assertEquals($expectedMapAddress, $decoded[0]['MapAddress']);
         $this->assertEquals($expectedMapUrl, $decoded[0]['PeopleGroupMapURL']);
         $this->assertEquals($expectedMapExpandedUrl, $decoded[0]['PeopleGroupMapExpandedURL']);
+        $this->assertEquals($expectedPhotoCCVersionText, $decoded[0]['PhotoCCVersionText']);
+        $this->assertEquals($expectedPhotoCCVersionURL, $decoded[0]['PhotoCCVersionURL']);
     }
     /**
      * GET /people_groups.json?unengaged=y
@@ -1537,6 +1549,8 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(array_key_exists('PopulationPGAC', $decoded[0]));
         $this->assertTrue(array_key_exists('PeopleGroupMapURL', $decoded[0]));
         $this->assertTrue(array_key_exists('PeopleGroupMapExpandedURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('PhotoCCVersionText', $decoded[0]));
+        $this->assertTrue(array_key_exists('PhotoCCVersionURL', $decoded[0]));
     }
     /**
      * GET /people_groups/[ID].json

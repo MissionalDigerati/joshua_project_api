@@ -80,7 +80,8 @@ class Unreached extends PeopleGroup
         'jppeoples.EthnolinguisticMap', 'jppeoples.MapID', 'jppeoples.IndigenousCode', 'jppeoples.PercentChristianPC',
         'jppeoples.PercentChristianPGAC', 'jppeoples.PercentEvangelicalPC', 'jppeoples.PercentEvangelicalPGAC',
         'jppeoples.PCBuddhism', 'jppeoples.PCDblyProfessing', 'jppeoples.PCEthnicReligions', 'jppeoples.PCHinduism',
-        'jppeoples.PCOtherSmall', 'jppeoples.PopulationPGAC', 'jppeoples.Frontier', 'jppeoples.MapAddress'
+        'jppeoples.PCOtherSmall', 'jppeoples.PopulationPGAC', 'jppeoples.Frontier', 'jppeoples.MapAddress',
+        'jppeoples.PhotoCCVersionText', 'jppeoples.PhotoCCVersionURL'
     );
     /**
      * The database table to pull the data from.

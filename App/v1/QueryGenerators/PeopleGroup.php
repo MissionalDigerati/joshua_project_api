@@ -70,7 +70,8 @@ class PeopleGroup extends QueryGenerator
         'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'Longitude', 'Latitude', 'Ctry', 'IndigenousCode', 'ROL3',
         'PercentAdherents', 'PercentChristianPC', 'NaturalName', 'NaturalPronunciation', 'PercentChristianPGAC',
         'PercentEvangelical', 'PercentEvangelicalPC', 'PercentEvangelicalPGAC', 'PCBuddhism', 'PCDblyProfessing',
-        'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'RegionCode', 'PopulationPGAC', 'Frontier', 'MapAddress'
+        'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'RegionCode', 'PopulationPGAC', 'Frontier', 'MapAddress',
+        'COALESCE(PhotoCCVersionText, "") AS PhotoCCVersionText', 'COALESCE(PhotoCCVersionURL, "") AS PhotoCCVersionURL'
     );
     /**
      * The database table to pull the data from.

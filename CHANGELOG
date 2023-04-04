@@ -46,6 +46,8 @@ ADDED MapAddress column for all people_groups endpoints.
 ADDED PopulationPGAC column for all people_groups endpoints.
 ADDED PeopleGroupMapURL column for all people_groups endpoints.
 ADDED PeopleGroupMapExpandedURL column for all people_groups endpoints.
+ADDED PhotoCCVersionText column for all people_groups endpoints.
+ADDED PhotoCCVersionURL column for all people_groups endpoints.
 REMOVED PCAnglican column from all people_groups endpoints.
 REMOVED PCIndependent column from all people_groups endpoints.
 REMOVED PCProtestant column from all people_groups endpoints.

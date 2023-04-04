@@ -316,6 +316,8 @@
         "MapAddress": "m14966_la.png",
         "PeopleGroupMapURL": "https://joshuaproject.net/assets/media/profiles/maps/m14966_la.png",
         "PeopleGroupMapExpandedURL": "",
+        "PhotoCCVersionText": "",
+        "PhotoCCVersionURL": "",
         "ProfileText": [
             {
                 "ProfileID": "2445",
@@ -586,6 +588,8 @@
                 https://joshuaproject.net/assets/media/profiles/maps/m14966_la.png
             &lt;/PeopleGroupMapURL&gt;
             &lt;PeopleGroupMapExpandedURL&gt;&lt;/PeopleGroupMapExpandedURL&gt;
+            &lt;PhotoCCVersionText&gt;&lt;/PhotoCCVersionText&gt;
+            &lt;PhotoCCVersionURL&gt;&lt;/PhotoCCVersionURL&gt;
             &lt;ProfileText&gt;
                 &lt;ProfileText_0&gt;
                     &lt;ProfileID&gt;2445&lt;/ProfileID&gt;

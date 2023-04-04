@@ -279,6 +279,20 @@
                     <td>Photo file name</td>
                 </tr>
                 <tr>
+                    <td>PhotoCCVersionText</td>
+                    <td>
+                        If the photo is licensed under Creative Commons (see PhotoCreativeCommons),
+                         this provides the name of the version of Creative Commons
+                    </td>
+                </tr>
+                <tr>
+                    <td>PhotoCCVersionURL</td>
+                    <td>
+                        If the photo is licensed under Creative Commons (see PhotoCreativeCommons),
+                         this provides the URL for the version of Creative Commons
+                    </td>
+                </tr>
+                <tr>
                     <td>PhotoCopyright</td>
                     <td>Is photo copyrighted?</td>
                 </tr>
