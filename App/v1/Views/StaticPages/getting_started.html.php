@@ -314,6 +314,11 @@
         "Frontier": "N",
         "PopulationPGAC": 164000,
         "MapAddress": "m14966_la.png",
+        "MapCopyright": "",
+        "MapCreditURL": "",
+        "MapCredits": "People Group data: Omid.  Map geography: UNESCO / GMI.  Map Design: Joshua Project",
+        "MapCCVersionText": "",
+        "MapCCVersionURL": "",
         "PeopleGroupMapURL": "https://joshuaproject.net/assets/media/profiles/maps/m14966_la.png",
         "PeopleGroupMapExpandedURL": "",
         "PhotoCCVersionText": "",
@@ -584,6 +589,13 @@
             &lt;PopulationPGAC&gt;164000&lt;/PopulationPGAC&gt;
             &lt;Frontier&gt;N&lt;/Frontier&gt;
             &lt;MapAddress&gt;m14966_la.png&lt;/MapAddress&gt;
+            &lt;MapCreditURL&gt;&lt;/MapCreditURL&gt;
+            &lt;MapCopyright&gt;&lt;/MapCopyright&gt;
+            &lt;MapCredits&gt;
+                People Group data: Omid.  Map geography: UNESCO / GMI.  Map Design: Joshua Project
+            &lt;/MapCredits&gt;
+            &lt;MapCCVersionText&gt;&lt;/MapCCVersionText&gt;
+            &lt;MapCCVersionURL&gt;&lt;/MapCCVersionURL&gt;
             &lt;PeopleGroupMapURL&gt;
                 https://joshuaproject.net/assets/media/profiles/maps/m14966_la.png
             &lt;/PeopleGroupMapURL&gt;

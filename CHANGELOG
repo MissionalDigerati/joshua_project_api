@@ -43,6 +43,11 @@ REMOVED WINCountryProfile column from all countries endpoints.
 
 ADDED Frontier column for all people_groups endpoints.
 ADDED MapAddress column for all people_groups endpoints.
+ADDED MapCredits column for all people_groups endpoints.
+ADDED MapCreditURL column for all people_groups endpoints.
+ADDED MapCopyright column for all people_groups endpoints.
+ADDED MapCCVersionText column for all people_groups endpoints.
+ADDED MapCCVersionURL column for all people_groups endpoints.
 ADDED PopulationPGAC column for all people_groups endpoints.
 ADDED PeopleGroupMapURL column for all people_groups endpoints.
 ADDED PeopleGroupMapExpandedURL column for all people_groups endpoints.

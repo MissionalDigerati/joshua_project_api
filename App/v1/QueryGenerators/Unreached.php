@@ -81,7 +81,12 @@ class Unreached extends PeopleGroup
         'jppeoples.PercentChristianPGAC', 'jppeoples.PercentEvangelicalPC', 'jppeoples.PercentEvangelicalPGAC',
         'jppeoples.PCBuddhism', 'jppeoples.PCDblyProfessing', 'jppeoples.PCEthnicReligions', 'jppeoples.PCHinduism',
         'jppeoples.PCOtherSmall', 'jppeoples.PopulationPGAC', 'jppeoples.Frontier', 'jppeoples.MapAddress',
-        'jppeoples.PhotoCCVersionText', 'jppeoples.PhotoCCVersionURL'
+        'COALESCE(jppeoples.MapCreditURL, "") AS MapCreditURL', 'COALESCE(jppeoples.MapCopyright, "") AS MapCopyright',
+        'COALESCE(jppeoples.MapCredits, "") AS MapCredits',
+        'COALESCE(jppeoples.MapCCVersionText, "") AS MapCCVersionText',
+        'COALESCE(jppeoples.MapCCVersionURL, "") AS MapCCVersionURL',
+        'COALESCE(jppeoples.PhotoCCVersionText, "") AS PhotoCCVersionText',
+        'COALESCE(jppeoples.PhotoCCVersionURL, "") AS PhotoCCVersionURL'
     );
     /**
      * The database table to pull the data from.

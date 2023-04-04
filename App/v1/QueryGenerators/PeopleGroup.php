@@ -71,7 +71,11 @@ class PeopleGroup extends QueryGenerator
         'PercentAdherents', 'PercentChristianPC', 'NaturalName', 'NaturalPronunciation', 'PercentChristianPGAC',
         'PercentEvangelical', 'PercentEvangelicalPC', 'PercentEvangelicalPGAC', 'PCBuddhism', 'PCDblyProfessing',
         'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'RegionCode', 'PopulationPGAC', 'Frontier', 'MapAddress',
-        'COALESCE(PhotoCCVersionText, "") AS PhotoCCVersionText', 'COALESCE(PhotoCCVersionURL, "") AS PhotoCCVersionURL'
+        'COALESCE(PhotoCCVersionText, "") AS PhotoCCVersionText',
+        'COALESCE(PhotoCCVersionURL, "") AS PhotoCCVersionURL',
+        'COALESCE(MapCredits, "") AS MapCredits', 'COALESCE(MapCreditURL, "") AS MapCreditURL',
+        'COALESCE(MapCopyright, "") AS MapCopyright', 'COALESCE(MapCCVersionText, "") AS MapCCVersionText',
+        'COALESCE(MapCCVersionURL, "") AS MapCCVersionURL'
     );
     /**
      * The database table to pull the data from.

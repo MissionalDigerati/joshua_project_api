@@ -144,6 +144,32 @@
                     <td>Map filename</td>
                 </tr>
                 <tr>
+                    <td>MapCredits</td>
+                    <td>Map source, text for credits display</td>
+                </tr>
+                <tr>
+                    <td>MapCreditURL</td>
+                    <td>Map source link, hyperlink for credits display</td>
+                </tr>
+                <tr>
+                    <td>MapCopyright</td>
+                    <td>Is the map copyrighted? NOTE: It can return an empty string.</td>
+                </tr>
+                <tr>
+                    <td>MapCCVersionText</td>
+                    <td>
+                        If the map is licensed under Creative Commons,
+                         this provides the name of the version of Creative Commons
+                    </td>
+                </tr>
+                <tr>
+                    <td>MapCCVersionURL</td>
+                    <td>
+                        If the map is licensed under Creative Commons,
+                         this provides the URL for the version of Creative Commons
+                    </td>
+                </tr>
+                <tr>
                     <td>NaturalName</td>
                     <td>The PeopNameAcrossCountries presented in a more display friendly way.</td>
                 </tr>
