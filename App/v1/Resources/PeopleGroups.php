@@ -389,6 +389,14 @@ $app->get(
  *                  allowMultiple="false",
  *                  dataType="string"
  *              ),
+*              @SWG\Parameter(
+ *                  name="is_frontier",
+ *                  description="A boolean that states whether you want People Groups that are frontier people groups. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
  *              @SWG\Parameter(
  *                  name="jpscale",
  *                  description="A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out <a href='https://joshuaproject.net/global_list/progress' target='_blank'>https://joshuaproject.net/global_list/progress</a>.",

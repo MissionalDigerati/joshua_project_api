@@ -1363,6 +1363,23 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
             $decoded['api']['error']['details']
         );
     }
+
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByFrontier()
+    {
+        $expectedFrontier = "N";
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array('api_key' => $this->APIKey, 'is_frontier' => $expectedFrontier),
+            "filter_by_is_frontier_on_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $peopleGroup) {
+            $this->assertEquals($expectedFrontier, strtoupper($peopleGroup['Frontier']));
+        }
+    }
+
     /**
      * GET: /people_groups/daily_unreached.json
      * test page no longer provides removed outdated fields

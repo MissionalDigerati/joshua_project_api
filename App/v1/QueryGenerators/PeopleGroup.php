@@ -474,6 +474,18 @@ class PeopleGroup extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['rop3'], 'ROP3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('is_frontier')) {
+            $this->validator->stringLength($this->providedParams['is_frontier'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['is_frontier'],
+                'Frontier',
+                'is_frontier'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }

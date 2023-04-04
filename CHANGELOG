@@ -16,6 +16,7 @@ REMOVED pc_other_christian argument from /countries endpoint.
 
 ## People Group Endpoint Parameters:
 
+ADDED is_frontier argument to /people_groups endpoint.
 REMOVED pc_anglican argument from /people_groups endpoint.
 REMOVED pc_independent argument from /people_groups endpoint.
 REMOVED pc_protestant argument from /people_groups endpoint.

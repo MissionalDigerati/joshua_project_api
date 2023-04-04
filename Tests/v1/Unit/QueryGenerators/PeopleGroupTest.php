@@ -955,4 +955,17 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('window1040' => 'b'));
         $peopleGroup->findAllWithFilters();
     }
+
+    public function testFindAllWithFilterShouldFilterByFrontier()
+    {
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('is_frontier' => 'N'));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals('N', strtoupper($peopleGroup['Frontier']));
+        }
+    }
 }
