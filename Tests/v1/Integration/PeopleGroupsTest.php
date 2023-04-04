@@ -1449,4 +1449,141 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('GospelRadio', $decoded[0]));
         $this->assertFalse(array_key_exists('Unengaged', $decoded[0]));
     }
+    /**
+     * GET: /people_groups/daily_unreached.json
+     * test page provides newly added fields
+     *
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testDailyUnreachedShouldProvideNewFields()
+    {
+        $expectedPop = 2122900;
+        $expectedFrontier = 'Y';
+        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m15727_gy.png';
+        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m15727_gy.pdf';
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
+            array('api_key' => $this->APIKey, 'month' => '01', 'day'    =>  '11'),
+            "unreached_no_new_fields"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertFalse(empty($decoded));
+        $this->assertTrue(array_key_exists('Frontier', $decoded[0]));
+        $this->assertTrue(array_key_exists('PopulationPGAC', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapExpandedURL', $decoded[0]));
+        $this->assertEquals($expectedFrontier, $decoded[0]['Frontier']);
+        $this->assertEquals($expectedPop, $decoded[0]['PopulationPGAC']);
+        $this->assertEquals($expectedMapUrl, $decoded[0]['PeopleGroupMapURL']);
+        $this->assertEquals($expectedMapExpandedUrl, $decoded[0]['PeopleGroupMapExpandedURL']);
+    }
+    /**
+     * GET /people_groups/[ID].json
+     * test page provides newly added fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testShowRequestsShouldProvideNewFields()
+    {
+        $expectedPop = 15960800;
+        $expectedFrontier = 'N';
+        $expectedMapAddress = 'm12662_cb.png';
+        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m12662_cb.png';
+        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m12662_cb.pdf';
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/12662.json",
+            array('api_key' => $this->APIKey, 'country' =>  'CB'),
+            "show_new_fields_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertFalse(empty($decoded));
+        $this->assertEquals(1, count($decoded));
+        $this->assertTrue(array_key_exists('Frontier', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapAddress', $decoded[0]));
+        $this->assertTrue(array_key_exists('PopulationPGAC', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapExpandedURL', $decoded[0]));
+        $this->assertEquals($expectedFrontier, $decoded[0]['Frontier']);
+        $this->assertEquals($expectedPop, $decoded[0]['PopulationPGAC']);
+        $this->assertEquals($expectedMapAddress, $decoded[0]['MapAddress']);
+        $this->assertEquals($expectedMapUrl, $decoded[0]['PeopleGroupMapURL']);
+        $this->assertEquals($expectedMapExpandedUrl, $decoded[0]['PeopleGroupMapExpandedURL']);
+    }
+    /**
+     * GET /people_groups.json?unengaged=y
+     * test page provides newly added fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexRequestsShouldProvideNewFields()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array('api_key' => $this->APIKey),
+            "index_new_fields_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertTrue(array_key_exists('Frontier', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapAddress', $decoded[0]));
+        $this->assertTrue(array_key_exists('PopulationPGAC', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapExpandedURL', $decoded[0]));
+    }
+    /**
+     * GET /people_groups/[ID].json
+     * test if map address is blank it does not send a bad url
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testMapAddressShouldSendEmptyURL()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/12662.json",
+            array('api_key' => $this->APIKey, 'country' =>  'US'),
+            "show_map_address_send_empty_url_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertFalse(empty($decoded));
+        $this->assertEquals(1, count($decoded));
+        $this->assertTrue(array_key_exists('MapAddress', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapExpandedURL', $decoded[0]));
+        $this->assertEquals('', $decoded[0]['MapAddress']);
+        $this->assertEquals('', $decoded[0]['PeopleGroupMapURL']);
+        $this->assertEquals('', $decoded[0]['PeopleGroupMapExpandedURL']);
+    }
+    /**
+     * GET /people_groups/[ID].json
+     * test if map address is blank it does not send a bad url
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testPeopleGroupPhotoURLShouldSendAnEmptyURLWhenPhotoAddressEmptyOrNull()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/10123.json",
+            array('api_key' => $this->APIKey, 'country' =>  'PP'),
+            "show_photo_url_send_empty_string_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertFalse(empty($decoded));
+        $this->assertEquals(1, count($decoded));
+        $this->assertTrue(array_key_exists('PeopleGroupPhotoURL', $decoded[0]));
+        $this->assertEquals('', $decoded[0]['PeopleGroupPhotoURL']);
+    }
 }

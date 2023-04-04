@@ -70,7 +70,7 @@ class PeopleGroup extends QueryGenerator
         'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'Longitude', 'Latitude', 'Ctry', 'IndigenousCode', 'ROL3',
         'PercentAdherents', 'PercentChristianPC', 'NaturalName', 'NaturalPronunciation', 'PercentChristianPGAC',
         'PercentEvangelical', 'PercentEvangelicalPC', 'PercentEvangelicalPGAC', 'PCBuddhism', 'PCDblyProfessing',
-        'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'RegionCode'
+        'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'RegionCode', 'PopulationPGAC', 'Frontier', 'MapAddress'
     );
     /**
      * The database table to pull the data from.
@@ -87,24 +87,41 @@ class PeopleGroup extends QueryGenerator
      */
     protected $defaultOrderByStatement = "ORDER BY PeopleID1 ASC";
     /**
+     * The MySQL CONCAT statement for generating the PeopleGroupMapURL.
+     *
+     * @var     string
+     * @access  protected
+     */
+    protected $peopleGroupMapURLSelect = "IF(ISNULL(MapAddress) OR MapAddress = '', " .
+        "'', CONCAT('https://joshuaproject.net/assets/media/profiles/maps/', MapAddress))";
+    /**
+     * The MySQL CONCAT statement for generating the PeopleGroupMapExpandedURL.
+     *
+     * @var     string
+     * @access  protected
+     */
+    protected $peopleGroupMapExpandedURLSelect = "IF(ISNULL(MapAddressExpanded) OR MapAddressExpanded = '', " .
+        "'', CONCAT('https://joshuaproject.net/assets/media/profiles/maps/', MapAddressExpanded))";
+    /**
      * The MySQL CONCAT statement for generating the PeopleGroupURL.
      *
      * @var     string
-     * @access  private
+     * @access  protected
      */
     protected $peopleGroupURLSelect = "CONCAT('http://joshuaproject.net/people_groups/', PeopleID3, '/', ROG3)";
     /**
      * The MySQL CONCAT statement for generating the PeopleGroupPhotoURL.
      *
      * @var     string
-     * @access  private
+     * @access  protected
      */
-    protected $peopleGroupPhotoURLSelect = "CONCAT('http://www.joshuaproject.net/profiles/photos/', PhotoAddress)";
+    protected $peopleGroupPhotoURLSelect = "IF(ISNULL(PhotoAddress) OR PhotoAddress = '', " .
+        "'', CONCAT('http://www.joshuaproject.net/profiles/photos/', PhotoAddress))";
     /**
      * The MySQL CONCAT statement for generating the CountryURL.
      *
      * @var     string
-     * @access  private
+     * @access  protected
      */
     protected $countryURLSelect = "CONCAT('http://joshuaproject.net/countries/', ROG3)";
     /**
@@ -133,6 +150,8 @@ class PeopleGroup extends QueryGenerator
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " .
         $this->generateAliasSelectStatement();
+        $this->selectFieldsStatement .= ", " . $this->peopleGroupMapURLSelect . " as PeopleGroupMapURL";
+        $this->selectFieldsStatement .= ", " . $this->peopleGroupMapExpandedURLSelect . " as PeopleGroupMapExpandedURL";
         $this->selectFieldsStatement .= ", " . $this->peopleGroupURLSelect . " as PeopleGroupURL";
         $this->selectFieldsStatement .= ", " . $this->peopleGroupPhotoURLSelect . " as PeopleGroupPhotoURL";
         $this->selectFieldsStatement .= ", " . $this->countryURLSelect . " as CountryURL";

@@ -58,6 +58,13 @@
                     <td>Ethnolinguistic map URL</td>
                 </tr>
                 <tr>
+                    <td>Frontier</td>
+                    <td>
+                        Is this group considered a Frontier Unreached People Group? Learn more 
+                        <a href="https://joshuaproject.net/frontier" target="_blank">here</a>
+                    </td>
+                </tr>
+                <tr>
                     <td>GSEC</td>
                     <td>Global Status of Evangelical Christianity, see http://www.joshuaproject.net/definitions.php</td>
                 </tr>
@@ -131,6 +138,10 @@
                 <tr>
                     <td>LRWebProfile</td>
                     <td>Does an Unreached People of the Day profile exist?</td>
+                </tr>
+                <tr>
+                    <td>MapAddress</td>
+                    <td>Map filename</td>
                 </tr>
                 <tr>
                     <td>NaturalName</td>
@@ -236,6 +247,18 @@
                     <td>People-Group-Across-Countries ID number</td>
                 </tr>
                 <tr>
+                    <td>PeopleGroupMapURL</td>
+                    <td>The full URL for the people group's map</td>
+                </tr>
+                <tr>
+                    <td>PeopleGroupMapExpandedURL</td>
+                    <td>The full URL for the people group's expanded map (NOTE: This is normally a PDF file)</td>
+                </tr>
+                <tr>
+                    <td>PeopleGroupPhotoURL</td>
+                    <td>The full URL for the people group's photo</td>
+                </tr>
+                <tr>
                     <td>PeopNameAcrossCountries</td>
                     <td>Name of people group across countries of residence</td>
                 </tr>
@@ -290,6 +313,10 @@
                 <tr>
                     <td>PopulationPercentUN</td>
                     <td>Population percent of UN country population</td>
+                </tr>
+                <tr>
+                    <td>PopulationPGAC</td>
+                    <td>The total global population of the people group</td>
                 </tr>
                 <tr>
                     <td>PortionsYear</td>

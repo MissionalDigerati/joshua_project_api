@@ -80,7 +80,7 @@ class Unreached extends PeopleGroup
         'jppeoples.EthnolinguisticMap', 'jppeoples.MapID', 'jppeoples.IndigenousCode', 'jppeoples.PercentChristianPC',
         'jppeoples.PercentChristianPGAC', 'jppeoples.PercentEvangelicalPC', 'jppeoples.PercentEvangelicalPGAC',
         'jppeoples.PCBuddhism', 'jppeoples.PCDblyProfessing', 'jppeoples.PCEthnicReligions', 'jppeoples.PCHinduism',
-        'jppeoples.PCOtherSmall'
+        'jppeoples.PCOtherSmall', 'jppeoples.PopulationPGAC', 'jppeoples.Frontier', 'jppeoples.MapAddress'
     );
     /**
      * The database table to pull the data from.
@@ -120,6 +120,18 @@ class Unreached extends PeopleGroup
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " .
         $this->generateAliasSelectStatement();
+        $this->selectFieldsStatement .= ", " .
+        str_replace(
+            'MapAddress',
+            'jpupgotd.MapAddress',
+            $this->peopleGroupMapURLSelect
+        ) . " as PeopleGroupMapURL";
+        $this->selectFieldsStatement .= ", " .
+        str_replace(
+            'MapAddressExpanded',
+            'jpupgotd.MapAddressExpanded',
+            $this->peopleGroupMapExpandedURLSelect
+        ) . " as PeopleGroupMapExpandedURL";
         $this->selectFieldsStatement .= ", " .
         str_replace(
             ['PeopleID3', 'ROG3'],

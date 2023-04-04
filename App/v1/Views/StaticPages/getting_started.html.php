@@ -311,6 +311,11 @@
         "CountryURL": "http://joshuaproject.net/countries/LA",
         "JPScaleText": "Unreached",
         "JPScaleImageURL": "http://www.joshuaproject.net/images/scale1.jpg",
+        "Frontier": "N",
+        "PopulationPGAC": 164000,
+        "MapAddress": "m14966_la.png",
+        "PeopleGroupMapURL": "https://joshuaproject.net/assets/media/profiles/maps/m14966_la.png",
+        "PeopleGroupMapExpandedURL": "",
         "ProfileText": [
             {
                 "ProfileID": "2445",
@@ -574,6 +579,13 @@
             &lt;CountryURL&gt;http://joshuaproject.net/countries/LA&lt;/CountryURL&gt;
             &lt;JPScaleText&gt;Unreached&lt;/JPScaleText&gt;
             &lt;JPScaleImageURL&gt;http://www.joshuaproject.net/images/scale1.jpg&lt;/JPScaleImageURL&gt;
+            &lt;PopulationPGAC&gt;164000&lt;/PopulationPGAC&gt;
+            &lt;Frontier&gt;N&lt;/Frontier&gt;
+            &lt;MapAddress&gt;m14966_la.png&lt;/MapAddress&gt;
+            &lt;PeopleGroupMapURL&gt;
+                https://joshuaproject.net/assets/media/profiles/maps/m14966_la.png
+            &lt;/PeopleGroupMapURL&gt;
+            &lt;PeopleGroupMapExpandedURL&gt;&lt;/PeopleGroupMapExpandedURL&gt;
             &lt;ProfileText&gt;
                 &lt;ProfileText_0&gt;
                     &lt;ProfileID&gt;2445&lt;/ProfileID&gt;

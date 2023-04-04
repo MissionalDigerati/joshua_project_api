@@ -1,6 +1,7 @@
 Unreleased
 
 - Updated PHP's Slim library to version 3.12.4
+- Fixed PeopleGroupPhotoURL: If it was NULL or empty, it would send a URL with no file appended.  Now it sends an empty string.
 
 The following items were removed because the data was outdated:
 
@@ -40,6 +41,11 @@ REMOVED WINCountryProfile column from all countries endpoints.
 
 ## People Group Columns:
 
+ADDED Frontier column for all people_groups endpoints.
+ADDED MapAddress column for all people_groups endpoints.
+ADDED PopulationPGAC column for all people_groups endpoints.
+ADDED PeopleGroupMapURL column for all people_groups endpoints.
+ADDED PeopleGroupMapExpandedURL column for all people_groups endpoints.
 REMOVED PCAnglican column from all people_groups endpoints.
 REMOVED PCIndependent column from all people_groups endpoints.
 REMOVED PCProtestant column from all people_groups endpoints.
