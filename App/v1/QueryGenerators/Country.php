@@ -356,6 +356,17 @@ class Country extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('translation_needed')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['translation_needed'],
+                'TranslationNeeded',
+                'translation_needed'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }

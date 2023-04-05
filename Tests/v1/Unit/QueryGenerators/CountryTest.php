@@ -692,4 +692,40 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($value, $countryData['TranslationUnspecified']);
         }
     }
+
+    public function testFindAllWithFiltersShouldFilterByTranslationNeededInRange()
+    {
+        $min = 1;
+        $max = 2;
+        $country = new \QueryGenerators\Country(array(
+            'translation_needed' => $min . '-' . $max,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertGreaterThanOrEqual($min, $countryData['TranslationNeeded']);
+            $this->assertLessThanOrEqual($max, $countryData['TranslationNeeded']);
+        }
+    }
+
+    public function testFindAllWithFiltersShouldFilterByTranslationNeededAtValue()
+    {
+        $value = 1;
+        $country = new \QueryGenerators\Country(array(
+            'translation_needed' => $value,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertEquals($value, $countryData['TranslationNeeded']);
+        }
+    }
 }
