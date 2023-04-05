@@ -30,8 +30,8 @@ use Psr\Http\Message\ResponseInterface;
  * A caching middleware that hashes the url for the key. Options:
  *
  * expire_cache: Total number of seconds before expiring cache (default: 1 day)
- * memcached_host: The host for the memcached server (default: 127.0.0.1)
- * memcached_port: The port for the memcached server (default: 11211)
+ * host: The host for the memcached server (default: 127.0.0.1)
+ * port: The port for the memcached server (default: 11211)
  * paths: The paths to cache
  * passthrough: The paths to ignore caching
  */
@@ -66,15 +66,15 @@ class CachingMiddleware
          * Set defaults
          */
         $this->options['expire_cache'] = 86400; // 1 day
-        $this->options['memcached_host'] = '127.0.0.1';
-        $this->options['memcached_port'] = 11211;
+        $this->options['host'] = '127.0.0.1';
+        $this->options['port'] = 11211;
         $this->options = array_merge($this->options, $options);
         if (($isCaching) && (class_exists('Memcached'))) {
             try {
                 $this->cache = new \Memcached();
                 $this->cache->addServer(
-                    $this->options['memcached_host'],
-                    $this->options['memcached_port']
+                    $this->options['host'],
+                    $this->options['port']
                 );
                 $this->isCaching = true;
             } catch (\Exception $e) {
