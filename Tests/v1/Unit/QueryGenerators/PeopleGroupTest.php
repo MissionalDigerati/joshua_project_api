@@ -968,4 +968,34 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('N', strtoupper($peopleGroup['Frontier']));
         }
     }
+
+    public function testFindAllWithFilterShouldFilterByAllCountryPopulationInRange()
+    {
+        $min = 10000;
+        $max = 11000;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population_pgac' => $min . '-' . $max));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertGreaterThanOrEqual($min, $peopleGroup['PopulationPGAC']);
+            $this->assertLessThanOrEqual($max, $peopleGroup['PopulationPGAC']);
+        }
+    }
+
+    public function testFindAllWithFilterShouldFilterByAllCountryPopulationSingleValue()
+    {
+        $expected = 12000;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population_pgac' => $expected));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals($expected, $peopleGroup['PopulationPGAC']);
+        }
+    }
 }

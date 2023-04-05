@@ -486,6 +486,17 @@ class PeopleGroup extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('population_pgac')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['population_pgac'],
+                'PopulationPGAC',
+                'pop_pgac'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }

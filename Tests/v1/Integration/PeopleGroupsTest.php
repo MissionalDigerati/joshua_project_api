@@ -1380,6 +1380,40 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPopulationPGACInRange()
+    {
+        $min = 120000;
+        $max = 130000;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array('api_key' => $this->APIKey, 'population_pgac' => $min . '-' . $max),
+            "filter_by_population_pgac_on_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $peopleGroup) {
+            $this->assertGreaterThanOrEqual($min, $peopleGroup['PopulationPGAC']);
+            $this->assertLessThanOrEqual($max, $peopleGroup['PopulationPGAC']);
+        }
+    }
+
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPopulationPGACAtValue()
+    {
+        $value = 120000;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array('api_key' => $this->APIKey, 'population_pgac' => $value),
+            "filter_by_population_pgac_at_value_on_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $peopleGroup) {
+            $this->assertEquals($value, $peopleGroup['PopulationPGAC']);
+        }
+    }
+
     /**
      * GET: /people_groups/daily_unreached.json
      * test page no longer provides removed outdated fields

@@ -535,7 +535,15 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="population",
- *                  description="A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get People Groups matching that number.",
+ *                  description="A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get People Groups with a population matching that number.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="population_pgac",
+ *                  description="A dashed seperated range specifying the minimum and maximum population for the people group in all countries (PGAC).(min-max) You can supply just the minimum to get People Groups with a population matching that number.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
