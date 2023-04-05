@@ -904,26 +904,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-     * Tests that findAllWithFilters() filters out Unengaged Groups
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testFindAllWithFiltersShouldFilterOutUnengagedPeopleGroups()
-    {
-        $expectedUnengagedStatus = 'n';
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('unengaged' => $expectedUnengagedStatus));
-        $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $peopleGroup) {
-            $this->assertEquals('N', $peopleGroup['Unengaged']);
-        }
-    }
-    /**
      * Tests that findAllWithFilters() filters by JPScale
      *
      * @return void
@@ -974,5 +954,48 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $regionCodes = array(0, 13);
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('window1040' => 'b'));
         $peopleGroup->findAllWithFilters();
+    }
+
+    public function testFindAllWithFilterShouldFilterByFrontier()
+    {
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('is_frontier' => 'N'));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals('N', strtoupper($peopleGroup['Frontier']));
+        }
+    }
+
+    public function testFindAllWithFilterShouldFilterByAllCountryPopulationInRange()
+    {
+        $min = 10000;
+        $max = 11000;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population_pgac' => $min . '-' . $max));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertGreaterThanOrEqual($min, $peopleGroup['PopulationPGAC']);
+            $this->assertLessThanOrEqual($max, $peopleGroup['PopulationPGAC']);
+        }
+    }
+
+    public function testFindAllWithFilterShouldFilterByAllCountryPopulationSingleValue()
+    {
+        $expected = 12000;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population_pgac' => $expected));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals($expected, $peopleGroup['PopulationPGAC']);
+        }
     }
 }

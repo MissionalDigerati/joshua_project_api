@@ -26,6 +26,27 @@
                     <td>Area of Country in Square Miles</td>
                 </tr>
                 <tr>
+                    <td>BibleComplete</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>Complete Bible</strong>.
+                    </td>
+                </tr>
+                <tr>
+                    <td>BibleNewTestament</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>New Testament</strong>.
+                    </td>
+                </tr>
+                <tr>
+                    <td>BiblePortions</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>Portions</strong>.
+                    </td>
+                </tr>
+                <tr>
                     <td>Capital</td>
                     <td>Name of Capital City</td>
                 </tr>
@@ -38,21 +59,12 @@
                     <td>Total Number of Unreached People Groups</td>
                 </tr>
                 <tr>
+                    <td>CntPrimaryLanguages</td>
+                    <td>The total number of primary languages in the country.</td>
+                </tr>
+                <tr>
                     <td>Ctry</td>
                     <td>Name of Country</td>
-                </tr>
-                <tr>
-                    <td>HDIRank</td>
-                    <td>Human Development Index - ranking</td>
-                </tr>
-                <tr>
-                    <td>HDIValue</td>
-                    <td>Human Development Index - composite value: combination of LifeExpectancy,
-                        Education and GPD Indexs</td>
-                </tr>
-                <tr>
-                    <td>HDIYear</td>
-                    <td>Human Development Index - year</td>
                 </tr>
                 <tr>
                     <td>InternetCtryCode</td>
@@ -70,14 +82,6 @@
                     <td>JPScaleCtry</td>
                     <td>Joshua Project Progress Scale for this country, derived from the people group data in
                         this country.</td>
-                </tr>
-                <tr>
-                    <td>LiteracyRate</td>
-                    <td>One percentage. Midpoint if a range was supplied.</td>
-                </tr>
-                <tr>
-                    <td>LiteracySource</td>
-                    <td>Literacy source</td>
                 </tr>
                 <tr>
                     <td>PercentBuddhism</td>
@@ -198,12 +202,29 @@
                     <td>Code for URL link to current Report on International Religious Freedom</td>
                 </tr>
                 <tr>
-                    <td>UNMap</td>
-                    <td>Link to UN Political map in PDF format</td>
+                    <td>TranslationNeeded</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>Translation Needed</strong>.
+                    </td>
                 </tr>
                 <tr>
-                    <td>WINCountryProfile</td>
-                    <td>Window Internationial Network country profile link</td>
+                    <td>TranslationStarted</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>Translation Started</strong>.
+                    </td>
+                </tr>
+                <tr>
+                    <td>TranslationUnspecified</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>Unspecified</strong>.
+                    </td>
+                </tr>
+                <tr>
+                    <td>UNMap</td>
+                    <td>Link to UN Political map in PDF format</td>
                 </tr>
                 <tr>
                     <td>Window1040</td>

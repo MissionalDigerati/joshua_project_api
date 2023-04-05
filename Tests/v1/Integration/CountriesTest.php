@@ -887,4 +887,393 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
             $decodedResponse['api']['error']['details']
         );
     }
+    /**
+     * GET /countries.json
+     * test page no longer provides removed outdated columns
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexRequestsShouldNotReturnRemovedColumns()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey),
+            "no_removed_fields_on_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertFalse(array_key_exists('HDIYear', $decoded[0]));
+        $this->assertFalse(array_key_exists('HDIRank', $decoded[0]));
+        $this->assertFalse(array_key_exists('HDIValue', $decoded[0]));
+        $this->assertFalse(array_key_exists('WINCountryProfile', $decoded[0]));
+        $this->assertFalse(array_key_exists('LiteracyRate', $decoded[0]));
+        $this->assertFalse(array_key_exists('LiteracySource', $decoded[0]));
+    }
+    /**
+     * GET /countries/ID.json
+     * test page no longer provides removed outdated columns
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testCountryShowRequestsShouldNotReturnRemovedColumns()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries/US.json",
+            array('api_key' => $this->APIKey),
+            "no_removed_fields_country_show_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertFalse(array_key_exists('HDIYear', $decoded[0]));
+        $this->assertFalse(array_key_exists('HDIRank', $decoded[0]));
+        $this->assertFalse(array_key_exists('HDIValue', $decoded[0]));
+        $this->assertFalse(array_key_exists('WINCountryProfile', $decoded[0]));
+        $this->assertFalse(array_key_exists('LiteracyRate', $decoded[0]));
+        $this->assertFalse(array_key_exists('LiteracySource', $decoded[0]));
+    }
+
+    public function testCountryIndexRequestsShouldProvideNewFields()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'limit' => 1),
+            "provide_new_fields_country_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertTrue(array_key_exists('CntPrimaryLanguages', $decoded[0]));
+        $this->assertTrue(array_key_exists('TranslationUnspecified', $decoded[0]));
+        $this->assertTrue(array_key_exists('TranslationNeeded', $decoded[0]));
+        $this->assertTrue(array_key_exists('TranslationStarted', $decoded[0]));
+        $this->assertTrue(array_key_exists('BiblePortions', $decoded[0]));
+        $this->assertTrue(array_key_exists('BibleNewTestament', $decoded[0]));
+        $this->assertTrue(array_key_exists('BibleComplete', $decoded[0]));
+    }
+
+    public function testCountryShowRequestsShouldProvideNewFields()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries/AF.json",
+            array('api_key' => $this->APIKey),
+            "provide_new_fields_country_show_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertTrue(array_key_exists('CntPrimaryLanguages', $decoded[0]));
+        $this->assertTrue(array_key_exists('TranslationUnspecified', $decoded[0]));
+        $this->assertTrue(array_key_exists('TranslationNeeded', $decoded[0]));
+        $this->assertTrue(array_key_exists('TranslationStarted', $decoded[0]));
+        $this->assertTrue(array_key_exists('BiblePortions', $decoded[0]));
+        $this->assertTrue(array_key_exists('BibleNewTestament', $decoded[0]));
+        $this->assertTrue(array_key_exists('BibleComplete', $decoded[0]));
+        $this->assertEquals(54, $decoded[0]['CntPrimaryLanguages']);
+        $this->assertEquals(18, $decoded[0]['TranslationUnspecified']);
+        $this->assertEquals(5, $decoded[0]['TranslationNeeded']);
+        $this->assertEquals(0, $decoded[0]['TranslationStarted']);
+        $this->assertEquals(11, $decoded[0]['BiblePortions']);
+        $this->assertEquals(2, $decoded[0]['BibleNewTestament']);
+        $this->assertEquals(18, $decoded[0]['BibleComplete']);
+    }
+
+    public function testCountryIndexRequestsShouldFilterByCntPrimaryLanguagesInRange()
+    {
+        $min = 2;
+        $max = 4;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'cnt_primary_languages' => $min . '-' . $max,
+            ),
+            "filter_by_cnt_languages_range_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertLessThanOrEqual($max, floatval($country['CntPrimaryLanguages']));
+            $this->assertGreaterThanOrEqual($min, floatval($country['CntPrimaryLanguages']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByCntPrimaryLanguagesAtValue()
+    {
+        $value = 3;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'cnt_primary_languages' => $value,
+            ),
+            "filter_by_cnt_languages_at_value_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertEquals($value, floatval($country['CntPrimaryLanguages']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByTranslationUnspecifiedInRange()
+    {
+        $min = 1;
+        $max = 2;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'translation_unspecified' => $min . '-' . $max,
+            ),
+            "filter_by_translation_unspecified_range_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertLessThanOrEqual($max, floatval($country['TranslationUnspecified']));
+            $this->assertGreaterThanOrEqual($min, floatval($country['TranslationUnspecified']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByTranslationUnspecifiedAtValue()
+    {
+        $value = 3;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'translation_unspecified' => $value,
+            ),
+            "filter_by_translation_unspecified_at_value_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertEquals($value, floatval($country['TranslationUnspecified']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByTranslationNeededInRange()
+    {
+        $min = 1;
+        $max = 2;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'translation_needed' => $min . '-' . $max,
+            ),
+            "filter_by_translation_needed_range_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertLessThanOrEqual($max, floatval($country['TranslationNeeded']));
+            $this->assertGreaterThanOrEqual($min, floatval($country['TranslationNeeded']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByTranslationNeededAtValue()
+    {
+        $value = 3;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'translation_needed' => $value,
+            ),
+            "filter_by_translation_needed_at_value_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertEquals($value, floatval($country['TranslationNeeded']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByTranslationStartedInRange()
+    {
+        $min = 4;
+        $max = 5;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'translation_started' => $min . '-' . $max,
+            ),
+            "filter_by_translation_started_range_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertLessThanOrEqual($max, floatval($country['TranslationStarted']));
+            $this->assertGreaterThanOrEqual($min, floatval($country['TranslationStarted']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByTranslationStartedAtValue()
+    {
+        $value = 1;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'translation_started' => $value,
+            ),
+            "filter_by_translation_started_at_value_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertEquals($value, floatval($country['TranslationStarted']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByBiblePortionsInRange()
+    {
+        $min = 3;
+        $max = 5;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'bible_portions' => $min . '-' . $max,
+            ),
+            "filter_by_bible_portions_range_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertLessThanOrEqual($max, floatval($country['BiblePortions']));
+            $this->assertGreaterThanOrEqual($min, floatval($country['BiblePortions']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByBiblePortionsAtValue()
+    {
+        $value = 0;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'bible_portions' => $value,
+            ),
+            "filter_by_bible_portions_at_value_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertEquals($value, floatval($country['BiblePortions']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByBibleNewTestamentInRange()
+    {
+        $min = 1;
+        $max = 2;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'bible_new_testament' => $min . '-' . $max,
+            ),
+            "filter_by_bible_new_testament_range_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertLessThanOrEqual($max, floatval($country['BibleNewTestament']));
+            $this->assertGreaterThanOrEqual($min, floatval($country['BibleNewTestament']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByBibleNewTestamentAtValue()
+    {
+        $value = 1;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'bible_new_testament' => $value,
+            ),
+            "filter_by_bible_new_testament_at_value_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertEquals($value, floatval($country['BibleNewTestament']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByBibleCompleteInRange()
+    {
+        $min = 1;
+        $max = 2;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'bible_complete' => $min . '-' . $max,
+            ),
+            "filter_by_bible_complete_range_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertLessThanOrEqual($max, floatval($country['BibleComplete']));
+            $this->assertGreaterThanOrEqual($min, floatval($country['BibleComplete']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByBibleCompleteAtValue()
+    {
+        $value = 10;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'bible_complete' => $value,
+            ),
+            "filter_by_bible_complete_at_value_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertEquals($value, floatval($country['BibleComplete']));
+        }
+    }
 }

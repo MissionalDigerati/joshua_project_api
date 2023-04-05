@@ -62,8 +62,10 @@ class Country extends QueryGenerator
         'PercentUnknown', 'ROL3OfficialLanguage', 'ROL3SecondaryLanguage', 'RLG3Primary', 'RegionCode',
         'InternetCtryCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'AltName', 'Capital', 'Population',
         'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles', 'SecurityLevel', 'ReligionDataYear',
-        'LiteracyRate', 'LiteracySource', 'HDIYear', 'HDIValue', 'HDIRank', 'StateDeptReligiousFreedom',
-        'UNMap', 'PercentUrbanized', 'PrayercastVideo', 'WINCountryProfile', 'CntPeoples', 'CntPeoplesLR');
+        'StateDeptReligiousFreedom', 'UNMap', 'PercentUrbanized', 'PrayercastVideo', 'CntPeoples', 'CntPeoplesLR',
+        'CntPrimaryLanguages', 'TranslationUnspecified', 'TranslationNeeded', 'TranslationStarted', 'BiblePortions',
+        'BibleNewTestament', 'BibleComplete'
+    );
     /**
      * The Database table to pull the data from.
      *
@@ -329,6 +331,83 @@ class Country extends QueryGenerator
                 $this->providedParams['window1040'],
                 '10_40Window',
                 'window_10_40'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('cnt_primary_languages')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['cnt_primary_languages'],
+                'CntPrimaryLanguages',
+                'cnt_primary_languages'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('translation_unspecified')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['translation_unspecified'],
+                'TranslationUnspecified',
+                'translation_unspecified'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('translation_needed')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['translation_needed'],
+                'TranslationNeeded',
+                'translation_needed'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('translation_started')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['translation_started'],
+                'TranslationStarted',
+                'translation_started'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('bible_portions')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['bible_portions'],
+                'BiblePortions',
+                'bible_portions'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('bible_new_testament')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['bible_new_testament'],
+                'BibleNewTestament',
+                'bible_new_testament'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('bible_complete')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['bible_complete'],
+                'BibleComplete',
+                'bible_complete'
             );
             $appendAndOnWhere = true;
         }

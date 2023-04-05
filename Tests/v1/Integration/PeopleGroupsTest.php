@@ -288,26 +288,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedMonth, $decodedResponse[0]['LRofTheDayMonth']);
         $this->assertEquals($expectedDay, $decodedResponse[0]['LRofTheDayDay']);
     }
-    /**
-     * A request for Daily Unreached should provide the ProfileText
-     *
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testShouldGetDailyUnreachedWithProfileText()
-    {
-        $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
-            array('api_key' => $this->APIKey),
-            "up_day_and_month"
-        );
-        $decodedResponse = json_decode($response, true);
-        $this->assertTrue(isset($decodedResponse[0]['ProfileText']));
-        $this->assertTrue(is_array($decodedResponse[0]['ProfileText']));
-        if (count($decodedResponse[0]['ProfileText']) > 0) {
-            $this->assertEquals('M', $decodedResponse[0]['ProfileText'][0]['Format']);
-        }
-    }
      /**
       * GET /people_groups/[ID].json
       * test page is available, and delivers JSON
@@ -348,29 +328,10 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         );
         $decodedResponse = json_decode($response, true);
         $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertFalse(empty($decodedResponse));
         $this->assertEquals($expectedID, $decodedResponse[0]['PeopleID3']);
         $this->assertEquals($expectedCountry, $decodedResponse[0]['ROG3']);
         $this->assertEquals($expectedName, $decodedResponse[0]['PeopNameInCountry']);
-    }
-    /**
-      * GET /people_groups/[ID].json?country=CB
-      * test page is available, and delivers the People Group's ProfileText
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
-    public function testShowRequestsShouldGetPeopleGroupsWithProfileText()
-    {
-        $expectedID = "12662";
-        $expectedCountry = "CB";
-        $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->APIVersion . "/people_groups/12662.json",
-            array('api_key' => $this->APIKey, 'country' => 'CB'),
-            "show_in_country_gets_profile_text_json"
-        );
-        $decodedResponse = json_decode($response, true);
-        $this->assertTrue(isset($decodedResponse[0]['ProfileText']));
-        $this->assertTrue(is_array($decodedResponse[0]['ProfileText']));
     }
     /**
      * GET /people_groups/[ID].json?country=BA
@@ -392,27 +353,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $decodedResponse = json_decode($response, true);
         $this->assertTrue(isset($decodedResponse[0]['Resources']));
         $this->assertTrue(is_array($decodedResponse[0]['Resources']));
-    }
-    /**
-      * GET /people_groups/[ID].json?country=CB
-      * test page is available, and delivers the People Group's ProfileText When Only ID is Provided
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
-    public function testShowRequestsShouldGetPeopleGroupsWithProfileTextWhenIdsOnlyProvided()
-    {
-        $expectedID = "12662";
-        $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->APIVersion . "/people_groups/12662.json",
-            array('api_key' => $this->APIKey),
-            "show_get_proper_profile_text_json"
-        );
-        $decodedResponse = json_decode($response, true);
-        foreach ($decodedResponse as $peopleGroupData) {
-            $this->assertTrue(isset($peopleGroupData['ProfileText']));
-            $this->assertTrue(is_array($peopleGroupData['ProfileText']));
-        }
     }
     /**
      * GET /people_groups/[ID].json?country=BA
@@ -495,27 +435,6 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $decodedResponse = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertEquals($expectedNumberOfResults, count($decodedResponse));
-    }
-    /**
-     * GET /people_groups.json
-     * test page returns Profile Text for all the people groups
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testIndexRequestsShouldReturnProfileTextForAllPeopleGroups()
-    {
-        $response = $this->cachedRequest->get(
-            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey),
-            "profile_text_for_all_on_index_json"
-        );
-        $decodedResponse = json_decode($response, true);
-        foreach ($decodedResponse as $peopleGroupData) {
-            $this->assertTrue(isset($peopleGroupData['ProfileText']));
-            $this->assertTrue(is_array($peopleGroupData['ProfileText']));
-        }
     }
     /**
      * GET /people_groups.json
@@ -1222,7 +1141,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfRomanCatholic()
+    public function testIndexRequestsShouldReturnUnsupportedPercentageOfRomanCatholic()
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
@@ -1344,7 +1263,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByUnengaged()
+    public function testIndexRequestsShouldReturnUnsupportedUnengaged()
     {
         $expectedUnengagedStatus = 'y';
         $response = $this->cachedRequest->get(
@@ -1352,11 +1271,394 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
             array('api_key' => $this->APIKey, 'unengaged' => $expectedUnengagedStatus),
             "filter_by_unengaged_status_on_index_json"
         );
-        $decodedResponse = json_decode($response, true);
+        $decoded = json_decode($response, true);
+        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded['api']));
+        $this->assertEquals('error', $decoded['api']['status']);
+        $this->assertFalse(empty($decoded['api']['error']));
+        $this->assertEquals(
+            'Sorry, these parameters are no longer supported: unengaged',
+            $decoded['api']['error']['details']
+        );
+    }
+
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByFrontier()
+    {
+        $expectedFrontier = "N";
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array('api_key' => $this->APIKey, 'is_frontier' => $expectedFrontier),
+            "filter_by_is_frontier_on_index_json"
+        );
+        $decoded = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
-        $this->assertFalse(empty($decodedResponse));
-        foreach ($decodedResponse as $peopleGroup) {
-            $this->assertEquals($expectedUnengagedStatus, strtolower($peopleGroup['Unengaged']));
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $peopleGroup) {
+            $this->assertEquals($expectedFrontier, strtoupper($peopleGroup['Frontier']));
+        }
+    }
+
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPopulationPGACInRange()
+    {
+        $min = 120000;
+        $max = 130000;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array('api_key' => $this->APIKey, 'population_pgac' => $min . '-' . $max),
+            "filter_by_population_pgac_on_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $peopleGroup) {
+            $this->assertGreaterThanOrEqual($min, $peopleGroup['PopulationPGAC']);
+            $this->assertLessThanOrEqual($max, $peopleGroup['PopulationPGAC']);
+        }
+    }
+
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPopulationPGACAtValue()
+    {
+        $value = 120000;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array('api_key' => $this->APIKey, 'population_pgac' => $value),
+            "filter_by_population_pgac_at_value_on_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $peopleGroup) {
+            $this->assertEquals($value, $peopleGroup['PopulationPGAC']);
+        }
+    }
+
+    /**
+     * GET: /people_groups/daily_unreached.json
+     * test page no longer provides removed outdated fields
+     *
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testDailyUnreachedShouldNotProvideRemovedFields()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
+            array('api_key' => $this->APIKey),
+            "unreached_no_old_fields"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertFalse(empty($decoded));
+        $this->assertFalse(array_key_exists('Top10Ranking', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankOverall', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankProgress', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankPopulation', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankLocation', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankMinistryTools', $decoded[0]));
+        $this->assertFalse(array_key_exists('UNMap', $decoded[0]));
+        $this->assertFalse(array_key_exists('LeastReachedBasis', $decoded[0]));
+        $this->assertFalse(array_key_exists('GospelRadio', $decoded[0]));
+        $this->assertFalse(array_key_exists('Unengaged', $decoded[0]));
+    }
+    /**
+     * GET /people_groups/[ID].json
+     * test page no longer provides removed outdated fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testShowRequestsShouldNotProvideRemovedFields()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/12662.json",
+            array('api_key' => $this->APIKey),
+            "show_old_fields_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertFalse(empty($decoded));
+        $this->assertFalse(array_key_exists('Top10Ranking', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankOverall', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankProgress', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankPopulation', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankLocation', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankMinistryTools', $decoded[0]));
+        $this->assertFalse(array_key_exists('UNMap', $decoded[0]));
+        $this->assertFalse(array_key_exists('LeastReachedBasis', $decoded[0]));
+        $this->assertFalse(array_key_exists('GospelRadio', $decoded[0]));
+        $this->assertFalse(array_key_exists('Unengaged', $decoded[0]));
+    }
+    /**
+     * GET /people_groups.json?unengaged=y
+     * test page no longer provides removed outdated fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexRequestsShouldNotProvideRemovedFields()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array('api_key' => $this->APIKey),
+            "index_old_fields_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertFalse(array_key_exists('Top10Ranking', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankOverall', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankPopulation', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankProgress', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankLocation', $decoded[0]));
+        $this->assertFalse(array_key_exists('RankMinistryTools', $decoded[0]));
+        $this->assertFalse(array_key_exists('UNMap', $decoded[0]));
+        $this->assertFalse(array_key_exists('LeastReachedBasis', $decoded[0]));
+        $this->assertFalse(array_key_exists('GospelRadio', $decoded[0]));
+        $this->assertFalse(array_key_exists('Unengaged', $decoded[0]));
+    }
+    /**
+     * GET: /people_groups/daily_unreached.json
+     * test page provides newly added fields
+     *
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testDailyUnreachedShouldProvideNewFields()
+    {
+        $expectedPop = 263000;
+        $expectedFrontier = 'Y';
+        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m10252_gm.png';
+        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m10252_gm.pdf';
+        $expectedPhotoCCVersionText = 'CC BY-SA 4.0';
+        $expectedPhotoCCVersionURL = 'https://creativecommons.org/licenses/by-sa/4.0/';
+        $expectedMapCredits = 'People Group location: Joshua Project, Map geography: ESRI / GMI. ' .
+        'Map design: Joshua Project.';
+        $expectedMapCreditsURL = '';
+        $expectedMapCopyright = 'N';
+        $expectedMapCCVersionText = '';
+        $expectedMapCCVersionURL = '';
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
+            array('api_key' => $this->APIKey, 'month' => '05', 'day'    =>  '31'),
+            "unreached_no_new_fields"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertFalse(empty($decoded));
+        $this->assertTrue(array_key_exists('Frontier', $decoded[0]));
+        $this->assertTrue(array_key_exists('PopulationPGAC', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapExpandedURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('PhotoCCVersionText', $decoded[0]));
+        $this->assertTrue(array_key_exists('PhotoCCVersionURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapCredits', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapCreditURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapCopyright', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapCCVersionText', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapCCVersionURL', $decoded[0]));
+        $this->assertEquals($expectedFrontier, $decoded[0]['Frontier']);
+        $this->assertEquals($expectedPop, $decoded[0]['PopulationPGAC']);
+        $this->assertEquals($expectedMapUrl, $decoded[0]['PeopleGroupMapURL']);
+        $this->assertEquals($expectedMapExpandedUrl, $decoded[0]['PeopleGroupMapExpandedURL']);
+        $this->assertEquals($expectedPhotoCCVersionText, $decoded[0]['PhotoCCVersionText']);
+        $this->assertEquals($expectedPhotoCCVersionURL, $decoded[0]['PhotoCCVersionURL']);
+        $this->assertEquals($expectedMapCredits, $decoded[0]['MapCredits']);
+        $this->assertEquals($expectedMapCreditsURL, $decoded[0]['MapCreditURL']);
+        $this->assertEquals($expectedMapCopyright, $decoded[0]['MapCopyright']);
+        $this->assertEquals($expectedMapCCVersionText, $decoded[0]['MapCCVersionText']);
+        $this->assertEquals($expectedMapCCVersionURL, $decoded[0]['MapCCVersionURL']);
+    }
+    /**
+     * GET /people_groups/[ID].json
+     * test page provides newly added fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testShowRequestsShouldProvideNewFields()
+    {
+        $expectedPop = 1719400;
+        $expectedFrontier = 'Y';
+        $expectedMapAddress = 'm00324_aj.png';
+        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m00324_aj.png';
+        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m00324_aj.pdf';
+        $expectedPhotoCCVersionText = 'CC BY-NC-SA 2.0';
+        $expectedPhotoCCVersionURL = 'https://creativecommons.org/licenses/by-nc-sa/2.0/';
+        $expectedMapCredits = 'Temo Blumgardt - Wikimedia';
+        $expectedMapCreditsURL = 'https://commons.wikimedia.org/wiki/File:Caucasus_ethnic.jpg';
+        $expectedMapCopyright = 'N';
+        $expectedMapCCVersionText = 'CC0 1.0';
+        $expectedMapCCVersionURL = 'https://creativecommons.org/publicdomain/zero/1.0/';
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/11317.json",
+            array('api_key' => $this->APIKey, 'country' =>  'AJ'),
+            "show_new_fields_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertFalse(empty($decoded));
+        $this->assertEquals(1, count($decoded));
+        $this->assertTrue(array_key_exists('Frontier', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapAddress', $decoded[0]));
+        $this->assertTrue(array_key_exists('PopulationPGAC', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapExpandedURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('PhotoCCVersionText', $decoded[0]));
+        $this->assertTrue(array_key_exists('PhotoCCVersionURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapCredits', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapCreditURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapCopyright', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapCCVersionText', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapCCVersionURL', $decoded[0]));
+        $this->assertEquals($expectedFrontier, $decoded[0]['Frontier']);
+        $this->assertEquals($expectedPop, $decoded[0]['PopulationPGAC']);
+        $this->assertEquals($expectedMapAddress, $decoded[0]['MapAddress']);
+        $this->assertEquals($expectedMapUrl, $decoded[0]['PeopleGroupMapURL']);
+        $this->assertEquals($expectedMapExpandedUrl, $decoded[0]['PeopleGroupMapExpandedURL']);
+        $this->assertEquals($expectedPhotoCCVersionText, $decoded[0]['PhotoCCVersionText']);
+        $this->assertEquals($expectedPhotoCCVersionURL, $decoded[0]['PhotoCCVersionURL']);
+        $this->assertEquals($expectedMapCredits, $decoded[0]['MapCredits']);
+        $this->assertEquals($expectedMapCreditsURL, $decoded[0]['MapCreditURL']);
+        $this->assertEquals($expectedMapCopyright, $decoded[0]['MapCopyright']);
+        $this->assertEquals($expectedMapCCVersionText, $decoded[0]['MapCCVersionText']);
+        $this->assertEquals($expectedMapCCVersionURL, $decoded[0]['MapCCVersionURL']);
+    }
+    /**
+     * GET /people_groups.json?unengaged=y
+     * test page provides newly added fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexRequestsShouldProvideNewFields()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array('api_key' => $this->APIKey),
+            "index_new_fields_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertTrue(array_key_exists('Frontier', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapAddress', $decoded[0]));
+        $this->assertTrue(array_key_exists('PopulationPGAC', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapExpandedURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('PhotoCCVersionText', $decoded[0]));
+        $this->assertTrue(array_key_exists('PhotoCCVersionURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapCredits', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapCreditURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapCopyright', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapCCVersionText', $decoded[0]));
+        $this->assertTrue(array_key_exists('MapCCVersionURL', $decoded[0]));
+    }
+    /**
+     * GET /people_groups/[ID].json
+     * test if map address is blank it does not send a bad url
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testMapAddressShouldSendEmptyURL()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/12662.json",
+            array('api_key' => $this->APIKey, 'country' =>  'US'),
+            "show_map_address_send_empty_url_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertFalse(empty($decoded));
+        $this->assertEquals(1, count($decoded));
+        $this->assertTrue(array_key_exists('MapAddress', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapURL', $decoded[0]));
+        $this->assertTrue(array_key_exists('PeopleGroupMapExpandedURL', $decoded[0]));
+        $this->assertEquals('', $decoded[0]['MapAddress']);
+        $this->assertEquals('', $decoded[0]['PeopleGroupMapURL']);
+        $this->assertEquals('', $decoded[0]['PeopleGroupMapExpandedURL']);
+    }
+    /**
+     * GET /people_groups/[ID].json
+     * test if map address is blank it does not send a bad url
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testPeopleGroupPhotoURLShouldSendAnEmptyURLWhenPhotoAddressEmptyOrNull()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/10123.json",
+            array('api_key' => $this->APIKey, 'country' =>  'PP'),
+            "show_photo_url_send_empty_string_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals($this->cachedRequest->responseCode, 200);
+        $this->assertFalse(empty($decoded));
+        $this->assertEquals(1, count($decoded));
+        $this->assertTrue(array_key_exists('PeopleGroupPhotoURL', $decoded[0]));
+        $this->assertEquals('', $decoded[0]['PeopleGroupPhotoURL']);
+    }
+
+    public function testUnreachedShouldReplaceProfileTextWithASummary()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
+            array(
+                'api_key'   => $this->APIKey,
+                'month'     =>  '04',
+                'day'       =>  '05'
+            ),
+            "unreached_replace_profile_text_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertFalse(array_key_exists('ProfileText', $decoded[0]));
+        $this->assertTrue(array_key_exists('Summary', $decoded[0]));
+        $this->assertContains('Though many Tunisian Jews remain in Tunisia', $decoded[0]['Summary']);
+    }
+
+    public function testShowShouldReplaceProfileTextWithASummary()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/15642.json",
+            array(
+                'api_key'       => $this->APIKey,
+                'country'       =>  'IS'
+            ),
+            "show_replace_profile_text_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertFalse(array_key_exists('ProfileText', $decoded[0]));
+        $this->assertTrue(array_key_exists('Summary', $decoded[0]));
+        $this->assertContains('Though many Tunisian Jews remain in Tunisia', $decoded[0]['Summary']);
+    }
+
+    public function testIndexShouldReplaceProfileTextWithASummary()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array(
+                'api_key'       => $this->APIKey,
+                'limit'         =>  5
+            ),
+            "index_replace_profile_text_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $pg) {
+            $this->assertFalse(array_key_exists('ProfileText', $pg));
+            $this->assertTrue(array_key_exists('Summary', $pg));
         }
     }
 }

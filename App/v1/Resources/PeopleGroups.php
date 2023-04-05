@@ -157,9 +157,10 @@ $app->get(
                 $profileText->findAllByIdAndCountry();
                 $statement = $this->db->prepare($profileText->preparedStatement);
                 $statement->execute($profileText->preparedVariables);
-                $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $profileData = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $data[$key]['Summary'] = (empty($profileData)) ? '' : $profileData[0]['Summary'];
             } catch (Exception $e) {
-                $data[$key]['ProfileText'] = array();
+                $data[$key]['Summary'] = '';
             }
         }
         /**
@@ -316,9 +317,10 @@ $app->get(
                 $profileText->findAllByIdAndCountry();
                 $statement = $this->db->prepare($profileText->preparedStatement);
                 $statement->execute($profileText->preparedVariables);
-                $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $profileData = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $data[$key]['Summary'] = (empty($profileData)) ? '' : $profileData[0]['Summary'];
             } catch (Exception $e) {
-                $data[$key]['ProfileText'] = array();
+                $data[$key]['Summary'] = '';
             }
             try {
                 $resource = new Resource(array('id' => $peopleGroupData['ROL3']));
@@ -384,6 +386,14 @@ $app->get(
  *              @SWG\Parameter(
  *                  name="indigenous",
  *                  description="A boolean that states whether you want People Groups that are indigenous. (y or n)",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+*              @SWG\Parameter(
+ *                  name="is_frontier",
+ *                  description="A boolean that states whether you want People Groups that are frontier people groups. (y or n)",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -527,7 +537,15 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="population",
- *                  description="A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get People Groups matching that number.",
+ *                  description="A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get People Groups with a population matching that number.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="population_pgac",
+ *                  description="A dashed seperated range specifying the minimum and maximum population for the people group in all countries (PGAC).(min-max) You can supply just the minimum to get People Groups with a population matching that number.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -574,14 +592,6 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
- *                  name="unengaged",
- *                  description="A boolean that states whether you want People Groups that are unengaged. (y or n)",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
  *                  name="window1040",
  *                  description="A boolean that states whether you want People Groups in the 1040 Window. (y or n)",
  *                  paramType="query",
@@ -619,7 +629,7 @@ $app->get(
     function (Request $req, Response $res, $args = []) {
         $noLongerSupportedParams = array(
             'pc_anglican', 'pc_independent', 'pc_protestant', 'pc_orthodox', 'pc_rcatholic',
-            'pc_other_christian'
+            'pc_other_christian', 'unengaged'
         );
         $params = $req->getQueryParams();
         $requestKeys = array_keys($params);
@@ -665,10 +675,10 @@ $app->get(
                 );
                 $profileText->findAllByIdAndCountry();
                 $statement = $this->db->prepare($profileText->preparedStatement);
-                $statement->execute($profileText->preparedVariables);
-                $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $profileData = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $data[$key]['Summary'] = (empty($profileData)) ? '' : $profileData[0]['Summary'];
             } catch (Exception $e) {
-                $data[$key]['ProfileText'] = array();
+                $data[$key]['Summary'] = '';
             }
             try {
                 $resource = new Resource(array('id' => $peopleGroupData['ROL3']));
