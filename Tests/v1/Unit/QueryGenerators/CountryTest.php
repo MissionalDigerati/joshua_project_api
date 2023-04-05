@@ -656,4 +656,40 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($value, $countryData['CntPrimaryLanguages']);
         }
     }
+
+    public function testFindAllWithFiltersShouldFilterByTranslationUnspecifiedInRange()
+    {
+        $min = 1;
+        $max = 2;
+        $country = new \QueryGenerators\Country(array(
+            'translation_unspecified' => $min . '-' . $max,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertGreaterThanOrEqual($min, $countryData['TranslationUnspecified']);
+            $this->assertLessThanOrEqual($max, $countryData['TranslationUnspecified']);
+        }
+    }
+
+    public function testFindAllWithFiltersShouldFilterByTranslationUnspecifiedAtValue()
+    {
+        $value = 1;
+        $country = new \QueryGenerators\Country(array(
+            'translation_unspecified' => $value,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertEquals($value, $countryData['TranslationUnspecified']);
+        }
+    }
 }

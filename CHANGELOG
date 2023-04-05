@@ -8,6 +8,7 @@ The following items were removed because the data was outdated:
 ## Country Endpoint Parameters:
 
 ADDED cnt_primary_languages argument to /countries endpoint.
+ADDED translation_unspecified argument to /countries endpoint.
 REMOVED pc_anglican argument from /countries endpoint.
 REMOVED pc_independent argument from /countries endpoint.
 REMOVED pc_protestant argument from /countries endpoint.

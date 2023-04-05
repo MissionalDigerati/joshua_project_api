@@ -327,6 +327,14 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
+ *                  name="translation_unspecified",
+ *                  description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Unspecified</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
  *                  name="window1040",
  *                  description="A boolean that states whether you want Countries in the 1040 Window. (y or n)",
  *                  paramType="query",
