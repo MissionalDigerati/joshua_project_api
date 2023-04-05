@@ -464,6 +464,13 @@
                     <td>Does this group speak the national language?</td>
                 </tr>
                 <tr>
+                    <td>Summary</td>
+                    <td>
+                        A brief description about the people group. If you display on your website, please add a
+                         Read More link that connects back to our website.
+                    </td>
+                </tr>
+                <tr>
                     <td>TranslationNeedQuestionable</td>
                     <td>Is the need for translation in this language questionable?</td>
                 </tr>

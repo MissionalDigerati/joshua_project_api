@@ -157,9 +157,10 @@ $app->get(
                 $profileText->findAllByIdAndCountry();
                 $statement = $this->db->prepare($profileText->preparedStatement);
                 $statement->execute($profileText->preparedVariables);
-                $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $profileData = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $data[$key]['Summary'] = (empty($profileData)) ? '' : $profileData[0]['Summary'];
             } catch (Exception $e) {
-                $data[$key]['ProfileText'] = array();
+                $data[$key]['Summary'] = '';
             }
         }
         /**
@@ -316,9 +317,10 @@ $app->get(
                 $profileText->findAllByIdAndCountry();
                 $statement = $this->db->prepare($profileText->preparedStatement);
                 $statement->execute($profileText->preparedVariables);
-                $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $profileData = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $data[$key]['Summary'] = (empty($profileData)) ? '' : $profileData[0]['Summary'];
             } catch (Exception $e) {
-                $data[$key]['ProfileText'] = array();
+                $data[$key]['Summary'] = '';
             }
             try {
                 $resource = new Resource(array('id' => $peopleGroupData['ROL3']));
@@ -673,10 +675,10 @@ $app->get(
                 );
                 $profileText->findAllByIdAndCountry();
                 $statement = $this->db->prepare($profileText->preparedStatement);
-                $statement->execute($profileText->preparedVariables);
-                $data[$key]['ProfileText'] = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $profileData = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $data[$key]['Summary'] = (empty($profileData)) ? '' : $profileData[0]['Summary'];
             } catch (Exception $e) {
-                $data[$key]['ProfileText'] = array();
+                $data[$key]['Summary'] = '';
             }
             try {
                 $resource = new Resource(array('id' => $peopleGroupData['ROL3']));

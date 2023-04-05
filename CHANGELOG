@@ -69,12 +69,14 @@ ADDED PeopleGroupMapURL column for all people_groups endpoints.
 ADDED PeopleGroupMapExpandedURL column for all people_groups endpoints.
 ADDED PhotoCCVersionText column for all people_groups endpoints.
 ADDED PhotoCCVersionURL column for all people_groups endpoints.
+ADDED Summary column for all people_groups endpoints.
 REMOVED PCAnglican column from all people_groups endpoints.
 REMOVED PCIndependent column from all people_groups endpoints.
 REMOVED PCProtestant column from all people_groups endpoints.
 REMOVED PCOrthodox column from all people_groups endpoints.
 REMOVED PCRomanCatholic column from all people_groups endpoints.
 REMOVED PCOtherChristian column from all people_groups endpoints.
+REMOVED ProfileText array from all people_groups endpoints.
 REMOVED Top10Ranking column from all people_groups endpoints.
 REMOVED RankOverall column from all people_groups endpoints.
 REMOVED RankProgress column from all people_groups endpoints.
