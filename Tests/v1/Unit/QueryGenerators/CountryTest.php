@@ -764,4 +764,40 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($value, $countryData['TranslationStarted']);
         }
     }
+
+    public function testFindAllWithFiltersShouldFilterByBiblePortionsInRange()
+    {
+        $min = 2;
+        $max = 3;
+        $country = new \QueryGenerators\Country(array(
+            'bible_portions' => $min . '-' . $max,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertGreaterThanOrEqual($min, $countryData['BiblePortions']);
+            $this->assertLessThanOrEqual($max, $countryData['BiblePortions']);
+        }
+    }
+
+    public function testFindAllWithFiltersShouldFilterByBiblePortionsAtValue()
+    {
+        $value = 0;
+        $country = new \QueryGenerators\Country(array(
+            'bible_portions' => $value,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertEquals($value, $countryData['BiblePortions']);
+        }
+    }
 }
