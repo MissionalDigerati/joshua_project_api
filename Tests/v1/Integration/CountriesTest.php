@@ -1204,7 +1204,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
                 'limit' => 5,
                 'bible_new_testament' => $min . '-' . $max,
             ),
-            "filter_by_bible_portions_range_index_json"
+            "filter_by_bible_new_testament_range_index_json"
         );
         $decoded = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
@@ -1225,13 +1225,55 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
                 'limit' => 5,
                 'bible_new_testament' => $value,
             ),
-            "filter_by_bible_portions_at_value_index_json"
+            "filter_by_bible_new_testament_at_value_index_json"
         );
         $decoded = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decoded));
         foreach ($decoded as $country) {
             $this->assertEquals($value, floatval($country['BibleNewTestament']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByBibleCompleteInRange()
+    {
+        $min = 1;
+        $max = 2;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'bible_complete' => $min . '-' . $max,
+            ),
+            "filter_by_bible_complete_range_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertLessThanOrEqual($max, floatval($country['BibleComplete']));
+            $this->assertGreaterThanOrEqual($min, floatval($country['BibleComplete']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByBibleCompleteAtValue()
+    {
+        $value = 10;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'bible_complete' => $value,
+            ),
+            "filter_by_bible_complete_at_value_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertEquals($value, floatval($country['BibleComplete']));
         }
     }
 }
