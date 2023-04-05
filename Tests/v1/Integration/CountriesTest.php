@@ -1108,4 +1108,46 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($value, floatval($country['TranslationNeeded']));
         }
     }
+
+    public function testCountryIndexRequestsShouldFilterByTranslationStartedInRange()
+    {
+        $min = 4;
+        $max = 5;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'translation_started' => $min . '-' . $max,
+            ),
+            "filter_by_translation_started_range_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertLessThanOrEqual($max, floatval($country['TranslationStarted']));
+            $this->assertGreaterThanOrEqual($min, floatval($country['TranslationStarted']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByTranslationStartedAtValue()
+    {
+        $value = 1;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'translation_started' => $value,
+            ),
+            "filter_by_translation_started_at_value_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertEquals($value, floatval($country['TranslationStarted']));
+        }
+    }
 }
