@@ -28,6 +28,13 @@ REMOVED unengaged argument from /people_groups endpoint.
 
 ## Country Columns:
 
+ADDED CntPrimaryLanguages column to all countries endpoints.
+ADDED TranslationUnspecified column to all countries endpoints.
+ADDED TranslationNeeded column to all countries endpoints.
+ADDED TranslationStarted column to all countries endpoints.
+ADDED BiblePortions column to all countries endpoints.
+ADDED BibleNewTestament column to all countries endpoints.
+ADDED BibleComplete column from all countries endpoints.
 REMOVED HDIRank column from all countries endpoints.
 REMOVED HDIValue column from all countries endpoints.
 REMOVED HDIYear column from all countries endpoints.

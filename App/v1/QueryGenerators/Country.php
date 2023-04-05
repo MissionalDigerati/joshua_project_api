@@ -62,7 +62,10 @@ class Country extends QueryGenerator
         'PercentUnknown', 'ROL3OfficialLanguage', 'ROL3SecondaryLanguage', 'RLG3Primary', 'RegionCode',
         'InternetCtryCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'AltName', 'Capital', 'Population',
         'PopulationSource', 'PoplGrowthRate', 'AreaSquareMiles', 'SecurityLevel', 'ReligionDataYear',
-        'StateDeptReligiousFreedom', 'UNMap', 'PercentUrbanized', 'PrayercastVideo', 'CntPeoples', 'CntPeoplesLR');
+        'StateDeptReligiousFreedom', 'UNMap', 'PercentUrbanized', 'PrayercastVideo', 'CntPeoples', 'CntPeoplesLR',
+        'CntPrimaryLanguages', 'TranslationUnspecified', 'TranslationNeeded', 'TranslationStarted', 'BiblePortions',
+        'BibleNewTestament', 'BibleComplete'
+    );
     /**
      * The Database table to pull the data from.
      *

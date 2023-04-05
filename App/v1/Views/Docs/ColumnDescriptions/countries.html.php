@@ -26,6 +26,27 @@
                     <td>Area of Country in Square Miles</td>
                 </tr>
                 <tr>
+                    <td>BibleComplete</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>Complete Bible</strong>.
+                    </td>
+                </tr>
+                <tr>
+                    <td>BibleNewTestament</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>New Testament</strong>.
+                    </td>
+                </tr>
+                <tr>
+                    <td>BiblePortions</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>Portions</strong>.
+                    </td>
+                </tr>
+                <tr>
                     <td>Capital</td>
                     <td>Name of Capital City</td>
                 </tr>
@@ -36,6 +57,10 @@
                 <tr>
                     <td>CntPeoplesLR</td>
                     <td>Total Number of Unreached People Groups</td>
+                </tr>
+                <tr>
+                    <td>CntPrimaryLanguages</td>
+                    <td>The total number of primary languages in the country.</td>
                 </tr>
                 <tr>
                     <td>Ctry</td>
@@ -175,6 +200,27 @@
                 <tr>
                     <td>StateDeptReligiousFreedom</td>
                     <td>Code for URL link to current Report on International Religious Freedom</td>
+                </tr>
+                <tr>
+                    <td>TranslationNeeded</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>Translation Needed</strong>.
+                    </td>
+                </tr>
+                <tr>
+                    <td>TranslationStarted</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>Translation Started</strong>.
+                    </td>
+                </tr>
+                <tr>
+                    <td>TranslationUnspecified</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>Unspecified</strong>.
+                    </td>
                 </tr>
                 <tr>
                     <td>UNMap</td>

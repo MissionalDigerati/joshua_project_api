@@ -937,4 +937,49 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('LiteracyRate', $decoded[0]));
         $this->assertFalse(array_key_exists('LiteracySource', $decoded[0]));
     }
+
+    public function testCountryIndexRequestsShouldProvideNewFields()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'limit' => 1),
+            "provide_new_fields_country_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertTrue(array_key_exists('CntPrimaryLanguages', $decoded[0]));
+        $this->assertTrue(array_key_exists('TranslationUnspecified', $decoded[0]));
+        $this->assertTrue(array_key_exists('TranslationNeeded', $decoded[0]));
+        $this->assertTrue(array_key_exists('TranslationStarted', $decoded[0]));
+        $this->assertTrue(array_key_exists('BiblePortions', $decoded[0]));
+        $this->assertTrue(array_key_exists('BibleNewTestament', $decoded[0]));
+        $this->assertTrue(array_key_exists('BibleComplete', $decoded[0]));
+    }
+
+    public function testCountryShowRequestsShouldProvideNewFields()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries/AF.json",
+            array('api_key' => $this->APIKey),
+            "provide_new_fields_country_show_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertTrue(array_key_exists('CntPrimaryLanguages', $decoded[0]));
+        $this->assertTrue(array_key_exists('TranslationUnspecified', $decoded[0]));
+        $this->assertTrue(array_key_exists('TranslationNeeded', $decoded[0]));
+        $this->assertTrue(array_key_exists('TranslationStarted', $decoded[0]));
+        $this->assertTrue(array_key_exists('BiblePortions', $decoded[0]));
+        $this->assertTrue(array_key_exists('BibleNewTestament', $decoded[0]));
+        $this->assertTrue(array_key_exists('BibleComplete', $decoded[0]));
+        $this->assertEquals(54, $decoded[0]['CntPrimaryLanguages']);
+        $this->assertEquals(18, $decoded[0]['TranslationUnspecified']);
+        $this->assertEquals(5, $decoded[0]['TranslationNeeded']);
+        $this->assertEquals(0, $decoded[0]['TranslationStarted']);
+        $this->assertEquals(11, $decoded[0]['BiblePortions']);
+        $this->assertEquals(2, $decoded[0]['BibleNewTestament']);
+        $this->assertEquals(18, $decoded[0]['BibleComplete']);
+    }
 }
