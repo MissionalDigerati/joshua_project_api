@@ -7,6 +7,7 @@ The following items were removed because the data was outdated:
 
 ## Country Endpoint Parameters:
 
+ADDED bible_new_testament argument to /countries endpoint.
 ADDED bible_portions argument to /countries endpoint.
 ADDED cnt_primary_languages argument to /countries endpoint.
 ADDED translation_needed argument to /countries endpoint.

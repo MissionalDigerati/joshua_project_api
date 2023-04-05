@@ -389,6 +389,17 @@ class Country extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('bible_new_testament')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['bible_new_testament'],
+                'BibleNewTestament',
+                'bible_new_testament'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }

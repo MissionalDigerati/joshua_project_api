@@ -167,6 +167,14 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
+ *                  name="bible_new_testament",
+ *                  description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>New Testament</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
  *                  name="bible_portions",
  *                  description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Portions</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
  *                  paramType="query",
