@@ -137,7 +137,12 @@ $pathSettings = array(
     )
 );
 $app->add(new APIAuthMiddleware($container['db'], $pathSettings));
-$app->add(new CachingMiddleware(false, $pathSettings));
+$cacheSettings = $pathSettings;
+$useCaching = ((isset($_ENV['USE_CACHE'])) && ($_ENV['USE_CACHE'] === 'true'));
+$cacheSettings['host'] = (isset($_ENV['CACHE_HOST'])) ? $_ENV['CACHE_HOST'] : '127.0.0.1';
+$cacheSettings['port'] = (isset($_ENV['CACHE_PORT'])) ? $_ENV['CACHE_PORT'] : '11211';
+$cacheSettings['expire_cache'] = (isset($_ENV['CACHE_SECONDS'])) ? intval($_ENV['CACHE_SECONDS']) : 86400;
+$app->add(new CachingMiddleware($useCaching, $cacheSettings));
 $standardSettings = $pathSettings;
 $standardSettings['formats'] = ['json', 'xml'];
 $standardSettings['versions'] = ['v1'];
@@ -150,13 +155,6 @@ if (file_exists($APP_FILES_DIRECTORY)) {
      */
     require($APP_FILES_DIRECTORY . $DS . "Includes" . $DS . "CommonFunctions.php");
     $siteURL = getSiteURL();
-    if (strpos($siteURL, 'joshua.api.local') !== false) {
-        $GOOGLE_TRACKING_ID = 'UA-49359140-2';
-    } elseif (strpos($siteURL, 'jpapi.codingstudio.org') !== false) {
-        $GOOGLE_TRACKING_ID = 'UA-49359140-1';
-    } else {
-        $GOOGLE_TRACKING_ID = '';
-    }
     /**
      * Include our resources
      *
