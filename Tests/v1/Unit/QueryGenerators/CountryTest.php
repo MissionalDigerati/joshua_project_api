@@ -620,4 +620,40 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(strtolower($countryData['JPScaleImageURL']), $expectedImageURL);
         }
     }
+
+    public function testFindAllWithFiltersShouldFilterByCntPrimaryLanguagesInRange()
+    {
+        $min = 2;
+        $max = 3;
+        $country = new \QueryGenerators\Country(array(
+            'cnt_primary_languages' => $min . '-' . $max,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertGreaterThanOrEqual($min, $countryData['CntPrimaryLanguages']);
+            $this->assertLessThanOrEqual($max, $countryData['CntPrimaryLanguages']);
+        }
+    }
+
+    public function testFindAllWithFiltersShouldFilterByCntPrimaryLanguagesAtValue()
+    {
+        $value = 4;
+        $country = new \QueryGenerators\Country(array(
+            'cnt_primary_languages' => $value,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertEquals($value, $countryData['CntPrimaryLanguages']);
+        }
+    }
 }

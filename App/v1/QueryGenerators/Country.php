@@ -334,6 +334,17 @@ class Country extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('cnt_primary_languages')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['cnt_primary_languages'],
+                'CntPrimaryLanguages',
+                'cnt_primary_languages'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }

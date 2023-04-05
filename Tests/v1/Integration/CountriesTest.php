@@ -982,4 +982,46 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, $decoded[0]['BibleNewTestament']);
         $this->assertEquals(18, $decoded[0]['BibleComplete']);
     }
+
+    public function testCountryIndexRequestsShouldFilterByCntPrimaryLanguagesInRange()
+    {
+        $min = 2;
+        $max = 4;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'cnt_primary_languages' => $min . '-' . $max,
+            ),
+            "filter_by_cnt_languages_range_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertLessThanOrEqual($max, floatval($country['CntPrimaryLanguages']));
+            $this->assertGreaterThanOrEqual($min, floatval($country['CntPrimaryLanguages']));
+        }
+    }
+
+    public function testCountryIndexRequestsShouldFilterByCntPrimaryLanguagesAtValue()
+    {
+        $value = 3;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array(
+                'api_key' => $this->APIKey,
+                'limit' => 5,
+                'cnt_primary_languages' => $value,
+            ),
+            "filter_by_cnt_languages_at_value_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $country) {
+            $this->assertEquals($value, floatval($country['CntPrimaryLanguages']));
+        }
+    }
 }

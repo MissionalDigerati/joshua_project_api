@@ -175,6 +175,14 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
+ *                  name="cnt_primary_languages",
+ *                  description="A dashed seperated range specifying the minimum and maximum total number of primary languages.(min-max) You can supply just the minimum to get countries with a total number of primary languages matching that number.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
  *                  name="ids",
  *                  description="A bar separated list of one or more FIPS 10-4 Letter Country Codes to filter by. See <a href='https://goo.gl/yYWY4J' target='_blank'>https://goo.gl/yYWY4J</a>.",
  *                  paramType="query",
