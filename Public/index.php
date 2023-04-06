@@ -86,9 +86,6 @@ $VIEW_DIRECTORY = $APP_FILES_DIRECTORY . $DS . "Views";
 $app = new \Slim\App([
     'settings' => [
         'determineRouteBeforeAppMiddleware' =>  true,
-        'displayErrorDetails'               =>  true,
-        'debug'                             =>  true,
-        'whoops.editor'                     =>  'sublime',
     ]
 ]);
 /**
@@ -140,8 +137,8 @@ $app->add(new CachingMiddleware($useCaching, $cacheSettings));
 $standardSettings = $pathSettings;
 $standardSettings['formats'] = ['json', 'xml'];
 $standardSettings['versions'] = ['v1'];
-$app->add(new APIStandardsMiddleware($standardSettings));
 $app->add(new APIAuthMiddleware($container['db'], $pathSettings));
+$app->add(new APIStandardsMiddleware($standardSettings));
 $authSettings = array(
     'path'          =>  array('/api_keys'),
     'passthrough'   =>  array('/api_keys/new')
