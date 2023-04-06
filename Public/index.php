@@ -118,14 +118,9 @@ $container['mailer'] = new Mailer(
 );
 $container['errorResponder'] = new APIErrorResponder();
 /**
- * Setup Middleware
+ * Setup Middleware.
+ * IMPORTANT: Last one added is first executed.
  */
-$authSettings = array(
-    'path'          =>  array('/api_keys'),
-    'passthrough'   =>  array('/api_keys/new')
-);
-$authSettings['users'][$_ENV['ADMIN_USERNAME']] = $_ENV['ADMIN_PASSWORD'];
-$app->add(new HttpBasicAuthentication($authSettings));
 $pathSettings = array(
     'passthrough' => array('/v\d+/docs/column_descriptions'),
     'paths'  =>  array(
@@ -136,7 +131,6 @@ $pathSettings = array(
         '/v\d+/regions'
     )
 );
-$app->add(new APIAuthMiddleware($container['db'], $pathSettings));
 $cacheSettings = $pathSettings;
 $useCaching = ((isset($_ENV['USE_CACHE'])) && ($_ENV['USE_CACHE'] === 'true'));
 $cacheSettings['host'] = (isset($_ENV['CACHE_HOST'])) ? $_ENV['CACHE_HOST'] : '127.0.0.1';
@@ -147,6 +141,13 @@ $standardSettings = $pathSettings;
 $standardSettings['formats'] = ['json', 'xml'];
 $standardSettings['versions'] = ['v1'];
 $app->add(new APIStandardsMiddleware($standardSettings));
+$app->add(new APIAuthMiddleware($container['db'], $pathSettings));
+$authSettings = array(
+    'path'          =>  array('/api_keys'),
+    'passthrough'   =>  array('/api_keys/new')
+);
+$authSettings['users'][$_ENV['ADMIN_USERNAME']] = $_ENV['ADMIN_PASSWORD'];
+$app->add(new HttpBasicAuthentication($authSettings));
 if (file_exists($APP_FILES_DIRECTORY)) {
     /**
      * Include common functions
