@@ -1,7 +1,7 @@
 Joshua Project API
 ------------------
 
-An API for connecting to the [Joshua Project](http://www.joshuaproject.net) data.  It uses the [PHP Slim Framework](http://slimframework.com).
+An API for connecting to the [Joshua Project](https://joshuaproject.net) data.  It uses the [PHP Slim Framework](http://slimframework.com).
 
 Development
 -----------

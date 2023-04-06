@@ -616,7 +616,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
-            $expectedImageURL = "http://www.joshuaproject.net/images/scale".round($countryData['JPScaleCtry']).".jpg";
+            $expectedImageURL = "https://joshuaproject.net/images/scale".round($countryData['JPScaleCtry']).".jpg";
             $this->assertEquals(strtolower($countryData['JPScaleImageURL']), $expectedImageURL);
         }
     }

@@ -111,7 +111,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupPhotoURL()
     {
         $expected = array('id' => '12662', 'country' => 'CB');
-        $expectedURL = "http://www.joshuaproject.net/profiles/photos/";
+        $expectedURL = "https://joshuaproject.net/profiles/photos/";
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
@@ -153,7 +153,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $expectedImageURL = "http://www.joshuaproject.net/images/scale".round($data[0]['JPScale']).".jpg";
+        $expectedImageURL = "https://joshuaproject.net/images/scale".round($data[0]['JPScale']).".jpg";
         $this->assertEquals($expectedImageURL, $data[0]['JPScaleImageURL']);
     }
     /**

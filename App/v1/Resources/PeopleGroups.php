@@ -513,7 +513,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="people_id1",
- *                  description="A bar separated list of one or more Joshua Project affinity block codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+ *                  description="A bar separated list of one or more Joshua Project affinity block codes to filter by. See https://joshuaproject.net/definitions.php?term=23.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -521,7 +521,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="people_id2",
- *                  description="A bar separated list of one or more Joshua Project people cluster codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+ *                  description="A bar separated list of one or more Joshua Project people cluster codes to filter by. See https://joshuaproject.net/definitions.php?term=23.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -529,7 +529,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="people_id3",
- *                  description="A bar separated list of one or more Joshua Project people group codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+ *                  description="A bar separated list of one or more Joshua Project people group codes to filter by. See https://joshuaproject.net/definitions.php?term=23.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -569,7 +569,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="rop1",
- *                  description="A bar separated list of one or more Registry of People affinity block codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+ *                  description="A bar separated list of one or more Registry of People affinity block codes to filter by. See https://joshuaproject.net/definitions.php?term=23.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -577,7 +577,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="rop2",
- *                  description="A bar separated list of one or more Registry of People people cluster codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+ *                  description="A bar separated list of one or more Registry of People people cluster codes to filter by. See https://joshuaproject.net/definitions.php?term=23.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -585,7 +585,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="rop3",
- *                  description="A bar separated list of one or more Registry of People people group codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+ *                  description="A bar separated list of one or more Registry of People people group codes to filter by. See https://joshuaproject.net/definitions.php?term=23.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",

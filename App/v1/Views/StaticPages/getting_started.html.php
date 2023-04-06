@@ -307,10 +307,10 @@
         "RegionCode": "2",
         "Window1040": "Y",
         "PeopleGroupURL": "https://joshuaproject.net/people_groups/14966/LA",
-        "PeopleGroupPhotoURL": "http://www.joshuaproject.net/profiles/photos/p14966.jpg",
+        "PeopleGroupPhotoURL": "https://joshuaproject.net/profiles/photos/p14966.jpg",
         "CountryURL": "https://joshuaproject.net/countries/LA",
         "JPScaleText": "Unreached",
-        "JPScaleImageURL": "http://www.joshuaproject.net/images/scale1.jpg",
+        "JPScaleImageURL": "https://joshuaproject.net/images/scale1.jpg",
         "Frontier": "N",
         "PopulationPGAC": 164000,
         "MapAddress": "m14966_la.png",
@@ -581,11 +581,11 @@
             https://joshuaproject.net/people_groups/14966/LA
             &lt;/PeopleGroupURL&gt;
             &lt;PeopleGroupPhotoURL&gt;
-            http://www.joshuaproject.net/profiles/photos/p14966.jpg
+            https://joshuaproject.net/profiles/photos/p14966.jpg
             &lt;/PeopleGroupPhotoURL&gt;
             &lt;CountryURL&gt;https://joshuaproject.net/countries/LA&lt;/CountryURL&gt;
             &lt;JPScaleText&gt;Unreached&lt;/JPScaleText&gt;
-            &lt;JPScaleImageURL&gt;http://www.joshuaproject.net/images/scale1.jpg&lt;/JPScaleImageURL&gt;
+            &lt;JPScaleImageURL&gt;https://joshuaproject.net/images/scale1.jpg&lt;/JPScaleImageURL&gt;
             &lt;PopulationPGAC&gt;164000&lt;/PopulationPGAC&gt;
             &lt;Frontier&gt;N&lt;/Frontier&gt;
             &lt;MapAddress&gt;m14966_la.png&lt;/MapAddress&gt;
@@ -888,7 +888,7 @@ a#progress-scale-image img {
     &lt;body&gt;
         &lt;div id="jp_widget"&gt;
             &lt;div class="upgotd upgotd-title"&gt;
-                &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;
+                &lt;a href="https://joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;
                 Unreached of the Day
                 &lt;/a&gt;
             &lt;/div&gt;
@@ -922,15 +922,15 @@ a#progress-scale-image img {
                     &lt;td&gt;Status:&lt;/td&gt;
                     &lt;td&gt;
                         &lt;a
-                        href="http://www.joshuaproject.net/definitions.php?term=25"
+                        href="https://joshuaproject.net/definitions.php?term=25"
                         class="upgotd-link pg-scale-text"&gt;
                         &lt;/a&gt; (
                         &lt;a
-                        href="http://www.joshuaproject.net/global-progress-scale.php"
+                        href="https://joshuaproject.net/global-progress-scale.php"
                         class="upgotd-link pg-scale"&gt;
                         &lt;/a&gt;&nbsp;
                         &lt;a
-                        href="http://www.joshuaproject.net/global-progress-scale.php"
+                        href="https://joshuaproject.net/global-progress-scale.php"
                         class="upgotd-link"
                         id="progress-scale-image"&gt;
                         &lt;/a&gt;
@@ -1200,7 +1200,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;div id="jp_widget"&gt;
     &lt;div class="upgotd upgotd-title"&gt;
-        &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
+        &lt;a href="https://joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
     &lt;/div&gt;
     &lt;div class="upgotd-image"&gt;
         &lt;a href="#" class="upgotd-link pg-link" id="people-group-image"&gt;
@@ -1232,15 +1232,15 @@ a#progress-scale-image img {
             &lt;td&gt;Status:&lt;/td&gt;
             &lt;td&gt;
                 &lt;a
-                href="http://www.joshuaproject.net/definitions.php?term=25"
+                href="https://joshuaproject.net/definitions.php?term=25"
                 class="upgotd-link pg-scale-text"&gt;
                 &lt;/a&gt;
                 (&lt;a
-                href="http://www.joshuaproject.net/global-progress-scale.php"
+                href="https://joshuaproject.net/global-progress-scale.php"
                 class="upgotd-link pg-scale"&gt;
                 &lt;/a&gt;
                 &nbsp;&lt;a
-                href="http://www.joshuaproject.net/global-progress-scale.php"
+                href="https://joshuaproject.net/global-progress-scale.php"
                 class="upgotd-link"
                 id="progress-scale-image"&gt;&lt;/a&gt;)
             &lt;/td&gt;
@@ -1779,7 +1779,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;div id="jp_widget"<span class="code_highlight"> class="hidden"</span>&gt;
     &lt;div class="upgotd upgotd-title"&gt;
-        &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
+        &lt;a href="https://joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
     &lt;/div&gt;
     &lt;div class="upgotd-image"&gt;
         &lt;a href="#" class="upgotd-link pg-link" id="people-group-image"&gt;
@@ -1817,15 +1817,15 @@ a#progress-scale-image img {
             &lt;td&gt;Status:&lt;/td&gt;
             &lt;td&gt;
                 &lt;a
-                href="http://www.joshuaproject.net/definitions.php?term=25"
+                href="https://joshuaproject.net/definitions.php?term=25"
                 class="upgotd-link pg-scale-text"&gt;
                 &lt;/a&gt; (
                 &lt;a
-                href="http://www.joshuaproject.net/global-progress-scale.php"
+                href="https://joshuaproject.net/global-progress-scale.php"
                 class="upgotd-link pg-scale"&gt;
                 &lt;/a&gt;&nbsp;
                 &lt;a
-                href="http://www.joshuaproject.net/global-progress-scale.php"
+                href="https://joshuaproject.net/global-progress-scale.php"
                 class="upgotd-link"
                 id="progress-scale-image"&gt;
                 &lt;/a&gt;)
@@ -2359,7 +2359,7 @@ if ($unreached['PercentEvangelical'] == null) {
                     <pre>
 &lt;div id="jp_widget"&gt;
     &lt;div class="upgotd upgotd-title"&gt;
-        &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
+        &lt;a href="https://joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
     &lt;/div&gt;
     &lt;div class="upgotd-image"&gt;
         &lt;a href="
@@ -2418,14 +2418,14 @@ if ($unreached['PercentEvangelical'] == null) {
         &lt;tr&gt;
             &lt;td&gt;Status:&lt;/td&gt;
             &lt;td&gt;
-                &lt;a href="http://www.joshuaproject.net/definitions.php?term=25" class="upgotd-link pg-scale-text"&gt;
+                &lt;a href="https://joshuaproject.net/definitions.php?term=25" class="upgotd-link pg-scale-text"&gt;
                     <span class="code_highlight">&lt;?php echo $unreached['JPScaleText']; ?&gt;</span>
                 &lt;/a&gt; (
-                &lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link pg-scale"&gt;
+                &lt;a href="https://joshuaproject.net/global-progress-scale.php" class="upgotd-link pg-scale"&gt;
                     <span class="code_highlight">&lt;?php echo $unreached['JPScale']; ?&gt;</span>
                 &lt;/a&gt;
                 &lt;a
-                href="http://www.joshuaproject.net/global-progress-scale.php"
+                href="https://joshuaproject.net/global-progress-scale.php"
                 class="upgotd-link"
                 id="progress-scale-image"&gt;
                 <span class="code_highlight">&lt;img
@@ -2849,7 +2849,7 @@ else:
         &lt;/p&gt;
         &lt;div id="jp_widget"&gt;
             &lt;div class="upgotd upgotd-title"&gt;
-                &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;
+                &lt;a href="https://joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;
                 Unreached of the Day
                 &lt;/a&gt;
             &lt;/div&gt;
@@ -2907,17 +2907,17 @@ else:
                     &lt;td&gt;Status:&lt;/td&gt;
                     &lt;td&gt;
                         &lt;a
-                        href="http://www.joshuaproject.net/definitions.php?term=25"
+                        href="https://joshuaproject.net/definitions.php?term=25"
                         class="upgotd-link pg-scale-text"&gt;
                             <span class="code_highlight">$JPScaleText</span>
                         &lt;/a&gt; (
                         &lt;a
-                        href="http://www.joshuaproject.net/global-progress-scale.php"
+                        href="https://joshuaproject.net/global-progress-scale.php"
                         class="upgotd-link pg-scale"&gt;
                             <span class="code_highlight">$JPScale</span>
                         &lt;/a&gt;
                         &lt;a
-                        href="http://www.joshuaproject.net/global-progress-scale.php"
+                        href="https://joshuaproject.net/global-progress-scale.php"
                         class="upgotd-link"
                         id="progress-scale-image"&gt;
                             &lt;img src="<span class="code_highlight">$JPScaleImageURL</span>" alt="Progress Scale"&gt;
@@ -3464,7 +3464,7 @@ end
     &lt;body&gt;
         &lt;div id="jp_widget"&gt;
             &lt;div class="upgotd upgotd-title"&gt;
-                &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;
+                &lt;a href="https://joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;
                 Unreached of the Day&lt;/a&gt;
             &lt;/div&gt;
             &lt;div class="upgotd-image"&gt;
@@ -3521,17 +3521,17 @@ end
                     &lt;td&gt;Status:&lt;/td&gt;
                     &lt;td&gt;
                         &lt;a
-                        href="http://www.joshuaproject.net/definitions.php?term=25"
+                        href="https://joshuaproject.net/definitions.php?term=25"
                         class="upgotd-link pg-scale-text"&gt;
                             <span class="code_highlight">&lt;%= unreached['JPScaleText'] %&gt;</span>
                         &lt;/a&gt; (
                         &lt;a
-                        href="http://www.joshuaproject.net/global-progress-scale.php"
+                        href="https://joshuaproject.net/global-progress-scale.php"
                         class="upgotd-link pg-scale"&gt;
                             <span class="code_highlight">&lt;%= unreached['JPScale'] %&gt;</span>
                         &lt;/a&gt;
                         &lt;a
-                        href="http://www.joshuaproject.net/global-progress-scale.php"
+                        href="https://joshuaproject.net/global-progress-scale.php"
                         class="upgotd-link"
                         id="progress-scale-image"&gt;
                             &lt;img

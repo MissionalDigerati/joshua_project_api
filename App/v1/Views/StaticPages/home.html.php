@@ -109,7 +109,7 @@
                                 Commission.</p>
                           </div>
                           <div class="panel-footer">
-                            <a href="http://www.joshuaproject.net/" target="_blank" class="btn btn-success pull-right">
+                            <a href="https://joshuaproject.net/" target="_blank" class="btn btn-success pull-right">
                                 Visit Website >></a>
                             <span class="clearfix"></span>
                           </div>

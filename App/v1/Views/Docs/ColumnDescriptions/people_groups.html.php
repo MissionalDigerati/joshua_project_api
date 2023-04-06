@@ -66,7 +66,7 @@
                 </tr>
                 <tr>
                     <td>GSEC</td>
-                    <td>Global Status of Evangelical Christianity, see http://www.joshuaproject.net/definitions.php</td>
+                    <td>Global Status of Evangelical Christianity, see https://joshuaproject.net/definitions.php</td>
                 </tr>
                 <tr>
                     <td>IndigenousCode</td>
