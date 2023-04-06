@@ -113,7 +113,7 @@ class PeopleGroup extends QueryGenerator
      * @var     string
      * @access  protected
      */
-    protected $peopleGroupURLSelect = "CONCAT('http://joshuaproject.net/people_groups/', PeopleID3, '/', ROG3)";
+    protected $peopleGroupURLSelect = "CONCAT('https://joshuaproject.net/people_groups/', PeopleID3, '/', ROG3)";
     /**
      * The MySQL CONCAT statement for generating the PeopleGroupPhotoURL.
      *
@@ -128,7 +128,7 @@ class PeopleGroup extends QueryGenerator
      * @var     string
      * @access  protected
      */
-    protected $countryURLSelect = "CONCAT('http://joshuaproject.net/countries/', ROG3)";
+    protected $countryURLSelect = "CONCAT('https://joshuaproject.net/countries/', ROG3)";
     /**
      * An array of table columns (key) and their alias (value).
      *

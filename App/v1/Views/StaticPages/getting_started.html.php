@@ -100,7 +100,7 @@
                     <h3 id="overview">Overview</h3>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Joshua Project API is a REST based API for retrieving data
                         from the
-                        <a href="http://joshuaproject.net" target="_blank" title="Visit the Joshua Project Initiative">
+                        <a href="https://joshuaproject.net" target="_blank" title="Visit the Joshua Project Initiative">
                             Joshua Project Initiative
                         </a>.  If you are not familiar with the term REST,  you can read more at
                         <a href="http://en.wikipedia.org/wiki/Representational_state_transfer" target="_blank">
@@ -306,9 +306,9 @@
         "PCOtherSmall": "0",
         "RegionCode": "2",
         "Window1040": "Y",
-        "PeopleGroupURL": "http://joshuaproject.net/people_groups/14966/LA",
+        "PeopleGroupURL": "https://joshuaproject.net/people_groups/14966/LA",
         "PeopleGroupPhotoURL": "http://www.joshuaproject.net/profiles/photos/p14966.jpg",
-        "CountryURL": "http://joshuaproject.net/countries/LA",
+        "CountryURL": "https://joshuaproject.net/countries/LA",
         "JPScaleText": "Unreached",
         "JPScaleImageURL": "http://www.joshuaproject.net/images/scale1.jpg",
         "Frontier": "N",
@@ -578,12 +578,12 @@
             &lt;RegionCode&gt;2&lt;/RegionCode&gt;
             &lt;Window1040&gt;Y&lt;/Window1040&gt;
             &lt;PeopleGroupURL&gt;
-            http://joshuaproject.net/people_groups/14966/LA
+            https://joshuaproject.net/people_groups/14966/LA
             &lt;/PeopleGroupURL&gt;
             &lt;PeopleGroupPhotoURL&gt;
             http://www.joshuaproject.net/profiles/photos/p14966.jpg
             &lt;/PeopleGroupPhotoURL&gt;
-            &lt;CountryURL&gt;http://joshuaproject.net/countries/LA&lt;/CountryURL&gt;
+            &lt;CountryURL&gt;https://joshuaproject.net/countries/LA&lt;/CountryURL&gt;
             &lt;JPScaleText&gt;Unreached&lt;/JPScaleText&gt;
             &lt;JPScaleImageURL&gt;http://www.joshuaproject.net/images/scale1.jpg&lt;/JPScaleImageURL&gt;
             &lt;PopulationPGAC&gt;164000&lt;/PopulationPGAC&gt;

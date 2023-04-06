@@ -93,7 +93,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupURL()
     {
         $expected = array('id' => '12662', 'country' => 'CB');
-        $expectedURL = "http://joshuaproject.net/people_groups/12662/cb";
+        $expectedURL = "https://joshuaproject.net/people_groups/12662/cb";
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
@@ -130,7 +130,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectCountryURL()
     {
         $expected = array('id' => '12662', 'country' => 'CB');
-        $expectedURL = "http://joshuaproject.net/countries/cb";
+        $expectedURL = "https://joshuaproject.net/countries/cb";
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
