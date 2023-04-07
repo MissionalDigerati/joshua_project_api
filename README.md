@@ -38,6 +38,24 @@ Update on JP Server
 
 To update the submodule, use the following command: `git submodule update --recursive --remote`.
 
+Google Analytics 4
+------------------
+
+To set up the Google Analytics, you need to do the following in Google Analytics:
+
+1. Add a data stream: Admin > Data Streams > Add a Stream
+2. Get the Measurement ID
+3. To get the secret: Admin > Data Streams > Click the appropriate stream
+    - Click Measurement Protocol API Secrets
+    - Create
+    - Copy the key
+4. Add the event: Admin > Events > Create Event api_requests
+5. Add custom definitions:
+    - Admin > Custom Definitions
+    - Create 3 Custom Dimensions: endpoint, format, version
+
+Add your settings to the .env file, and in 24 hours you should start receiving data.
+
 License
 -------
 This script is created by Missional Digerati and is under the [GNU General Public License v3](http://www.gnu.org/licenses/gpl-3.0-standalone.html).
