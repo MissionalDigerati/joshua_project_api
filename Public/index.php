@@ -23,6 +23,7 @@ use Dotenv\Dotenv;
 use Middleware\APIAuthMiddleware;
 use Middleware\APIStandardsMiddleware;
 use Middleware\CachingMiddleware;
+use Middleware\GoogleAnalyticsMiddleware;
 use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use Slim\Middleware\HttpBasicAuthentication;
 use Slim\Views\PhpRenderer;
@@ -134,11 +135,20 @@ $cacheSettings['host'] = (isset($_ENV['CACHE_HOST'])) ? $_ENV['CACHE_HOST'] : '1
 $cacheSettings['port'] = (isset($_ENV['CACHE_PORT'])) ? $_ENV['CACHE_PORT'] : '11211';
 $cacheSettings['expire_cache'] = (isset($_ENV['CACHE_SECONDS'])) ? intval($_ENV['CACHE_SECONDS']) : 86400;
 $app->add(new CachingMiddleware($useCaching, $cacheSettings));
+
+$analyticsSettings = $pathSettings;
+$isTracking = ((isset($_ENV['GA_TRACK_REQUESTS'])) && ($_ENV['GA_TRACK_REQUESTS'] === 'true'));
+$analyticsSettings['measurement_id'] = (isset($_ENV['GA_MEASUREMENT_ID'])) ? $_ENV['GA_MEASUREMENT_ID'] : '';
+$analyticsSettings['api_secret'] = (isset($_ENV['GA_SECRET'])) ? $_ENV['GA_SECRET'] : '';
+$app->add(new GoogleAnalyticsMiddleware($isTracking, $analyticsSettings));
+
 $standardSettings = $pathSettings;
 $standardSettings['formats'] = ['json', 'xml'];
 $standardSettings['versions'] = ['v1'];
 $app->add(new APIAuthMiddleware($container['db'], $pathSettings));
+
 $app->add(new APIStandardsMiddleware($standardSettings));
+
 $authSettings = array(
     'path'          =>  array('/api_keys'),
     'passthrough'   =>  array('/api_keys/new')
