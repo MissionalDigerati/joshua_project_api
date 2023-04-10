@@ -156,6 +156,6 @@ class CachingMiddleware
         foreach ($params as $key => $val) {
             $cacheKey .= $key . '=' . $val;
         }
-        return md5($cacheKey);
+        return md5(strtolower($cacheKey));
     }
 }
