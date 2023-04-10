@@ -244,7 +244,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
      **/
     public function testFindAllWithFiltersShouldFilterByExactPopulation()
     {
-        $expectedPopulation = 77000;
+        $expectedPopulation = 44000;
         $country = new \QueryGenerators\Country(array('population' => $expectedPopulation));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
@@ -616,140 +616,260 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
-            $expectedImageURL = "http://www.joshuaproject.net/images/scale".round($countryData['JPScaleCtry']).".jpg";
+            $expectedImageURL = "https://joshuaproject.net/images/scale".round($countryData['JPScaleCtry']).".jpg";
             $this->assertEquals(strtolower($countryData['JPScaleImageURL']), $expectedImageURL);
         }
     }
-    /**
-     * findAllWithFilters() should filter countries by percent of Anglican
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByPCAnglican()
+
+    public function testFindAllWithFiltersShouldFilterByCntPrimaryLanguagesInRange()
     {
-        $expectedMin = 30;
-        $expectedMax = 34;
-        $country = new \QueryGenerators\Country(array('pc_anglican' => $expectedMin . '-' . $expectedMax));
+        $min = 2;
+        $max = 3;
+        $country = new \QueryGenerators\Country(array(
+            'cnt_primary_languages' => $min . '-' . $max,
+            'limit' =>  5
+        ));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentAnglican']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentAnglican']));
+            $this->assertGreaterThanOrEqual($min, $countryData['CntPrimaryLanguages']);
+            $this->assertLessThanOrEqual($max, $countryData['CntPrimaryLanguages']);
         }
     }
-    /**
-     * findAllWithFilters() should filter countries by percent of Independent
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByPCIndependent()
+
+    public function testFindAllWithFiltersShouldFilterByCntPrimaryLanguagesAtValue()
     {
-        $expectedMin = 83;
-        $expectedMax = 90.1;
-        $country = new \QueryGenerators\Country(array('pc_independent' => $expectedMin . '-' . $expectedMax));
+        $value = 4;
+        $country = new \QueryGenerators\Country(array(
+            'cnt_primary_languages' => $value,
+            'limit' =>  5
+        ));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentIndependent']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentIndependent']));
+            $this->assertEquals($value, $countryData['CntPrimaryLanguages']);
         }
     }
-    /**
-     * findAllWithFilters() should filter countries by percent of Protestant
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByPCProtestant()
+
+    public function testFindAllWithFiltersShouldFilterByTranslationUnspecifiedInRange()
     {
-        $expectedMin = 83;
-        $expectedMax = 90.1;
-        $country = new \QueryGenerators\Country(array('pc_protestant' => $expectedMin . '-' . $expectedMax));
+        $min = 1;
+        $max = 2;
+        $country = new \QueryGenerators\Country(array(
+            'translation_unspecified' => $min . '-' . $max,
+            'limit' =>  5
+        ));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentProtestant']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentProtestant']));
+            $this->assertGreaterThanOrEqual($min, $countryData['TranslationUnspecified']);
+            $this->assertLessThanOrEqual($max, $countryData['TranslationUnspecified']);
         }
     }
-    /**
-     * findAllWithFilters() should filter countries by percent of Orthodox
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByPCOrthodox()
+
+    public function testFindAllWithFiltersShouldFilterByTranslationUnspecifiedAtValue()
     {
-        $expectedMin = 94;
-        $expectedMax = 97;
-        $country = new \QueryGenerators\Country(array('pc_orthodox' => $expectedMin . '-' . $expectedMax));
+        $value = 1;
+        $country = new \QueryGenerators\Country(array(
+            'translation_unspecified' => $value,
+            'limit' =>  5
+        ));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentOrthodox']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentOrthodox']));
+            $this->assertEquals($value, $countryData['TranslationUnspecified']);
         }
     }
-    /**
-     * findAllWithFilters() should filter countries by percent of Roman Catholic
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByPCRCatholic()
+
+    public function testFindAllWithFiltersShouldFilterByTranslationNeededInRange()
     {
-        $expectedMin = 84;
-        $expectedMax = 87;
-        $country = new \QueryGenerators\Country(array('pc_rcatholic' => $expectedMin . '-' . $expectedMax));
+        $min = 1;
+        $max = 2;
+        $country = new \QueryGenerators\Country(array(
+            'translation_needed' => $min . '-' . $max,
+            'limit' =>  5
+        ));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentRomanCatholic']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentRomanCatholic']));
+            $this->assertGreaterThanOrEqual($min, $countryData['TranslationNeeded']);
+            $this->assertLessThanOrEqual($max, $countryData['TranslationNeeded']);
         }
     }
-    /**
-     * findAllWithFilters() should filter countries by percent of Other Christians
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByPercentOtherChristians()
+
+    public function testFindAllWithFiltersShouldFilterByTranslationNeededAtValue()
     {
-        $expectedMin = 33;
-        $expectedMax = 34;
-        $country = new \QueryGenerators\Country(array('pc_other_christian' => $expectedMin . '-' . $expectedMax));
+        $value = 1;
+        $country = new \QueryGenerators\Country(array(
+            'translation_needed' => $value,
+            'limit' =>  5
+        ));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
-            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentOther']));
-            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentOther']));
+            $this->assertEquals($value, $countryData['TranslationNeeded']);
+        }
+    }
+
+    public function testFindAllWithFiltersShouldFilterByTranslationStartedInRange()
+    {
+        $min = 3;
+        $max = 4;
+        $country = new \QueryGenerators\Country(array(
+            'translation_started' => $min . '-' . $max,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertGreaterThanOrEqual($min, $countryData['TranslationStarted']);
+            $this->assertLessThanOrEqual($max, $countryData['TranslationStarted']);
+        }
+    }
+
+    public function testFindAllWithFiltersShouldFilterByTranslationStartedAtValue()
+    {
+        $value = 1;
+        $country = new \QueryGenerators\Country(array(
+            'translation_started' => $value,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertEquals($value, $countryData['TranslationStarted']);
+        }
+    }
+
+    public function testFindAllWithFiltersShouldFilterByBiblePortionsInRange()
+    {
+        $min = 2;
+        $max = 3;
+        $country = new \QueryGenerators\Country(array(
+            'bible_portions' => $min . '-' . $max,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertGreaterThanOrEqual($min, $countryData['BiblePortions']);
+            $this->assertLessThanOrEqual($max, $countryData['BiblePortions']);
+        }
+    }
+
+    public function testFindAllWithFiltersShouldFilterByBiblePortionsAtValue()
+    {
+        $value = 0;
+        $country = new \QueryGenerators\Country(array(
+            'bible_portions' => $value,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertEquals($value, $countryData['BiblePortions']);
+        }
+    }
+
+    public function testFindAllWithFiltersShouldFilterByBibleNewTestamentInRange()
+    {
+        $min = 3;
+        $max = 4;
+        $country = new \QueryGenerators\Country(array(
+            'bible_new_testament' => $min . '-' . $max,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertGreaterThanOrEqual($min, $countryData['BibleNewTestament']);
+            $this->assertLessThanOrEqual($max, $countryData['BibleNewTestament']);
+        }
+    }
+
+    public function testFindAllWithFiltersShouldFilterByBibleNewTestamentAtValue()
+    {
+        $value = 1;
+        $country = new \QueryGenerators\Country(array(
+            'bible_new_testament' => $value,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertEquals($value, $countryData['BibleNewTestament']);
+        }
+    }
+
+    public function testFindAllWithFiltersShouldFilterByBibleCompleteInRange()
+    {
+        $min = 3;
+        $max = 4;
+        $country = new \QueryGenerators\Country(array(
+            'bible_complete' => $min . '-' . $max,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertGreaterThanOrEqual($min, $countryData['BibleComplete']);
+            $this->assertLessThanOrEqual($max, $countryData['BibleComplete']);
+        }
+    }
+
+    public function testFindAllWithFiltersShouldFilterByBibleCompleteAtValue()
+    {
+        $value = 18;
+        $country = new \QueryGenerators\Country(array(
+            'bible_complete' => $value,
+            'limit' =>  5
+        ));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertEquals($value, $countryData['BibleComplete']);
         }
     }
 }

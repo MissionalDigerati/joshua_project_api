@@ -26,12 +26,12 @@
   <head>
     <title>Joshua Project API</title>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/site_wide_css_meta.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'site_wide_css_meta.html');
 ?>
   </head>
   <body>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/nav.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'nav.html');
 ?>
     <div class="container">
         <div class="page-header">
@@ -94,7 +94,8 @@ foreach ($api_keys as $api_key) {
         <td><?php echo $api_key['api_key']; ?></td>
         <td><?php echo date("M j, Y g:i a", strtotime($api_key['created'])); ?></td>
         <td>
-            <form method="post" action="/api_keys/<?php echo $api_key['id']; ?>">
+            <form method="post" action="/api_keys/<?php echo $api_key['id']; ?>" 
+            enctype="application/x-www-form-urlencoded">
                 <input type="hidden" name="_METHOD" value="PUT">
     <?php
     if ($api_key['status'] == 2) {
@@ -128,8 +129,8 @@ foreach ($api_keys as $api_key) {
         <div class="clearfix"></div>
     </div>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/footer.html');
-    include($VIEW_DIRECTORY . '/Partials/site_wide_footer_js.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'footer.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'site_wide_footer_js.html');
 ?>
         <script type="text/javascript">
             $(document).ready(function() {

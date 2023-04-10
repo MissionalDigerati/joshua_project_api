@@ -20,101 +20,72 @@
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  */
+use Slim\Http\Request;
+use Slim\Http\Response;
+
 /**
- * Get the column descriptions for the continents
+ * Get the sample code documentation
  *
- * GET /:version/docs/column_descriptions/continents
+ * GET /{version}/docs/sample_code
  * Available Formats HTML
  *
  * @author Johnathan Pulos
  */
 $app->get(
-    "/:version/docs/column_descriptions/continents",
-    function ($version) use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
-        $app->render('Docs/ColumnDescriptions/continents.html.php', array('VIEW_DIRECTORY' => $VIEW_DIRECTORY));
-    }
-);
-/**
- * Get the column descriptions for the countries
- *
- * GET /:version/docs/column_descriptions/countries
- * Available Formats HTML
- *
- * @author Johnathan Pulos
- */
-$app->get(
-    "/:version/docs/column_descriptions/countries",
-    function ($version) use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
-        $app->render('Docs/ColumnDescriptions/countries.html.php', array('VIEW_DIRECTORY' => $VIEW_DIRECTORY));
-    }
-);
-/**
- * Get the column descriptions for the countries
- *
- * GET /:version/docs/column_descriptions/people_groups
- * Available Formats HTML
- *
- * @author Johnathan Pulos
- */
-$app->get(
-    "/:version/docs/column_descriptions/people_groups",
-    function ($version) use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
-        $app->render('Docs/ColumnDescriptions/people_groups.html.php', array('VIEW_DIRECTORY' => $VIEW_DIRECTORY));
-    }
-);
-/**
- * Get the column descriptions for the languages
- *
- * GET /:version/docs/column_descriptions/languages
- * Available Formats HTML
- *
- * @author Johnathan Pulos
- */
-$app->get(
-    "/:version/docs/column_descriptions/languages",
-    function ($version) use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
-        $app->render('Docs/ColumnDescriptions/languages.html.php', array('VIEW_DIRECTORY' => $VIEW_DIRECTORY));
-    }
-);
-/**
- * Get the column descriptions for the regions
- *
- * GET /:version/docs/column_descriptions/regions
- * Available Formats HTML
- *
- * @author Johnathan Pulos
- */
-$app->get(
-    "/:version/docs/column_descriptions/regions",
-    function ($version) use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
-        $app->render('Docs/ColumnDescriptions/regions.html.php', array('VIEW_DIRECTORY' => $VIEW_DIRECTORY));
+    "/{version}/docs/sample_code",
+    function (Request $req, Response $res, $args = []) {
+        $viewDirectory = $this->view->getTemplatePath();
+        return $this->view->render(
+            $res,
+            'Docs/sample_code.html.php',
+            array('viewDirectory' => $viewDirectory)
+        );
     }
 );
 /**
  * Get the sample code documentation
  *
- * GET /:version/docs/sample_code
+ * GET /{version}/docs/available_api_requests
  * Available Formats HTML
  *
  * @author Johnathan Pulos
  */
 $app->get(
-    "/:version/docs/sample_code",
-    function ($version) use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
-        $app->render('Docs/sample_code.html.php', array('VIEW_DIRECTORY' => $VIEW_DIRECTORY));
+    "/{version}/docs/available_api_requests",
+    function (Request $req, Response $res, $args = []) {
+        $viewDirectory = $this->view->getTemplatePath();
+        return $this->view->render(
+            $res,
+            'Docs/available_api_requests.html.php',
+            array('viewDirectory' => $viewDirectory)
+        );
     }
 );
 /**
- * Get the sample code documentation
+ * Get the column descriptions for the specified type
  *
- * GET /:version/docs/available_api_requests
+ * GET /{version}/docs/column_descriptions/{type}
  * Available Formats HTML
  *
  * @author Johnathan Pulos
  */
 $app->get(
-    "/:version/docs/available_api_requests",
-    function ($version) use ($app, $db, $appRequest, $VIEW_DIRECTORY) {
-        $app->render('Docs/available_api_requests.html.php', array('VIEW_DIRECTORY' => $VIEW_DIRECTORY));
+    "/{version}/docs/column_descriptions/{type}",
+    function (Request $req, Response $res, $args = []) {
+        $resourceType = $args['type'];
+        $allowed = [
+            'continents', 'countries', 'languages', 'people_groups', 'regions'
+        ];
+        if (!in_array($resourceType, $allowed)) {
+            return $res->withStatus(404)
+                ->withHeader('Content-Type', 'text/html')
+                ->write('Page not found');
+        }
+        $viewDirectory = $this->view->getTemplatePath();
+        return $this->view->render(
+            $res,
+            'Docs/ColumnDescriptions/' . $resourceType . '.html.php',
+            array('viewDirectory' => $viewDirectory)
+        );
     }
 );

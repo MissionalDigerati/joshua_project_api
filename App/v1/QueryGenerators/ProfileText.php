@@ -56,16 +56,7 @@ class ProfileText extends QueryGenerator
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = array(
-        'jpprofiletopeople.ROL3Profile', 'jpprofiletext.ProfileID', 'jpprofiletext.Format',
-        'jpprofiletext.FileName', 'jpprofiletext.IntroductionHistory', 'jpprofiletext.WhereLocated',
-        'jpprofiletext.LivesLike', 'jpprofiletext.Beliefs', 'jpprofiletext.Needs', 'jpprofiletext.Prayer',
-        'jpprofiletext.Reference', 'jpprofiletext.Summary', 'jpprofiletext.ScriptureFocus', 'jpprofiletext.Obstacles',
-        'jpprofiletext.HowReach', 'jpprofiletext.PrayForChurch', 'jpprofiletext.PrayForPG', 'jpprofiletext.Identity',
-        'jpprofiletext.History', 'jpprofiletext.Customs', 'jpprofiletext.Religion', 'jpprofiletext.Christianity',
-        'jpprofiletext.Comments', 'jpprofiletext.Copyright', 'jpprofiletext.Permission',
-        'jpprofiletext.CreativeCommons', 'jpprofiletext.Credits', 'jpprofiletext.CreditsURL'
-    );
+    protected $fieldsToSelectArray = array('jpprofiletext.ProfileID', 'jpprofiletext.Summary');
     /**
      * Construct the Profile Text class.
      *

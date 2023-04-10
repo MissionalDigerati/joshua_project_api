@@ -3,14 +3,14 @@
   <head>
       <title>Joshua Project API - Version 1 Documentation</title>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/site_wide_css_meta.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'site_wide_css_meta.html');
 ?>
       <link href='/css/hightlight.default.css' media='screen' rel='stylesheet' type='text/css'/>
       <link href='/css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
   </head>
 <body>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/nav.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'nav.html');
 ?>
   <div class="container">
     <div class="page-header">
@@ -23,8 +23,8 @@
     </div>
   </div>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/footer.html');
-    include($VIEW_DIRECTORY . '/Partials/site_wide_footer_js.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'footer.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'site_wide_footer_js.html');
 ?>
     <script src='/js/jquery.slideto.min.js' type='text/javascript'></script>
     <script src='/js/jquery.wiggle.min.js' type='text/javascript'></script>

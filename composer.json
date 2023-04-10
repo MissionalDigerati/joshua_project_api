@@ -1,7 +1,7 @@
 {
     "name": "joshua-project/api-v1",
     "description": "An API for connecting to the Joshua Project data.",
-    "version": "1.4.7",
+    "version": "1.5.0",
     "config": {
         "vendor-dir": "Vendor",
         "platform": {
@@ -16,23 +16,27 @@
     ],
     "require": {
         "phptoolbox/phptoolbox": "^2.0",
-        "slim/slim": "2.0.*",
-        "slim/extras": "2.0.*",
+        "slim/slim": "3.*.*",
         "phpmailer/phpmailer": "^6.5",
-        "squizlabs/php_codesniffer": "*"
+        "slim/php-view": "^2.2",
+        "tuupola/slim-basic-auth": "^2.3",
+        "vlucas/phpdotenv": "^4.3"
     },
     "require-dev": {
         "zircote/swagger-php": "0.6.1",
-        "phpunit/phpunit": "4.*"
+        "phpunit/phpunit": "4.*",
+        "squizlabs/php_codesniffer": "*"
     },
     "scripts": {
-      "lint": "phpcs --standard=PSR2 Public/index.php App/",
-      "test": "phpunit Tests/"
+        "docs": "swagger -p ./App/v1/Resources -o ./Public",
+        "lint": "phpcs --standard=PSR2 --ignore=*/Views/* Public/index.php App",
+        "test": "phpunit Tests/"
     },
     "autoload": {
         "psr-4": {
             "JPAPI\\": "Config/JPAPI",
             "Utilities\\": "App/v1/Utilities",
+            "Middleware\\": "App/v1/Middleware",
             "QueryGenerators\\": "App/v1/QueryGenerators",
             "Resources\\": "App/v1/Resources",
             "Views\\": "App/v1/Views"

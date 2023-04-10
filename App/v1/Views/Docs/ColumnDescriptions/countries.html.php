@@ -3,12 +3,12 @@
   <head>
       <title>Joshua Project API - Version 1 Documentation</title>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/site_wide_css_meta.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'site_wide_css_meta.html');
 ?>
   </head>
 <body>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/nav.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'nav.html');
 ?>
   <div class="container">
     <div class="page-header">
@@ -26,6 +26,27 @@
                     <td>Area of Country in Square Miles</td>
                 </tr>
                 <tr>
+                    <td>BibleComplete</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>Complete Bible</strong>.
+                    </td>
+                </tr>
+                <tr>
+                    <td>BibleNewTestament</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>New Testament</strong>.
+                    </td>
+                </tr>
+                <tr>
+                    <td>BiblePortions</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>Portions</strong>.
+                    </td>
+                </tr>
+                <tr>
                     <td>Capital</td>
                     <td>Name of Capital City</td>
                 </tr>
@@ -38,21 +59,12 @@
                     <td>Total Number of Unreached People Groups</td>
                 </tr>
                 <tr>
+                    <td>CntPrimaryLanguages</td>
+                    <td>The total number of primary languages in the country.</td>
+                </tr>
+                <tr>
                     <td>Ctry</td>
                     <td>Name of Country</td>
-                </tr>
-                <tr>
-                    <td>HDIRank</td>
-                    <td>Human Development Index - ranking</td>
-                </tr>
-                <tr>
-                    <td>HDIValue</td>
-                    <td>Human Development Index - composite value: combination of LifeExpectancy,
-                        Education and GPD Indexs</td>
-                </tr>
-                <tr>
-                    <td>HDIYear</td>
-                    <td>Human Development Index - year</td>
                 </tr>
                 <tr>
                     <td>InternetCtryCode</td>
@@ -70,18 +82,6 @@
                     <td>JPScaleCtry</td>
                     <td>Joshua Project Progress Scale for this country, derived from the people group data in
                         this country.</td>
-                </tr>
-                <tr>
-                    <td>LiteracyRate</td>
-                    <td>One percentage. Midpoint if a range was supplied.</td>
-                </tr>
-                <tr>
-                    <td>LiteracySource</td>
-                    <td>Literacy source</td>
-                </tr>
-                <tr>
-                    <td>PercentAnglican</td>
-                    <td>Percent of people in this country who are Christian Anglican</td>
                 </tr>
                 <tr>
                     <td>PercentBuddhism</td>
@@ -104,10 +104,6 @@
                     <td>Percent of people in this country who are Hindu</td>
                 </tr>
                 <tr>
-                    <td>PercentIndependent</td>
-                    <td>Percent of people in this country who are Independent</td>
-                </tr>
-                <tr>
                     <td>PercentIslam</td>
                     <td>Percent of people in this country who are Muslim</td>
                 </tr>
@@ -116,24 +112,8 @@
                     <td>Percent of people in this country who are Non-Religious</td>
                 </tr>
                 <tr>
-                    <td>PercentOrthodox</td>
-                    <td>Percent of people in this country who are Orthodox</td>
-                </tr>
-                <tr>
-                    <td>PercentOther</td>
-                    <td>Percent of people in this country who are another forms of Christian</td>
-                </tr>
-                <tr>
                     <td>PercentOtherSmall</td>
                     <td>Percent of people in this country who practice Other or Smaller Religions</td>
-                </tr>
-                <tr>
-                    <td>PercentProtestant</td>
-                    <td>Percent of people in this country who are Protestant</td>
-                </tr>
-                <tr>
-                    <td>PercentRomanCatholic</td>
-                    <td>Percent of people in this country who are Roman Catholic</td>
                 </tr>
                 <tr>
                     <td>PctChristianDoublyProfessing</td>
@@ -222,12 +202,29 @@
                     <td>Code for URL link to current Report on International Religious Freedom</td>
                 </tr>
                 <tr>
-                    <td>UNMap</td>
-                    <td>Link to UN Political map in PDF format</td>
+                    <td>TranslationNeeded</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>Translation Needed</strong>.
+                    </td>
                 </tr>
                 <tr>
-                    <td>WINCountryProfile</td>
-                    <td>Window Internationial Network country profile link</td>
+                    <td>TranslationStarted</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>Translation Started</strong>.
+                    </td>
+                </tr>
+                <tr>
+                    <td>TranslationUnspecified</td>
+                    <td>
+                        Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
+                         Bible Status of <strong>Unspecified</strong>.
+                    </td>
+                </tr>
+                <tr>
+                    <td>UNMap</td>
+                    <td>Link to UN Political map in PDF format</td>
                 </tr>
                 <tr>
                     <td>Window1040</td>
@@ -238,8 +235,8 @@
     </div>
   </div>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/footer.html');
-    include($VIEW_DIRECTORY . '/Partials/site_wide_footer_js.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'footer.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'site_wide_footer_js.html');
 ?>
         <script type="text/javascript">
             $(document).ready(function() {

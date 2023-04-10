@@ -3,12 +3,12 @@
   <head>
       <title>Joshua Project API - Version 1 Documentation</title>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/site_wide_css_meta.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'site_wide_css_meta.html');
 ?>
   </head>
 <body>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/nav.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'nav.html');
 ?>
   <div class="container">
     <div class="page-header">
@@ -58,12 +58,15 @@
                     <td>Ethnolinguistic map URL</td>
                 </tr>
                 <tr>
-                    <td>GospelRadio</td>
-                    <td>Gospel radio available in this language?</td>
+                    <td>Frontier</td>
+                    <td>
+                        Is this group considered a Frontier Unreached People Group? Learn more 
+                        <a href="https://joshuaproject.net/frontier" target="_blank">here</a>
+                    </td>
                 </tr>
                 <tr>
                     <td>GSEC</td>
-                    <td>Global Status of Evangelical Christianity, see http://www.joshuaproject.net/definitions.php</td>
+                    <td>Global Status of Evangelical Christianity, see https://joshuaproject.net/definitions.php</td>
                 </tr>
                 <tr>
                     <td>IndigenousCode</td>
@@ -97,10 +100,6 @@
                 <tr>
                     <td>LeastReached</td>
                     <td>Is this people group considered least-reached / unreached? [JPScale < 2.0]</td>
-                </tr>
-                <tr>
-                    <td>LeastReachedBasis</td>
-                    <td>Basis for establishing least-reached</td>
                 </tr>
                 <tr>
                     <td>LeastReachedPC</td>
@@ -141,6 +140,36 @@
                     <td>Does an Unreached People of the Day profile exist?</td>
                 </tr>
                 <tr>
+                    <td>MapAddress</td>
+                    <td>Map filename</td>
+                </tr>
+                <tr>
+                    <td>MapCredits</td>
+                    <td>Map source, text for credits display</td>
+                </tr>
+                <tr>
+                    <td>MapCreditURL</td>
+                    <td>Map source link, hyperlink for credits display</td>
+                </tr>
+                <tr>
+                    <td>MapCopyright</td>
+                    <td>Is the map copyrighted? NOTE: It can return an empty string.</td>
+                </tr>
+                <tr>
+                    <td>MapCCVersionText</td>
+                    <td>
+                        If the map is licensed under Creative Commons,
+                         this provides the name of the version of Creative Commons
+                    </td>
+                </tr>
+                <tr>
+                    <td>MapCCVersionURL</td>
+                    <td>
+                        If the map is licensed under Creative Commons,
+                         this provides the URL for the version of Creative Commons
+                    </td>
+                </tr>
+                <tr>
                     <td>NaturalName</td>
                     <td>The PeopNameAcrossCountries presented in a more display friendly way.</td>
                 </tr>
@@ -178,10 +207,6 @@
                         countries</td>
                 </tr>
                 <tr>
-                    <td>PCAnglican</td>
-                    <td>Percent of people in group who are Anglican</td>
-                </tr>
-                <tr>
                     <td>PCBuddhism</td>
                     <td>Percent of people in group who are Buddhist</td>
                 </tr>
@@ -216,10 +241,6 @@
                     <td>Percent of people in group who are Hindu</td>
                 </tr>
                 <tr>
-                    <td>PCIndependent</td>
-                    <td>Percent of people in group who are Independent</td>
-                </tr>
-                <tr>
                     <td>PCIslam</td>
                     <td>Percent of people in group who are Muslim</td>
                 </tr>
@@ -228,24 +249,8 @@
                     <td>Percent of people in group who are  Non-religious</td>
                 </tr>
                 <tr>
-                    <td>PCOrthodox</td>
-                    <td>Percent of people in group who are Orthodox</td>
-                </tr>
-                <tr>
-                    <td>PCOtherChristian</td>
-                    <td>Percent of people in group who are another form of Christian</td>
-                </tr>
-                <tr>
                     <td>PCOtherSmall</td>
                     <td>Percent of people in group who practice Other or Smaller Religions</td>
-                </tr>
-                <tr>
-                    <td>PCProtestant</td>
-                    <td>Percent of people in group who are Protestant</td>
-                </tr>
-                <tr>
-                    <td>PCRomanCatholic</td>
-                    <td>Percent of people in group who are Roman Catholic</td>
                 </tr>
                 <tr>
                     <td>PCUnknown</td>
@@ -268,6 +273,18 @@
                     <td>People-Group-Across-Countries ID number</td>
                 </tr>
                 <tr>
+                    <td>PeopleGroupMapURL</td>
+                    <td>The full URL for the people group's map</td>
+                </tr>
+                <tr>
+                    <td>PeopleGroupMapExpandedURL</td>
+                    <td>The full URL for the people group's expanded map (NOTE: This is normally a PDF file)</td>
+                </tr>
+                <tr>
+                    <td>PeopleGroupPhotoURL</td>
+                    <td>The full URL for the people group's photo</td>
+                </tr>
+                <tr>
                     <td>PeopNameAcrossCountries</td>
                     <td>Name of people group across countries of residence</td>
                 </tr>
@@ -286,6 +303,20 @@
                 <tr>
                     <td>PhotoAddress</td>
                     <td>Photo file name</td>
+                </tr>
+                <tr>
+                    <td>PhotoCCVersionText</td>
+                    <td>
+                        If the photo is licensed under Creative Commons (see PhotoCreativeCommons),
+                         this provides the name of the version of Creative Commons
+                    </td>
+                </tr>
+                <tr>
+                    <td>PhotoCCVersionURL</td>
+                    <td>
+                        If the photo is licensed under Creative Commons (see PhotoCreativeCommons),
+                         this provides the URL for the version of Creative Commons
+                    </td>
                 </tr>
                 <tr>
                     <td>PhotoCopyright</td>
@@ -324,6 +355,10 @@
                     <td>Population percent of UN country population</td>
                 </tr>
                 <tr>
+                    <td>PopulationPGAC</td>
+                    <td>The total global population of the people group</td>
+                </tr>
+                <tr>
                     <td>PortionsYear</td>
                     <td>Year of scripture portions availability</td>
                 </tr>
@@ -356,26 +391,6 @@
                 <tr>
                     <td>RaceCode</td>
                     <td>Ethnicity code from WCD data</td>
-                </tr>
-                <tr>
-                    <td>RankLocation</td>
-                    <td>Priority Ranking location score</td>
-                </tr>
-                <tr>
-                    <td>RankMinistryTools</td>
-                    <td>Priority Ranking ministry tools score</td>
-                </tr>
-                <tr>
-                    <td>RankOverall</td>
-                    <td>Priority Ranking overall score 0 to 100, 100 most needy</td>
-                </tr>
-                <tr>
-                    <td>RankPopulation</td>
-                    <td>Priority Ranking population score</td>
-                </tr>
-                <tr>
-                    <td>RankProgress</td>
-                    <td>Priority Ranking progress score</td>
                 </tr>
                 <tr>
                     <td>RegionCode</td>
@@ -449,20 +464,15 @@
                     <td>Does this group speak the national language?</td>
                 </tr>
                 <tr>
-                    <td>Top10Ranking</td>
-                    <td>Priority Ranking top ten - assigned based on overall ranking and manual process</td>
+                    <td>Summary</td>
+                    <td>
+                        A brief description about the people group. If you display on your website, please add a
+                         Read More link that connects back to our website.
+                    </td>
                 </tr>
                 <tr>
                     <td>TranslationNeedQuestionable</td>
                     <td>Is the need for translation in this language questionable?</td>
-                </tr>
-                <tr>
-                    <td>Unengaged</td>
-                    <td>Is this People group unengaged i.e. no known on-site workers or indigenous church?</td>
-                </tr>
-                <tr>
-                    <td>UNMap</td>
-                    <td>URL for UN map</td>
                 </tr>
                 <tr>
                     <td>Window1040</td>
@@ -473,8 +483,8 @@
     </div>
   </div>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/footer.html');
-    include($VIEW_DIRECTORY . '/Partials/site_wide_footer_js.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'footer.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'site_wide_footer_js.html');
 ?>
         <script type="text/javascript">
             $(document).ready(function() {

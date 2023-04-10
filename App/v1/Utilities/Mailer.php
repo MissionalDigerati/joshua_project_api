@@ -22,7 +22,6 @@
  */
 namespace Utilities;
 
-use JPAPI\MailSettings;
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
@@ -34,28 +33,59 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Mailer
 {
     /**
+     * Our mailer instance
+     *
+     * @var PHPMailer
+     */
+    protected $mailer;
+
+    /**
+     * Build the mailer class
+     *
+     * @param string    $host       The SMTP host (default: '')
+     * @param string    $username   The SMTP username (default: '')
+     * @param string    $password   The SMTP password (default: '')
+     * @param integer   $port       The SMTP port (default: 465)
+     * @param boolean   $useSMTP    Do you want to use a SMTP server? (default: false)
+     */
+    public function __construct(
+        $host = '',
+        $username = '',
+        $password = '',
+        $port = 465,
+        $useSMTP = false
+    ) {
+        $settings = array(
+            'host'      =>  $host,
+            'username'  =>  $username,
+            'password'  =>  $password,
+            'port'      =>  $port,
+            'use_smtp'  =>  $useSMTP
+        );
+        $this->mailer = $this->getMailInstance($settings);
+    }
+
+    /**
      * Email the Developer an Autorization URL.
      *
      * Sends the authorize URL to the developer so they can get obtain their API Key.
      *
      * @param   string      $email          The email address to send the email to.
      * @param   string      $authorizeUrl   The url for authorizing the email.
-     * @param   PHPMailer   $mail           The PHPMailer Object for sending the email.
      * @return  void
      * @author  Johnathan Pulos
      */
-    public static function sendAuthorizeToken($email, $authorizeUrl, $mail)
+    public function sendAuthorizeToken($email, $authorizeUrl)
     {
-        $mail = self::getMailInstance();
-        $mail->Subject = 'Joshua Project API Key';
-        $mail->setFrom('info@joshuaproject.net', 'Joshua Project', 0);
-        $mail->addAddress($email);
+        $this->mailer->Subject = 'Joshua Project API Key';
+        $this->mailer->setFrom('info@joshuaproject.net', 'Joshua Project', 0);
+        $this->mailer->addAddress($email);
         $emailMessage = "Dear Developer,<br>Thank you for your request for a Joshua Project API Key.";
         $emailMessage .= "Please click the following link to retrieve your key:<br><br>";
         $emailMessage .= "<a href='" . $authorizeUrl . "'>" . $authorizeUrl . "</a><br>";
         $emailMessage .= "Take care, and God Bless.<br>Sincerely,<br>Joshua Project API";
-        $mail->Body = $emailMessage;
-        $mail->send();
+        $this->mailer->Body = $emailMessage;
+        $this->mailer->send();
     }
 
     /**
@@ -70,23 +100,22 @@ class Mailer
      * @return  void
      * @author  Johnathan Pulos
      */
-    public static function sendAuthorizationLinks($email, $apiKeys, $domain, $mail)
+    public function sendAuthorizationLinks($email, $apiKeys, $domain)
     {
-        $mail = self::getMailInstance();
-        $mail->Subject = 'Joshua Project API Key';
-        $mail->setFrom('info@joshuaproject.net', 'Joshua Project', 0);
-        $mail->addAddress($email);
+        $this->mailer->Subject = 'Joshua Project API Key';
+        $this->mailer->setFrom('info@joshuaproject.net', 'Joshua Project', 0);
+        $this->mailer->addAddress($email);
         $emailMessage = "Dear Developer,<br>";
         $emailMessage .= "You have requested your authorization tokens that have not been activated. ";
         $emailMessage .= "Please click the following links to activate your key:<br><br>";
         foreach ($apiKeys as $apiKey) {
             $authorizationUrl = $domain . "/get_my_api_key?authorize_token=" . $apiKey['authorize_token'];
-            $emailMessage .= $apiKey['api_usage'] . ":<br><br>";
-            $emailMessage .= "<a href='" . $authorizationUrl . "'>" . $authorizationUrl . "</a>";
+            $emailMessage .= $apiKey['api_usage'];
+            $emailMessage .= ": <a href='" . $authorizationUrl . "'>" . $authorizationUrl . "</a><br><br>";
         }
-        $emailMessage .= "<br><br>Take care, and God Bless.<br>Sincerely,<br>Joshua Project API";
-        $mail->Body = $emailMessage;
-        $mail->send();
+        $emailMessage .= "Take care, and God Bless.<br>Sincerely,<br>Joshua Project API";
+        $this->mailer->Body = $emailMessage;
+        $this->mailer->send();
     }
 
     /**
@@ -94,12 +123,10 @@ class Mailer
      *
      * @return PHPMailer    The PHPMailer instance
      */
-    private static function getMailInstance()
+    private function getMailInstance($settings)
     {
         $mail = new PHPMailer(true);
         $mail->isHTML(true);
-        $mailSettings = new MailSettings();
-        $settings = $mailSettings->default;
         if (!$settings['use_smtp']) {
             return $mail;
         }

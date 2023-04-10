@@ -62,18 +62,20 @@ class PeopleGroup extends QueryGenerator
         'PeopNameAcrossCountries', 'Population', 'PopulationPercentUN', 'Category', 'ROL3', 'PrimaryLanguageName',
         'ROL4', 'PrimaryLanguageDialect', 'NumberLanguagesSpoken', 'ROL3OfficialLanguage', 'OfficialLang',
         'SpeakNationalLang', 'BibleStatus', 'BibleYear', 'NTYear', 'PortionsYear', 'TranslationNeedQuestionable',
-        'JPScale', 'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedBasis', 'LeastReachedPC',
-        'LeastReachedPGAC', 'GSEC', 'Unengaged', 'JF', 'AudioRecordings', 'NTOnline', 'GospelRadio', 'RLG3', 'RLG3PC',
-        'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC', 'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision',
-        'PCIslam', 'PCNonReligious', 'PCUnknown', 'PCAnglican', 'PCIndependent', 'PCProtestant', 'PCOrthodox',
-        'PCOtherChristian', 'SecurityLevel', 'RaceCode', 'LRTop100', 'PhotoAddress', 'PhotoWidth',
-        'PhotoHeight', 'PhotoCredits', 'PhotoCreditURL', 'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission',
-        'ProfileTextExists', 'Top10Ranking', 'RankOverall', 'RankProgress', 'RankPopulation', 'RankLocation',
-        'RankMinistryTools', 'CountOfCountries', 'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'Longitude',
-        'Latitude', 'UNMap','Ctry', 'IndigenousCode', 'ROL3', 'PercentAdherents', 'PercentChristianPC',
-        'NaturalName', 'NaturalPronunciation', 'PercentChristianPGAC', 'PercentEvangelical', 'PercentEvangelicalPC',
-        'PercentEvangelicalPGAC', 'PCBuddhism', 'PCDblyProfessing', 'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall',
-        'PCRomanCatholic', 'RegionCode'
+        'JPScale', 'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedPC', 'LeastReachedPGAC', 'GSEC', 'JF',
+        'AudioRecordings', 'NTOnline', 'RLG3', 'RLG3PC', 'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC',
+        'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision', 'PCIslam', 'PCNonReligious', 'PCUnknown', 'SecurityLevel',
+        'RaceCode', 'LRTop100', 'PhotoAddress', 'PhotoWidth', 'PhotoHeight', 'PhotoCredits', 'PhotoCreditURL',
+        'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission', 'ProfileTextExists', 'CountOfCountries',
+        'CountOfProvinces', 'EthnolinguisticMap', 'MapID', 'Longitude', 'Latitude', 'Ctry', 'IndigenousCode', 'ROL3',
+        'PercentAdherents', 'PercentChristianPC', 'NaturalName', 'NaturalPronunciation', 'PercentChristianPGAC',
+        'PercentEvangelical', 'PercentEvangelicalPC', 'PercentEvangelicalPGAC', 'PCBuddhism', 'PCDblyProfessing',
+        'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'RegionCode', 'PopulationPGAC', 'Frontier', 'MapAddress',
+        'COALESCE(PhotoCCVersionText, "") AS PhotoCCVersionText',
+        'COALESCE(PhotoCCVersionURL, "") AS PhotoCCVersionURL',
+        'COALESCE(MapCredits, "") AS MapCredits', 'COALESCE(MapCreditURL, "") AS MapCreditURL',
+        'COALESCE(MapCopyright, "") AS MapCopyright', 'COALESCE(MapCCVersionText, "") AS MapCCVersionText',
+        'COALESCE(MapCCVersionURL, "") AS MapCCVersionURL'
     );
     /**
      * The database table to pull the data from.
@@ -90,26 +92,43 @@ class PeopleGroup extends QueryGenerator
      */
     protected $defaultOrderByStatement = "ORDER BY PeopleID1 ASC";
     /**
+     * The MySQL CONCAT statement for generating the PeopleGroupMapURL.
+     *
+     * @var     string
+     * @access  protected
+     */
+    protected $peopleGroupMapURLSelect = "IF(ISNULL(MapAddress) OR MapAddress = '', " .
+        "'', CONCAT('https://joshuaproject.net/assets/media/profiles/maps/', MapAddress))";
+    /**
+     * The MySQL CONCAT statement for generating the PeopleGroupMapExpandedURL.
+     *
+     * @var     string
+     * @access  protected
+     */
+    protected $peopleGroupMapExpandedURLSelect = "IF(ISNULL(MapAddressExpanded) OR MapAddressExpanded = '', " .
+        "'', CONCAT('https://joshuaproject.net/assets/media/profiles/maps/', MapAddressExpanded))";
+    /**
      * The MySQL CONCAT statement for generating the PeopleGroupURL.
      *
      * @var     string
-     * @access  private
+     * @access  protected
      */
-    protected $peopleGroupURLSelect = "CONCAT('http://joshuaproject.net/people_groups/', PeopleID3, '/', ROG3)";
+    protected $peopleGroupURLSelect = "CONCAT('https://joshuaproject.net/people_groups/', PeopleID3, '/', ROG3)";
     /**
      * The MySQL CONCAT statement for generating the PeopleGroupPhotoURL.
      *
      * @var     string
-     * @access  private
+     * @access  protected
      */
-    protected $peopleGroupPhotoURLSelect = "CONCAT('http://www.joshuaproject.net/profiles/photos/', PhotoAddress)";
+    protected $peopleGroupPhotoURLSelect = "IF(ISNULL(PhotoAddress) OR PhotoAddress = '', " .
+        "'', CONCAT('https://joshuaproject.net/profiles/photos/', PhotoAddress))";
     /**
      * The MySQL CONCAT statement for generating the CountryURL.
      *
      * @var     string
-     * @access  private
+     * @access  protected
      */
-    protected $countryURLSelect = "CONCAT('http://joshuaproject.net/countries/', ROG3)";
+    protected $countryURLSelect = "CONCAT('https://joshuaproject.net/countries/', ROG3)";
     /**
      * An array of table columns (key) and their alias (value).
      *
@@ -136,6 +155,8 @@ class PeopleGroup extends QueryGenerator
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " .
         $this->generateAliasSelectStatement();
+        $this->selectFieldsStatement .= ", " . $this->peopleGroupMapURLSelect . " as PeopleGroupMapURL";
+        $this->selectFieldsStatement .= ", " . $this->peopleGroupMapExpandedURLSelect . " as PeopleGroupMapExpandedURL";
         $this->selectFieldsStatement .= ", " . $this->peopleGroupURLSelect . " as PeopleGroupURL";
         $this->selectFieldsStatement .= ", " . $this->peopleGroupPhotoURLSelect . " as PeopleGroupPhotoURL";
         $this->selectFieldsStatement .= ", " . $this->countryURLSelect . " as CountryURL";
@@ -297,17 +318,6 @@ class PeopleGroup extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id3'], 'PeopleID3');
             $appendAndOnWhere = true;
         }
-        if ($this->paramExists('pc_anglican')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_anglican'],
-                'PCAnglican',
-                'pc_anglican'
-            );
-            $appendAndOnWhere = true;
-        }
         if ($this->paramExists('pc_adherent')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -363,17 +373,6 @@ class PeopleGroup extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
-        if ($this->paramExists('pc_independent')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_independent'],
-                'PCIndependent',
-                'pc_independent'
-            );
-            $appendAndOnWhere = true;
-        }
         if ($this->paramExists('pc_islam')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -396,28 +395,6 @@ class PeopleGroup extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
-        if ($this->paramExists('pc_orthodox')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_orthodox'],
-                'PCOrthodox',
-                'pc_orthodox'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_other_christian')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_other_christian'],
-                'PCOtherChristian',
-                'pc_other_christian'
-            );
-            $appendAndOnWhere = true;
-        }
         if ($this->paramExists('pc_other_religion')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -426,28 +403,6 @@ class PeopleGroup extends QueryGenerator
                 $this->providedParams['pc_other_religion'],
                 'PCOtherSmall',
                 'pc_other_religion'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_protestant')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_protestant'],
-                'PCProtestant',
-                'pc_protestant'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_rcatholic')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_rcatholic'],
-                'PCRomanCatholic',
-                'pc_rcatholic'
             );
             $appendAndOnWhere = true;
         }
@@ -519,15 +474,26 @@ class PeopleGroup extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['rop3'], 'ROP3');
             $appendAndOnWhere = true;
         }
-        if ($this->paramExists('unengaged')) {
-            $this->validator->stringLength($this->providedParams['unengaged'], 1);
+        if ($this->paramExists('is_frontier')) {
+            $this->validator->stringLength($this->providedParams['is_frontier'], 1);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
             $where .= $this->generateWhereStatementForBoolean(
-                $this->providedParams['unengaged'],
-                'Unengaged',
-                'unengaged'
+                $this->providedParams['is_frontier'],
+                'Frontier',
+                'is_frontier'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('population_pgac')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['population_pgac'],
+                'PopulationPGAC',
+                'pop_pgac'
             );
             $appendAndOnWhere = true;
         }

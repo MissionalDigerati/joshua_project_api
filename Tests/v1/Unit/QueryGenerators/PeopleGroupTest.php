@@ -93,7 +93,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupURL()
     {
         $expected = array('id' => '12662', 'country' => 'CB');
-        $expectedURL = "http://joshuaproject.net/people_groups/12662/cb";
+        $expectedURL = "https://joshuaproject.net/people_groups/12662/cb";
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
@@ -111,7 +111,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupPhotoURL()
     {
         $expected = array('id' => '12662', 'country' => 'CB');
-        $expectedURL = "http://www.joshuaproject.net/profiles/photos/";
+        $expectedURL = "https://joshuaproject.net/profiles/photos/";
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
@@ -130,7 +130,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectCountryURL()
     {
         $expected = array('id' => '12662', 'country' => 'CB');
-        $expectedURL = "http://joshuaproject.net/countries/cb";
+        $expectedURL = "https://joshuaproject.net/countries/cb";
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
@@ -153,7 +153,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $expectedImageURL = "http://www.joshuaproject.net/images/scale".round($data[0]['JPScale']).".jpg";
+        $expectedImageURL = "https://joshuaproject.net/images/scale".round($data[0]['JPScale']).".jpg";
         $this->assertEquals($expectedImageURL, $data[0]['JPScaleImageURL']);
     }
     /**
@@ -864,162 +864,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-     * Tests that findAllWithFilters() filters by a percent of Anglicans
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testFindAllWithFiltersShouldFilterByPercentOfAnglicans()
-    {
-        $expectedPercentMin = 5.4;
-        $expectedPercentMax = 21.2;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
-            array(
-                'pc_anglican' => $expectedPercentMin."-".$expectedPercentMax
-            )
-        );
-        $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCAnglican']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCAnglican']));
-        }
-    }
-    /**
-     * Tests that findAllWithFilters() filters by a percent of Independents
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testFindAllWithFiltersShouldFilterByPercentOfIndependents()
-    {
-        $expectedPercentMin = 5.4;
-        $expectedPercentMax = 21.2;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
-            array(
-                'pc_independent' => $expectedPercentMin."-".$expectedPercentMax
-            )
-        );
-        $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCIndependent']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCIndependent']));
-        }
-    }
-    /**
-     * Tests that findAllWithFilters() filters by a percent of Protestants
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testFindAllWithFiltersShouldFilterByPercentOfProtestants()
-    {
-        $expectedPercentMin = 33.4;
-        $expectedPercentMax = 66.74;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
-            array(
-                'pc_protestant' => $expectedPercentMin."-".$expectedPercentMax
-            )
-        );
-        $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCProtestant']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCProtestant']));
-        }
-    }
-    /**
-     * Tests that findAllWithFilters() filters by a percent of Orthodox
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testFindAllWithFiltersShouldFilterByPercentOfOrthodox()
-    {
-        $expectedPercentMin = 22.43;
-        $expectedPercentMax = 74.56;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
-            array(
-                'pc_orthodox' => $expectedPercentMin."-".$expectedPercentMax
-            )
-        );
-        $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCOrthodox']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCOrthodox']));
-        }
-    }
-    /**
-     * Tests that findAllWithFilters() filters by a percent of Roman Catholic
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testFindAllWithFiltersShouldFilterByPercentOfRomanCatholic()
-    {
-        $expectedPercentMin = 22.43;
-        $expectedPercentMax = 74.56;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
-            array(
-                'pc_rcatholic' => $expectedPercentMin."-".$expectedPercentMax
-            )
-        );
-        $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCRomanCatholic']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCRomanCatholic']));
-        }
-    }
-    /**
-     * Tests that findAllWithFilters() filters by a percent of Other Christian
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testFindAllWithFiltersShouldFilterByPercentOfOtherChristian()
-    {
-        $expectedPercentMin = 22.43;
-        $expectedPercentMax = 74.56;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
-            array(
-                'pc_other_christian' => $expectedPercentMin."-".$expectedPercentMax
-            )
-        );
-        $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $peopleGroup) {
-            $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCOtherChristian']));
-            $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCOtherChristian']));
-        }
-    }
-    /**
      * Tests that findAllWithFilters() filters out Indigenous Groups
      *
      * @return void
@@ -1057,26 +901,6 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertEquals('N', $peopleGroup['LeastReached']);
-        }
-    }
-    /**
-     * Tests that findAllWithFilters() filters out Unengaged Groups
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function testFindAllWithFiltersShouldFilterOutUnengagedPeopleGroups()
-    {
-        $expectedUnengagedStatus = 'n';
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('unengaged' => $expectedUnengagedStatus));
-        $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $peopleGroup) {
-            $this->assertEquals('N', $peopleGroup['Unengaged']);
         }
     }
     /**
@@ -1130,5 +954,48 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $regionCodes = array(0, 13);
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('window1040' => 'b'));
         $peopleGroup->findAllWithFilters();
+    }
+
+    public function testFindAllWithFilterShouldFilterByFrontier()
+    {
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('is_frontier' => 'N'));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals('N', strtoupper($peopleGroup['Frontier']));
+        }
+    }
+
+    public function testFindAllWithFilterShouldFilterByAllCountryPopulationInRange()
+    {
+        $min = 10000;
+        $max = 11000;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population_pgac' => $min . '-' . $max));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertGreaterThanOrEqual($min, $peopleGroup['PopulationPGAC']);
+            $this->assertLessThanOrEqual($max, $peopleGroup['PopulationPGAC']);
+        }
+    }
+
+    public function testFindAllWithFilterShouldFilterByAllCountryPopulationSingleValue()
+    {
+        $expected = 12000;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population_pgac' => $expected));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals($expected, $peopleGroup['PopulationPGAC']);
+        }
     }
 }

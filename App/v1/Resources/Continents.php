@@ -20,6 +20,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+use QueryGenerators\Continent;
+use Slim\Http\Request;
+use Slim\Http\Response;
 use Swagger\Annotations as SWG;
 
 // phpcs:disable Generic.Files.LineLength
@@ -71,7 +74,11 @@ use Swagger\Annotations as SWG;
   *              ),
   *              @SWG\ErrorResponse(
   *                  code="404",
-  *                  reason="Not found.  Your search ended up with no results."
+  *                  reason="Not found.  The requested route was not found."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="500",
+  *                  reason="Internal server error.  Please try again later."
   *              )
   *          )
   *      )
@@ -81,61 +88,59 @@ use Swagger\Annotations as SWG;
   */
 // phpcs:enable Generic.Files.LineLength
 $app->get(
-    "/:version/continents/:id\.:format",
-    function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
-        $data = array();
-        $gotCachedData = false;
+    "/{version}/continents/{id}.{format}",
+    function (Request $req, Response $res, $args = []) {
         /**
-         * Make sure we have an ID, else crash
+         * Make sure we have an ID, else crash.
+         * This expression ("/\PL/u") removes all non-letter characters
          *
          * @author Johnathan Pulos
          */
-        $continentId = preg_replace("/\PL/u", "", strip_tags($id));
+        $continentId = preg_replace("/\PL/u", "", strip_tags(strtoupper($args['id'])));
         if ((empty($continentId)) || (strlen($continentId) != 3)) {
-            $app->render("/errors/404." . $format . ".php");
-            exit;
+            return $this->errorResponder->get(
+                400,
+                'You provided an invalid continent id.',
+                $args['format'],
+                'Bad Request',
+                $res
+            );
         }
-        if ($useCaching === true) {
-            /**
-             * Check the cache
-             *
-             * @author Johnathan Pulos
-             */
-            $cacheKey = md5("ContinentShowId_".$languageId);
-            $data = $cache->get($cacheKey);
-            if ((is_array($data)) && (!empty($data))) {
-                $gotCachedData = true;
+        try {
+            $continent = new Continent(array('id' => $continentId));
+            $continent->findById();
+            $statement = $this->db->prepare($continent->preparedStatement);
+            $statement->execute($continent->preparedVariables);
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($data)) {
+                return $this->errorResponder->get(
+                    404,
+                    'The continent does not exist for the given id.',
+                    $args['format'],
+                    'Not Found',
+                    $res
+                );
             }
-        }
-        if (empty($data)) {
-            try {
-                $continent = new \QueryGenerators\Continent(array('id' => $continentId));
-                $continent->findById();
-                $statement = $db->prepare($continent->preparedStatement);
-                $statement->execute($continent->preparedVariables);
-                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-            } catch (Exception $e) {
-                $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
-                exit;
-            }
-        }
-        if (($useCaching === true) && ($gotCachedData === false)) {
-            /**
-             * Set the data to the cache using it's cache key, and expire it in 1 day
-             *
-             * @author Johnathan Pulos
-             */
-            $cache->set($cacheKey, $data, 86400);
+        } catch (Exception $e) {
+            return $this->errorResponder->get(
+                500,
+                $e->getMessage(),
+                $args['format'],
+                'Internal Server Error',
+                $res
+            );
         }
         /**
          * Render the final data
          *
          * @author Johnathan Pulos
          */
-        if ($format == 'json') {
-            echo json_encode($data);
+        if ($args['format'] == 'json') {
+            return $res->withJson($data);
         } else {
-            echo arrayToXML($data, "continents", "continent");
+            return $res
+                ->withHeader('Content-type', 'text/xml')
+                ->write(arrayToXML($data, "continents", "continent"));
         }
     }
 );

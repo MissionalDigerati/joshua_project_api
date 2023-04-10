@@ -1,7 +1,7 @@
 Joshua Project API
 ------------------
 
-An API for connecting to the [Joshua Project](http://www.joshuaproject.net) data.  It uses the [PHP Slim Framework](http://slimframework.com).
+An API for connecting to the [Joshua Project](https://joshuaproject.net) data.  It uses the [PHP Slim Framework](http://slimframework.com).
 
 Development
 -----------
@@ -14,12 +14,13 @@ Questions or problems? Please post them on the [issue tracker](https://github.co
 Deployment
 ----------
 
-There are several things you need to do to deploy this code.
+To deploy this code, simply follow these steps:
 
-1) Copy Config/JPAPI/AdminSettings.sample.php to Config/JPAPI/AdminSettings.php and set the admin settings in the new file.
-2) Copy Config/JPAPI/DatabaseSettings.sample.php to Config/JPAPI/DatabaseSettings.php and set the database settings in the new file.
-3) Copy phpunit.sample.xml to phpunit.xml.
-4) Install the vendor files with `composer install`.
+1. Clone the code to your server.
+2. Copy the file `.env.example` to `.env`.
+3. Open the file, and set the appropriate settings.
+4. Install [Composer](https://getcomposer.org/) on your server.
+5. Install all the required librarues with `composer install`.
 
 PHP Settings
 ------------
@@ -36,6 +37,24 @@ Update on JP Server
 -------------------
 
 To update the submodule, use the following command: `git submodule update --recursive --remote`.
+
+Google Analytics 4
+------------------
+
+To set up the Google Analytics, you need to do the following in Google Analytics:
+
+1. Add a data stream: Admin > Data Streams > Add a Stream
+2. Get the Measurement ID
+3. To get the secret: Admin > Data Streams > Click the appropriate stream
+    - Click Measurement Protocol API Secrets
+    - Create
+    - Copy the key
+4. Add the event: Admin > Events > Create Event api_requests
+5. Add custom definitions:
+    - Admin > Custom Definitions
+    - Create 3 Custom Dimensions: endpoint, format, version
+
+Add your settings to the .env file, and in 24 hours you should start receiving data.
 
 License
 -------

@@ -26,12 +26,12 @@
     <head>
         <title>Joshua Project API</title>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/site_wide_css_meta.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'site_wide_css_meta.html');
 ?>
     </head>
     <body>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/nav.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'nav.html');
 ?>
         <div class="container">
             <div class="row">
@@ -100,7 +100,7 @@
                     <h3 id="overview">Overview</h3>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Joshua Project API is a REST based API for retrieving data
                         from the
-                        <a href="http://joshuaproject.net" target="_blank" title="Visit the Joshua Project Initiative">
+                        <a href="https://joshuaproject.net" target="_blank" title="Visit the Joshua Project Initiative">
                             Joshua Project Initiative
                         </a>.  If you are not familiar with the term REST,  you can read more at
                         <a href="http://en.wikipedia.org/wiki/Representational_state_transfer" target="_blank">
@@ -110,7 +110,8 @@
                     <h4 id="overview-api-keys">API Keys</h4>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An API Key is a unique 12 character string that identifies your
                         application as the source of every request.  Here is a sample of an API key:
-                        <code>233f76f4c84e</code>.  API keys are free and you are allowed to have multiple API keys.
+                        <code>233f76f4c84e</code>.  <strong>Warning:</strong> This is not a valid key. You must request 
+                        your own key to the API. API keys are free and you are allowed to have multiple of them.
                         The only requirement is that you verify your email before you get access to your key.
                         <strong>
                             Before starting this tutorial,  you will need to retrieve an <a href="/">API key</a>
@@ -169,10 +170,10 @@
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Below is a typical request for data from the Joshua Project API.
                         In this example,  we will request the Joshua Project's unreached people group of the day for
                         January 11th.</p>
-    <pre><?php echo $DOMAIN_ADDRESS; ?>/v1/people_groups/daily_unreached.json?api_key=233f76f4c84e&month=01&day=11</pre>
+    <pre><?php echo $siteURL; ?>/v1/people_groups/daily_unreached.json?api_key=233f76f4c84e&month=01&day=11</pre>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here is a breakdown of the URL structure:</p>
 <pre>
-<?php echo $DOMAIN_ADDRESS; ?>/[api_version_number]/[resource_path].[format]?api_key=[your_api_key]&[other_parameters]
+<?php echo $siteURL; ?>/[api_version_number]/[resource_path].[format]?api_key=[your_api_key]&[other_parameters]
 </pre>
                     <table id="url_definitions" class="table table-bordered">
                         <thead>
@@ -213,573 +214,230 @@
                     <pre>
 [
     {
-        "ROG3": "LA",
-        "PeopleID3": "14966",
-        "ROP3": "109364",
-        "PeopNameInCountry": "So",
-        "ROG2": "ASI",
-        "Continent": "Asia",
-        "RegionName": "Southeast Asia",
-        "ISO3": "LAO",
-        "LocationInCountry": "They live on both sides of the Laos-Thailand border, especially in
-        northern Savannakhet Province and southern Khammouan Province in Laos. An additional group
-        of So people inhabit 53 villages in north-east Thailand.",
-        "PeopleID1": "20",
-        "ROP1": "A011",
-        "AffinityBloc": "Southeast Asian Peoples",
-        "PeopleID2": "239",
-        "ROP2": "C0147",
-        "PeopleCluster": "Mon-Khmer",
-        "PeopNameAcrossCountries": "So",
-        "Population": "138000",
-        "PopulationPercentUN": "2.15989",
-        "Category": "2",
-        "ROL3": "sss",
-        "PrimaryLanguageName": "So",
-        "ROL4": "0",
-        "PrimaryLanguageDialect": null,
-        "NumberLanguagesSpoken": "1",
-        "ROL3OfficialLanguage": "lao",
-        "OfficialLang": "Lao",
-        "SpeakNationalLang": null,
-        "BibleStatus": "2",
-        "BibleYear": null,
-        "NTYear": null,
-        "PortionsYear": "1980-2004",
-        "TranslationNeedQuestionable": null,
-        "JPScale": "1.2",
-        "JPScalePC": "3.1",
-        "JPScalePGAC": "1.2",
+        "ROG3": "SF",
+        "PeopleID3": 18995,
+        "PeopNameInCountry": "Malay, Cape",
+        "ROG2": "AFR",
+        "Continent": "Africa",
+        "RegionName": "Africa, East and Southern",
+        "PeopleID1": 17,
+        "AffinityBloc": "Malay Peoples",
+        "PeopleID2": 215,
+        "PeopleCluster": "Malay",
+        "PeopNameAcrossCountries": "Malay, Cape",
+        "Population": 324000,
+        "ROL3": "afr",
+        "PrimaryLanguageName": "Afrikaans",
+        "BibleYear": "1933-2022",
+        "NTYear": "1941-1980",
+        "PortionsYear": "1893-1929",
+        "JPScale": "1",
         "LeastReached": "Y",
-        "LeastReachedBasis": "2",
-        "LeastReachedPC": null,
-        "LeastReachedPGAC": "Y",
-        "GSEC": "2",
-        "Unengaged": "",
-        "JF": "",
+        "JF": "Y",
         "AudioRecordings": "Y",
-        "NTOnline": "",
-        "GospelRadio": "",
-        "RLG3": "2",
-        "RLG3PC": "2",
-        "RLG3PGAC": "2",
-        "PrimaryReligion": "Buddhism",
-        "PrimaryReligionPC": "Buddhism",
-        "PrimaryReligionPGAC": "Buddhism",
+        "NTOnline": "AFRLPF",
+        "RLG3": 6,
+        "PrimaryReligion": "Islam",
+        "LRofTheDayMonth": 11,
+        "LRofTheDaySet": null,
+        "LRofTheDayDay": 1,
+        "PhotoAddress": "p18995.jpg",
+        "PhotoCredits": "Anonymous",
+        "PhotoCreditURL": null,
+        "PhotoCreativeCommons": "N",
+        "PhotoCopyright": "N",
+        "PhotoPermission": "N",
+        "CountOfCountries": 1,
+        "Longitude": 21.61887,
+        "Latitude": -30.62109,
+        "Ctry": "South Africa",
+        "PercentAdherents": 0.5,
+        "PercentEvangelical": 0.2,
+        "RegionCode": 7,
+        "ROP3": 114855,
+        "ISO3": "ZAF",
+        "LocationInCountry": "Principally Pretoria and Bloemfontein. Cape Malays mainly in Cape Town; some in Johannesburg, Pretoria, Durban, and Port Elizabeth",
+        "ROP1": "A008",
+        "ROP2": "C0123",
+        "PopulationPercentUN": 0.54051,
+        "Category": "3",
+        "ROL4": 0,
+        "PrimaryLanguageDialect": null,
+        "NumberLanguagesSpoken": 2,
+        "ROL3OfficialLanguage": "eng",
+        "OfficialLang": "English",
+        "SpeakNationalLang": null,
+        "BibleStatus": 5,
+        "TranslationNeedQuestionable": null,
+        "JPScalePC": "4",
+        "JPScalePGAC": "1",
+        "LeastReachedPC": "N",
+        "LeastReachedPGAC": "Y",
+        "GSEC": "",
+        "RLG3PC": 6,
+        "RLG3PGAC": 6,
+        "PrimaryReligionPC": "Islam",
+        "PrimaryReligionPGAC": "Islam",
         "RLG4": null,
         "ReligionSubdivision": null,
-        "PCIslam": "0",
-        "PCNonReligious": "0",
-        "PCUnknown": "0",
-        "PCAnglican": "0",
-        "PCIndependent": "0",
-        "PCProtestant": "70",
-        "PCOrthodox": "0",
-        "PCOtherChristian": "0",
-        "StonyGround": "Y",
-        "SecurityLevel": "2",
-        "RaceCode": "AUG03z",
-        "LRWebProfile": "Y",
-        "LRofTheDayMonth": "1",
-        "LRofTheDayDay": "11",
-        "LRTop100": "",
-        "PhotoAddress": "p14966.jpg",
-        "PhotoWidth": "200",
-        "PhotoHeight": "249",
-        "PhotoCredits": "Ray Mason",
-        "PhotoCreditURL": null,
-        "PhotoCreativeCommons": null,
-        "PhotoCopyright": null,
-        "PhotoPermission": null,
+        "PCIslam": 99.5,
+        "PCNonReligious": 0,
+        "PCUnknown": 0,
+        "SecurityLevel": 0,
+        "RaceCode": "NAN58",
+        "LRTop100": "N",
+        "PhotoWidth": 200,
+        "PhotoHeight": 250,
         "ProfileTextExists": "Y",
-        "Top10Ranking": null,
-        "RankOverall": "73",
-        "RankProgress": "26",
-        "RankPopulation": "19",
-        "RankLocation": "18",
-        "RankMinistryTools": "10",
-        "CountOfCountries": "2",
-        "CountOfProvinces": "2",
-        "EthnolinguisticMap": "http://www.lib.utexas.edu/maps/middle_east_and_asia/indochina_eth_1970.jpg",
-        "MapID": "sss-LA",
-        "V59Country": null,
-        "Longitude": "105.427040000396",
-        "Latitude": "17.0162099995918",
-        "UNMap": "http://www.un.org/Depts/Cartographic/map/profile/laos.pdf",
-        "Ctry": "Laos",
+        "CountOfProvinces": null,
+        "EthnolinguisticMap": "http://www.lib.utexas.edu/maps/africa/south_africa_racial_1979.jpg",
+        "MapID": "afr-SF",
         "IndigenousCode": "Y",
-        "PercentAdherents": "0.2",
-        "PercentChristianPC": "9.55",
-        "PercentChristianPGAC": "0.47",
-        "PercentEvangelical": "0.0500834733247757",
-        "PercentEvangelicalPC": "2.77",
-        "PercentEvangelicalPGAC": "0.2",
-        "PCBuddhism": "90",
-        "PCDblyProfessing": "0",
-        "PCEthnicReligions": "9.8",
-        "PCHinduism": "0",
-        "PCOtherSmall": "0",
-        "PCRomanCatholic": "30",
-        "RegionCode": "2",
-        "Window1040": "Y",
-        "PeopleGroupURL": "http://joshuaproject.net/people_groups/14966/LA",
-        "PeopleGroupPhotoURL": "http://www.joshuaproject.net/profiles/photos/p14966.jpg",
-        "CountryURL": "http://joshuaproject.net/countries/LA",
+        "PercentChristianPC": "7.590",
+        "PercentChristianPGAC": "0.500",
+        "PercentEvangelicalPC": "3.677",
+        "PercentEvangelicalPGAC": "0.200",
+        "PCBuddhism": 0,
+        "PCDblyProfessing": null,
+        "PCEthnicReligions": 0,
+        "PCHinduism": 0,
+        "PCOtherSmall": 0,
+        "PopulationPGAC": 324000,
+        "Frontier": "N",
+        "MapAddress": "m18995_sf.png",
+        "MapCreditURL": "https://www.cartomission.com",
+        "MapCopyright": "N",
+        "MapCredits": "Bryan Nicholson / cartoMission",
+        "MapCCVersionText": "",
+        "MapCCVersionURL": "",
+        "PhotoCCVersionText": "",
+        "PhotoCCVersionURL": "",
+        "Window1040": "N",
+        "PeopleGroupMapURL": "https://joshuaproject.net/assets/media/profiles/maps/m18995_sf.png",
+        "PeopleGroupMapExpandedURL": "https://joshuaproject.net/assets/media/profiles/maps/m18995_sf.pdf",
+        "PeopleGroupURL": "https://joshuaproject.net/people_groups/18995/SF",
+        "PeopleGroupPhotoURL": "https://joshuaproject.net/profiles/photos/p18995.jpg",
+        "CountryURL": "https://joshuaproject.net/countries/SF",
         "JPScaleText": "Unreached",
-        "JPScaleImageURL": "http://www.joshuaproject.net/images/scale1.jpg",
-        "ProfileText": [
-            {
-                "ProfileID": "2445",
-                "ROL3": "eng",
-                "Active": "1",
-                "Format": "GB",
-                "FileName": "t14966_la.txt",
-                "IntroductionHistory": "The So live along both banks of the Mekong River
-                in Thailand and Laos. This is a rugged mountain region with many dense
-                tropical forests. The Lao-Thai name So (\"elder brother\") refers to
-                the fact that the So were present in this area long before their
-                \"younger brothers,\" the Lao. The So are bilingual, speaking So
-                (a Mon-Khmer language) in their homes and Lao in social settings.
-                \r\n\r\nIt is said that the Mon Khmer-speaking tribes were the original
-                settlers of this region. However, they were pushed out of the best lands
-                in the early centuries A.D. by Thai-speaking peoples. About 400 years ago,
-                the Thai-speakers forced the So to leave their homes and re-settle on the
-                banks of the Mekong River. They gradually adapted to the lifestyles of the
-                Thai and the Lao. In recent years, Laos has been the location of numerous
-                battles. It has also been the object of political competition among China,
-                Russia, and Vietnam. Recurring warfare and forced relocation has disrupted
-                the lives of the So.",
-                "WhereLocated": null,
-                "LivesLike": "The So of Laos are primarily farmers. They cultivate a wide
-                variety of crops, such as rice, fruit, and vegetables, for both consumption
-                and trade. They are poorer than most of the surrounding ethnic groups and
-                are therefore dependent on the Lao for many goods and services. The
-                villagers also frequently meet with the Thai to trade meat and vegetables
-                for necessary items such as clothing and salt.\r\n\r\nOver the years,
-                the So began adopting the practices of the surrounding peoples, especially
-                the Thai and Lao. This brought on many significant changes within their
-                culture. For example, they no longer use their traditional farming methods
-                of burning and clearing plots. Instead, they grow wet-rice on terraced
-                plots, which is the agricultural method of the Thai. They also raise their
-                cattle and till their fields much like the Lao. The fields are prepared with
-                plows drawn by buffalo or oxen. In addition, fishing and hunting have become
-                important activities.\r\n\r\nSuch things as traditional dress, language,
-                educational methods, housing, and public administration have also changed over the
-                years. Only a few distinctive, cultural characteristics have remained, such as
-                the silk scarves worn by the So women around a bun of hair at their necks.
-                \r\n\r\nAmong the So, the village is considered the most significant political
-                unit of society. Each village is led by a headman, and each family is led by
-                the father. A young married couple may live with the bride's family until they
-                are able to establish their own home. The So typically live in thatch roof bamboo
-                houses built on stilts. They are not known to be clean people, but rather dirty and
-                disorderly.",
-                "Beliefs": "Buddhism was introduced into Thailand in 329 B.C.; and today, most of
-                the So profess to be Buddhist. However, most of them have mixed elements of Buddhism
-                with their traditional animistic beliefs (belief that non-living objects have spirits).
-                They often seek help through supernatural spirits and objects. Ancestor worship
-                (praying to deceased ancestors for provision and guidance) is also common.
-                The ancestral spirits are thought to cause illnesses if they are not appeased.
-                Families usually have small altars near their homes where sacrifices and offerings
-                are made to the spirits. The people also believe that each village has a
-                \"guardian spirit,\" as well as various spirits that are linked to the elements
-                of nature.",
-                "Needs": "The area where the So live is often affected by destructive floods.
-                Due to the crop losses in 1996, there is a projected food shortage that will
-                greatly affect the rural population. Food aid and basic relief items are needed.
-                \r\n\r\nMany of the fields in this area are laden with cluster bomblets that were
-                dropped by U.S. warplanes during Vietnam War. The villagers need God's protection
-                over them as they work daily in the fields. Medical help, especially with prosthesis
-                and physical therapy, is needed. Perhaps these needs will provide opportunities for
-                Christian medical missionaries to gain access to the So.",
-                "Prayer": "* Pray that God will give the missions agencies in Laos fresh strategies
-                for reaching the So with the Gospel. \r\n* Ask the Lord to call Christian medical
-                teams and humanitarian aid workers to go to Laos and live among the So. \r\n* Pray
-                that God will protect the So from the destructive floods in their region. \r\n* Ask
-                God to strengthen, encourage, and protect the few known So Christians. \r\n* Pray
-                that the So believers will have opportunities to share the Gospel with their own people.
-                \r\n* Ask God to call forth prayer teams who will begin breaking up the soil through
-                worship and intercession. \r\n* Ask the Lord to raise up strong local churches among the So.",
-                "Reference": null,
-                "Summary": null,
-                "ScriptureFocus": null,
-                "Obstacles": null,
-                "HowReach": null,
-                "PrayForChurch": null,
-                "PrayForPG": null,
-                "Identity": null,
-                "History": null,
-                "Customs": null,
-                "Religion": null,
-                "Christianity": null,
-                "Comments": null,
-                "Copyright": "Y",
-                "Permission": "Y",
-                "CreativeCommons": null,
-                "Credits": "Bethany World Prayer Center",
-                "CreditsURL": null
-            },
-            {
-                "ProfileID": "4453",
-                "ROL3": "eng",
-                "Active": "1",
-                "Format": "M",
-                "FileName": null,
-                "IntroductionHistory": null,
-                "WhereLocated": null,
-                "LivesLike": null,
-                "Beliefs": null,
-                "Needs": null,
-                "Prayer": null,
-                "Reference": null,
-                "Summary": "The So of Laos are primarily farmers. They cultivate a wide variety of
-                crops, such as rice, fruit, and vegetables, for both consumption and trade. They
-                are poorer than most of the surrounding ethnic groups and are therefore dependent
-                on the Lao for many goods and services. Among the So, the village is considered
-                the most significant political unit of society. Each village is led by a headman,
-                and each family is led by the father. \"Although the So often show an intense
-                interest in scripture, they have not yet overcome the spiritual barriers that keep
-                them from embracing the King of Kings. Their families and relatives all fear that
-                if any one of them abandons worship of the spirits, the entire family will be
-                punished.\"",
-                "ScriptureFocus": "\"And you shall be my witnesses, both in Jerusalem, and in
-                all Judea and Samaria, and even to the remotest part of the earth.\" Acts 1:8",
-                "Obstacles": "Fear is one of the obstacles to the Gospel experienced by the So.
-                Please pray they will be set free from fear.",
-                "HowReach": "Pray for spiritually mature, indigenous workers to take the liberating
-                news of Christ to the So tribe. Laos has a number of evangelical churches, and
-                people in these churches can take the Gospel to unreached tribes in their own country.",
-                "PrayForChurch": "Please pray for the few individuals in the So tribe who identify
-                themselves as Christians. They need to be taught how to quickly confess sin, and
-                then trust God's Spirit to fill them and give them the fruit of the Spirit: love,
-                joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control.",
-                "PrayForPG": "Pray the poor So tribe will be able to improve their standard of
-                living, and will care for those unable to care for themselves.",
-                "Identity": null,
-                "History": null,
-                "Customs": null,
-                "Religion": null,
-                "Christianity": null,
-                "Comments": null,
-                "Copyright": null,
-                "Permission": null,
-                "CreativeCommons": null,
-                "Credits": "Joshua Project",
-                "CreditsURL": null
-            }
-        ],
-        "Resources": [
-            {
-                "ROL3": "sss",
-                "Category": "Audio Recordings",
-                "WebText": "Global Recordings",
-                "URL": "http://www.globalrecordings.net/langcode/sss"
-            }
-        ]
+        "JPScaleImageURL": "https://joshuaproject.net/images/scale1.jpg",
+        "Summary": "Ancestors of the Cape Malay came as hired workers and slaves to serve the Dutch settlement, coming largely from Indonesia and Malaysia. Later, since Islam was introduced in Indonesia as a way of protest against the colonial powers, Islamic leaders from Indonesia were brought to the Cape for imprisonment. They taught their fellow countrymen a lot about Islam and helped to spread it at the Cape. The Cape Malay define themselves as Muslims. If a person comes to know Jesus, he is no longer considered to be a Cape Malay."
     }
 ]
                     </pre>
                     <p>And here is the XML response:</p>
                     <pre>
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;?xml version="1.0"?&gt;
 &lt;api&gt;
     &lt;people_groups&gt;
         &lt;people_group&gt;
-            &lt;ROG3&gt;LA&lt;/ROG3&gt;
-            &lt;PeopleID3&gt;14966&lt;/PeopleID3&gt;
-            &lt;ROP3&gt;109364&lt;/ROP3&gt;
-            &lt;PeopNameInCountry&gt;So&lt;/PeopNameInCountry&gt;
-            &lt;ROG2&gt;ASI&lt;/ROG2&gt;
-            &lt;Continent&gt;Asia&lt;/Continent&gt;
-            &lt;RegionName&gt;Southeast Asia&lt;/RegionName&gt;
-            &lt;ISO3&gt;LAO&lt;/ISO3&gt;
-            &lt;LocationInCountry&gt;
-            They live on both sides of the Laos-Thailand border, especially in
-            northern Savannakhet Province and southern Khammouan Province in Laos.
-            An additional group of So people inhabit 53 villages in north-east Thailand.
-            &lt;/LocationInCountry&gt;
-            &lt;PeopleID1&gt;20&lt;/PeopleID1&gt;
-            &lt;ROP1&gt;A011&lt;/ROP1&gt;
-            &lt;AffinityBloc&gt;Southeast Asian Peoples&lt;/AffinityBloc&gt;
-            &lt;PeopleID2&gt;239&lt;/PeopleID2&gt;
-            &lt;ROP2&gt;C0147&lt;/ROP2&gt;
-            &lt;PeopleCluster&gt;Mon-Khmer&lt;/PeopleCluster&gt;
-            &lt;PeopNameAcrossCountries&gt;So&lt;/PeopNameAcrossCountries&gt;
-            &lt;Population&gt;138000&lt;/Population&gt;
-            &lt;PopulationPercentUN&gt;2.15989&lt;/PopulationPercentUN&gt;
-            &lt;Category&gt;2&lt;/Category&gt;
-            &lt;ROL3&gt;sss&lt;/ROL3&gt;
-            &lt;PrimaryLanguageName&gt;So&lt;/PrimaryLanguageName&gt;
-            &lt;ROL4&gt;0&lt;/ROL4&gt;
-            &lt;PrimaryLanguageDialect /&gt;
-            &lt;NumberLanguagesSpoken&gt;1&lt;/NumberLanguagesSpoken&gt;
-            &lt;ROL3OfficialLanguage&gt;lao&lt;/ROL3OfficialLanguage&gt;
-            &lt;OfficialLang&gt;Lao&lt;/OfficialLang&gt;
-            &lt;SpeakNationalLang /&gt;
-            &lt;BibleStatus&gt;2&lt;/BibleStatus&gt;
-            &lt;BibleYear /&gt;
-            &lt;NTYear /&gt;
-            &lt;PortionsYear&gt;1980-2004&lt;/PortionsYear&gt;
-            &lt;TranslationNeedQuestionable /&gt;
-            &lt;JPScale&gt;1.2&lt;/JPScale&gt;
-            &lt;JPScalePC&gt;3.1&lt;/JPScalePC&gt;
-            &lt;JPScalePGAC&gt;1.2&lt;/JPScalePGAC&gt;
+            &lt;ROG3&gt;SF&lt;/ROG3&gt;
+            &lt;PeopleID3&gt;18995&lt;/PeopleID3&gt;
+            &lt;PeopNameInCountry&gt;Malay, Cape&lt;/PeopNameInCountry&gt;
+            &lt;ROG2&gt;AFR&lt;/ROG2&gt;
+            &lt;Continent&gt;Africa&lt;/Continent&gt;
+            &lt;RegionName&gt;Africa, East and Southern&lt;/RegionName&gt;
+            &lt;PeopleID1&gt;17&lt;/PeopleID1&gt;
+            &lt;AffinityBloc&gt;Malay Peoples&lt;/AffinityBloc&gt;
+            &lt;PeopleID2&gt;215&lt;/PeopleID2&gt;
+            &lt;PeopleCluster&gt;Malay&lt;/PeopleCluster&gt;
+            &lt;PeopNameAcrossCountries&gt;Malay, Cape&lt;/PeopNameAcrossCountries&gt;
+            &lt;Population&gt;324000&lt;/Population&gt;
+            &lt;ROL3&gt;afr&lt;/ROL3&gt;
+            &lt;PrimaryLanguageName&gt;Afrikaans&lt;/PrimaryLanguageName&gt;
+            &lt;BibleYear&gt;1933-2022&lt;/BibleYear&gt;
+            &lt;NTYear&gt;1941-1980&lt;/NTYear&gt;
+            &lt;PortionsYear&gt;1893-1929&lt;/PortionsYear&gt;
+            &lt;JPScale&gt;1&lt;/JPScale&gt;
             &lt;LeastReached&gt;Y&lt;/LeastReached&gt;
-            &lt;LeastReachedBasis&gt;2&lt;/LeastReachedBasis&gt;
-            &lt;LeastReachedPC /&gt;
-            &lt;LeastReachedPGAC&gt;Y&lt;/LeastReachedPGAC&gt;
-            &lt;GSEC&gt;2&lt;/GSEC&gt;
-            &lt;Unengaged /&gt;
-            &lt;JF /&gt;
+            &lt;JF&gt;Y&lt;/JF&gt;
             &lt;AudioRecordings&gt;Y&lt;/AudioRecordings&gt;
-            &lt;NTOnline /&gt;
-            &lt;GospelRadio /&gt;
-            &lt;RLG3&gt;2&lt;/RLG3&gt;
-            &lt;RLG3PC&gt;2&lt;/RLG3PC&gt;
-            &lt;RLG3PGAC&gt;2&lt;/RLG3PGAC&gt;
-            &lt;PrimaryReligion&gt;Buddhism&lt;/PrimaryReligion&gt;
-            &lt;PrimaryReligionPC&gt;Buddhism&lt;/PrimaryReligionPC&gt;
-            &lt;PrimaryReligionPGAC&gt;Buddhism&lt;/PrimaryReligionPGAC&gt;
-            &lt;RLG4 /&gt;
-            &lt;ReligionSubdivision /&gt;
-            &lt;PCIslam&gt;0&lt;/PCIslam&gt;
+            &lt;NTOnline&gt;AFRLPF&lt;/NTOnline&gt;
+            &lt;RLG3&gt;6&lt;/RLG3&gt;
+            &lt;PrimaryReligion&gt;Islam&lt;/PrimaryReligion&gt;
+            &lt;LRofTheDayMonth&gt;11&lt;/LRofTheDayMonth&gt;
+            &lt;LRofTheDaySet/&gt;
+            &lt;LRofTheDayDay&gt;1&lt;/LRofTheDayDay&gt;
+            &lt;PhotoAddress&gt;p18995.jpg&lt;/PhotoAddress&gt;
+            &lt;PhotoCredits&gt;Anonymous&lt;/PhotoCredits&gt;
+            &lt;PhotoCreditURL/&gt;
+            &lt;PhotoCreativeCommons&gt;N&lt;/PhotoCreativeCommons&gt;
+            &lt;PhotoCopyright&gt;N&lt;/PhotoCopyright&gt;
+            &lt;PhotoPermission&gt;N&lt;/PhotoPermission&gt;
+            &lt;CountOfCountries&gt;1&lt;/CountOfCountries&gt;
+            &lt;Longitude&gt;21.61887&lt;/Longitude&gt;
+            &lt;Latitude&gt;-30.62109&lt;/Latitude&gt;
+            &lt;Ctry&gt;South Africa&lt;/Ctry&gt;
+            &lt;PercentAdherents&gt;0.5&lt;/PercentAdherents&gt;
+            &lt;PercentEvangelical&gt;0.2&lt;/PercentEvangelical&gt;
+            &lt;RegionCode&gt;7&lt;/RegionCode&gt;
+            &lt;ROP3&gt;114855&lt;/ROP3&gt;
+            &lt;ISO3&gt;ZAF&lt;/ISO3&gt;
+            &lt;LocationInCountry&gt;Principally Pretoria and Bloemfontein. Cape Malays mainly in Cape Town; some in Johannesburg, Pretoria, Durban, and Port Elizabeth&lt;/LocationInCountry&gt;
+            &lt;ROP1&gt;A008&lt;/ROP1&gt;
+            &lt;ROP2&gt;C0123&lt;/ROP2&gt;
+            &lt;PopulationPercentUN&gt;0.54051&lt;/PopulationPercentUN&gt;
+            &lt;Category&gt;3&lt;/Category&gt;
+            &lt;ROL4&gt;0&lt;/ROL4&gt;
+            &lt;PrimaryLanguageDialect/&gt;
+            &lt;NumberLanguagesSpoken&gt;2&lt;/NumberLanguagesSpoken&gt;
+            &lt;ROL3OfficialLanguage&gt;eng&lt;/ROL3OfficialLanguage&gt;
+            &lt;OfficialLang&gt;English&lt;/OfficialLang&gt;
+            &lt;SpeakNationalLang/&gt;
+            &lt;BibleStatus&gt;5&lt;/BibleStatus&gt;
+            &lt;TranslationNeedQuestionable/&gt;
+            &lt;JPScalePC&gt;4&lt;/JPScalePC&gt;
+            &lt;JPScalePGAC&gt;1&lt;/JPScalePGAC&gt;
+            &lt;LeastReachedPC&gt;N&lt;/LeastReachedPC&gt;
+            &lt;LeastReachedPGAC&gt;Y&lt;/LeastReachedPGAC&gt;
+            &lt;GSEC/&gt;
+            &lt;RLG3PC&gt;6&lt;/RLG3PC&gt;
+            &lt;RLG3PGAC&gt;6&lt;/RLG3PGAC&gt;
+            &lt;PrimaryReligionPC&gt;Islam&lt;/PrimaryReligionPC&gt;
+            &lt;PrimaryReligionPGAC&gt;Islam&lt;/PrimaryReligionPGAC&gt;
+            &lt;RLG4/&gt;
+            &lt;ReligionSubdivision/&gt;
+            &lt;PCIslam&gt;99.5&lt;/PCIslam&gt;
             &lt;PCNonReligious&gt;0&lt;/PCNonReligious&gt;
             &lt;PCUnknown&gt;0&lt;/PCUnknown&gt;
-            &lt;PCAnglican&gt;0&lt;/PCAnglican&gt;
-            &lt;PCIndependent&gt;0&lt;/PCIndependent&gt;
-            &lt;PCProtestant&gt;70&lt;/PCProtestant&gt;
-            &lt;PCOrthodox&gt;0&lt;/PCOrthodox&gt;
-            &lt;PCOtherChristian&gt;0&lt;/PCOtherChristian&gt;
-            &lt;StonyGround&gt;Y&lt;/StonyGround&gt;
-            &lt;SecurityLevel&gt;2&lt;/SecurityLevel&gt;
-            &lt;RaceCode&gt;AUG03z&lt;/RaceCode&gt;
-            &lt;LRWebProfile&gt;Y&lt;/LRWebProfile&gt;
-            &lt;LRofTheDayMonth&gt;1&lt;/LRofTheDayMonth&gt;
-            &lt;LRofTheDayDay&gt;11&lt;/LRofTheDayDay&gt;
-            &lt;LRTop100 /&gt;
-            &lt;PhotoAddress&gt;p14966.jpg&lt;/PhotoAddress&gt;
+            &lt;SecurityLevel&gt;0&lt;/SecurityLevel&gt;
+            &lt;RaceCode&gt;NAN58&lt;/RaceCode&gt;
+            &lt;LRTop100&gt;N&lt;/LRTop100&gt;
             &lt;PhotoWidth&gt;200&lt;/PhotoWidth&gt;
-            &lt;PhotoHeight&gt;249&lt;/PhotoHeight&gt;
-            &lt;PhotoCredits&gt;Ray Mason&lt;/PhotoCredits&gt;
-            &lt;PhotoCreditURL /&gt;
-            &lt;PhotoCreativeCommons /&gt;
-            &lt;PhotoCopyright /&gt;
-            &lt;PhotoPermission /&gt;
+            &lt;PhotoHeight&gt;250&lt;/PhotoHeight&gt;
             &lt;ProfileTextExists&gt;Y&lt;/ProfileTextExists&gt;
-            &lt;Top10Ranking /&gt;
-            &lt;RankOverall&gt;73&lt;/RankOverall&gt;
-            &lt;RankProgress&gt;26&lt;/RankProgress&gt;
-            &lt;RankPopulation&gt;19&lt;/RankPopulation&gt;
-            &lt;RankLocation&gt;18&lt;/RankLocation&gt;
-            &lt;RankMinistryTools&gt;10&lt;/RankMinistryTools&gt;
-            &lt;CountOfCountries&gt;2&lt;/CountOfCountries&gt;
-            &lt;CountOfProvinces&gt;2&lt;/CountOfProvinces&gt;
-            &lt;EthnolinguisticMap&gt;
-            http://www.lib.utexas.edu/maps/middle_east_and_asia/indochina_eth_1970.jpg
-            &lt;/EthnolinguisticMap&gt;
-            &lt;MapID&gt;sss-LA&lt;/MapID&gt;
-            &lt;V59Country /&gt;
-            &lt;Longitude&gt;105.427040000396&lt;/Longitude&gt;
-            &lt;Latitude&gt;17.0162099995918&lt;/Latitude&gt;
-            &lt;UNMap&gt;http://www.un.org/Depts/Cartographic/map/profile/laos.pdf&lt;/UNMap&gt;
-            &lt;Ctry&gt;Laos&lt;/Ctry&gt;
+            &lt;CountOfProvinces/&gt;
+            &lt;EthnolinguisticMap&gt;http://www.lib.utexas.edu/maps/africa/south_africa_racial_1979.jpg&lt;/EthnolinguisticMap&gt;
+            &lt;MapID&gt;afr-SF&lt;/MapID&gt;
             &lt;IndigenousCode&gt;Y&lt;/IndigenousCode&gt;
-            &lt;PercentAdherents&gt;0.2&lt;/PercentAdherents&gt;
-            &lt;PercentChristianPC&gt;9.55&lt;/PercentChristianPC&gt;
-            &lt;PercentChristianPGAC&gt;0.47&lt;/PercentChristianPGAC&gt;
-            &lt;PercentEvangelical&gt;0.0500834733247757&lt;/PercentEvangelical&gt;
-            &lt;PercentEvangelicalPC&gt;2.77&lt;/PercentEvangelicalPC&gt;
-            &lt;PercentEvangelicalPGAC&gt;0.2&lt;/PercentEvangelicalPGAC&gt;
-            &lt;PCBuddhism&gt;90&lt;/PCBuddhism&gt;
-            &lt;PCDblyProfessing&gt;0&lt;/PCDblyProfessing&gt;
-            &lt;PCEthnicReligions&gt;9.8&lt;/PCEthnicReligions&gt;
+            &lt;PercentChristianPC&gt;7.590&lt;/PercentChristianPC&gt;
+            &lt;PercentChristianPGAC&gt;0.500&lt;/PercentChristianPGAC&gt;
+            &lt;PercentEvangelicalPC&gt;3.677&lt;/PercentEvangelicalPC&gt;
+            &lt;PercentEvangelicalPGAC&gt;0.200&lt;/PercentEvangelicalPGAC&gt;
+            &lt;PCBuddhism&gt;0&lt;/PCBuddhism&gt;
+            &lt;PCDblyProfessing/&gt;
+            &lt;PCEthnicReligions&gt;0&lt;/PCEthnicReligions&gt;
             &lt;PCHinduism&gt;0&lt;/PCHinduism&gt;
             &lt;PCOtherSmall&gt;0&lt;/PCOtherSmall&gt;
-            &lt;PCRomanCatholic&gt;30&lt;/PCRomanCatholic&gt;
-            &lt;RegionCode&gt;2&lt;/RegionCode&gt;
-            &lt;Window1040&gt;Y&lt;/Window1040&gt;
-            &lt;PeopleGroupURL&gt;
-            http://joshuaproject.net/people_groups/14966/LA
-            &lt;/PeopleGroupURL&gt;
-            &lt;PeopleGroupPhotoURL&gt;
-            http://www.joshuaproject.net/profiles/photos/p14966.jpg
-            &lt;/PeopleGroupPhotoURL&gt;
-            &lt;CountryURL&gt;http://joshuaproject.net/countries/LA&lt;/CountryURL&gt;
+            &lt;PopulationPGAC&gt;324000&lt;/PopulationPGAC&gt;
+            &lt;Frontier&gt;N&lt;/Frontier&gt;
+            &lt;MapAddress&gt;m18995_sf.png&lt;/MapAddress&gt;
+            &lt;MapCreditURL&gt;https://www.cartomission.com&lt;/MapCreditURL&gt;
+            &lt;MapCopyright&gt;N&lt;/MapCopyright&gt;
+            &lt;MapCredits&gt;Bryan Nicholson / cartoMission&lt;/MapCredits&gt;
+            &lt;MapCCVersionText/&gt;
+            &lt;MapCCVersionURL/&gt;
+            &lt;PhotoCCVersionText/&gt;
+            &lt;PhotoCCVersionURL/&gt;
+            &lt;Window1040&gt;N&lt;/Window1040&gt;
+            &lt;PeopleGroupMapURL&gt;https://joshuaproject.net/assets/media/profiles/maps/m18995_sf.png&lt;/PeopleGroupMapURL&gt;
+            &lt;PeopleGroupMapExpandedURL&gt;https://joshuaproject.net/assets/media/profiles/maps/m18995_sf.pdf&lt;/PeopleGroupMapExpandedURL&gt;
+            &lt;PeopleGroupURL&gt;https://joshuaproject.net/people_groups/18995/SF&lt;/PeopleGroupURL&gt;
+            &lt;PeopleGroupPhotoURL&gt;https://joshuaproject.net/profiles/photos/p18995.jpg&lt;/PeopleGroupPhotoURL&gt;
+            &lt;CountryURL&gt;https://joshuaproject.net/countries/SF&lt;/CountryURL&gt;
             &lt;JPScaleText&gt;Unreached&lt;/JPScaleText&gt;
-            &lt;JPScaleImageURL&gt;http://www.joshuaproject.net/images/scale1.jpg&lt;/JPScaleImageURL&gt;
-            &lt;ProfileText&gt;
-                &lt;ProfileText_0&gt;
-                    &lt;ProfileID&gt;2445&lt;/ProfileID&gt;
-                    &lt;ROL3&gt;eng&lt;/ROL3&gt;
-                    &lt;Active&gt;1&lt;/Active&gt;
-                    &lt;Format&gt;GB&lt;/Format&gt;
-                    &lt;FileName&gt;t14966_la.txt&lt;/FileName&gt;
-                    &lt;IntroductionHistory&gt;
-                    The So live along both banks of the Mekong River in Thailand
-                     and Laos. This is a rugged mountain region with many dense
-                     tropical forests. The Lao-Thai name So ("elder brother")
-                     refers to the fact that the So were present in this area long
-                     before their "younger brothers," the Lao. The So are bilingual,
-                     speaking So (a Mon-Khmer language) in their homes and Lao in social
-                     settings. &#xD;&#xD;It is said that the Mon Khmer-speaking tribes were
-                     the original settlers of this region. However, they were pushed out
-                     of the best lands in the early centuries A.D. by Thai-speaking peoples.
-                     About 400 years ago, the Thai-speakers forced the So to leave their
-                     homes and re-settle on the banks of the Mekong River. They gradually
-                     adapted to the lifestyles of the Thai and the Lao. In recent years,
-                     Laos has been the location of numerous battles. It has also been the
-                     object of political competition among China, Russia, and Vietnam.
-                     Recurring warfare and forced relocation has disrupted the lives of
-                     the So.
-                     &lt;/IntroductionHistory&gt;
-                    &lt;WhereLocated /&gt;
-                    &lt;LivesLike&gt;
-                    The So of Laos are primarily farmers. They cultivate a wide variety of
-                    crops, such as rice, fruit, and vegetables, for both consumption and trade.
-                    They are poorer than most of the surrounding ethnic groups and are
-                    therefore dependent on the Lao for many goods and services. The villagers
-                    also frequently meet with the Thai to trade meat and vegetables for necessary
-                    items such as clothing and salt.&#xD;&#xD;Over the years, the So began
-                    adopting the practices of the surrounding peoples, especially the Thai and
-                    Lao. This brought on many significant changes within their culture. For
-                    example, they no longer use their traditional farming methods of burning
-                    and clearing plots. Instead, they grow wet-rice on terraced plots, which is the
-                    agricultural method of the Thai. They also raise their cattle and till their
-                    fields much like the Lao. The fields are prepared with plows drawn by buffalo
-                    or oxen. In addition, fishing and hunting have become important activities.
-                    &#xD;&#xD;Such things as traditional dress, language, educational methods,
-                    housing, and public administration have also changed over the years. Only a
-                    few distinctive, cultural characteristics have remained, such as the silk
-                    scarves worn by the So women around a bun of hair at their necks.&#xD;&#xD;
-                    Among the So, the village is considered the most significant political unit
-                    of society. Each village is led by a headman, and each family is led by the
-                    father. A young married couple may live with the bride's family until they are
-                    able to establish their own home. The So typically live in thatch roof bamboo
-                    houses built on stilts. They are not known to be clean people, but rather
-                    dirty and disorderly.
-                    &lt;/LivesLike&gt;
-                    &lt;Beliefs&gt;
-                    Buddhism was introduced into Thailand in 329 B.C.; and today, most of the
-                    So profess to be Buddhist. However, most of them have mixed elements of
-                    Buddhism with their traditional animistic beliefs (belief that non-living
-                    objects have spirits). They often seek help through supernatural spirits
-                    and objects. Ancestor worship (praying to deceased ancestors for provision
-                    and guidance) is also common. The ancestral spirits are thought to cause
-                    illnesses if they are not appeased. Families usually have small altars near
-                    their homes where sacrifices and offerings are made to the spirits. The
-                    people also believe that each village has a "guardian spirit," as well as
-                    various spirits that are linked to the elements of nature.
-                    &lt;/Beliefs&gt;
-                    &lt;Needs&gt;
-                    The area where the So live is often affected by destructive floods. Due to the
-                    crop losses in 1996, there is a projected food shortage that will greatly
-                    affect the rural population. Food aid and basic relief items are needed.
-                    &#xD;&#xD;Many of the fields in this area are laden with cluster bomblets
-                    that were dropped by U.S. warplanes during Vietnam War. The villagers need
-                    God's protection over them as they work daily in the fields. Medical help,
-                    especially with prosthesis and physical therapy, is needed. Perhaps these needs
-                    will provide opportunities for Christian medical missionaries to gain access
-                    to the So.
-                    &lt;/Needs&gt;
-                    &lt;Prayer&gt;
-                    * Pray that God will give the missions agencies in Laos fresh strategies for
-                    reaching the So with the Gospel. &#xD;* Ask the Lord to call Christian medical
-                    teams and humanitarian aid workers to go to Laos and live among the So. &#xD;*
-                    Pray that God will protect the So from the destructive floods in their region.
-                    &#xD;* Ask God to strengthen, encourage, and protect the few known So Christians.
-                    &#xD;* Pray that the So believers will have opportunities to share the Gospel
-                    with their own people. &#xD;* Ask God to call forth prayer teams who will begin
-                    breaking up the soil through worship and intercession. &#xD;* Ask the Lord to
-                    raise up strong local churches among the So.
-                    &lt;/Prayer&gt;
-                    &lt;Reference /&gt;
-                    &lt;Summary /&gt;
-                    &lt;ScriptureFocus /&gt;
-                    &lt;Obstacles /&gt;
-                    &lt;HowReach /&gt;
-                    &lt;PrayForChurch /&gt;
-                    &lt;PrayForPG /&gt;
-                    &lt;Identity /&gt;
-                    &lt;History /&gt;
-                    &lt;Customs /&gt;
-                    &lt;Religion /&gt;
-                    &lt;Christianity /&gt;
-                    &lt;Comments /&gt;
-                    &lt;Copyright&gt;Y&lt;/Copyright&gt;
-                    &lt;Permission&gt;Y&lt;/Permission&gt;
-                    &lt;CreativeCommons /&gt;
-                    &lt;Credits&gt;Bethany World Prayer Center&lt;/Credits&gt;
-                    &lt;CreditsURL /&gt;
-                &lt;/ProfileText_0&gt;
-                &lt;ProfileText_1&gt;
-                    &lt;ProfileID&gt;4453&lt;/ProfileID&gt;
-                    &lt;ROL3&gt;eng&lt;/ROL3&gt;
-                    &lt;Active&gt;1&lt;/Active&gt;
-                    &lt;Format&gt;M&lt;/Format&gt;
-                    &lt;FileName /&gt;
-                    &lt;IntroductionHistory /&gt;
-                    &lt;WhereLocated /&gt;
-                    &lt;LivesLike /&gt;
-                    &lt;Beliefs /&gt;
-                    &lt;Needs /&gt;
-                    &lt;Prayer /&gt;
-                    &lt;Reference /&gt;
-                    &lt;Summary&gt;
-                    The So of Laos are primarily farmers. They cultivate a wide variety of crops,
-                    such as rice, fruit, and vegetables, for both consumption and trade. They are
-                    poorer than most of the surrounding ethnic groups and are therefore dependent
-                    on the Lao for many goods and services. Among the So, the village is
-                    considered the most significant political unit of society. Each village is
-                    led by a headman, and each family is led by the father. "Although the So often
-                    show an intense interest in scripture, they have not yet overcome the spiritual
-                    barriers that keep them from embracing the King of Kings. Their families and
-                    relatives all fear that if any one of them abandons worship of the spirits,
-                    the entire family will be punished."
-                    &lt;/Summary&gt;
-                    &lt;ScriptureFocus&gt;
-                    "And you shall be my witnesses, both in Jerusalem, and in all Judea and Samaria,
-                    and even to the remotest part of the earth." Acts 1:8
-                    &lt;/ScriptureFocus&gt;
-                    &lt;Obstacles&gt;
-                    Fear is one of the obstacles to the Gospel experienced by the So. Please pray
-                    they will be set free from fear.
-                    &lt;/Obstacles&gt;
-                    &lt;HowReach&gt;
-                    Pray for spiritually mature, indigenous workers to take the liberating news
-                    of Christ to the So tribe. Laos has a number of evangelical churches, and
-                    people in these churches can take the Gospel to unreached tribes in their
-                    own country.
-                    &lt;/HowReach&gt;
-                    &lt;PrayForChurch&gt;
-                    Please pray for the few individuals in the So tribe who identify themselves
-                    as Christians. They need to be taught how to quickly confess sin, and then
-                    trust God's Spirit to fill them and give them the fruit of the Spirit: love,
-                    joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control.
-                    &lt;/PrayForChurch&gt;
-                    &lt;PrayForPG&gt;
-                    Pray the poor So tribe will be able to improve their standard of living, and
-                    will care for those unable to care for themselves.
-                    &lt;/PrayForPG&gt;
-                    &lt;Identity /&gt;
-                    &lt;History /&gt;
-                    &lt;Customs /&gt;
-                    &lt;Religion /&gt;
-                    &lt;Christianity /&gt;
-                    &lt;Comments /&gt;
-                    &lt;Copyright /&gt;
-                    &lt;Permission /&gt;
-                    &lt;CreativeCommons /&gt;
-                    &lt;Credits&gt;Joshua Project&lt;/Credits&gt;
-                    &lt;CreditsURL /&gt;
-                &lt;/ProfileText_1&gt;
-            &lt;/ProfileText&gt;
-            &lt;Resources&gt;
-                &lt;Resources_0&gt;
-                    &lt;ROL3&gt;sss&lt;/ROL3&gt;
-                    &lt;Category&gt;Audio Recordings&lt;/Category&gt;
-                    &lt;WebText&gt;Global Recordings&lt;/WebText&gt;
-                    &lt;URL&gt;http://www.globalrecordings.net/langcode/sss&lt;/URL&gt;
-                &lt;/Resources_0&gt;
-            &lt;/Resources&gt;
+            &lt;JPScaleImageURL&gt;https://joshuaproject.net/images/scale1.jpg&lt;/JPScaleImageURL&gt;
+            &lt;Summary&gt;Ancestors of the Cape Malay came as hired workers and slaves to serve the Dutch settlement, coming largely from Indonesia and Malaysia. Later, since Islam was introduced in Indonesia as a way of * Connection #0 to host localhost left intact
+protest against the colonial powers, Islamic leaders from Indonesia were brought to the Cape for imprisonment. They taught their fellow countrymen a lot about Islam and helped to spread it at the Cape. The Cape Malay define themselves as Muslims. If a person comes to know Jesus, he is no longer considered to be a Cape Malay.&lt;/Summary&gt;
         &lt;/people_group&gt;
     &lt;/people_groups&gt;
 &lt;/api&gt;
@@ -892,7 +550,7 @@ a#progress-scale-image img {
     &lt;body&gt;
         &lt;div id="jp_widget"&gt;
             &lt;div class="upgotd upgotd-title"&gt;
-                &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;
+                &lt;a href="https://joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;
                 Unreached of the Day
                 &lt;/a&gt;
             &lt;/div&gt;
@@ -926,15 +584,15 @@ a#progress-scale-image img {
                     &lt;td&gt;Status:&lt;/td&gt;
                     &lt;td&gt;
                         &lt;a
-                        href="http://www.joshuaproject.net/definitions.php?term=25"
+                        href="https://joshuaproject.net/definitions.php?term=25"
                         class="upgotd-link pg-scale-text"&gt;
                         &lt;/a&gt; (
                         &lt;a
-                        href="http://www.joshuaproject.net/global-progress-scale.php"
+                        href="https://joshuaproject.net/global-progress-scale.php"
                         class="upgotd-link pg-scale"&gt;
                         &lt;/a&gt;&nbsp;
                         &lt;a
-                        href="http://www.joshuaproject.net/global-progress-scale.php"
+                        href="https://joshuaproject.net/global-progress-scale.php"
                         class="upgotd-link"
                         id="progress-scale-image"&gt;
                         &lt;/a&gt;
@@ -998,7 +656,7 @@ a#progress-scale-image img {
                         domain name, and your API key.  <strong>Remember to add your API key!</strong></p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    <span class="code_highlight">var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    <span class="code_highlight">var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";</span>
     jQuery(document).ready(function($) {
 
@@ -1021,7 +679,7 @@ a#progress-scale-image img {
                         loaded:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         <span class="code_highlight">$.ajax({
@@ -1057,7 +715,7 @@ a#progress-scale-image img {
                             <tr>
                                 <td>url</td>
                                 <td><strong>
-                                    <?php echo $DOMAIN_ADDRESS; ?>/v1/people_groups/daily_unreached.json
+                                    <?php echo $siteURL; ?>/v1/people_groups/daily_unreached.json
                                 </strong> - The URL of the web page to request. (See the
                                 <a href="#overview-url-structure">URL Structure</a> section)</td>
                             </tr>
@@ -1091,7 +749,7 @@ a#progress-scale-image img {
                         error message at the top of the page.  Here is the updated code:</p>
                                         <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1143,7 +801,7 @@ a#progress-scale-image img {
                         ).  Here is the code:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1175,7 +833,7 @@ a#progress-scale-image img {
                     first object of the array (<code>data[0]</code>) like this:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1204,7 +862,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;div id="jp_widget"&gt;
     &lt;div class="upgotd upgotd-title"&gt;
-        &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
+        &lt;a href="https://joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
     &lt;/div&gt;
     &lt;div class="upgotd-image"&gt;
         &lt;a href="#" class="upgotd-link pg-link" id="people-group-image"&gt;
@@ -1236,15 +894,15 @@ a#progress-scale-image img {
             &lt;td&gt;Status:&lt;/td&gt;
             &lt;td&gt;
                 &lt;a
-                href="http://www.joshuaproject.net/definitions.php?term=25"
+                href="https://joshuaproject.net/definitions.php?term=25"
                 class="upgotd-link pg-scale-text"&gt;
                 &lt;/a&gt;
                 (&lt;a
-                href="http://www.joshuaproject.net/global-progress-scale.php"
+                href="https://joshuaproject.net/global-progress-scale.php"
                 class="upgotd-link pg-scale"&gt;
                 &lt;/a&gt;
                 &nbsp;&lt;a
-                href="http://www.joshuaproject.net/global-progress-scale.php"
+                href="https://joshuaproject.net/global-progress-scale.php"
                 class="upgotd-link"
                 id="progress-scale-image"&gt;&lt;/a&gt;)
             &lt;/td&gt;
@@ -1347,7 +1005,7 @@ a#progress-scale-image img {
                         code:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1437,7 +1095,7 @@ a#progress-scale-image img {
                         Here is the code:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1521,7 +1179,7 @@ a#progress-scale-image img {
                         Here is the code:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1598,7 +1256,7 @@ a#progress-scale-image img {
                          element.  Here is the code:<p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1672,7 +1330,7 @@ a#progress-scale-image img {
         Regular Expressions</a> to format it.  Here is the code:</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1724,7 +1382,7 @@ a#progress-scale-image img {
                         element.</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1783,7 +1441,7 @@ a#progress-scale-image img {
                     <pre>
 &lt;div id="jp_widget"<span class="code_highlight"> class="hidden"</span>&gt;
     &lt;div class="upgotd upgotd-title"&gt;
-        &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
+        &lt;a href="https://joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
     &lt;/div&gt;
     &lt;div class="upgotd-image"&gt;
         &lt;a href="#" class="upgotd-link pg-link" id="people-group-image"&gt;
@@ -1821,15 +1479,15 @@ a#progress-scale-image img {
             &lt;td&gt;Status:&lt;/td&gt;
             &lt;td&gt;
                 &lt;a
-                href="http://www.joshuaproject.net/definitions.php?term=25"
+                href="https://joshuaproject.net/definitions.php?term=25"
                 class="upgotd-link pg-scale-text"&gt;
                 &lt;/a&gt; (
                 &lt;a
-                href="http://www.joshuaproject.net/global-progress-scale.php"
+                href="https://joshuaproject.net/global-progress-scale.php"
                 class="upgotd-link pg-scale"&gt;
                 &lt;/a&gt;&nbsp;
                 &lt;a
-                href="http://www.joshuaproject.net/global-progress-scale.php"
+                href="https://joshuaproject.net/global-progress-scale.php"
                 class="upgotd-link"
                 id="progress-scale-image"&gt;
                 &lt;/a&gt;)
@@ -1855,7 +1513,7 @@ a#progress-scale-image img {
                         widget when we finished setting it up.</p>
                     <pre>
 &lt;script type="text/javascript"&gt;
-    var DOMAIN = '<?php echo $DOMAIN_ADDRESS; ?>';
+    var DOMAIN = '<?php echo $siteURL; ?>';
     var API_KEY = "YOUR_API_KEY";
     jQuery(document).ready(function($) {
         $.ajax({
@@ -1928,7 +1586,7 @@ a#progress-scale-image img {
                         the following code to the top of the <code>index.php</code> file:</p>
                     <pre>
 &lt;?php
-<span class="code_highlight">$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+<span class="code_highlight">$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;</span>
 ?&gt;
@@ -1946,7 +1604,7 @@ $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;</
                         <a href="http://www.php.net/manual/en/function.curl-init.php" target="_blank">PHP DOCS</a>).</p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 <span class="code_highlight">/**
@@ -1963,7 +1621,7 @@ $ch = curl_init();</span>
                     </p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -1997,7 +1655,7 @@ curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');</span>
                                 <td><code>CURLOPT_URL</code></td>
                                 <td>The URL to fetch</td>
                                 <td>
-                            <?php echo $DOMAIN_ADDRESS; ?>/v1/people_groups/daily_unreached.json?api_key=YOUR_API_KEY
+                            <?php echo $siteURL; ?>/v1/people_groups/daily_unreached.json?api_key=YOUR_API_KEY
                                 </td>
                             </tr>
                             <tr>
@@ -2026,7 +1684,7 @@ curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');</span>
                         can access the JSON response.</p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -2058,7 +1716,7 @@ $result = curl_exec($ch) or die(curl_error($ch));</span>
                     </p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -2094,7 +1752,7 @@ curl_close($ch);</span>
                         to verify we have the data.  We will remove this code before moving forward.</p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -2145,7 +1803,7 @@ exit();</span>
     <a href="http://php.net/manual/en/function.json-decode.php" target="_blank">PHP DOCS</a>)</p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -2190,7 +1848,7 @@ $decoded_json = json_decode($result, true);</span>
     PHP Docs</a>) to do the check.</p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -2238,7 +1896,7 @@ $decoded_json = json_decode($result, true);
     <code>$decoded_json[0]</code>.  We will set this to a variable for easy access.</p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -2296,7 +1954,7 @@ $unreached = $decoded_json[0];</span>
                         null.  Here is the code:</p>
                     <pre>
 &lt;?php
-$domain = "<?php echo $DOMAIN_ADDRESS; ?>";
+$domain = "<?php echo $siteURL; ?>";
 $api_key = "YOUR_API_KEY";
 $url = $domain . "/v1/people_groups/daily_unreached.json?api_key=" . $api_key;
 /**
@@ -2363,7 +2021,7 @@ if ($unreached['PercentEvangelical'] == null) {
                     <pre>
 &lt;div id="jp_widget"&gt;
     &lt;div class="upgotd upgotd-title"&gt;
-        &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
+        &lt;a href="https://joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;Unreached of the Day&lt;/a&gt;
     &lt;/div&gt;
     &lt;div class="upgotd-image"&gt;
         &lt;a href="
@@ -2422,14 +2080,14 @@ if ($unreached['PercentEvangelical'] == null) {
         &lt;tr&gt;
             &lt;td&gt;Status:&lt;/td&gt;
             &lt;td&gt;
-                &lt;a href="http://www.joshuaproject.net/definitions.php?term=25" class="upgotd-link pg-scale-text"&gt;
+                &lt;a href="https://joshuaproject.net/definitions.php?term=25" class="upgotd-link pg-scale-text"&gt;
                     <span class="code_highlight">&lt;?php echo $unreached['JPScaleText']; ?&gt;</span>
                 &lt;/a&gt; (
-                &lt;a href="http://www.joshuaproject.net/global-progress-scale.php" class="upgotd-link pg-scale"&gt;
+                &lt;a href="https://joshuaproject.net/global-progress-scale.php" class="upgotd-link pg-scale"&gt;
                     <span class="code_highlight">&lt;?php echo $unreached['JPScale']; ?&gt;</span>
                 &lt;/a&gt;
                 &lt;a
-                href="http://www.joshuaproject.net/global-progress-scale.php"
+                href="https://joshuaproject.net/global-progress-scale.php"
                 class="upgotd-link"
                 id="progress-scale-image"&gt;
                 <span class="code_highlight">&lt;img
@@ -2530,7 +2188,7 @@ import urllib.error
 import string
 import sys
 <span class="code_highlight"># set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key</span>
                     </pre>
@@ -2549,7 +2207,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 <span class="code_highlight">try:
@@ -2581,7 +2239,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -2610,7 +2268,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -2645,7 +2303,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -2680,7 +2338,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -2718,7 +2376,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -2762,7 +2420,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -2802,7 +2460,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -2853,7 +2511,7 @@ else:
         &lt;/p&gt;
         &lt;div id="jp_widget"&gt;
             &lt;div class="upgotd upgotd-title"&gt;
-                &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;
+                &lt;a href="https://joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;
                 Unreached of the Day
                 &lt;/a&gt;
             &lt;/div&gt;
@@ -2911,17 +2569,17 @@ else:
                     &lt;td&gt;Status:&lt;/td&gt;
                     &lt;td&gt;
                         &lt;a
-                        href="http://www.joshuaproject.net/definitions.php?term=25"
+                        href="https://joshuaproject.net/definitions.php?term=25"
                         class="upgotd-link pg-scale-text"&gt;
                             <span class="code_highlight">$JPScaleText</span>
                         &lt;/a&gt; (
                         &lt;a
-                        href="http://www.joshuaproject.net/global-progress-scale.php"
+                        href="https://joshuaproject.net/global-progress-scale.php"
                         class="upgotd-link pg-scale"&gt;
                             <span class="code_highlight">$JPScale</span>
                         &lt;/a&gt;
                         &lt;a
-                        href="http://www.joshuaproject.net/global-progress-scale.php"
+                        href="https://joshuaproject.net/global-progress-scale.php"
                         class="upgotd-link"
                         id="progress-scale-image"&gt;
                             &lt;img src="<span class="code_highlight">$JPScaleImageURL</span>" alt="Progress Scale"&gt;
@@ -2957,7 +2615,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -3001,7 +2659,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -3048,7 +2706,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -3101,7 +2759,7 @@ import urllib.error
 import string
 import sys
 # set some important variables
-domain = "<?php echo $DOMAIN_ADDRESS; ?>"
+domain = "<?php echo $siteURL; ?>"
 api_key = "YOUR_API_KEY"
 url = domain+"/v1/people_groups/daily_unreached.json?api_key="+api_key
 try:
@@ -3468,7 +3126,7 @@ end
     &lt;body&gt;
         &lt;div id="jp_widget"&gt;
             &lt;div class="upgotd upgotd-title"&gt;
-                &lt;a href="http://www.joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;
+                &lt;a href="https://joshuaproject.net/upgotdfeed.php" class="upgotd-link"&gt;
                 Unreached of the Day&lt;/a&gt;
             &lt;/div&gt;
             &lt;div class="upgotd-image"&gt;
@@ -3525,17 +3183,17 @@ end
                     &lt;td&gt;Status:&lt;/td&gt;
                     &lt;td&gt;
                         &lt;a
-                        href="http://www.joshuaproject.net/definitions.php?term=25"
+                        href="https://joshuaproject.net/definitions.php?term=25"
                         class="upgotd-link pg-scale-text"&gt;
                             <span class="code_highlight">&lt;%= unreached['JPScaleText'] %&gt;</span>
                         &lt;/a&gt; (
                         &lt;a
-                        href="http://www.joshuaproject.net/global-progress-scale.php"
+                        href="https://joshuaproject.net/global-progress-scale.php"
                         class="upgotd-link pg-scale"&gt;
                             <span class="code_highlight">&lt;%= unreached['JPScale'] %&gt;</span>
                         &lt;/a&gt;
                         &lt;a
-                        href="http://www.joshuaproject.net/global-progress-scale.php"
+                        href="https://joshuaproject.net/global-progress-scale.php"
                         class="upgotd-link"
                         id="progress-scale-image"&gt;
                             &lt;img
@@ -3736,8 +3394,8 @@ end
             </div>
         </div>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/footer.html');
-    include($VIEW_DIRECTORY . '/Partials/site_wide_footer_js.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'footer.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'site_wide_footer_js.html');
 ?>
         <script type="text/javascript">
             $(document).ready(function() {

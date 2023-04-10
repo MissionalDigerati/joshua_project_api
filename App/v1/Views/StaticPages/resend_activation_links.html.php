@@ -26,12 +26,12 @@
   <head>
     <title>Joshua Project API</title>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/site_wide_css_meta.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'site_wide_css_meta.html');
 ?>
   </head>
   <body>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/nav.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'nav.html');
 ?>
     <div class="container">
         <div class="page-header">
@@ -50,7 +50,7 @@ if ((isset($message)) && ($message != '')) {
 }
 ?>
 <?php
-if ((!empty($errors)) && (in_array('find_keys', $errors))) {
+if ((!empty($errors)) && (array_key_exists('find_keys', $errors))) {
     ?>
     <div class="alert alert-danger">
         <?php
@@ -63,7 +63,7 @@ if ((!empty($errors)) && (in_array('find_keys', $errors))) {
         <form class="form-horizontal" method="POST" action="/resend_activation_links" role="form">
             <fieldset>
 <?php
-if ((!empty($errors)) && (in_array('email', $errors))) {
+if ((!empty($errors)) && (array_key_exists('invalid', $errors)) && (in_array('email', $errors['invalid']))) {
     ?>
                         <div class="form-group has-error">
     <?php
@@ -87,7 +87,7 @@ if ((isset($data['email'])) && ($data['email'] != "")) {
         <input type="text" name="email" id="input-email" placeholder="Email" class="form-control">
     <?php
 }
-if ((!empty($errors)) && (in_array('email', $errors))) {
+if ((!empty($errors)) && (array_key_exists('invalid', $errors)) && (in_array('email', $errors['invalid']))) {
     ?>
         <span class="help-block">Email is Required!</span>
     <?php
@@ -105,8 +105,8 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
         </form>
     </div>
 <?php
-    include($VIEW_DIRECTORY . '/Partials/footer.html');
-    include($VIEW_DIRECTORY . '/Partials/site_wide_footer_js.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'footer.html');
+    include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'site_wide_footer_js.html');
 ?>
 
         <script type="text/javascript">

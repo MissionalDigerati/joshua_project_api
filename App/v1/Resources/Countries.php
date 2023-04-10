@@ -20,6 +20,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+use QueryGenerators\Country;
+use Slim\Http\Request;
+use Slim\Http\Response;
 use Swagger\Annotations as SWG;
 
 // phpcs:disable Generic.Files.LineLength
@@ -71,7 +74,11 @@ use Swagger\Annotations as SWG;
   *              ),
   *              @SWG\ErrorResponse(
   *                  code="404",
-  *                  reason="Not found.  Your search ended up with no results."
+  *                  reason="Not found.  The requested route was not found."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="500",
+  *                  reason="Internal server error.  Please try again later."
   *              )
   *          )
   *      )
@@ -81,61 +88,59 @@ use Swagger\Annotations as SWG;
   */
 // phpcs:enable Generic.Files.LineLength
 $app->get(
-    "/:version/countries/:id\.:format",
-    function ($version, $id, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
-        $data = array();
-        $gotCachedData = false;
+    "/{version}/countries/{id}.{format}",
+    function (Request $req, Response $res, $args = []) {
         /**
          * Make sure we have an ID, else crash
+         * This expression ("/\PL/u") removes all non-letter characters
          *
          * @author Johnathan Pulos
          */
-        $countryId = preg_replace("/\PL/u", "", strip_tags($id));
+        $countryId = preg_replace("/\PL/u", "", strip_tags(strtoupper($args['id'])));
         if (empty($countryId)) {
-            $app->render("/errors/404." . $format . ".php");
-            exit;
+            return $this->errorResponder->get(
+                400,
+                'You provided an invalid country id.',
+                $args['format'],
+                'Bad Request',
+                $res
+            );
         }
-        if ($useCaching === true) {
-            /**
-             * Check the cache
-             *
-             * @author Johnathan Pulos
-             */
-            $cacheKey = md5("CountryShowId_".$countryId);
-            $data = $cache->get($cacheKey);
-            if ((is_array($data)) && (!empty($data))) {
-                $gotCachedData = true;
+        try {
+            $country = new Country(array('id' => $countryId));
+            $country->findById();
+            $statement = $this->db->prepare($country->preparedStatement);
+            $statement->execute($country->preparedVariables);
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($data)) {
+                return $this->errorResponder->get(
+                    404,
+                    'The country does not exist for the given id.',
+                    $args['format'],
+                    'Not Found',
+                    $res
+                );
             }
-        }
-        if (empty($data)) {
-            try {
-                $country = new \QueryGenerators\Country(array('id' => $countryId));
-                $country->findById();
-                $statement = $db->prepare($country->preparedStatement);
-                $statement->execute($country->preparedVariables);
-                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-            } catch (Exception $e) {
-                $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
-                exit;
-            }
-        }
-        if (($useCaching === true) && ($gotCachedData === false)) {
-            /**
-             * Set the data to the cache using it's cache key, and expire it in 1 day
-             *
-             * @author Johnathan Pulos
-             */
-            $cache->set($cacheKey, $data, 86400);
+        } catch (Exception $e) {
+            return $this->errorResponder->get(
+                500,
+                $e->getMessage(),
+                $args['format'],
+                'Internal Server Error',
+                $res
+            );
         }
         /**
          * Render the final data
          *
          * @author Johnathan Pulos
          */
-        if ($format == 'json') {
-            echo json_encode($data);
+        if ($args['format'] === 'json') {
+            return $res->withJson($data);
         } else {
-            echo arrayToXML($data, "countries", "country");
+            return $res
+                ->withHeader('Content-type', 'text/xml')
+                ->write(arrayToXML($data, "countries", "country"));
         }
     }
 );
@@ -162,8 +167,40 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
+ *                  name="bible_complete",
+ *                  description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Complete Bible</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="bible_new_testament",
+ *                  description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>New Testament</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="bible_portions",
+ *                  description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Portions</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
  *                  name="continents",
  *                  description="A bar separated list of one or more continents to filter by.Use the following codes:<br><ul><li>AFR - Africa</li><li>ASI - Asia</li><li>AUS - Australia</li><li>EUR - Europe</li><li>NAR - North America</li><li>SOP - Oceania (South Pacific)</li><li>LAM - South America</li></ul>",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="cnt_primary_languages",
+ *                  description="A dashed seperated range specifying the minimum and maximum total number of primary languages.(min-max) You can supply just the minimum to get countries with a total number of primary languages matching that number.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -196,14 +233,6 @@ $app->get(
  *              @SWG\Parameter(
  *                  name="page",
  *                  description="The page of results to display  (Defaults to 1)",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="pc_anglican",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Anglicans.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -250,14 +279,6 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
- *                  name="pc_independent",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Independents.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
  *                  name="pc_islam",
  *                  description="A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
@@ -282,32 +303,8 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
- *                  name="pc_orthodox",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Orthodox.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="pc_other_christian",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Other Christian Denominations.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
  *                  name="pc_protestant",
  *                  description="A dashed seperated range specifying the minimum and maximum percentage of Protestants.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="pc_rcatholic",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Roman Catholic.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",
@@ -354,6 +351,30 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
+ *                  name="translation_needed",
+ *                  description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Translation Needed</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="translation_started",
+ *                  description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Translation Started</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
+ *                  name="translation_unspecified",
+ *                  description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Unspecified</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
  *                  name="window1040",
  *                  description="A boolean that states whether you want Countries in the 1040 Window. (y or n)",
  *                  paramType="query",
@@ -373,7 +394,11 @@ $app->get(
  *              ),
  *              @SWG\ErrorResponse(
  *                  code="404",
- *                  reason="Not found.  Your search ended up with no results."
+ *                  reason="Not found.  The requested route was not found."
+ *              ),
+ *              @SWG\ErrorResponse(
+ *                  code="500",
+ *                  reason="Internal server error.  Please try again later."
  *              )
  *          )
  *      )
@@ -383,51 +408,51 @@ $app->get(
  */
 // phpcs:enable Generic.Files.LineLength
 $app->get(
-    "/:version/countries\.:format",
-    function ($version, $format) use ($app, $db, $appRequest, $useCaching, $cache) {
-        $data = array();
-        $gotCachedData = false;
-        if ($useCaching === true) {
-            /**
-             * Check the cache
-             *
-             * @author Johnathan Pulos
-             */
-            $cacheKey = md5("CountryIndex");
-            $data = $cache->get($cacheKey);
-            if ((is_array($data)) && (!empty($data))) {
-                $gotCachedData = true;
-            }
+    "/{version}/countries.{format}",
+    function (Request $req, Response $res, $args = []) {
+        $noLongerSupportedParams = array(
+            'pc_anglican', 'pc_independent', 'pc_protestant', 'pc_orthodox', 'pc_rcatholic',
+            'pc_other_christian'
+        );
+        $params = $req->getQueryParams();
+        $requestKeys = array_keys($params);
+        $check = array_intersect($requestKeys, $noLongerSupportedParams);
+        if (!empty($check)) {
+            $unsupported = join(', ', $check);
+            return $this->errorResponder->get(
+                400,
+                'Sorry, these parameters are no longer supported: ' . $unsupported,
+                $args['format'],
+                'Bad Request',
+                $res
+            );
         }
-        if (empty($data)) {
-            try {
-                $country = new \QueryGenerators\Country($appRequest->params());
-                $country->findAllWithFilters();
-                $statement = $db->prepare($country->preparedStatement);
-                $statement->execute($country->preparedVariables);
-                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-            } catch (Exception $e) {
-                $app->render("/errors/400." . $format . ".php", array('details' => $e->getMessage()));
-                exit;
-            }
-        }
-        if (($useCaching === true) && ($gotCachedData === false)) {
-            /**
-             * Set the data to the cache using it's cache key, and expire it in 1 day
-             *
-             * @author Johnathan Pulos
-             */
-            $cache->set($cacheKey, $data, 86400);
+        try {
+            $country = new Country($params);
+            $country->findAllWithFilters();
+            $statement = $this->db->prepare($country->preparedStatement);
+            $statement->execute($country->preparedVariables);
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return $this->errorResponder->get(
+                500,
+                $e->getMessage(),
+                $args['format'],
+                'Internal Server Error',
+                $res
+            );
         }
         /**
          * Render the final data
          *
          * @author Johnathan Pulos
          */
-        if ($format == 'json') {
-            echo json_encode($data);
+        if ($args['format'] === 'json') {
+            return $res->withJson($data);
         } else {
-            echo arrayToXML($data, "countries", "country");
+            return $res
+                ->withHeader('Content-type', 'text/xml')
+                ->write(arrayToXML($data, "countries", "country"));
         }
     }
 );

@@ -39,8 +39,12 @@
                             "code": 401
                         },
                         {
-                            "reason": "Not found.  Your search ended up with no results.",
+                            "reason": "Not found.  The requested route was not found.",
                             "code": 404
+                        },
+                        {
+                            "reason": "Internal server error.  Please try again later.",
+                            "code": 500
                         }
                     ],
                     "notes": "Retrieve the details of a specific Region by supplying a unique id for the region.  Use the following numbers:<br><ul><li>1 - South Pacific</li><li>2 - Southeast Asia</li><li>3 - Northeast Asia</li><li>4 - South Asia</li><li>5 - Central Asia</li><li>6 - Middle East and North Africa</li><li>7 - East and Southern Africa</li><li>8 - West and Central Africa</li><li>9 - Eastern Europe and Eurasia</li><li>10 - Western Europe</li><li>11 - Central and South America</li><li>12 - North America and Caribbean</li></ul>"

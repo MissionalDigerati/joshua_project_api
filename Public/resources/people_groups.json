@@ -45,6 +45,14 @@
                             "required": false
                         },
                         {
+                            "name": "is_frontier",
+                            "description": "A boolean that states whether you want People Groups that are frontier people groups. (y or n)",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
                             "name": "jpscale",
                             "description": "A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out <a href='https://joshuaproject.net/global_list/progress' target='_blank'>https://joshuaproject.net/global_list/progress</a>.",
                             "allowMultiple": false,
@@ -93,14 +101,6 @@
                             "required": false
                         },
                         {
-                            "name": "pc_anglican",
-                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Anglicans.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
-                            "allowMultiple": false,
-                            "dataType": "string",
-                            "paramType": "query",
-                            "required": false
-                        },
-                        {
                             "name": "pc_buddhist",
                             "description": "A dashed seperated range specifying the minimum and maximum percentage of Buddhist.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
                             "allowMultiple": false,
@@ -133,14 +133,6 @@
                             "required": false
                         },
                         {
-                            "name": "pc_independent",
-                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Independents.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
-                            "allowMultiple": false,
-                            "dataType": "string",
-                            "paramType": "query",
-                            "required": false
-                        },
-                        {
                             "name": "pc_islam",
                             "description": "A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
                             "allowMultiple": false,
@@ -157,40 +149,8 @@
                             "required": false
                         },
                         {
-                            "name": "pc_orthodox",
-                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Orthodox.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
-                            "allowMultiple": false,
-                            "dataType": "string",
-                            "paramType": "query",
-                            "required": false
-                        },
-                        {
-                            "name": "pc_other_christian",
-                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Other Christian Denominations.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
-                            "allowMultiple": false,
-                            "dataType": "string",
-                            "paramType": "query",
-                            "required": false
-                        },
-                        {
                             "name": "pc_other_religion",
                             "description": "A dashed seperated range specifying the minimum and maximum percentage of Other Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
-                            "allowMultiple": false,
-                            "dataType": "string",
-                            "paramType": "query",
-                            "required": false
-                        },
-                        {
-                            "name": "pc_protestant",
-                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Protestants.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
-                            "allowMultiple": false,
-                            "dataType": "string",
-                            "paramType": "query",
-                            "required": false
-                        },
-                        {
-                            "name": "pc_rcatholic",
-                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Roman Catholic.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
@@ -206,7 +166,7 @@
                         },
                         {
                             "name": "people_id1",
-                            "description": "A bar separated list of one or more Joshua Project affinity block codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+                            "description": "A bar separated list of one or more Joshua Project affinity block codes to filter by. See https://joshuaproject.net/definitions.php?term=23.",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
@@ -214,7 +174,7 @@
                         },
                         {
                             "name": "people_id2",
-                            "description": "A bar separated list of one or more Joshua Project people cluster codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+                            "description": "A bar separated list of one or more Joshua Project people cluster codes to filter by. See https://joshuaproject.net/definitions.php?term=23.",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
@@ -222,7 +182,7 @@
                         },
                         {
                             "name": "people_id3",
-                            "description": "A bar separated list of one or more Joshua Project people group codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+                            "description": "A bar separated list of one or more Joshua Project people group codes to filter by. See https://joshuaproject.net/definitions.php?term=23.",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
@@ -230,7 +190,15 @@
                         },
                         {
                             "name": "population",
-                            "description": "A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get People Groups matching that number.",
+                            "description": "A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get People Groups with a population matching that number.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "population_pgac",
+                            "description": "A dashed seperated range specifying the minimum and maximum population for the people group in all countries (PGAC).(min-max) You can supply just the minimum to get People Groups with a population matching that number.",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
@@ -254,7 +222,7 @@
                         },
                         {
                             "name": "rop1",
-                            "description": "A bar separated list of one or more Registry of People affinity block codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+                            "description": "A bar separated list of one or more Registry of People affinity block codes to filter by. See https://joshuaproject.net/definitions.php?term=23.",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
@@ -262,7 +230,7 @@
                         },
                         {
                             "name": "rop2",
-                            "description": "A bar separated list of one or more Registry of People people cluster codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
+                            "description": "A bar separated list of one or more Registry of People people cluster codes to filter by. See https://joshuaproject.net/definitions.php?term=23.",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
@@ -270,15 +238,7 @@
                         },
                         {
                             "name": "rop3",
-                            "description": "A bar separated list of one or more Registry of People people group codes to filter by. See http://www.joshuaproject.net/definitions.php?term=23.",
-                            "allowMultiple": false,
-                            "dataType": "string",
-                            "paramType": "query",
-                            "required": false
-                        },
-                        {
-                            "name": "unengaged",
-                            "description": "A boolean that states whether you want People Groups that are unengaged. (y or n)",
+                            "description": "A bar separated list of one or more Registry of People people group codes to filter by. See https://joshuaproject.net/definitions.php?term=23.",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
@@ -303,8 +263,12 @@
                             "code": 401
                         },
                         {
-                            "reason": "Not found.  Your search ended up with no results.",
+                            "reason": "Not found.  The requested route was not found.",
                             "code": 404
+                        },
+                        {
+                            "reason": "Internal server error.  Please try again later.",
+                            "code": 500
                         }
                     ],
                     "notes": "Retrieve a list of People Groups that match your filter settings."
@@ -355,8 +319,12 @@
                             "code": 401
                         },
                         {
-                            "reason": "Not found.  Your search ended up with no results.",
+                            "reason": "Not found.  The requested route was not found.",
                             "code": 404
+                        },
+                        {
+                            "reason": "Internal server error.  Please try again later.",
+                            "code": 500
                         }
                     ],
                     "notes": "You have two options when retrieving the Unreached of the Day.  1) Get today's Unreached of the Day.  This is the default if you do not send parameters.\n         2) You can specify the month and day parameter to get a specific day of the year. For example, /daily_unreached.json?month=01&day=31 will\n         get the people group for Jan. 31st.  You must provide both parameters!"
@@ -407,8 +375,12 @@
                             "code": 401
                         },
                         {
-                            "reason": "Not found.  Your search ended up with no results.",
+                            "reason": "Not found.  The requested route was not found.",
                             "code": 404
+                        },
+                        {
+                            "reason": "Internal server error.  Please try again later.",
+                            "code": 500
                         }
                     ],
                     "notes": "Retrieve the details of a specific People Group around the world or in a specific country.  You can either\n                1) get a summary of all occurances of the People Group by supplying the PeopleGroup.id (PeopleID3) only, or\n                2) Get the details of a specific people group in a specific country by providing the PeopleGroup.id (PeopleID3)\n                and the country's <a href='https://goo.gl/yYWY4J' target='_blank'>2 letter FIPS 10-4 Code</a>."

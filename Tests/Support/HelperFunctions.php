@@ -20,6 +20,8 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+use PHPToolbox\PDODatabase\PDODatabaseConnect;
+
 /**
  * A list of functions useful for testing
  *
@@ -77,13 +79,18 @@ function deleteApiKey($apiKey)
 }
 /**
  * Get an instance of the database.
- *
- * @return PDODatabase  The database
  */
 function getDatabaseInstance()
 {
-    $pdoDb = \PHPToolbox\PDODatabase\PDODatabaseConnect::getInstance();
-    $pdoDb->setDatabaseSettings(new \JPAPI\DatabaseSettings);
+    $dbSettings = new \stdClass();
+    $dbSettings->default = array(
+        'host'      =>  $_ENV['DB_HOST'],
+        'name'      =>  $_ENV['DB_NAME'],
+        'username'  =>  $_ENV['DB_USERNAME'],
+        'password'  =>  $_ENV['DB_PASSWORD']
+    );
+    $pdoDb = PDODatabaseConnect::getInstance();
+    $pdoDb->setDatabaseSettings($dbSettings);
     return $pdoDb->getDatabaseInstance();
 }
 /**

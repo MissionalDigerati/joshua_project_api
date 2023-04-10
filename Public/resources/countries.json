@@ -21,8 +21,40 @@
                             "required": true
                         },
                         {
+                            "name": "bible_complete",
+                            "description": "A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Complete Bible</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "bible_new_testament",
+                            "description": "A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>New Testament</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "bible_portions",
+                            "description": "A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Portions</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
                             "name": "continents",
                             "description": "A bar separated list of one or more continents to filter by.Use the following codes:<br><ul><li>AFR - Africa</li><li>ASI - Asia</li><li>AUS - Australia</li><li>EUR - Europe</li><li>NAR - North America</li><li>SOP - Oceania (South Pacific)</li><li>LAM - South America</li></ul>",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "cnt_primary_languages",
+                            "description": "A dashed seperated range specifying the minimum and maximum total number of primary languages.(min-max) You can supply just the minimum to get countries with a total number of primary languages matching that number.",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
@@ -55,14 +87,6 @@
                         {
                             "name": "page",
                             "description": "The page of results to display  (Defaults to 1)",
-                            "allowMultiple": false,
-                            "dataType": "string",
-                            "paramType": "query",
-                            "required": false
-                        },
-                        {
-                            "name": "pc_anglican",
-                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Anglicans.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
@@ -109,14 +133,6 @@
                             "required": false
                         },
                         {
-                            "name": "pc_independent",
-                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Independents.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
-                            "allowMultiple": false,
-                            "dataType": "string",
-                            "paramType": "query",
-                            "required": false
-                        },
-                        {
                             "name": "pc_islam",
                             "description": "A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
                             "allowMultiple": false,
@@ -141,32 +157,8 @@
                             "required": false
                         },
                         {
-                            "name": "pc_orthodox",
-                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Orthodox.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
-                            "allowMultiple": false,
-                            "dataType": "string",
-                            "paramType": "query",
-                            "required": false
-                        },
-                        {
-                            "name": "pc_other_christian",
-                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Other Christian Denominations.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
-                            "allowMultiple": false,
-                            "dataType": "string",
-                            "paramType": "query",
-                            "required": false
-                        },
-                        {
                             "name": "pc_protestant",
                             "description": "A dashed seperated range specifying the minimum and maximum percentage of Protestants.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
-                            "allowMultiple": false,
-                            "dataType": "string",
-                            "paramType": "query",
-                            "required": false
-                        },
-                        {
-                            "name": "pc_rcatholic",
-                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Roman Catholic.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
@@ -213,6 +205,30 @@
                             "required": false
                         },
                         {
+                            "name": "translation_needed",
+                            "description": "A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Translation Needed</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "translation_started",
+                            "description": "A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Translation Started</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "translation_unspecified",
+                            "description": "A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Unspecified</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
                             "name": "window1040",
                             "description": "A boolean that states whether you want Countries in the 1040 Window. (y or n)",
                             "allowMultiple": false,
@@ -231,8 +247,12 @@
                             "code": 401
                         },
                         {
-                            "reason": "Not found.  Your search ended up with no results.",
+                            "reason": "Not found.  The requested route was not found.",
                             "code": 404
+                        },
+                        {
+                            "reason": "Internal server error.  Please try again later.",
+                            "code": 500
                         }
                     ],
                     "notes": "Retrieve a list of Countries that match your filter settings."
@@ -275,8 +295,12 @@
                             "code": 401
                         },
                         {
-                            "reason": "Not found.  Your search ended up with no results.",
+                            "reason": "Not found.  The requested route was not found.",
                             "code": 404
+                        },
+                        {
+                            "reason": "Internal server error.  Please try again later.",
+                            "code": 500
                         }
                     ],
                     "notes": "Retrieve the details of a specific Country by supplying the country's <a href='https://goo.gl/yYWY4J' target='_blank'>2 letter FIPS 10-4 Code</a> (id)."
