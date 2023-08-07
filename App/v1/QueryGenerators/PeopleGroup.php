@@ -121,7 +121,7 @@ class PeopleGroup extends QueryGenerator
      * @access  protected
      */
     protected $peopleGroupPhotoURLSelect = "IF(ISNULL(PhotoAddress) OR PhotoAddress = '', " .
-        "'', CONCAT('https://joshuaproject.net/profiles/photos/', PhotoAddress))";
+        "'', CONCAT('https://joshuaproject.net/assets/media/profiles/photos/', PhotoAddress))";
     /**
      * The MySQL CONCAT statement for generating the CountryURL.
      *

@@ -316,7 +316,7 @@
         "PeopleGroupMapURL": "https://joshuaproject.net/assets/media/profiles/maps/m18995_sf.png",
         "PeopleGroupMapExpandedURL": "https://joshuaproject.net/assets/media/profiles/maps/m18995_sf.pdf",
         "PeopleGroupURL": "https://joshuaproject.net/people_groups/18995/SF",
-        "PeopleGroupPhotoURL": "https://joshuaproject.net/profiles/photos/p18995.jpg",
+        "PeopleGroupPhotoURL": "https://joshuaproject.net/assets/media/profiles/photos/p18995.jpg",
         "CountryURL": "https://joshuaproject.net/countries/SF",
         "JPScaleText": "Unreached",
         "JPScaleImageURL": "https://joshuaproject.net/images/scale1.jpg",
@@ -432,7 +432,7 @@
             &lt;PeopleGroupMapURL&gt;https://joshuaproject.net/assets/media/profiles/maps/m18995_sf.png&lt;/PeopleGroupMapURL&gt;
             &lt;PeopleGroupMapExpandedURL&gt;https://joshuaproject.net/assets/media/profiles/maps/m18995_sf.pdf&lt;/PeopleGroupMapExpandedURL&gt;
             &lt;PeopleGroupURL&gt;https://joshuaproject.net/people_groups/18995/SF&lt;/PeopleGroupURL&gt;
-            &lt;PeopleGroupPhotoURL&gt;https://joshuaproject.net/profiles/photos/p18995.jpg&lt;/PeopleGroupPhotoURL&gt;
+            &lt;PeopleGroupPhotoURL&gt;https://joshuaproject.net/assets/media/profiles/photos/p18995.jpg&lt;/PeopleGroupPhotoURL&gt;
             &lt;CountryURL&gt;https://joshuaproject.net/countries/SF&lt;/CountryURL&gt;
             &lt;JPScaleText&gt;Unreached&lt;/JPScaleText&gt;
             &lt;JPScaleImageURL&gt;https://joshuaproject.net/images/scale1.jpg&lt;/JPScaleImageURL&gt;

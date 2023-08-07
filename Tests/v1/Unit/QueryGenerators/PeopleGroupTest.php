@@ -111,7 +111,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupPhotoURL()
     {
         $expected = array('id' => '12662', 'country' => 'CB');
-        $expectedURL = "https://joshuaproject.net/profiles/photos/";
+        $expectedURL = "https://joshuaproject.net/assets/media/profiles/photos/";
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
