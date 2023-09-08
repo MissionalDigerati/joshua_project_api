@@ -424,9 +424,9 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturn100ByDefault()
+    public function testIndexRequestsShouldReturn250ByDefault()
     {
-        $expectedNumberOfResults = 100;
+        $expectedNumberOfResults = 250;
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
             array('api_key' => $this->APIKey),

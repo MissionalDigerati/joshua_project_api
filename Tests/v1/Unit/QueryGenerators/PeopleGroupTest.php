@@ -221,7 +221,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $peopleGroup->findById();
     }
     /**
-     * findAllWithFilters() query should return 100 people groups by default
+     * findAllWithFilters() query should return 250 people groups by default
      *
      * @return void
      * @access public
@@ -229,7 +229,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindAllWithFiltersReturnsLimitedResultsWithNoFiltersByDefault()
     {
-        $expectedNumberOfResults = 100;
+        $expectedNumberOfResults = 250;
         $peopleGroup = new \QueryGenerators\PeopleGroup(array());
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);

@@ -93,7 +93,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      **/
     public function testFindAllWithFiltersShouldReturnAllLanguagesWithoutFilters()
     {
-        $expectedCount = 100;
+        $expectedCount = 250;
         $expectedFirstLanguage = "a'ou";
         $language = new \QueryGenerators\Language(array());
         $language->findAllWithFilters();

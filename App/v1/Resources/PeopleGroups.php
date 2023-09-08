@@ -425,7 +425,7 @@ $app->get(
  *              ),
  *              @SWG\Parameter(
  *                  name="limit",
- *                  description="The maximum results to return. (Defaults to 100)",
+ *                  description="The maximum results to return. (Defaults to 250)",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",

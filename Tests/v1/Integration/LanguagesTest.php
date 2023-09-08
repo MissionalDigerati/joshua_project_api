@@ -354,7 +354,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
       */
     public function testIndexRequestsShouldReturnALanguageInJSON()
     {
-        $expectedLanguageCount = 100;
+        $expectedLanguageCount = 250;
         $expectedFirstLanguage = "a'ou";
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",

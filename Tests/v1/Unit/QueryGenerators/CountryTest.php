@@ -91,7 +91,8 @@ class CountryTest extends \PHPUnit_Framework_TestCase
      **/
     public function testFindAllWithFiltersShouldReturnAllCountriesWithoutFilters()
     {
-        $expectedCount = 100;
+        // Limit is 250, but there is only 238 countries
+        $expectedCount = 238;
         $expectedFirstCountry = 'Afghanistan';
         $country = new \QueryGenerators\Country(array());
         $country->findAllWithFilters();

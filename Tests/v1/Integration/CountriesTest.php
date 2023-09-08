@@ -256,7 +256,8 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
       */
     public function testIndexRequestsShouldReturnTheCorrectCountry()
     {
-        $expectedCountryCount = 100;
+        // 250 is max, but there is only 238 countries
+        $expectedCountryCount = 238;
         $expectedFirstCountry = 'Afghanistan';
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
