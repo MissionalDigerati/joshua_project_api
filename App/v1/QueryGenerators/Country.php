@@ -60,7 +60,7 @@ class Country extends QueryGenerator
         'ROG2', 'ROG3', 'ROL3OfficialLanguage', 'RLG3Primary', 'RegionCode', 'ROG3', 'ISO3', 'ISO2',
         'ROG2', 'RegionName', 'Capital', 'Population', 'SecurityLevel', 'CntPeoples', 'CntPeoplesLR',
         'CntPrimaryLanguages', 'TranslationUnspecified', 'TranslationNeeded', 'TranslationStarted',
-        'BiblePortions', 'BibleNewTestament', 'BibleComplete'
+        'BiblePortions', 'BibleNewTestament', 'BibleComplete', 'PoplPeoplesLR', 'PoplPeoplesFPG'
     );
     /**
      * The Database table to pull the data from.

@@ -214,6 +214,33 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCountry, $decodedResponse[0]['ISO2']);
     }
     /**
+     * GET /countries/usa.json
+     * Country Show should return population among the unreached
+     * and the frontier people groups.
+     *
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testShowRequestsShouldReturnPopulationByGroupStatus()
+    {
+        $expectedCountry = "AE";
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries/" . $expectedCountry . ".json",
+            array('api_key' => $this->APIKey),
+            "should_return_country_pop_status_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        $this->assertTrue(is_array($decodedResponse));
+        $this->assertFalse(empty($decodedResponse));
+        $this->assertEquals($expectedCountry, $decodedResponse[0]['ISO2']);
+        $this->assertTrue(array_key_exists('PoplPeoplesLR', $decodedResponse[0]));
+        $this->assertTrue(array_key_exists('PoplPeoplesFPG', $decodedResponse[0]));
+        $this->assertFalse(empty($decodedResponse[0]['PoplPeoplesLR']));
+        $this->assertFalse(empty($decodedResponse[0]['PoplPeoplesFPG']));
+    }
+    /**
       * GET /countries.json
       * test page is available, and delivers JSON
       *
@@ -271,6 +298,32 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(empty($decodedResponse));
         $this->assertEquals($expectedCountryCount, count($decodedResponse));
         $this->assertEquals($expectedFirstCountry, $decodedResponse[0]['Ctry']);
+    }
+    /**
+     * GET /countries.json
+     * Country Index should return population among the unreached
+     * and the frontier people groups.
+     *
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexRequestsShouldReturnPopulationByGroupStatus()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey),
+            "should_return_country_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        $this->assertTrue(is_array($decodedResponse));
+        $this->assertFalse(empty($decodedResponse));
+        $first = $decodedResponse[0];
+        $this->assertTrue(array_key_exists('PoplPeoplesLR', $first));
+        $this->assertTrue(array_key_exists('PoplPeoplesFPG', $first));
+        $this->assertFalse(empty($first['PoplPeoplesLR']));
+        $this->assertFalse(empty($first['PoplPeoplesFPG']));
     }
     /**
       * GET /countries.json?limit=10
