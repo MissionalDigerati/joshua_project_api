@@ -1359,6 +1359,15 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('LeastReachedBasis', $decoded[0]));
         $this->assertFalse(array_key_exists('GospelRadio', $decoded[0]));
         $this->assertFalse(array_key_exists('Unengaged', $decoded[0]));
+        $this->assertFalse(array_key_exists('EthnolinguisticMap', $decoded[0]));
+        $this->assertFalse(array_key_exists('MapID', $decoded[0]));
+        $this->assertFalse(array_key_exists('PCDblyProfessing', $decoded[0]));
+        $this->assertFalse(array_key_exists('PhotoHeight', $decoded[0]));
+        $this->assertFalse(array_key_exists('PhotoWidth', $decoded[0]));
+        $this->assertFalse(array_key_exists('PopulationPercentUN', $decoded[0]));
+        $this->assertFalse(array_key_exists('RaceCode', $decoded[0]));
+        $this->assertFalse(array_key_exists('ROL3OfficialLanguage', $decoded[0]));
+        $this->assertFalse(array_key_exists('ROL4', $decoded[0]));
     }
     /**
      * GET /people_groups/[ID].json
@@ -1388,6 +1397,15 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('LeastReachedBasis', $decoded[0]));
         $this->assertFalse(array_key_exists('GospelRadio', $decoded[0]));
         $this->assertFalse(array_key_exists('Unengaged', $decoded[0]));
+        $this->assertFalse(array_key_exists('EthnolinguisticMap', $decoded[0]));
+        $this->assertFalse(array_key_exists('MapID', $decoded[0]));
+        $this->assertFalse(array_key_exists('PCDblyProfessing', $decoded[0]));
+        $this->assertFalse(array_key_exists('PhotoHeight', $decoded[0]));
+        $this->assertFalse(array_key_exists('PhotoWidth', $decoded[0]));
+        $this->assertFalse(array_key_exists('PopulationPercentUN', $decoded[0]));
+        $this->assertFalse(array_key_exists('RaceCode', $decoded[0]));
+        $this->assertFalse(array_key_exists('ROL3OfficialLanguage', $decoded[0]));
+        $this->assertFalse(array_key_exists('ROL4', $decoded[0]));
     }
     /**
      * GET /people_groups.json?unengaged=y
@@ -1417,6 +1435,15 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('LeastReachedBasis', $decoded[0]));
         $this->assertFalse(array_key_exists('GospelRadio', $decoded[0]));
         $this->assertFalse(array_key_exists('Unengaged', $decoded[0]));
+        $this->assertFalse(array_key_exists('EthnolinguisticMap', $decoded[0]));
+        $this->assertFalse(array_key_exists('MapID', $decoded[0]));
+        $this->assertFalse(array_key_exists('PCDblyProfessing', $decoded[0]));
+        $this->assertFalse(array_key_exists('PhotoHeight', $decoded[0]));
+        $this->assertFalse(array_key_exists('PhotoWidth', $decoded[0]));
+        $this->assertFalse(array_key_exists('PopulationPercentUN', $decoded[0]));
+        $this->assertFalse(array_key_exists('RaceCode', $decoded[0]));
+        $this->assertFalse(array_key_exists('ROL3OfficialLanguage', $decoded[0]));
+        $this->assertFalse(array_key_exists('ROL4', $decoded[0]));
     }
     /**
      * GET: /people_groups/daily_unreached.json

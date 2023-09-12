@@ -260,6 +260,37 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedHubCountry, strtolower($decodedResponse[0]['HubCountry']));
     }
     /**
+     * GET /languages/[id].json
+     * test page does not return removed fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testShowRequestsShouldNotReturnRemovedFields()
+    {
+        $expectedLanguageCode = 'aar';
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/languages/" . $expectedLanguageCode . ".json",
+            array('api_key' => $this->APIKey),
+            "show_should_not_return_removed_show"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertFalse(array_key_exists('FCBH_ID', $decoded[0]));
+        $this->assertFalse(array_key_exists('FourLaws', $decoded[0]));
+        $this->assertFalse(array_key_exists('FourLaws_URL', $decoded[0]));
+        $this->assertFalse(array_key_exists('GodsStory', $decoded[0]));
+        $this->assertFalse(array_key_exists('GRN_URL', $decoded[0]));
+        $this->assertFalse(array_key_exists('JF_ID', $decoded[0]));
+        $this->assertFalse(array_key_exists('JF_URL', $decoded[0]));
+        $this->assertFalse(array_key_exists('JPPopulation', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentAdherents', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentEvangelical', $decoded[0]));
+        $this->assertFalse(array_key_exists('ROL3Edition14', $decoded[0]));
+        $this->assertFalse(array_key_exists('ROL3Edition14Orig', $decoded[0]));
+        $this->assertFalse(array_key_exists('WorldSpeakers', $decoded[0]));
+    }
+    /**
      * Tests that you can only access page with an API Key
      *
      * @return void
@@ -368,6 +399,35 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(empty($decodedResponse));
         $this->assertEquals($expectedLanguageCount, count($decodedResponse));
         $this->assertEquals($expectedFirstLanguage, strtolower($decodedResponse[0]['Language']));
+    }
+    /**
+     * GET /languages.json
+     * Language Index should return the correct data
+     *
+     * @access public
+     * @author Johnathan Pulos
+     */
+    public function testIndexRequestsShouldNotReturnRemovedFields()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/languages.json",
+            array('api_key' => $this->APIKey),
+            "should_not_return_removed_fields_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertFalse(array_key_exists('FCBH_ID', $decoded[0]));
+        $this->assertFalse(array_key_exists('FourLaws', $decoded[0]));
+        $this->assertFalse(array_key_exists('FourLaws_URL', $decoded[0]));
+        $this->assertFalse(array_key_exists('GodsStory', $decoded[0]));
+        $this->assertFalse(array_key_exists('GRN_URL', $decoded[0]));
+        $this->assertFalse(array_key_exists('JF_ID', $decoded[0]));
+        $this->assertFalse(array_key_exists('JF_URL', $decoded[0]));
+        $this->assertFalse(array_key_exists('JPPopulation', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentAdherents', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentEvangelical', $decoded[0]));
+        $this->assertFalse(array_key_exists('ROL3Edition14', $decoded[0]));
+        $this->assertFalse(array_key_exists('ROL3Edition14Orig', $decoded[0]));
+        $this->assertFalse(array_key_exists('WorldSpeakers', $decoded[0]));
     }
     /**
       * GET /languages.json

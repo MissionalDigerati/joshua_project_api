@@ -687,6 +687,25 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('WINCountryProfile', $decoded[0]));
         $this->assertFalse(array_key_exists('LiteracyRate', $decoded[0]));
         $this->assertFalse(array_key_exists('LiteracySource', $decoded[0]));
+        $this->assertFalse(array_key_exists('AltName', $decoded[0]));
+        $this->assertFalse(array_key_exists('AreaSquareMiles', $decoded[0]));
+        $this->assertFalse(array_key_exists('InternetCtryCode', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentBuddhism', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentChristianity', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentEthnicReligions', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentEvangelical', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentHinduism', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentIslam', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentNonReligious', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentOtherSmall', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentUnknown', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentUrbanized', $decoded[0]));
+        $this->assertFalse(array_key_exists('PoplGrowthRate', $decoded[0]));
+        $this->assertFalse(array_key_exists('PrayercastVideo', $decoded[0]));
+        $this->assertFalse(array_key_exists('ReligionDataYear', $decoded[0]));
+        $this->assertFalse(array_key_exists('RLG4Primary', $decoded[0]));
+        $this->assertFalse(array_key_exists('StateDeptReligiousFreedom', $decoded[0]));
+        $this->assertFalse(array_key_exists('UNMap', $decoded[0]));
     }
     /**
      * GET /countries/ID.json
@@ -712,6 +731,26 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('WINCountryProfile', $decoded[0]));
         $this->assertFalse(array_key_exists('LiteracyRate', $decoded[0]));
         $this->assertFalse(array_key_exists('LiteracySource', $decoded[0]));
+
+        $this->assertFalse(array_key_exists('AltName', $decoded[0]));
+        $this->assertFalse(array_key_exists('AreaSquareMiles', $decoded[0]));
+        $this->assertFalse(array_key_exists('InternetCtryCode', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentBuddhism', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentChristianity', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentEthnicReligions', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentEvangelical', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentHinduism', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentIslam', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentNonReligious', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentOtherSmall', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentUnknown', $decoded[0]));
+        $this->assertFalse(array_key_exists('PercentUrbanized', $decoded[0]));
+        $this->assertFalse(array_key_exists('PoplGrowthRate', $decoded[0]));
+        $this->assertFalse(array_key_exists('PrayercastVideo', $decoded[0]));
+        $this->assertFalse(array_key_exists('ReligionDataYear', $decoded[0]));
+        $this->assertFalse(array_key_exists('RLG4Primary', $decoded[0]));
+        $this->assertFalse(array_key_exists('StateDeptReligiousFreedom', $decoded[0]));
+        $this->assertFalse(array_key_exists('UNMap', $decoded[0]));
     }
 
     public function testCountryIndexRequestsShouldProvideNewFields()
