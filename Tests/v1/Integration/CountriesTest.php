@@ -935,4 +935,54 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
             $this->assertGreaterThanOrEqual($expectedMin, intval($country['PoplPeoplesLR']));
         }
     }
+
+    public function testIndexRequestsReturnCountriesFilteredByAnExactPopInLeastReached()
+    {
+        $expected = 800;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'pop_in_unreached' => $expected),
+            "filter_by_pop_in_unreached_exact_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $country) {
+            $this->assertEquals($expected, intval($country['PoplPeoplesLR']));
+        }
+    }
+
+    public function testIndexRequestsReturnCountriesFilteredByAMinAndMaxPopInFrontier()
+    {
+        $expectedMin = 500;
+        $expectedMax = 2000;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'pop_in_frontier' => $expectedMin."-".$expectedMax),
+            "filter_by_pop_in_frontier_in_range_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $country) {
+            $this->assertLessThanOrEqual($expectedMax, intval($country['PoplPeoplesFPG']));
+            $this->assertGreaterThanOrEqual($expectedMin, intval($country['PoplPeoplesFPG']));
+        }
+    }
+
+    public function testIndexRequestsReturnCountriesFilteredByAnExactPopInFrontier()
+    {
+        $expected = 600;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'pop_in_frontier' => $expected),
+            "filter_by_pop_in_frontier_exact_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $country) {
+            $this->assertEquals($expected, intval($country['PoplPeoplesFPG']));
+        }
+    }
 }

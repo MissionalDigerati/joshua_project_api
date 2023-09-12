@@ -255,6 +255,14 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
+ *                  name="pop_in_frontier",
+ *                  description="A dashed seperated range specifying the minimum and maximum population living among frontier people groups.(min-max) You can supply just the minimum to get Countries matching that number.",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
  *                  name="pop_in_unreached",
  *                  description="A dashed seperated range specifying the minimum and maximum population living among the unreached.(min-max) You can supply just the minimum to get Countries matching that number.",
  *                  paramType="query",

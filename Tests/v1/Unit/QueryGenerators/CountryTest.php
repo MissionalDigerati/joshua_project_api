@@ -566,5 +566,21 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertGreaterThanOrEqual($expectedMin, intval($countryData['PoplPeoplesLR']));
         }
     }
+
+    public function testFindAllWithFiltersShouldFilterByPopLivingAmongFrontier()
+    {
+        $expectedMin = 1000;
+        $expectedMax = 3000;
+        $country = new \QueryGenerators\Country(array('pop_in_frontier' => $expectedMin."-".$expectedMax));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, intval($countryData['PoplPeoplesFPG']));
+            $this->assertGreaterThanOrEqual($expectedMin, intval($countryData['PoplPeoplesFPG']));
+        }
+    }
     
 }

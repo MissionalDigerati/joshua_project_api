@@ -183,6 +183,17 @@ class Country extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('pop_in_frontier')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pop_in_frontier'],
+                'PoplPeoplesFPG',
+                'pop_frontier'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('pop_in_unreached')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
