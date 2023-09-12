@@ -789,13 +789,13 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(array_key_exists('BiblePortions', $decoded[0]));
         $this->assertTrue(array_key_exists('BibleNewTestament', $decoded[0]));
         $this->assertTrue(array_key_exists('BibleComplete', $decoded[0]));
-        $this->assertEquals(54, $decoded[0]['CntPrimaryLanguages']);
-        $this->assertEquals(18, $decoded[0]['TranslationUnspecified']);
-        $this->assertEquals(5, $decoded[0]['TranslationNeeded']);
+        $this->assertEquals(53, $decoded[0]['CntPrimaryLanguages']);
+        $this->assertEquals(22, $decoded[0]['TranslationUnspecified']);
+        $this->assertEquals(2, $decoded[0]['TranslationNeeded']);
         $this->assertEquals(0, $decoded[0]['TranslationStarted']);
-        $this->assertEquals(11, $decoded[0]['BiblePortions']);
+        $this->assertEquals(10, $decoded[0]['BiblePortions']);
         $this->assertEquals(2, $decoded[0]['BibleNewTestament']);
-        $this->assertEquals(18, $decoded[0]['BibleComplete']);
+        $this->assertEquals(17, $decoded[0]['BibleComplete']);
     }
 
     public function testCountryIndexRequestsShouldFilterByCntPrimaryLanguagesInRange()

@@ -1454,16 +1454,16 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      */
     public function testDailyUnreachedShouldProvideNewFields()
     {
-        $expectedPop = 263000;
+        $expectedPop = 1371000;
         $expectedFrontier = 'Y';
-        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m10252_gm.png';
-        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m10252_gm.pdf';
-        $expectedPhotoCCVersionText = 'CC BY-SA 4.0';
-        $expectedPhotoCCVersionURL = 'https://creativecommons.org/licenses/by-sa/4.0/';
-        $expectedMapCredits = 'People Group location: Joshua Project, Map geography: ESRI / GMI. ' .
-        'Map design: Joshua Project.';
+        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m22099.png';
+        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m22099.pdf';
+        $expectedPhotoCCVersionText = '';
+        $expectedPhotoCCVersionURL = '';
+        $expectedMapCredits = 'People Group data: Omid.  Map geography: UNESCO / GMI.  ' .
+        'Map Design: Joshua Project';
         $expectedMapCreditsURL = '';
-        $expectedMapCopyright = 'N';
+        $expectedMapCopyright = '';
         $expectedMapCCVersionText = '';
         $expectedMapCCVersionURL = '';
         $response = $this->cachedRequest->get(
@@ -1507,7 +1507,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      */
     public function testShowRequestsShouldProvideNewFields()
     {
-        $expectedPop = 1719400;
+        $expectedPop = 1952700;
         $expectedFrontier = 'Y';
         $expectedMapAddress = 'm00324_aj.png';
         $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m00324_aj.png';
