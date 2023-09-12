@@ -6,6 +6,8 @@ The following was added to the API:
 
 ## Country Endpoint Parameters:
 
+ADDED pop_in_unreached argument to /countries endpoint.
+
 ## Country Columns:
 
 ADDED PoplPeoplesLR column from all countries endpoints.

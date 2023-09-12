@@ -183,6 +183,17 @@ class Country extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('pop_in_unreached')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pop_in_unreached'],
+                'PoplPeoplesLR',
+                'pop_unreached'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('primary_languages')) {
             $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['primary_languages'], 3);
             if ($appendAndOnWhere === true) {

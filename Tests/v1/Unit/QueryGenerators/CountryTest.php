@@ -29,30 +29,13 @@ namespace Tests\v1\Unit\QueryGenerators;
  */
 class CountryTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * The PDO database connection object
-     *
-     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
-     */
     private $db;
-    /**
-     * Setup the test methods
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function setUp()
     {
         $this->db = getDatabaseInstance();
     }
-    /**
-     * Test that the provided params are sanitized upon intializing the class
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testShouldSanitizeProvidedDataOnInitializing()
     {
         $data = array('country' => 'HORSE#%', 'state' => 'CA%$');
@@ -63,13 +46,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $result = $providedParams->getValue(new \QueryGenerators\Country($data));
         $this->assertEquals($expected, $result);
     }
-    /**
-     * findById() should return the correct country, based on the supplied ID.
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindByIdShouldReturnTheCorrectCountry()
     {
         $expected = array('id'  =>  'BE');
@@ -82,13 +59,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected['id'], $data[0]['ROG3']);
         $this->assertEquals($expectedCountryName, $data[0]['Ctry']);
     }
-    /**
-     * findAllWithFilters() should return all countries with limit if there are no filters added
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testFindAllWithFiltersShouldReturnAllCountriesWithoutFilters()
     {
         // Limit is 250, but there is only 238 countries
@@ -102,13 +73,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCount, count($data));
         $this->assertEquals($expectedFirstCountry, $data[0]['Ctry']);
     }
-    /**
-     * findAllWithFilters() should return the set number of countries
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testFindAllWithFiltersShouldLimitedResults()
     {
         $expectedCount = 10;
@@ -119,13 +84,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertEquals($expectedCount, count($data));
     }
-    /**
-     * findAllWithFilters() should return only countries in the ids param
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testFindAllWithFiltersShouldFilterByIds()
     {
         $expectedIDs = array('re', 'qa', 'qo');
@@ -138,13 +97,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array(strtolower($countryData['ROG3']), $expectedIDs));
         }
     }
-    /**
-     * findAllWithFilters() should filter countries by continents
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testFindAllWithFiltersShouldFilterByContinents()
     {
         $expectedContinents = array('lam', 'sop');
@@ -157,13 +110,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array(strtolower($countryData['ROG2']), $expectedContinents));
         }
     }
-    /**
-     * findAllWithFilters() should filter countries by regions
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testFindAllWithFiltersShouldFilterByRegions()
     {
         $expectedRegions = array(1, 2);
@@ -176,13 +123,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array(strtolower($countryData['RegionCode']), $expectedRegions));
         }
     }
-    /**
-     * findAllWithFilters() should filter countries by window1040
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testFindAllWithFiltersShouldFilterByWindow1040()
     {
         $expectedWindow1040 = 'y';
@@ -195,13 +136,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(strtolower($countryData['Window1040']), $expectedWindow1040);
         }
     }
-    /**
-     * findAllWithFilters() should filter countries by primary_languages
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testFindAllWithFiltersShouldFilterByPrimaryLanguages()
     {
         $expectedPrimaryLanguages = array('por', 'eng');
@@ -214,13 +149,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array(strtolower($countryData['ROL3OfficialLanguage']), $expectedPrimaryLanguages));
         }
     }
-    /**
-     * findAllWithFilters() should filter countries by population range
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testFindAllWithFiltersShouldFilterByPopulationRange()
     {
         $expectedMin = 0;
@@ -236,13 +165,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertGreaterThanOrEqual($expectedMin, intval($countryData['Population']));
         }
     }
-    /**
-     * findAllWithFilters() should filter countries by exact population
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testFindAllWithFiltersShouldFilterByExactPopulation()
     {
         $expectedPopulation = 44000;
@@ -256,13 +179,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($expectedPopulation, intval($countryData['Population']));
         }
     }
-    /**
-     * findAllWithFilters() should filter countries by primary religions
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testFindAllWithFiltersShouldFilterByPrimaryReligions()
     {
         $expectedReligions = array(2 => 'buddhism', 6 => 'islam');
@@ -281,13 +198,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array($countryData['RLG3Primary'], array_keys($expectedReligions)));
         }
     }
-    /**
-     * findAllWithFilters() should filter countries by JPScaleCtry
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testFindAllWithFiltersShouldFilterByJPScale()
     {
         $expectedJPScales = "1|2";
@@ -302,13 +213,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array(floatval($countryData['JPScaleCtry']), $expectedJPScalesArray));
         }
     }
-    /**
-     * Country Query Generator should set the JPScaleText to Unreached
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testCountryQueryGeneratorShouldSetJPScaleTextToUnreached()
     {
         $expectedJPScaleText = "unreached";
@@ -322,13 +227,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(strtolower($countryData['JPScaleText']), $expectedJPScaleText);
         }
     }
-    /**
-     * Country Query Generator should set the JPScaleText to Minimally Reached
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testCountryQueryGeneratorShouldSetJPScaleTextToMinimallyReached()
     {
         $expectedJPScaleText = "minimally reached";
@@ -342,13 +241,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(strtolower($countryData['JPScaleText']), $expectedJPScaleText);
         }
     }
-    /**
-     * Country Query Generator should set the JPScaleText to Superficially Reached
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testCountryQueryGeneratorShouldSetJPScaleTextToSuperficiallyReached()
     {
         $expectedJPScaleText = "superficially reached";
@@ -362,13 +255,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(strtolower($countryData['JPScaleText']), $expectedJPScaleText);
         }
     }
-    /**
-     * Country Query Generator should set the JPScaleText to Partially Reached
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testCountryQueryGeneratorShouldSetJPScaleTextToPartiallyReached()
     {
         $expectedJPScaleText = "partially reached";
@@ -382,13 +269,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(strtolower($countryData['JPScaleText']), $expectedJPScaleText);
         }
     }
-    /**
-     * Country Query Generator should set the JPScaleText to Significantly Reached
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testCountryQueryGeneratorShouldSetJPScaleTextToSignificantlyReached()
     {
         $expectedJPScaleText = "significantly reached";
@@ -402,13 +283,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(strtolower($countryData['JPScaleText']), $expectedJPScaleText);
         }
     }
-    /**
-     * Country Query Generator should set the JPScaleImageURL
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testCountryQueryGeneratorShouldSetJPScaleImageURLCorrectly()
     {
         $expectedJPScaleText = "established church";
@@ -675,4 +550,21 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($value, $countryData['BibleComplete']);
         }
     }
+
+    public function testFindAllWithFiltersShouldFilterByPopLivingAmongUnreached()
+    {
+        $expectedMin = 0;
+        $expectedMax = 1000;
+        $country = new \QueryGenerators\Country(array('pop_in_unreached' => $expectedMin."-".$expectedMax));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, intval($countryData['PoplPeoplesLR']));
+            $this->assertGreaterThanOrEqual($expectedMin, intval($countryData['PoplPeoplesLR']));
+        }
+    }
+    
 }
