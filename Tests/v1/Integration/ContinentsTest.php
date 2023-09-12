@@ -269,4 +269,23 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
         $decodedResponse = json_decode($response, true);
         $this->assertEquals($expectedContinent, strtolower($decodedResponse[0]['Continent']));
     }
+    /**
+     * GET /continents/[id].json
+     * test page does not return removed columns
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testShowRequestsShouldNotHaveRemovedFields()
+    {
+        $continentId = 'asi';
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/continents/" . $continentId . ".json",
+            array('api_key' => $this->APIKey),
+            "show_returns_appropriate_continent"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertFalse(array_key_exists('PercentUrbanized', $decoded[0]));
+    }
 }

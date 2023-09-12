@@ -58,7 +58,7 @@ class Region extends QueryGenerator
      */
     protected $fieldsToSelectArray = array(
         'RegionCode', 'RegionName', 'NbrCountries', 'NbrPGIC', 'NbrLR', 'SumRegion', 'PercentLR', 'SumRegionLR',
-        'PercentPoplLR', 'PercentUrbanized'
+        'PercentPoplLR'
     );
     /**
      * The database table to pull the data from.

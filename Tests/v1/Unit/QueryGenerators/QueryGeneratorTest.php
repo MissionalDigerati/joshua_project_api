@@ -104,7 +104,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      **/
     public function testAddLimitFilterShouldSetTheDefaultLimitAndStartingPreparedVariables()
     {
-        $expectedLimit = 100;
+        $expectedLimit = 250;
         $expectedStarting = 0;
         $queryGenerator = new \QueryGenerators\QueryGenerator(array());
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');

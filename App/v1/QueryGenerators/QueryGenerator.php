@@ -192,7 +192,7 @@ class QueryGenerator
         if (($this->paramExists('limit')) && intval($this->providedParams['limit']) > 0) {
             $this->preparedVariables['limit'] = intval($this->providedParams['limit']);
         } else {
-            $this->preparedVariables['limit'] = 100;
+            $this->preparedVariables['limit'] = 250;
         }
         if (($this->paramExists('page')) && intval($this->providedParams['page']) > 0) {
             // since page starts with 1, but the database starts with 0, we need to minus 1 from page.

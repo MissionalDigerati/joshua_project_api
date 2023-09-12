@@ -78,7 +78,7 @@
                         },
                         {
                             "name": "limit",
-                            "description": "The maximum results to return. (Defaults to 100)",
+                            "description": "The maximum results to return. (Defaults to 250)",
                             "allowMultiple": false,
                             "dataType": "string",
                             "paramType": "query",
