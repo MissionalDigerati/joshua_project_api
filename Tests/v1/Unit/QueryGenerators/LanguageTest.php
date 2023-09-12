@@ -93,7 +93,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      **/
     public function testFindAllWithFiltersShouldReturnAllLanguagesWithoutFilters()
     {
-        $expectedCount = 100;
+        $expectedCount = 250;
         $expectedFirstLanguage = "a'ou";
         $language = new \QueryGenerators\Language(array());
         $language->findAllWithFilters();
@@ -243,26 +243,6 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-     * findAllWithFilters() should limit based on whether they have 4 laws
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByNotHavingFourLaws()
-    {
-        $expected = array('has_four_laws'   =>  'N');
-        $language = new \QueryGenerators\Language($expected);
-        $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $lang) {
-            $this->assertEquals('N', $lang['FourLaws']);
-        }
-    }
-    /**
      * findAllWithFilters() should limit based on whether they have Jesus Film
      *
      * @return void
@@ -280,26 +260,6 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
             $this->assertEquals('N', $lang['JF']);
-        }
-    }
-    /**
-     * findAllWithFilters() should limit based on whether they have God's Story
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByNotHavingGodsStory()
-    {
-        $expected = array('has_gods_story'   =>  'N');
-        $language = new \QueryGenerators\Language($expected);
-        $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $lang) {
-            $this->assertEquals('N', $lang['GodsStory']);
         }
     }
     /**
@@ -321,86 +281,6 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $countries = explode("|", $expected['countries']);
         foreach ($data as $lang) {
             $this->assertTrue(in_array(strtolower($lang['ROG3']), $countries));
-        }
-    }
-    /**
-     * findAllWithFilters() should limit based on world speakers
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByWorldSpeakers()
-    {
-        $expected = array('world_speakers'   =>  '10');
-        $language = new \QueryGenerators\Language($expected);
-        $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $lang) {
-            $this->assertEquals(intval($expected['world_speakers']), intval($lang['WorldSpeakers']));
-        }
-    }
-    /**
-     * findAllWithFilters() should limit based on population
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByPopulation()
-    {
-        $expected = array('population'   =>  '18000');
-        $language = new \QueryGenerators\Language($expected);
-        $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $lang) {
-            $this->assertEquals(18000, intval($lang['JPPopulation']));
-        }
-    }
-    /**
-     * findAllWithFilters() should limit based on percent evangelical
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByEvangelical()
-    {
-        $expected = array('pc_evangelical'   =>  '10');
-        $language = new \QueryGenerators\Language($expected);
-        $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $lang) {
-            $this->assertEquals(10, floatval($lang['PercentEvangelical']));
-        }
-    }
-    /**
-     * findAllWithFilters() should limit based on percent adherent
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testFindAllWithFiltersShouldFilterByAdherent()
-    {
-        $expected = array('pc_adherent'   =>  '60');
-        $language = new \QueryGenerators\Language($expected);
-        $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data));
-        foreach ($data as $lang) {
-            $this->assertEquals(60, floatval($lang['PercentAdherents']));
         }
     }
     /**

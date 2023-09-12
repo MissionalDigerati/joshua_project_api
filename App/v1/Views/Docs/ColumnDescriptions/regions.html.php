@@ -38,10 +38,6 @@
                     <td>The percentage of the population that live in least reached people groups in this region.</td>
                 </tr>
                 <tr>
-                    <td>PercentUrbanized</td>
-                    <td>The percentage of urbanized living in this region.</td>
-                </tr>
-                <tr>
                     <td>RegionCode</td>
                     <td>The unique id for this region. [1-12]</td>
                 </tr>

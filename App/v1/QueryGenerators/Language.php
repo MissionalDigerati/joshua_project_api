@@ -57,11 +57,10 @@ class Language extends QueryGenerator
      * @access  protected
      */
     protected $fieldsToSelectArray = array(
-        'ROL3', 'Language', 'WebLangText', 'Status', 'ROG3', 'HubCountry', 'WorldSpeakers', 'BibleStatus',
-        'TranslationNeedQuestionable', 'BibleYear', 'NTYear', 'PortionsYear', 'ROL3Edition14', 'ROL3Edition14Orig',
-        'JF', 'JF_URL', 'JF_ID', 'GRN_URL', 'AudioRecordings','GodsStory', 'FCBH_ID', 'JPScale', 'PercentAdherents',
-        'PercentEvangelical', 'LeastReached', 'JPPopulation', 'RLG3', 'PrimaryReligion', 'NbrPGICs', 'NbrCountries',
-        'FourLaws', 'FourLaws_URL'
+        'ROL3', 'Language', 'WebLangText', 'Status', 'ROG3', 'HubCountry', 'BibleStatus',
+        'TranslationNeedQuestionable', 'BibleYear', 'NTYear', 'PortionsYear',
+        'JF', 'AudioRecordings', 'JPScale',
+        'LeastReached', 'RLG3', 'PrimaryReligion', 'NbrPGICs', 'NbrCountries'
     );
     /**
      * The Database table to pull the data from.
@@ -172,21 +171,6 @@ class Language extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
-        if ($this->paramExists('has_four_laws')) {
-            $this->validator->stringLength(
-                $this->providedParams['has_four_laws'],
-                1
-            );
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateWhereStatementForBoolean(
-                $this->providedParams['has_four_laws'],
-                'FourLaws',
-                'has_four_laws'
-            );
-            $appendAndOnWhere = true;
-        }
         if ($this->paramExists('has_jesus_film')) {
             $this->validator->stringLength(
                 $this->providedParams['has_jesus_film'],
@@ -199,21 +183,6 @@ class Language extends QueryGenerator
                 $this->providedParams['has_jesus_film'],
                 'JF',
                 'has_jesus_film'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('has_gods_story')) {
-            $this->validator->stringLength(
-                $this->providedParams['has_gods_story'],
-                1
-            );
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateWhereStatementForBoolean(
-                $this->providedParams['has_gods_story'],
-                'GodsStory',
-                'has_gods_story'
             );
             $appendAndOnWhere = true;
         }
@@ -277,39 +246,6 @@ class Language extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
-        if ($this->paramExists('pc_adherent')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_adherent'],
-                'PercentAdherents',
-                'pc_adherent'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('pc_evangelical')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['pc_evangelical'],
-                'PercentEvangelical',
-                'pc_evangelical'
-            );
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('population')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['population'],
-                'JPPopulation',
-                'pop'
-            );
-            $appendAndOnWhere = true;
-        }
         if ($this->paramExists('primary_religions')) {
             $religions = explode('|', $this->providedParams['primary_religions']);
             foreach ($religions as $religion) {
@@ -319,17 +255,6 @@ class Language extends QueryGenerator
                 $where .= " AND ";
             }
             $where .= $this->generateInStatementFromPipedString($this->providedParams['primary_religions'], 'RLG3');
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('world_speakers')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateBetweenStatementFromDashSeperatedString(
-                $this->providedParams['world_speakers'],
-                'WorldSpeakers',
-                'world_speak'
-            );
             $appendAndOnWhere = true;
         }
         if ($where != "") {

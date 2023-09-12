@@ -54,10 +54,6 @@
                     <td>Country name</td>
                 </tr>
                 <tr>
-                    <td>EthnolinguisticMap</td>
-                    <td>Ethnolinguistic map URL</td>
-                </tr>
-                <tr>
                     <td>Frontier</td>
                     <td>
                         Is this group considered a Frontier Unreached People Group? Learn more 
@@ -211,10 +207,6 @@
                     <td>Percent of people in group who are Buddhist</td>
                 </tr>
                 <tr>
-                    <td>PCDblyProfessing</td>
-                    <td>Percent of people in group who are Doubly Professing.</td>
-                </tr>
-                <tr>
                     <td>PCEthnicReligions</td>
                     <td>Percent of people in group who practice Ethnic Religions</td>
                 </tr>
@@ -335,24 +327,12 @@
                     <td>Photo source link, hyperlink for credits display</td>
                 </tr>
                 <tr>
-                    <td>PhotoHeight</td>
-                    <td>Photo height</td>
-                </tr>
-                <tr>
                     <td>PhotoPermission</td>
                     <td>Does Joshua Project have permission to use this photo?</td>
                 </tr>
                 <tr>
-                    <td>PhotoWidth</td>
-                    <td>Photo width</td>
-                </tr>
-                <tr>
                     <td>Population</td>
                     <td>Population of people group in the given country</td>
-                </tr>
-                <tr>
-                    <td>PopulationPercentUN</td>
-                    <td>Population percent of UN country population</td>
                 </tr>
                 <tr>
                     <td>PopulationPGAC</td>
@@ -387,10 +367,6 @@
                 <tr>
                     <td>ProfileTextExists</td>
                     <td>Does profile text exist for this people group?</td>
-                </tr>
-                <tr>
-                    <td>RaceCode</td>
-                    <td>Ethnicity code from WCD data</td>
                 </tr>
                 <tr>
                     <td>RegionCode</td>
@@ -434,14 +410,6 @@
                 <tr>
                     <td>ROL3</td>
                     <td>Ethnologue language code, 17th Edition</td>
-                </tr>
-                <tr>
-                    <td>ROL3OfficialLanguage</td>
-                    <td>Official language code</td>
-                </tr>
-                <tr>
-                    <td>ROL4</td>
-                    <td>Dialect code</td>
                 </tr>
                 <tr>
                     <td>ROP1</td>

@@ -259,12 +259,9 @@
         "LocationInCountry": "Principally Pretoria and Bloemfontein. Cape Malays mainly in Cape Town; some in Johannesburg, Pretoria, Durban, and Port Elizabeth",
         "ROP1": "A008",
         "ROP2": "C0123",
-        "PopulationPercentUN": 0.54051,
         "Category": "3",
-        "ROL4": 0,
         "PrimaryLanguageDialect": null,
         "NumberLanguagesSpoken": 2,
-        "ROL3OfficialLanguage": "eng",
         "OfficialLang": "English",
         "SpeakNationalLang": null,
         "BibleStatus": 5,
@@ -284,21 +281,15 @@
         "PCNonReligious": 0,
         "PCUnknown": 0,
         "SecurityLevel": 0,
-        "RaceCode": "NAN58",
         "LRTop100": "N",
-        "PhotoWidth": 200,
-        "PhotoHeight": 250,
         "ProfileTextExists": "Y",
         "CountOfProvinces": null,
-        "EthnolinguisticMap": "http://www.lib.utexas.edu/maps/africa/south_africa_racial_1979.jpg",
-        "MapID": "afr-SF",
         "IndigenousCode": "Y",
         "PercentChristianPC": "7.590",
         "PercentChristianPGAC": "0.500",
         "PercentEvangelicalPC": "3.677",
         "PercentEvangelicalPGAC": "0.200",
         "PCBuddhism": 0,
-        "PCDblyProfessing": null,
         "PCEthnicReligions": 0,
         "PCHinduism": 0,
         "PCOtherSmall": 0,
@@ -375,12 +366,9 @@
             &lt;LocationInCountry&gt;Principally Pretoria and Bloemfontein. Cape Malays mainly in Cape Town; some in Johannesburg, Pretoria, Durban, and Port Elizabeth&lt;/LocationInCountry&gt;
             &lt;ROP1&gt;A008&lt;/ROP1&gt;
             &lt;ROP2&gt;C0123&lt;/ROP2&gt;
-            &lt;PopulationPercentUN&gt;0.54051&lt;/PopulationPercentUN&gt;
             &lt;Category&gt;3&lt;/Category&gt;
-            &lt;ROL4&gt;0&lt;/ROL4&gt;
             &lt;PrimaryLanguageDialect/&gt;
             &lt;NumberLanguagesSpoken&gt;2&lt;/NumberLanguagesSpoken&gt;
-            &lt;ROL3OfficialLanguage&gt;eng&lt;/ROL3OfficialLanguage&gt;
             &lt;OfficialLang&gt;English&lt;/OfficialLang&gt;
             &lt;SpeakNationalLang/&gt;
             &lt;BibleStatus&gt;5&lt;/BibleStatus&gt;
@@ -400,21 +388,15 @@
             &lt;PCNonReligious&gt;0&lt;/PCNonReligious&gt;
             &lt;PCUnknown&gt;0&lt;/PCUnknown&gt;
             &lt;SecurityLevel&gt;0&lt;/SecurityLevel&gt;
-            &lt;RaceCode&gt;NAN58&lt;/RaceCode&gt;
             &lt;LRTop100&gt;N&lt;/LRTop100&gt;
-            &lt;PhotoWidth&gt;200&lt;/PhotoWidth&gt;
-            &lt;PhotoHeight&gt;250&lt;/PhotoHeight&gt;
             &lt;ProfileTextExists&gt;Y&lt;/ProfileTextExists&gt;
             &lt;CountOfProvinces/&gt;
-            &lt;EthnolinguisticMap&gt;http://www.lib.utexas.edu/maps/africa/south_africa_racial_1979.jpg&lt;/EthnolinguisticMap&gt;
-            &lt;MapID&gt;afr-SF&lt;/MapID&gt;
             &lt;IndigenousCode&gt;Y&lt;/IndigenousCode&gt;
             &lt;PercentChristianPC&gt;7.590&lt;/PercentChristianPC&gt;
             &lt;PercentChristianPGAC&gt;0.500&lt;/PercentChristianPGAC&gt;
             &lt;PercentEvangelicalPC&gt;3.677&lt;/PercentEvangelicalPC&gt;
             &lt;PercentEvangelicalPGAC&gt;0.200&lt;/PercentEvangelicalPGAC&gt;
             &lt;PCBuddhism&gt;0&lt;/PCBuddhism&gt;
-            &lt;PCDblyProfessing/&gt;
             &lt;PCEthnicReligions&gt;0&lt;/PCEthnicReligions&gt;
             &lt;PCHinduism&gt;0&lt;/PCHinduism&gt;
             &lt;PCOtherSmall&gt;0&lt;/PCOtherSmall&gt;

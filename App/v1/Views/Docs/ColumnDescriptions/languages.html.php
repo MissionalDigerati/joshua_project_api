@@ -30,44 +30,12 @@
                     <td>The year this language's Bible was completed.</td>
                 </tr>
                 <tr>
-                    <td>FCBH_ID</td>
-                    <td>Faith Comes By Hearing audio bible ID number.</td>
-                </tr>
-                <tr>
-                    <td>FourLaws</td>
-                    <td>Is the Four Spiritual Laws available in this language?</td>
-                </tr>
-                <tr>
-                    <td>FourLaws_URL</td>
-                    <td>The URL for this language's Four Spiritual Laws.</td>
-                </tr>
-                <tr>
-                    <td>GodsStory</td>
-                    <td>Is God's Story available in this language?</td>
-                </tr>
-                <tr>
-                    <td>GRN_URL</td>
-                    <td>Global Recording Network's URL for resources in this language.</td>
-                </tr>
-                <tr>
                     <td>HubCountry</td>
                     <td>The main concentration of this language.</td>
                 </tr>
                 <tr>
                     <td>JF</td>
                     <td>Is the Jesus Film available in this language?</td>
-                </tr>
-                <tr>
-                    <td>JF_ID</td>
-                    <td>The unique identifier for this languages Jesus Film project.</td>
-                </tr>
-                <tr>
-                    <td>JF_URL</td>
-                    <td>The URL for this language's Jesus Film.</td>
-                </tr>
-                <tr>
-                    <td>JPPopulation</td>
-                    <td>This language's population.</td>
                 </tr>
                 <tr>
                     <td>JPScale</td>
@@ -97,14 +65,6 @@
                     <td>The year the translation of the New Testament was completed in this language.</td>
                 </tr>
                 <tr>
-                    <td>PercentAdherents</td>
-                    <td>Percent of people in this language who are Christian Adherents.</td>
-                </tr>
-                <tr>
-                    <td>PercentEvangelical</td>
-                    <td>Percent of people in this language who are Evangelical.</td>
-                </tr>
-                <tr>
                     <td>PortionsYear</td>
                     <td>The year that the portions of the Bible was completed in this language.</td>
                 </tr>
@@ -128,14 +88,6 @@
                     <td>The ISO 3 Letter Code for this language.</td>
                 </tr>
                 <tr>
-                    <td>ROL3Edition14</td>
-                    <td>The ISO 3 Letter Code for this language, 14th Edition Ethnologue.</td>
-                </tr>
-                <tr>
-                    <td>ROL3Edition14Orig</td>
-                    <td>The ISO 3 Letter Code for this language, 14th Edition Ethnologue, Original.</td>
-                </tr>
-                <tr>
                     <td>Status</td>
                     <td>Language status [L - Living, E - Extinct, N - Nearly extinct, H - Historical, A - Ancient, 
                         C - Constructed].</td>
@@ -147,10 +99,6 @@
                 <tr>
                     <td>WebLangText</td>
                     <td>Language text display.</td>
-                </tr>
-                <tr>
-                    <td>WorldSpeakers</td>
-                    <td>Total number of world speakers</td>
                 </tr>
             </tbody>
         </table>
