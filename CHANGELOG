@@ -1,4 +1,97 @@
-Unreleased
+Version 1.6.0
+
+- Increased the limit on all endpoints to 250 results.
+
+The following changes were made because the data was outdated:
+
+## Continent Columns:
+
+REMOVED PercentUrbanized column from all countries endpoints.
+
+## Country Endpoint Parameters:
+
+REMOVED pc_buddhist argument from /countries endpoint.
+REMOVED pc_christianity argument from /countries endpoint.
+REMOVED pc_ethnic_religion argument from /countries endpoint.
+REMOVED pc_evangelical argument from /countries endpoint.
+REMOVED pc_hindu argument from /countries endpoint.
+REMOVED pc_islam argument from /countries endpoint.
+REMOVED pc_non_religious argument from /countries endpoint.
+REMOVED pc_other_religion argument from /countries endpoint.
+REMOVED pc_unknown argument from /countries endpoint.
+
+## Country Columns:
+
+REMOVED AltName column from all countries endpoints.
+REMOVED AreaSquareMiles column from all countries endpoints.
+REMOVED InternetCtryCode column from all countries endpoints.
+REMOVED PercentBuddhism column from all countries endpoints.
+REMOVED PercentChristianity column from all countries endpoints.
+REMOVED PercentEthnicReligions column from all countries endpoints.
+REMOVED PercentEvangelical column from all countries endpoints.
+REMOVED PercentHinduism column from all countries endpoints.
+REMOVED PercentIslam column from all countries endpoints.
+REMOVED PercentNonReligious column from all countries endpoints.
+REMOVED PercentOtherSmall column from all countries endpoints.
+REMOVED PercentUnknown column from all countries endpoints.
+REMOVED PercentUrbanized column from all countries endpoints.
+REMOVED PoplGrowthRate column from all countries endpoints.
+REMOVED PrayercastVideo column from all countries endpoints.
+REMOVED ReligionDataYear column from all countries endpoints.
+REMOVED RLG4Primary column from all countries endpoints.
+REMOVED StateDeptReligiousFreedom column from all countries endpoints.
+REMOVED UNMap column from all countries endpoints.
+
+## Language Endpoint Parameters:
+
+REMOVED has_four_laws argument from /languages endpoint.
+REMOVED has_gods_story argument from /languages endpoint.
+REMOVED pc_adherent argument from /languages endpoint.
+REMOVED pc_evangelical argument from /languages endpoint.
+REMOVED population argument from /languages endpoint.
+REMOVED world_speakers argument from /languages endpoint.
+
+## Language Columns:
+
+REMOVED FCBH_ID column from all languages endpoints.
+REMOVED FourLaws column from all languages endpoints.
+REMOVED FourLaws_URL column from all languages endpoints.
+REMOVED GodsStory column from all languages endpoints.
+REMOVED GRN_URL column from all languages endpoints.
+REMOVED JF_ID column from all languages endpoints.
+REMOVED JF_URL column from all languages endpoints.
+REMOVED JPPopulation column from all languages endpoints.
+REMOVED PercentAdherents column from all languages endpoints.
+REMOVED PercentEvangelical column from all languages endpoints.
+REMOVED ROL3Edition14 column from all languages endpoints.
+REMOVED ROL3Edition14Orig column from all languages endpoints.
+REMOVED WorldSpeakers column from all languages endpoints.
+
+## People Group Endpoint Parameters:
+
+REMOVED has_four_laws argument from /people_groups endpoint.
+
+## People Group Columns:
+
+REMOVED EthnolinguisticMap column from all people_groups endpoints.
+REMOVED MapID column from all people_groups endpoints.
+REMOVED PCDblyProfessing column from all people_groups endpoints.
+REMOVED PhotoHeight column from all people_groups endpoints.
+REMOVED PhotoWidth column from all people_groups endpoints.
+REMOVED PopulationPercentUN column from all people_groups endpoints.
+REMOVED RaceCode column from all people_groups endpoints.
+REMOVED ROL3OfficialLanguage column from all people_groups endpoints.
+REMOVED ROL4 column from all people_groups endpoints.
+
+## Region Columns:
+
+REMOVED PercentUrbanized column from all regions endpoints.
+
+Version 1.5.1
+
+- Fixed the map and photo URLs for people groups to match the new locations.
+
+Version 1.5.0
 
 - Updated PHP's Slim library to version 3.12.4
 - Fixed PeopleGroupPhotoURL: If it was NULL or empty, it would send a URL with no file appended.  Now it sends an empty string.

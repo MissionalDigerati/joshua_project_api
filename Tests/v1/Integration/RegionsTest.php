@@ -258,4 +258,23 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($regionId, intval($decodedResponse[0]['RegionCode']));
         $this->assertEquals($expectedRegion, strtolower($decodedResponse[0]['RegionName']));
     }
+    /**
+     * GET /regions/[id].json
+     * test page does not return removed fields
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testShowRequestsShouldNotReturnRemovedFields()
+    {
+        $regionId = 10;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/regions/" . $regionId . ".json",
+            array('api_key' => $this->APIKey),
+            "show_returns_appropriate_region"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertFalse(array_key_exists('PercentUrbanized', $decoded[0]));
+    }
 }
