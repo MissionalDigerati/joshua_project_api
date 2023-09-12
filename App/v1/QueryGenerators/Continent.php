@@ -72,7 +72,7 @@ class Continent extends QueryGenerator
      */
     protected $fieldsToSelectArray = array(
         'ROG2', 'Continent', 'NbrCountries', 'NbrPGIC', 'NbrLR', 'SumContinent',
-        'PercentLR', 'SumContinentLR', 'PercentPoplLR', 'PercentUrbanized'
+        'PercentLR', 'SumContinentLR', 'PercentPoplLR'
     );
     /**
      * The Database table to pull the data from.

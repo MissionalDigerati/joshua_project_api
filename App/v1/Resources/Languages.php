@@ -190,22 +190,6 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
- *                  name="has_four_laws",
- *                  description="A boolean that states whether you want Languages who have access to the 4 Spiritual Laws. (y or n)",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="has_gods_story",
- *                  description="A boolean that states whether you want Languages who have access to the God's Story resource. (y or n)",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
  *                  name="has_jesus_film",
  *                  description="A boolean that states whether you want Languages who have access to the Jesus Film. (y or n)",
  *                  paramType="query",
@@ -278,40 +262,8 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
- *                  name="pc_adherent",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Adherents.(min-max) You can supply just the minimum to get Languages matching that percentage.",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="pc_evangelical",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="population",
- *                  description="A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get Languages matching that number.",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
  *                  name="primary_religions",
  *                  description="A bar separated list of one or more primary religions to filter by. Use the following numbers:<br><ul><li>1 - Christianity</li><li>2 - Buddhism</li><li>4 - Ethnic Religions</li><li>5 - Hinduism</li><li>6 - Islam</li><li>7 - Non-Religious</li><li>8 - Other/Small</li><li>9 - Unknown</li></ul>",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="world_speakers",
- *                  description="A dashed seperated range specifying the minimum and maximum number of world speakers.(min-max) You can supply just the minimum to get Languages matching that number of world speakers.",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",

@@ -239,80 +239,8 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
- *                  name="pc_buddhist",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Buddhist.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="pc_christianity",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Christians.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="pc_ethnic_religion",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Ethnic Religions.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="pc_evangelical",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="pc_hindu",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Hindus.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="pc_islam",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="pc_non_religious",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Non-Religious.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="pc_other_religion",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Other Religions.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
  *                  name="pc_protestant",
  *                  description="A dashed seperated range specifying the minimum and maximum percentage of Protestants.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="pc_unknown",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Unkown Religions.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",
  *                  required="false",
  *                  allowMultiple="false",

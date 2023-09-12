@@ -38,10 +38,6 @@
                     <td>The percentage of the population that live in least reached people groups on the continent.</td>
                 </tr>
                 <tr>
-                    <td>PercentUrbanized</td>
-                    <td>The percentage of urbanized living on the continent.</td>
-                </tr>
-                <tr>
                     <td>ROG2</td>
                     <td>HIS Registry of Geography (ROG) continent code</td>
                 </tr>

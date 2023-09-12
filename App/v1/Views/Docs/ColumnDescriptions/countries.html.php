@@ -18,14 +18,6 @@
         <table class='table table-hover table-bordered'>
             <tbody>
                 <tr>
-                    <td>AltName</td>
-                    <td>Alternate Name for Country</td>
-                </tr>
-                <tr>
-                    <td>AreaSquareMiles</td>
-                    <td>Area of Country in Square Miles</td>
-                </tr>
-                <tr>
                     <td>BibleComplete</td>
                     <td>
                         Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
@@ -67,10 +59,6 @@
                     <td>Name of Country</td>
                 </tr>
                 <tr>
-                    <td>InternetCtryCode</td>
-                    <td>Internet Country Code</td>
-                </tr>
-                <tr>
                     <td>ISO2</td>
                     <td>ISO 2 character code for country</td>
                 </tr>
@@ -84,64 +72,12 @@
                         this country.</td>
                 </tr>
                 <tr>
-                    <td>PercentBuddhism</td>
-                    <td>Percent of people in this country who are Buddhist</td>
-                </tr>
-                <tr>
-                    <td>PercentChristianity</td>
-                    <td>Percent of people in this country who are Christians</td>
-                </tr>
-                <tr>
-                    <td>PercentEthnicReligions</td>
-                    <td>Percent of people in this country who practice Ethnic Religions</td>
-                </tr>
-                <tr>
-                    <td>PercentEvangelical</td>
-                    <td>Percent of people in this country who are Evangelical</td>
-                </tr>
-                <tr>
-                    <td>PercentHinduism</td>
-                    <td>Percent of people in this country who are Hindu</td>
-                </tr>
-                <tr>
-                    <td>PercentIslam</td>
-                    <td>Percent of people in this country who are Muslim</td>
-                </tr>
-                <tr>
-                    <td>PercentNonReligious</td>
-                    <td>Percent of people in this country who are Non-Religious</td>
-                </tr>
-                <tr>
-                    <td>PercentOtherSmall</td>
-                    <td>Percent of people in this country who practice Other or Smaller Religions</td>
-                </tr>
-                <tr>
                     <td>PctChristianDoublyProfessing</td>
                     <td>Percent of people in this country who are Doubly Professing Christians</td>
                 </tr>
                 <tr>
-                    <td>PercentUnknown</td>
-                    <td>Percent of people in this country who's religious background is unknown</td>
-                </tr>
-                <tr>
-                    <td>PercentUrbanized</td>
-                    <td>Percent of urbanized population</td>
-                </tr>
-                <tr>
-                    <td>PoplGrowthRate</td>
-                    <td>Population Annual Growth Rate</td>
-                </tr>
-                <tr>
                     <td>Population</td>
                     <td>Country Population</td>
-                </tr>
-                <tr>
-                    <td>PopulationSource</td>
-                    <td>Population Source</td>
-                </tr>
-                <tr>
-                    <td>PrayercastVideo</td>
-                    <td>Prayercast URL (Prayercast website)</td>
                 </tr>
                 <tr>
                     <td>PrimaryReligion</td>
@@ -160,10 +96,6 @@
                     <td>The Region's Name</td>
                 </tr>
                 <tr>
-                    <td>ReligionDataYear</td>
-                    <td>Religion Data Year</td>
-                </tr>
-                <tr>
                     <td>ReligionPrimary</td>
                     <td>The text of the primary religion</td>
                 </tr>
@@ -172,10 +104,6 @@
                     <td>Primary religion of the people group in this country [1 - Christianity, 2 - Buddhism,
                         4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small,
                         9 - Unknown]</td>
-                </tr>
-                <tr>
-                    <td>RLG4Primary</td>
-                    <td>Primary Religion sub-division for this country</td>
                 </tr>
                 <tr>
                     <td>ROG2</td>
@@ -190,16 +118,8 @@
                     <td>The ISO 3 Letter Code for the Official language of country</td>
                 </tr>
                 <tr>
-                    <td>ROL3SecondaryLanguage</td>
-                    <td>The ISO 3 Letter Code for the Secondary language of country</td>
-                </tr>
-                <tr>
                     <td>SecurityLevel</td>
                     <td>0 = no security concerns;  1 = moderate security concerns, 2 = high security concerns</td>
-                </tr>
-                <tr>
-                    <td>StateDeptReligiousFreedom</td>
-                    <td>Code for URL link to current Report on International Religious Freedom</td>
                 </tr>
                 <tr>
                     <td>TranslationNeeded</td>
@@ -221,10 +141,6 @@
                         Of the total Primary Languages (CntPrimaryLanguages), how many of them have a
                          Bible Status of <strong>Unspecified</strong>.
                     </td>
-                </tr>
-                <tr>
-                    <td>UNMap</td>
-                    <td>Link to UN Political map in PDF format</td>
                 </tr>
                 <tr>
                     <td>Window1040</td>
