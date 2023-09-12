@@ -2,11 +2,23 @@ Version 1.6.0
 
 - Increased the limit on all endpoints to 250 results.
 
+The following was added to the API:
+
+## Country Endpoint Parameters:
+
+ADDED pop_in_frontier argument to /countries endpoint.
+ADDED pop_in_unreached argument to /countries endpoint.
+
+## Country Columns:
+
+ADDED PoplPeoplesLR column from all countries endpoints.
+ADDED PoplPeoplesFPG column from all countries endpoints.
+
 The following changes were made because the data was outdated:
 
 ## Continent Columns:
 
-REMOVED PercentUrbanized column from all countries endpoints.
+REMOVED PercentUrbanized column from all continent endpoints.
 
 ## Country Endpoint Parameters:
 

@@ -60,7 +60,7 @@ class Country extends QueryGenerator
         'ROG2', 'ROG3', 'ROL3OfficialLanguage', 'RLG3Primary', 'RegionCode', 'ROG3', 'ISO3', 'ISO2',
         'ROG2', 'RegionName', 'Capital', 'Population', 'SecurityLevel', 'CntPeoples', 'CntPeoplesLR',
         'CntPrimaryLanguages', 'TranslationUnspecified', 'TranslationNeeded', 'TranslationStarted',
-        'BiblePortions', 'BibleNewTestament', 'BibleComplete'
+        'BiblePortions', 'BibleNewTestament', 'BibleComplete', 'PoplPeoplesLR', 'PoplPeoplesFPG'
     );
     /**
      * The Database table to pull the data from.
@@ -180,6 +180,28 @@ class Country extends QueryGenerator
                 $this->providedParams['population'],
                 'Population',
                 'pop'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pop_in_frontier')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pop_in_frontier'],
+                'PoplPeoplesFPG',
+                'pop_frontier'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pop_in_unreached')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pop_in_unreached'],
+                'PoplPeoplesLR',
+                'pop_unreached'
             );
             $appendAndOnWhere = true;
         }

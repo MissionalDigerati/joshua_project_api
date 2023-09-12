@@ -80,6 +80,14 @@
                     <td>Country Population</td>
                 </tr>
                 <tr>
+                    <td>PoplPeoplesFPG</td>
+                    <td>Total population living in frontier people groups of the country.</td>
+                </tr>
+                <tr>
+                    <td>PoplPeoplesLR</td>
+                    <td>Total population living in unreached people groups of the country.</td>
+                </tr>
+                <tr>
                     <td>PrimaryReligion</td>
                     <td>Primary religion for this country [1 - Christianity, 2 - Buddhism, 4 - Ethnic Religions,
                         5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 9 - Unknown]</td>
