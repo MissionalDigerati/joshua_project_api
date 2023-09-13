@@ -108,6 +108,7 @@ class APIAuthMiddleware
                 $res
             );
         }
+        $this->setLastRequest($apiKey);
 
         return $next($req, $res);
     }
@@ -135,5 +136,18 @@ class APIAuthMiddleware
             return false;
         }
         return true;
+    }
+
+    /**
+     * Set the last_request for the given API key to NOW()
+     *
+     * @param string $apiKey    The API key
+     * @return void
+     */
+    private function setLastRequest($apiKey)
+    {
+        $query = "UPDATE md_api_keys SET last_request = NOW() where api_key = :api_key";
+        $statement = $this->db->prepare($query);
+        $statement->execute(array('api_key' => $apiKey));
     }
 }
