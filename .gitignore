@@ -12,3 +12,4 @@ _docker/
 .vscode/
 .env
 .env.testing
+Public/.htaccess
