@@ -98,7 +98,7 @@ class ProfileText extends QueryGenerator
             " FROM jpprofiletopeople JOIN jpprofiletext ON jpprofiletopeople.ProfileID = jpprofiletext.ProfileID " .
             "WHERE jpprofiletopeople.PeopleID3 = :id AND jpprofiletopeople.ROG3 = :country " .
             "AND jpprofiletopeople.ROL3Profile = 'eng' AND jpprofiletext.ROL3Profile = 'eng' " .
-            "AND jpprofiletext.Format = 'M'";
+            "AND jpprofiletext.Format = 'M' ORDER BY jpprofiletopeople.EditDate DESC LIMIT 1";
 
         $this->preparedVariables = array('id' => $id, 'country' => $country);
     }
