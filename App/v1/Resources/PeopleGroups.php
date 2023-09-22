@@ -677,7 +677,10 @@ $app->get(
                 $statement = $this->db->prepare($profileText->preparedStatement);
                 $statement->execute($profileText->preparedVariables);
                 $profileData = $statement->fetch(PDO::FETCH_ASSOC);
-                $data[$key]['Summary'] = ((empty($profileData)) || (!array_key_exists('Summary', $profileData))) ? '' : $profileData['Summary'];
+                $data[$key]['Summary'] = '';
+                if ((!empty($profileData)) && (array_key_exists('Summary', $profileData))) {
+                    $data[$key]['Summary'] = $profileData['Summary'];
+                }
             } catch (Exception $e) {
                 $data[$key]['Summary'] = '';
             }
