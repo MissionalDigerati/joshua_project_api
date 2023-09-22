@@ -140,7 +140,7 @@ $app->get(
             );
         }
         /**
-         * Get the ProfileText and Resources for each of the People Group
+         * Get the ProfileText (Summary) for each of the People Group
          *
          * @return void
          * @author Johnathan Pulos
@@ -675,8 +675,9 @@ $app->get(
                 );
                 $profileText->findAllByIdAndCountry();
                 $statement = $this->db->prepare($profileText->preparedStatement);
-                $profileData = $statement->fetchAll(PDO::FETCH_ASSOC);
-                $data[$key]['Summary'] = (empty($profileData)) ? '' : $profileData[0]['Summary'];
+                $statement->execute($profileText->preparedVariables);
+                $profileData = $statement->fetch(PDO::FETCH_ASSOC);
+                $data[$key]['Summary'] = ((empty($profileData)) || (!array_key_exists('Summary', $profileData))) ? '' : $profileData['Summary'];
             } catch (Exception $e) {
                 $data[$key]['Summary'] = '';
             }
