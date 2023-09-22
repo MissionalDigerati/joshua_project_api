@@ -1,3 +1,7 @@
+Version 1.6.3
+
+Summary was missing from the people groups query. Fixed it.
+
 Version 1.6.1
 
 We now update the last_request parameter everytime a request comes in.  This will allow us to see the active API keys.
