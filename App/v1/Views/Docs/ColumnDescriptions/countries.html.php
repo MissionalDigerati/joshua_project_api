@@ -92,6 +92,10 @@
                     <td>Percent of people in this country who are Evangelical</td>
                 </tr>
                 <tr>
+                    <td>PercentHinduism</td>
+                    <td>Percent of people in this country who are Hindu</td>
+                </tr>
+                <tr>
                     <td>Population</td>
                     <td>Country Population</td>
                 </tr>
