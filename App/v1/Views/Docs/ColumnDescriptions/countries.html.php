@@ -76,6 +76,42 @@
                     <td>Percent of people in this country who are Doubly Professing Christians</td>
                 </tr>
                 <tr>
+                    <td>PercentBuddhism</td>
+                    <td>Percent of people in this country who are Buddhist</td>
+                </tr>
+                <tr>
+                    <td>PercentChristianity</td>
+                    <td>Percent of people in this country who are Christians</td>
+                </tr>
+                <tr>
+                    <td>PercentEthnicReligions</td>
+                    <td>Percent of people in this country who practice Ethnic Religions</td>
+                </tr>
+                <tr>
+                    <td>PercentEvangelical</td>
+                    <td>Percent of people in this country who are Evangelical</td>
+                </tr>
+                <tr>
+                    <td>PercentHinduism</td>
+                    <td>Percent of people in this country who are Hindu</td>
+                </tr>
+                <tr>
+                    <td>PercentIslam</td>
+                    <td>Percent of people in this country who are Muslim</td>
+                </tr>
+                <tr>
+                    <td>PercentNonReligious</td>
+                    <td>Percent of people in this country who are Non-Religious</td>
+                </tr>
+                <tr>
+                    <td>PercentOtherSmall</td>
+                    <td>Percent of people in this country who practice Other or Smaller Religions</td>
+                </tr>
+                <tr>
+                    <td>PercentUnknown</td>
+                    <td>Percent of people in this country who's religious background is unknown</td>
+                </tr>
+                <tr>
                     <td>Population</td>
                     <td>Country Population</td>
                 </tr>

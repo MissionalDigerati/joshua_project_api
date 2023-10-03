@@ -523,15 +523,6 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('AltName', $decoded[0]));
         $this->assertFalse(array_key_exists('AreaSquareMiles', $decoded[0]));
         $this->assertFalse(array_key_exists('InternetCtryCode', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentBuddhism', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentChristianity', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentEthnicReligions', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentEvangelical', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentHinduism', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentIslam', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentNonReligious', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentOtherSmall', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentUnknown', $decoded[0]));
         $this->assertFalse(array_key_exists('PercentUrbanized', $decoded[0]));
         $this->assertFalse(array_key_exists('PoplGrowthRate', $decoded[0]));
         $this->assertFalse(array_key_exists('PrayercastVideo', $decoded[0]));
@@ -561,15 +552,6 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('AltName', $decoded[0]));
         $this->assertFalse(array_key_exists('AreaSquareMiles', $decoded[0]));
         $this->assertFalse(array_key_exists('InternetCtryCode', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentBuddhism', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentChristianity', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentEthnicReligions', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentEvangelical', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentHinduism', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentIslam', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentNonReligious', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentOtherSmall', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentUnknown', $decoded[0]));
         $this->assertFalse(array_key_exists('PercentUrbanized', $decoded[0]));
         $this->assertFalse(array_key_exists('PoplGrowthRate', $decoded[0]));
         $this->assertFalse(array_key_exists('PrayercastVideo', $decoded[0]));
@@ -985,4 +967,176 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($expected, intval($country['PoplPeoplesFPG']));
         }
     }
+
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCBuddhist()
+    {
+        $expectedMin = 10;
+        $expectedMax = 25;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'pc_buddhist' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_pc_buddhist_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentBuddhism', $countryData));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentBuddhism']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentBuddhism']));
+        }
+    }
+
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCChristianity()
+    {
+        $expectedMin = 10;
+        $expectedMax = 20;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'pc_christianity' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_percent_christianity_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentChristianity', $countryData));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentChristianity']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentChristianity']));
+        }
+    }
+
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCEthnicReligions()
+    {
+        $expectedMin = 1;
+        $expectedMax = 10;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'pc_ethnic_religion' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_pc_ethnic_religion_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentEthnicReligions', $countryData));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentEthnicReligions']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentEthnicReligions']));
+        }
+    }
+
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCEvangelical()
+    {
+        $expectedMin = 0;
+        $expectedMax = 20;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'pc_evangelical' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_percent_evangelical_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentEvangelical', $countryData));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentEvangelical']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentEvangelical']));
+        }
+    }
+
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCHindu()
+    {
+        $expectedMin = 15;
+        $expectedMax = 35;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'pc_hindu' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_pc_hindu_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentHinduism', $countryData));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentHinduism']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentHinduism']));
+        }
+    }
+
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCIslam()
+    {
+        $expectedMin = 85;
+        $expectedMax = 100;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'pc_islam' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_pc_islam_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentIslam', $countryData));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentIslam']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentIslam']));
+        }
+    }
+
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCNonReligious()
+    {
+        $expectedMin = 0;
+        $expectedMax = 10;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'pc_non_religious' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_pc_non_religious_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentNonReligious', $countryData));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentNonReligious']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentNonReligious']));
+        }
+    }
+
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCOtherReligions()
+    {
+        $expectedMin = 2;
+        $expectedMax = 3;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'pc_other_religion' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_pc_other_religion_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentOtherSmall', $countryData));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentOtherSmall']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentOtherSmall']));
+        }
+    }
+
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCUnknown()
+    {
+        $expectedMin = 0;
+        $expectedMax = 0.14;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'pc_unknown' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_pc_unknown_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentUnknown', $countryData));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentUnknown']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentUnknown']));
+        }
+    }
+
 }

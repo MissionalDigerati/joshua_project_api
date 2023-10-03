@@ -1,3 +1,44 @@
+Version 1.6.4
+
+There were several fields removed in a previous version that were neeeded by many developers.  So we added them back.  Here is what was added:
+
+## Country Endpoint Parameters:
+
+ADDED pc_buddhist argument to /countries endpoint.
+ADDED pc_christianity argument to /countries endpoint.
+ADDED pc_ethnic_religion argument to /countries endpoint.
+ADDED pc_evangelical argument to /countries endpoint.
+ADDED pc_hindu argument to /countries endpoint.
+ADDED pc_islam argument to /countries endpoint.
+ADDED pc_non_religious to /countries endpoint.
+ADDED pc_other_religion to /countries endpoint.
+ADDED pc_unknown to /countries endpoint.
+
+## Country Columns:
+
+ADDED PercentBuddhism column from all countries endpoints.
+ADDED PercentChristianity column from all countries endpoints.
+ADDED PercentEthnicReligions column from all countries endpoints.
+ADDED PercentEvangelical column from all countries endpoints.
+ADDED PercentHinduism column from all countries endpoints.
+ADDED PercentIslam column from all countries endpoints.
+ADDED PercentNonReligious column from all countries endpoints.
+ADDED PercentOtherSmall column from all countries endpoints.
+ADDED PercentUnknown column from all countries endpoints.
+
+## Language Endpoint Parameters:
+
+ADDED pc_adherent argument to /countries endpoint.
+ADDED pc_evangelical argument to /countries endpoint.
+
+## Language Columns:
+
+ADDED JF_URL column from all countries endpoints.
+ADDED GRN_URL column from all countries endpoints.
+ADDED FCBH_URL column from all countries endpoints.
+ADDED PercentAdherents column from all countries endpoints.
+ADDED PercentEvangelical column from all countries endpoints.
+
 Version 1.6.3
 
 Summary was missing from the people groups query. Fixed it.
