@@ -188,9 +188,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('FourLaws', $decoded[0]));
         $this->assertFalse(array_key_exists('FourLaws_URL', $decoded[0]));
         $this->assertFalse(array_key_exists('GodsStory', $decoded[0]));
-        $this->assertFalse(array_key_exists('GRN_URL', $decoded[0]));
         $this->assertFalse(array_key_exists('JF_ID', $decoded[0]));
-        $this->assertFalse(array_key_exists('JF_URL', $decoded[0]));
         $this->assertFalse(array_key_exists('JPPopulation', $decoded[0]));
         $this->assertFalse(array_key_exists('ROL3Edition14', $decoded[0]));
         $this->assertFalse(array_key_exists('ROL3Edition14Orig', $decoded[0]));
@@ -288,9 +286,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('FourLaws', $decoded[0]));
         $this->assertFalse(array_key_exists('FourLaws_URL', $decoded[0]));
         $this->assertFalse(array_key_exists('GodsStory', $decoded[0]));
-        $this->assertFalse(array_key_exists('GRN_URL', $decoded[0]));
         $this->assertFalse(array_key_exists('JF_ID', $decoded[0]));
-        $this->assertFalse(array_key_exists('JF_URL', $decoded[0]));
         $this->assertFalse(array_key_exists('JPPopulation', $decoded[0]));
         $this->assertFalse(array_key_exists('ROL3Edition14', $decoded[0]));
         $this->assertFalse(array_key_exists('ROL3Edition14Orig', $decoded[0]));

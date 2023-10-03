@@ -33,6 +33,9 @@ ADDED pc_evangelical argument to /countries endpoint.
 
 ## Language Columns:
 
+ADDED JF_URL column from all countries endpoints.
+ADDED GRN_URL column from all countries endpoints.
+ADDED FCBH_URL column from all countries endpoints.
 ADDED PercentAdherents column from all countries endpoints.
 ADDED PercentEvangelical column from all countries endpoints.
 

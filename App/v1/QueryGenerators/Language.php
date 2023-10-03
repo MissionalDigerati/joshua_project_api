@@ -58,9 +58,9 @@ class Language extends QueryGenerator
      */
     protected $fieldsToSelectArray = array(
         'ROL3', 'Language', 'WebLangText', 'Status', 'ROG3', 'HubCountry', 'BibleStatus',
-        'TranslationNeedQuestionable', 'BibleYear', 'NTYear', 'PortionsYear',
-        'PercentAdherents', 'PercentEvangelical', 'JF', 'AudioRecordings', 'JPScale',
-        'LeastReached', 'RLG3', 'PrimaryReligion', 'NbrPGICs', 'NbrCountries'
+        'GRN_URL', 'TranslationNeedQuestionable', 'BibleYear', 'NTYear', 'PortionsYear',
+        'PercentAdherents', 'PercentEvangelical', 'JF', 'JF_URL', 'AudioRecordings', 'JPScale',
+        'LeastReached', 'RLG3', 'PrimaryReligion', 'FCBH_URL', 'NbrPGICs', 'NbrCountries'
     );
     /**
      * The Database table to pull the data from.

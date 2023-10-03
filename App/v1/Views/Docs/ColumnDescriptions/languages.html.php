@@ -30,12 +30,20 @@
                     <td>The year this language's Bible was completed.</td>
                 </tr>
                 <tr>
+                    <td>GRN_URL</td>
+                    <td>Global Recording Network's URL for resources in this language.</td>
+                </tr>
+                <tr>
                     <td>HubCountry</td>
                     <td>The main concentration of this language.</td>
                 </tr>
                 <tr>
                     <td>JF</td>
                     <td>Is the Jesus Film available in this language?</td>
+                </tr>
+                <tr>
+                    <td>JF_URL</td>
+                    <td>The URL for this language's Jesus Film.</td>
                 </tr>
                 <tr>
                     <td>JPScale</td>
