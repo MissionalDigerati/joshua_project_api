@@ -59,7 +59,7 @@ class Language extends QueryGenerator
     protected $fieldsToSelectArray = array(
         'ROL3', 'Language', 'WebLangText', 'Status', 'ROG3', 'HubCountry', 'BibleStatus',
         'TranslationNeedQuestionable', 'BibleYear', 'NTYear', 'PortionsYear',
-        'JF', 'AudioRecordings', 'JPScale',
+        'PercentAdherents', 'JF', 'AudioRecordings', 'JPScale',
         'LeastReached', 'RLG3', 'PrimaryReligion', 'NbrPGICs', 'NbrCountries'
     );
     /**
@@ -243,6 +243,17 @@ class Language extends QueryGenerator
                 $this->providedParams['needs_translation_questionable'],
                 'TranslationNeedQuestionable',
                 'questionable_need'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_adherent')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_adherent'],
+                'PercentAdherents',
+                'pc_adherent'
             );
             $appendAndOnWhere = true;
         }

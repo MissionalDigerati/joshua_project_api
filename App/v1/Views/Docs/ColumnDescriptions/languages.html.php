@@ -65,6 +65,10 @@
                     <td>The year the translation of the New Testament was completed in this language.</td>
                 </tr>
                 <tr>
+                    <td>PercentAdherents</td>
+                    <td>Percent of people in this language who are Christian Adherents.</td>
+                </tr>
+                <tr>
                     <td>PortionsYear</td>
                     <td>The year that the portions of the Bible was completed in this language.</td>
                 </tr>

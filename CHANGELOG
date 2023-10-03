@@ -26,6 +26,14 @@ ADDED PercentNonReligious column from all countries endpoints.
 ADDED PercentOtherSmall column from all countries endpoints.
 ADDED PercentUnknown column from all countries endpoints.
 
+## Language Endpoint Parameters:
+
+ADDED pc_adherent argument to /countries endpoint.
+
+## Language Columns:
+
+ADDED PercentAdherents column from all countries endpoints.
+
 Version 1.6.3
 
 Summary was missing from the people groups query. Fixed it.

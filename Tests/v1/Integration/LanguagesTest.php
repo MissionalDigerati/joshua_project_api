@@ -30,46 +30,17 @@ namespace Tests\v1\Integration;
  */
 class LanguagesTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * The CachedRequest Object
-     *
-     * @var \PHPToolbox\CachedRequest\CachedRequest
-     */
+
     public $cachedRequest;
-    /**
-     * The PDO database connection object
-     *
-     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
-     */
+
     private $db;
-    /**
-     * The APIKey to access the API
-     *
-     * @var string
-     * @access private
-     **/
+
     private $APIKey = '';
-    /**
-     * The current API version number
-     *
-     * @var string
-     * @access private
-     **/
+
     private $APIVersion;
-    /**
-     * The URL for the testing server
-     *
-     * @var string
-     * @access private
-     **/
+
     private $siteURL;
-    /**
-     * Set up the test class
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function setUp()
     {
         global $API_VERSION;
@@ -87,23 +58,13 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->db = getDatabaseInstance();
         $this->APIKey = createApiKey();
     }
-    /**
-     * Runs at the end of each test
-     *
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function tearDown()
     {
         $this->cachedRequest->clearCache();
         deleteApiKey($this->APIKey);
     }
-    /**
-     * Tests that you can only access page with an API Key
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
+
     public function testShowRequestsShouldRefuseAccessWithoutAnAPIKey()
     {
         $response = $this->cachedRequest->get(
@@ -113,12 +74,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(401, $this->cachedRequest->responseCode);
     }
-    /**
-     * Tests that you can only access page with a version number
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
+
     public function testShowRequestsShouldRefuseAccessWithoutAVersionNumber()
     {
         $response = $this->cachedRequest->get(
@@ -134,12 +90,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
     }
-    /**
-     * Tests that you can not access page without an active API Key
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
+
     public function testShowRequestsShouldRefuseAccessWithoutAnActiveAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
@@ -150,12 +101,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(401, $this->cachedRequest->responseCode);
     }
-    /**
-     * Tests that you can not access page with a suspended API Key
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
+
     public function testShowRequestsShouldRefuseAccessWithSuspendedAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
@@ -166,12 +112,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(401, $this->cachedRequest->responseCode);
     }
-    /**
-     * Tests that you can only access page with a valid API Key
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
+
     public function testShowRequestsShouldRefuseAccessWithABadAPIKey()
     {
         $this->cachedRequest->get(
@@ -181,13 +122,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(401, $this->cachedRequest->responseCode);
     }
-     /**
-      * GET /languages/[id].json
-      * test page is available, and delivers JSON
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testShowRequestsShouldReturnLanguagesInJSON()
     {
         $response = $this->cachedRequest->get(
@@ -198,13 +133,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
     }
-    /**
-      * GET /languages/[id].xml
-      * test page is available, and delivers XML
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testShowRequestsShouldReturnLanguagesInXML()
     {
         $response = $this->cachedRequest->get(
@@ -215,14 +144,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertTrue(isXML($response));
     }
-    /**
-     * GET /languages/[id].json
-     * test the page throws an error if you send it an invalid id
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testShowRequestsShouldThrowErrorIfBadIdProvided()
     {
         $response = $this->cachedRequest->get(
@@ -236,14 +158,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('You provided an invalid language id.', $decoded['api']['error']['details']);
         $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
     }
-    /**
-     * GET /languages/[id].json
-     * test page returns the language requested
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testShowRequestsShouldRetrieveTheCorrectLanguage()
     {
         $expectedLanguageCode = 'aar';
@@ -259,14 +174,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedLanguage, strtolower($decodedResponse[0]['Language']));
         $this->assertEquals($expectedHubCountry, strtolower($decodedResponse[0]['HubCountry']));
     }
-    /**
-     * GET /languages/[id].json
-     * test page does not return removed fields
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testShowRequestsShouldNotReturnRemovedFields()
     {
         $expectedLanguageCode = 'aar';
@@ -284,18 +192,12 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('JF_ID', $decoded[0]));
         $this->assertFalse(array_key_exists('JF_URL', $decoded[0]));
         $this->assertFalse(array_key_exists('JPPopulation', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentAdherents', $decoded[0]));
         $this->assertFalse(array_key_exists('PercentEvangelical', $decoded[0]));
         $this->assertFalse(array_key_exists('ROL3Edition14', $decoded[0]));
         $this->assertFalse(array_key_exists('ROL3Edition14Orig', $decoded[0]));
         $this->assertFalse(array_key_exists('WorldSpeakers', $decoded[0]));
     }
-    /**
-     * Tests that you can only access page with an API Key
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
+
     public function testIndexRequestsShouldRefuseAccessWithoutAnAPIKey()
     {
         $response = $this->cachedRequest->get(
@@ -308,12 +210,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('You are missing your API key.', $decoded['api']['error']['details']);
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
     }
-    /**
-     * Tests that you can only access page with a version number
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
+
     public function testIndexRequestsShouldRefuseAccessWithoutAVersionNumber()
     {
         $response = $this->cachedRequest->get(
@@ -329,12 +226,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
     }
-    /**
-     * Tests that you can not access page without an active API Key
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
+
     public function testIndexRequestsShouldRefuseAccessWithoutAnActiveAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
@@ -345,12 +237,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(401, $this->cachedRequest->responseCode);
     }
-    /**
-     * Tests that you can not access page with a suspended API Key
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
+
     public function testIndexRequestsShouldRefuseAccessWithSuspendedAPIKey()
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
@@ -361,12 +248,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(401, $this->cachedRequest->responseCode);
     }
-    /**
-     * Tests that you can only access page with a valid API Key
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
+
     public function testIndexRequestsShouldRefuseAccessWithABadAPIKey()
     {
         $response = $this->cachedRequest->get(
@@ -376,13 +258,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(401, $this->cachedRequest->responseCode);
     }
-    /**
-      * GET /languages.json
-      * Language Index should return the correct data
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnALanguageInJSON()
     {
         $expectedLanguageCount = 250;
@@ -400,13 +276,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedLanguageCount, count($decodedResponse));
         $this->assertEquals($expectedFirstLanguage, strtolower($decodedResponse[0]['Language']));
     }
-    /**
-     * GET /languages.json
-     * Language Index should return the correct data
-     *
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldNotReturnRemovedFields()
     {
         $response = $this->cachedRequest->get(
@@ -423,19 +293,12 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('JF_ID', $decoded[0]));
         $this->assertFalse(array_key_exists('JF_URL', $decoded[0]));
         $this->assertFalse(array_key_exists('JPPopulation', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentAdherents', $decoded[0]));
         $this->assertFalse(array_key_exists('PercentEvangelical', $decoded[0]));
         $this->assertFalse(array_key_exists('ROL3Edition14', $decoded[0]));
         $this->assertFalse(array_key_exists('ROL3Edition14Orig', $decoded[0]));
         $this->assertFalse(array_key_exists('WorldSpeakers', $decoded[0]));
     }
-    /**
-      * GET /languages.json
-      * Language Index should return the correct limit
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnALimitOfLanguagesBasedOnTheLimitParameter()
     {
         $expectedLimit = 10;
@@ -452,13 +315,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $decodedResponse = json_decode($response, true);
         $this->assertEquals($expectedLimit, count($decodedResponse));
     }
-    /**
-      * GET /languages.json?ids=bzw|bjf
-      * Language Index should return only desired ids
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnTheCorrectLanguageIds()
     {
         $expectedIds = 'bzw|bjf';
@@ -477,13 +334,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array(strtolower($lang['ROL3']), explode('|', $expectedIds)));
         }
     }
-    /**
-      * GET /languages.json?ids=bzwp
-      * Language Index should return an error if the id is too long
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnErrorIfTheIdIsWrong()
     {
         $expectedIds = 'bzwp';
@@ -500,13 +351,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
         $this->assertEquals('One of your parameters are not the correct length.', $decoded['api']['error']['details']);
     }
-    /**
-      * GET /languages.json?has_new_testament=y
-      * Language Index should return only languages with new testaments
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnALanguagesWithNewTestaments()
     {
         $response = $this->cachedRequest->get(
@@ -524,13 +369,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->assertNotNull($lang['NTYear']);
         }
     }
-    /**
-      * GET /languages.json?has_new_testament=y
-      * Language Index should return an error if the value is too long
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnAnErrorIfProvidingTheWrongNewTestamentValue()
     {
         $response = $this->cachedRequest->get(
@@ -546,13 +385,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
         $this->assertEquals('One of your parameters are not the correct length.', $decoded['api']['error']['details']);
     }
-    /**
-      * GET /languages.json?has_portions=y
-      * Language Index should return only languages with portions of the Bible
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnLanguagesWithPortionsOfScriptures()
     {
         $response = $this->cachedRequest->get(
@@ -570,13 +403,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->assertNotNull($lang['PortionsYear']);
         }
     }
-    /**
-      * GET /languages.json?has_new_testament=ysss
-      * Language Index should return an error if the value is too long
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnAnErrorIfHasPortionsParmeterIsWrong()
     {
         $response = $this->cachedRequest->get(
@@ -592,13 +419,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
         $this->assertEquals('One of your parameters are not the correct length.', $decoded['api']['error']['details']);
     }
-    /**
-      * GET /languages.json?has_completed_bible=y
-      * Language Index should return only languages with a complete Bible
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnLanguagesWithCompleteScriptures()
     {
         $response = $this->cachedRequest->get(
@@ -616,13 +437,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->assertNotNull($lang['BibleYear']);
         }
     }
-    /**
-      * GET /languages.json?has_completed_bible=ysss
-      * Language Index should return an error if the value is too long
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnAnErrorIfHasCompleteBibleParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
@@ -638,13 +453,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
         $this->assertEquals('A boolean was set with the wrong value.', $decoded['api']['error']['details']);
     }
-    /**
-      * GET /languages.json?needs_translation_questionable=ysss
-      * Language Index should return an error if the value is too long
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnErrorIfHasQuestionableParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
@@ -660,13 +469,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
         $this->assertEquals('A boolean was set with the wrong value.', $decoded['api']['error']['details']);
     }
-    /**
-      * GET /languages.json?has_audio=y
-      * Language Index should return only languages with audio resources
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnLanguagesWithAudioResources()
     {
         $response = $this->cachedRequest->get(
@@ -684,13 +487,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('Y', $lang['AudioRecordings']);
         }
     }
-    /**
-      * GET /languages.json?has_audio=ysss
-      * Language Index should return an error if the value is too long
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnErrorIfHasAudioParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
@@ -706,13 +503,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
         $this->assertEquals('A boolean was set with the wrong value.', $decoded['api']['error']['details']);
     }
-    /**
-      * GET /languages.json?has_jesus_film=y
-      * Language Index should return only languages with Jesus Film
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnLanguagesWithJesusFilm()
     {
         $response = $this->cachedRequest->get(
@@ -730,13 +521,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('Y', $lang['JF']);
         }
     }
-    /**
-      * GET /languages.json?has_jesus_film=ysss
-      * Language Index should return an error if the value is too long
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnErrorIfHasJesusFilmParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
@@ -752,13 +537,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
         $this->assertEquals('A boolean was set with the wrong value.', $decoded['api']['error']['details']);
     }
-    /**
-      * GET /languages.json?countries=af|cn
-      * Language Index should return only languages based on countries spoken in
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnLanguagesBasedOnCountries()
     {
         $expectedCountries = array('af', 'cn');
@@ -777,13 +556,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array(strtolower($lang['ROG3']), $expectedCountries));
         }
     }
-    /**
-      * GET /languages.json?primary_religions=6|4
-      * Language Index should return only languages with requested primary religions
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnLanguagesBasedOnNumberOfPrimaryReligions()
     {
         $response = $this->cachedRequest->get(
@@ -801,13 +574,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array(strtolower($lang['PrimaryReligion']), array('islam', 'ethnic religions')));
         }
     }
-    /**
-      * GET /languages.json?primary_religions=150
-      * Language Index should return an error if the value is wrong
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnErrorIfPrimaryReligionParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
@@ -823,12 +590,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
         $this->assertEquals('One of the provided integers are out of range.', $decoded['api']['error']['details']);
     }
-    /**
-      * GET /languages.json?jpscale=2-4
-      * Language Index should return only languages with requested jpscale
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnLanguagesBasedOnJPScale()
     {
         $response = $this->cachedRequest->get(
@@ -846,13 +608,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array(floatval($lang['JPScale']), array(2, 3)));
         }
     }
-    /**
-      * GET /languages.json?jpscale=150
-      * Language Index should return an error if the value is wrong
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnErrorIfJPScaleParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
@@ -871,12 +627,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $decoded['api']['error']['details']
         );
     }
-    /**
-      * GET /languages.json?least_reached=n
-      * Language Index should return only languages with least reached
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnLanguagesBasedOnLeastReached()
     {
         $response = $this->cachedRequest->get(
@@ -894,13 +645,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('N', $lang['LeastReached']);
         }
     }
-    /**
-      * GET /languages.json?least_reached=MNNN
-      * Language Index should return an error if the value is wrong
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testIndexRequestsShouldReturnErrorIfLeastReachedParameterIsWrong()
     {
         $response = $this->cachedRequest->get(
@@ -916,4 +661,24 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
         $this->assertEquals('A boolean was set with the wrong value.', $decoded['api']['error']['details']);
     }
+
+    public function testIndexRequestsShouldReturnLanguagesBasedOnNumberOfPercentAdherent()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'pc_adherent'    =>  '35-61'
+            ),
+            "should_return_language_based_on_pc_adherent_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertGreaterThanOrEqual(35.00, floatval($lang['PercentAdherents']));
+            $this->assertLessThanOrEqual(61.00, floatval($lang['PercentAdherents']));
+        }
+    }
+
 }
