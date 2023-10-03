@@ -59,7 +59,7 @@ class Language extends QueryGenerator
     protected $fieldsToSelectArray = array(
         'ROL3', 'Language', 'WebLangText', 'Status', 'ROG3', 'HubCountry', 'BibleStatus',
         'TranslationNeedQuestionable', 'BibleYear', 'NTYear', 'PortionsYear',
-        'PercentAdherents', 'JF', 'AudioRecordings', 'JPScale',
+        'PercentAdherents', 'PercentEvangelical', 'JF', 'AudioRecordings', 'JPScale',
         'LeastReached', 'RLG3', 'PrimaryReligion', 'NbrPGICs', 'NbrCountries'
     );
     /**
@@ -254,6 +254,17 @@ class Language extends QueryGenerator
                 $this->providedParams['pc_adherent'],
                 'PercentAdherents',
                 'pc_adherent'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_evangelical')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_evangelical'],
+                'PercentEvangelical',
+                'pc_evangelical'
             );
             $appendAndOnWhere = true;
         }

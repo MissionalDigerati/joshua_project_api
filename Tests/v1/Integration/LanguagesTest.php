@@ -192,7 +192,6 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('JF_ID', $decoded[0]));
         $this->assertFalse(array_key_exists('JF_URL', $decoded[0]));
         $this->assertFalse(array_key_exists('JPPopulation', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentEvangelical', $decoded[0]));
         $this->assertFalse(array_key_exists('ROL3Edition14', $decoded[0]));
         $this->assertFalse(array_key_exists('ROL3Edition14Orig', $decoded[0]));
         $this->assertFalse(array_key_exists('WorldSpeakers', $decoded[0]));
@@ -293,7 +292,6 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('JF_ID', $decoded[0]));
         $this->assertFalse(array_key_exists('JF_URL', $decoded[0]));
         $this->assertFalse(array_key_exists('JPPopulation', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentEvangelical', $decoded[0]));
         $this->assertFalse(array_key_exists('ROL3Edition14', $decoded[0]));
         $this->assertFalse(array_key_exists('ROL3Edition14Orig', $decoded[0]));
         $this->assertFalse(array_key_exists('WorldSpeakers', $decoded[0]));
@@ -678,6 +676,25 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
         foreach ($decodedResponse as $lang) {
             $this->assertGreaterThanOrEqual(35.00, floatval($lang['PercentAdherents']));
             $this->assertLessThanOrEqual(61.00, floatval($lang['PercentAdherents']));
+        }
+    }
+
+    public function testIndexRequestsShouldReturnLanguagesBasedOnNumberOfPercentEvangelical()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/languages.json",
+            array(
+                'api_key'           =>  $this->APIKey,
+                'pc_evangelical'    =>  '16-40'
+            ),
+            "should_return_language_based_on_pc_evangelical_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        foreach ($decodedResponse as $lang) {
+            $this->assertGreaterThanOrEqual(16.00, floatval($lang['PercentEvangelical']));
+            $this->assertLessThanOrEqual(40.00, floatval($lang['PercentEvangelical']));
         }
     }
 

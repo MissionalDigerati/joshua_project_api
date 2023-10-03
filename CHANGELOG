@@ -29,10 +29,12 @@ ADDED PercentUnknown column from all countries endpoints.
 ## Language Endpoint Parameters:
 
 ADDED pc_adherent argument to /countries endpoint.
+ADDED pc_evangelical argument to /countries endpoint.
 
 ## Language Columns:
 
 ADDED PercentAdherents column from all countries endpoints.
+ADDED PercentEvangelical column from all countries endpoints.
 
 Version 1.6.3
 

@@ -69,6 +69,10 @@
                     <td>Percent of people in this language who are Christian Adherents.</td>
                 </tr>
                 <tr>
+                    <td>PercentEvangelical</td>
+                    <td>Percent of people in this language who are Evangelical.</td>
+                </tr>
+                <tr>
                     <td>PortionsYear</td>
                     <td>The year that the portions of the Bible was completed in this language.</td>
                 </tr>

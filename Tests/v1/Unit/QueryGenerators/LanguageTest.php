@@ -258,4 +258,18 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testFindAllWithFiltersShouldFilterByEvangelical()
+    {
+        $expected = array('pc_evangelical'   =>  '10');
+        $language = new \QueryGenerators\Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $lang) {
+            $this->assertEquals(10, floatval($lang['PercentEvangelical']));
+        }
+    }
+
 }
