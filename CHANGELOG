@@ -10,6 +10,7 @@ ADDED pc_ethnic_religion argument to /countries endpoint.
 ADDED pc_evangelical argument to /countries endpoint.
 ADDED pc_hindu argument to /countries endpoint.
 ADDED pc_islam argument to /countries endpoint.
+ADDED pc_non_religious to /countries endpoint.
 
 ## Country Columns:
 
@@ -19,6 +20,7 @@ ADDED PercentEthnicReligions column from all countries endpoints.
 ADDED PercentEvangelical column from all countries endpoints.
 ADDED PercentHinduism column from all countries endpoints.
 ADDED PercentIslam column from all countries endpoints.
+ADDED PercentNonReligious column from all countries endpoints.
 
 Version 1.6.3
 
