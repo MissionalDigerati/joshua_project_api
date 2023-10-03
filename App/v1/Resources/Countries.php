@@ -279,6 +279,14 @@ $app->get(
  *                  dataType="string"
  *              ),
  *              @SWG\Parameter(
+ *                  name="pc_islam",
+ *                  description="A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
  *                  name="pc_protestant",
  *                  description="A dashed seperated range specifying the minimum and maximum percentage of Protestants.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
  *                  paramType="query",

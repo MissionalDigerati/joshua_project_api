@@ -96,6 +96,10 @@
                     <td>Percent of people in this country who are Hindu</td>
                 </tr>
                 <tr>
+                    <td>PercentIslam</td>
+                    <td>Percent of people in this country who are Muslim</td>
+                </tr>
+                <tr>
                     <td>Population</td>
                     <td>Country Population</td>
                 </tr>

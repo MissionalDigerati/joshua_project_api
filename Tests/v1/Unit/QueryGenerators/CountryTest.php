@@ -663,4 +663,20 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testFindAllWithFiltersShouldFilterByPCIslam()
+    {
+        $expectedMin = 50;
+        $expectedMax = 90;
+        $country = new \QueryGenerators\Country(array('pc_islam' => $expectedMin . '-' . $expectedMax));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentIslam']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentIslam']));
+        }
+    }
+
 }
