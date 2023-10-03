@@ -80,6 +80,10 @@
                     <td>Percent of people in this country who are Buddhist</td>
                 </tr>
                 <tr>
+                    <td>PercentChristianity</td>
+                    <td>Percent of people in this country who are Christians</td>
+                </tr>
+                <tr>
                     <td>Population</td>
                     <td>Country Population</td>
                 </tr>

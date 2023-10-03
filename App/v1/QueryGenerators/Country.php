@@ -56,9 +56,9 @@ class Country extends QueryGenerator
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = array('JPScaleCtry', 'Ctry', 'PercentBuddhism', 'ReligionPrimary',
-        'RLG3Primary', 'ROG2', 'ROG3', 'ROL3OfficialLanguage', 'RLG3Primary', 'RegionCode', 'ROG3',
-        'ISO3', 'ISO2', 'ROG2', 'RegionName', 'Capital', 'Population', 'SecurityLevel', 'CntPeoples',
+    protected $fieldsToSelectArray = array('JPScaleCtry', 'Ctry', 'PercentBuddhism', 'PercentChristianity',
+        'ReligionPrimary', 'RLG3Primary', 'ROG2', 'ROG3', 'ROL3OfficialLanguage', 'RLG3Primary', 'RegionCode',
+        'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'Capital', 'Population', 'SecurityLevel', 'CntPeoples',
         'CntPeoplesLR', 'CntPrimaryLanguages', 'TranslationUnspecified', 'TranslationNeeded',
         'TranslationStarted', 'BiblePortions', 'BibleNewTestament', 'BibleComplete', 'PoplPeoplesLR',
         'PoplPeoplesFPG'
@@ -181,6 +181,17 @@ class Country extends QueryGenerator
                 $this->providedParams['pc_buddhist'],
                 'PercentBuddhism',
                 'pc_buddhist'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_christianity')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_christianity'],
+                'PercentChristianity',
+                'pc_christianity'
             );
             $appendAndOnWhere = true;
         }
