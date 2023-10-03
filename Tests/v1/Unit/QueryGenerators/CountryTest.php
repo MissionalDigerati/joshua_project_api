@@ -594,6 +594,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
+            $this->assertTrue(array_key_exists('PercentBuddhism', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentBuddhism']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentBuddhism']));
         }
@@ -610,6 +611,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
+            $this->assertTrue(array_key_exists('PercentChristianity', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentChristianity']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentChristianity']));
         }
@@ -626,6 +628,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
+            $this->assertTrue(array_key_exists('PercentEthnicReligions', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentEthnicReligions']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentEthnicReligions']));
         }
@@ -642,6 +645,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
+            $this->assertTrue(array_key_exists('PercentEvangelical', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentEvangelical']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentEvangelical']));
         }
@@ -658,6 +662,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
+            $this->assertTrue(array_key_exists('PercentHinduism', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentHinduism']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentHinduism']));
         }
@@ -674,6 +679,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
+            $this->assertTrue(array_key_exists('PercentIslam', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentIslam']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentIslam']));
         }
@@ -690,6 +696,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
+            $this->assertTrue(array_key_exists('PercentNonReligious', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentNonReligious']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentNonReligious']));
         }
@@ -706,8 +713,26 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
+            $this->assertTrue(array_key_exists('PercentOtherSmall', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentOtherSmall']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentOtherSmall']));
+        }
+    }
+
+    public function testFindAllWithFiltersShouldFilterByPCUnknown()
+    {
+        $expectedMin = 0;
+        $expectedMax = 0.004;
+        $country = new \QueryGenerators\Country(array('pc_unknown' => $expectedMin . '-' . $expectedMax));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertTrue(array_key_exists('PercentUnknown', $countryData));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentUnknown']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentUnknown']));
         }
     }
 

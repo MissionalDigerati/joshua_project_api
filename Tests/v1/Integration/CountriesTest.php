@@ -523,7 +523,6 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('AltName', $decoded[0]));
         $this->assertFalse(array_key_exists('AreaSquareMiles', $decoded[0]));
         $this->assertFalse(array_key_exists('InternetCtryCode', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentUnknown', $decoded[0]));
         $this->assertFalse(array_key_exists('PercentUrbanized', $decoded[0]));
         $this->assertFalse(array_key_exists('PoplGrowthRate', $decoded[0]));
         $this->assertFalse(array_key_exists('PrayercastVideo', $decoded[0]));
@@ -553,7 +552,6 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('AltName', $decoded[0]));
         $this->assertFalse(array_key_exists('AreaSquareMiles', $decoded[0]));
         $this->assertFalse(array_key_exists('InternetCtryCode', $decoded[0]));
-        $this->assertFalse(array_key_exists('PercentUnknown', $decoded[0]));
         $this->assertFalse(array_key_exists('PercentUrbanized', $decoded[0]));
         $this->assertFalse(array_key_exists('PoplGrowthRate', $decoded[0]));
         $this->assertFalse(array_key_exists('PrayercastVideo', $decoded[0]));
@@ -983,6 +981,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentBuddhism', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentBuddhism']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentBuddhism']));
         }
@@ -1001,6 +1000,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentChristianity', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentChristianity']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentChristianity']));
         }
@@ -1019,6 +1019,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentEthnicReligions', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentEthnicReligions']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentEthnicReligions']));
         }
@@ -1037,6 +1038,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentEvangelical', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentEvangelical']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentEvangelical']));
         }
@@ -1055,6 +1057,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentHinduism', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentHinduism']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentHinduism']));
         }
@@ -1073,6 +1076,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentIslam', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentIslam']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentIslam']));
         }
@@ -1091,6 +1095,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentNonReligious', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentNonReligious']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentNonReligious']));
         }
@@ -1109,8 +1114,28 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertFalse(empty($decodedResponse));
         foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentOtherSmall', $countryData));
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentOtherSmall']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentOtherSmall']));
+        }
+    }
+
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCUnknown()
+    {
+        $expectedMin = 0;
+        $expectedMax = 0.14;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'pc_unknown' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_pc_unknown_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertTrue(array_key_exists('PercentUnknown', $countryData));
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentUnknown']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentUnknown']));
         }
     }
 
