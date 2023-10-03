@@ -104,6 +104,14 @@
                     <td>Percent of people in this country who are Non-Religious</td>
                 </tr>
                 <tr>
+                    <td>PercentOtherSmall</td>
+                    <td>Percent of people in this country who practice Other or Smaller Religions</td>
+                </tr>
+                <tr>
+                    <td>PercentNonReligious</td>
+                    <td>Percent of people in this country who are Non-Religious</td>
+                </tr>
+                <tr>
                     <td>Population</td>
                     <td>Country Population</td>
                 </tr>

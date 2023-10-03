@@ -695,4 +695,20 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testFindAllWithFiltersShouldFilterByPercentOtherReligions()
+    {
+        $expectedMin = 3;
+        $expectedMax = 5;
+        $country = new \QueryGenerators\Country(array('pc_other_religion' => $expectedMin . '-' . $expectedMax));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentOtherSmall']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentOtherSmall']));
+        }
+    }
+
 }

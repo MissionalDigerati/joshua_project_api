@@ -149,6 +149,14 @@
                             "required": false
                         },
                         {
+                            "name": "pc_other_religion",
+                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Other Religions.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
                             "name": "population",
                             "description": "A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get Countries matching that number.",
                             "allowMultiple": false,
