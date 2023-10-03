@@ -58,9 +58,9 @@ class Language extends QueryGenerator
      */
     protected $fieldsToSelectArray = array(
         'ROL3', 'Language', 'WebLangText', 'Status', 'ROG3', 'HubCountry', 'BibleStatus',
-        'TranslationNeedQuestionable', 'BibleYear', 'NTYear', 'PortionsYear',
-        'JF', 'AudioRecordings', 'JPScale',
-        'LeastReached', 'RLG3', 'PrimaryReligion', 'NbrPGICs', 'NbrCountries'
+        'GRN_URL', 'TranslationNeedQuestionable', 'BibleYear', 'NTYear', 'PortionsYear',
+        'PercentAdherents', 'PercentEvangelical', 'JF', 'JF_URL', 'AudioRecordings', 'JPScale',
+        'LeastReached', 'RLG3', 'PrimaryReligion', 'FCBH_URL', 'NbrPGICs', 'NbrCountries'
     );
     /**
      * The Database table to pull the data from.
@@ -243,6 +243,28 @@ class Language extends QueryGenerator
                 $this->providedParams['needs_translation_questionable'],
                 'TranslationNeedQuestionable',
                 'questionable_need'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_adherent')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_adherent'],
+                'PercentAdherents',
+                'pc_adherent'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_evangelical')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_evangelical'],
+                'PercentEvangelical',
+                'pc_evangelical'
             );
             $appendAndOnWhere = true;
         }

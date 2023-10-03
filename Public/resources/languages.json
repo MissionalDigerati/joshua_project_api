@@ -117,6 +117,22 @@
                             "required": false
                         },
                         {
+                            "name": "pc_adherent",
+                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Adherents.(min-max) You can supply just the minimum to get Languages matching that percentage.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "pc_evangelical",
+                            "description": "A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
                             "name": "primary_religions",
                             "description": "A bar separated list of one or more primary religions to filter by. Use the following numbers:<br><ul><li>1 - Christianity</li><li>2 - Buddhism</li><li>4 - Ethnic Religions</li><li>5 - Hinduism</li><li>6 - Islam</li><li>7 - Non-Religious</li><li>8 - Other/Small</li><li>9 - Unknown</li></ul>",
                             "allowMultiple": false,
