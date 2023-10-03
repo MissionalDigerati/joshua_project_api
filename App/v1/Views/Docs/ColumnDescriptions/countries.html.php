@@ -76,6 +76,10 @@
                     <td>Percent of people in this country who are Doubly Professing Christians</td>
                 </tr>
                 <tr>
+                    <td>PercentBuddhism</td>
+                    <td>Percent of people in this country who are Buddhist</td>
+                </tr>
+                <tr>
                     <td>Population</td>
                     <td>Country Population</td>
                 </tr>

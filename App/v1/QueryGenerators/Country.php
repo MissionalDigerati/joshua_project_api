@@ -56,11 +56,12 @@ class Country extends QueryGenerator
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = array('JPScaleCtry', 'Ctry', 'ReligionPrimary', 'RLG3Primary',
-        'ROG2', 'ROG3', 'ROL3OfficialLanguage', 'RLG3Primary', 'RegionCode', 'ROG3', 'ISO3', 'ISO2',
-        'ROG2', 'RegionName', 'Capital', 'Population', 'SecurityLevel', 'CntPeoples', 'CntPeoplesLR',
-        'CntPrimaryLanguages', 'TranslationUnspecified', 'TranslationNeeded', 'TranslationStarted',
-        'BiblePortions', 'BibleNewTestament', 'BibleComplete', 'PoplPeoplesLR', 'PoplPeoplesFPG'
+    protected $fieldsToSelectArray = array('JPScaleCtry', 'Ctry', 'PercentBuddhism', 'ReligionPrimary',
+        'RLG3Primary', 'ROG2', 'ROG3', 'ROL3OfficialLanguage', 'RLG3Primary', 'RegionCode', 'ROG3',
+        'ISO3', 'ISO2', 'ROG2', 'RegionName', 'Capital', 'Population', 'SecurityLevel', 'CntPeoples',
+        'CntPeoplesLR', 'CntPrimaryLanguages', 'TranslationUnspecified', 'TranslationNeeded',
+        'TranslationStarted', 'BiblePortions', 'BibleNewTestament', 'BibleComplete', 'PoplPeoplesLR',
+        'PoplPeoplesFPG'
     );
     /**
      * The Database table to pull the data from.
@@ -170,6 +171,17 @@ class Country extends QueryGenerator
                 $where .= " AND ";
             }
             $where .= $this->generateInStatementFromPipedString($this->providedParams['jpscale'], 'JPScaleCtry');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_buddhist')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_buddhist'],
+                'PercentBuddhism',
+                'pc_buddhist'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('population')) {

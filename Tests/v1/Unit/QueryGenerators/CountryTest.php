@@ -582,5 +582,21 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             $this->assertGreaterThanOrEqual($expectedMin, intval($countryData['PoplPeoplesFPG']));
         }
     }
+
+    public function testFindAllWithFiltersShouldFilterByPCBuddhist()
+    {
+        $expectedMin = 15;
+        $expectedMax = 45;
+        $country = new \QueryGenerators\Country(array('pc_buddhist' => $expectedMin . '-' . $expectedMax));
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentBuddhism']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentBuddhism']));
+        }
+    }
     
 }
