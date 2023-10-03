@@ -57,11 +57,11 @@ class Country extends QueryGenerator
      * @access  protected
      */
     protected $fieldsToSelectArray = array('JPScaleCtry', 'Ctry', 'PercentBuddhism', 'PercentChristianity',
-        'PercentEthnicReligions', 'ReligionPrimary', 'RLG3Primary', 'ROG2', 'ROG3', 'ROL3OfficialLanguage',
-        'RLG3Primary', 'RegionCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'Capital', 'Population',
-        'SecurityLevel', 'CntPeoples', 'CntPeoplesLR', 'CntPrimaryLanguages', 'TranslationUnspecified',
-        'TranslationNeeded', 'TranslationStarted', 'BiblePortions', 'BibleNewTestament', 'BibleComplete',
-        'PoplPeoplesLR', 'PoplPeoplesFPG'
+        'PercentEthnicReligions', 'PercentEvangelical', 'ReligionPrimary', 'RLG3Primary', 'ROG2', 'ROG3',
+        'ROL3OfficialLanguage', 'RLG3Primary', 'RegionCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName',
+        'Capital', 'Population', 'SecurityLevel', 'CntPeoples', 'CntPeoplesLR', 'CntPrimaryLanguages',
+        'TranslationUnspecified', 'TranslationNeeded', 'TranslationStarted', 'BiblePortions',
+        'BibleNewTestament', 'BibleComplete', 'PoplPeoplesLR', 'PoplPeoplesFPG'
     );
     /**
      * The Database table to pull the data from.
@@ -203,6 +203,17 @@ class Country extends QueryGenerator
                 $this->providedParams['pc_ethnic_religion'],
                 'PercentEthnicReligions',
                 'pc_ethnic_religion'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('pc_evangelical')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_evangelical'],
+                'PercentEvangelical',
+                'pc_evangelical'
             );
             $appendAndOnWhere = true;
         }
