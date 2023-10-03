@@ -1016,4 +1016,22 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCEthnicReligions()
+    {
+        $expectedMin = 1;
+        $expectedMax = 10;
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'pc_ethnic_religion' => $expectedMin . '-' . $expectedMax),
+            "filter_by_range_pc_ethnic_religion_on_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        foreach ($decodedResponse as $countryData) {
+            $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentEthnicReligions']));
+            $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentEthnicReligions']));
+        }
+    }
+
 }

@@ -84,6 +84,10 @@
                     <td>Percent of people in this country who are Christians</td>
                 </tr>
                 <tr>
+                    <td>PercentEthnicReligions</td>
+                    <td>Percent of people in this country who practice Ethnic Religions</td>
+                </tr>
+                <tr>
                     <td>Population</td>
                     <td>Country Population</td>
                 </tr>
