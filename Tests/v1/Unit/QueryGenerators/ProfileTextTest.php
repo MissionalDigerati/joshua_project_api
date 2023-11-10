@@ -114,4 +114,24 @@ class ProfileTextTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array($profileTextResult['ProfileID'], $expectedProfileIDs));
         }
     }
+
+    public function testFindAllByIdAndCountryShouldReturnTheCorrectFields()
+    {
+        $getVars = array('id' => '18432', 'country' => 'CH');
+        $profileText = new \QueryGenerators\ProfileText($getVars);
+        $profileText->findAllByIdAndCountry();
+        $statement = $this->db->prepare($profileText->preparedStatement);
+        $statement->execute($profileText->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        $this->assertTrue(array_key_exists('Summary', $data[0]));
+        $this->assertTrue((strpos($data[0]['Summary'], 'when a Daizhan couple decided to marry') !== false));
+        $this->assertTrue(array_key_exists('Obstacles', $data[0]));
+        $this->assertTrue((strpos($data[0]['Obstacles'], 'one of the most remote parts of China') !== false));
+        $this->assertTrue(array_key_exists('HowReach', $data[0]));
+        $this->assertTrue((strpos($data[0]['HowReach'], 'Chinese believers can reach') !== false));
+        $this->assertTrue(array_key_exists('PrayForChurch', $data[0]));
+        $this->assertTrue(array_key_exists('PrayForPG', $data[0]));
+        $this->assertTrue((strpos($data[0]['PrayForPG'], 'drawing people to himself') !== false));
+    }
 }

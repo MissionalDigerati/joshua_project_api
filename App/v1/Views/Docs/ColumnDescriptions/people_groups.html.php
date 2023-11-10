@@ -65,6 +65,10 @@
                     <td>Global Status of Evangelical Christianity, see https://joshuaproject.net/definitions.php</td>
                 </tr>
                 <tr>
+                    <td>HowReach</td>
+                    <td>Some suggestions on how to reach this people group with the Gospel.</td>
+                </tr>
+                <tr>
                     <td>IndigenousCode</td>
                     <td>Is this group indigenous to this country?</td>
                 </tr>
@@ -184,6 +188,10 @@
                 <tr>
                     <td>NumberLanguagesSpoken</td>
                     <td>Number of languages spoken by this people group in this country</td>
+                </tr>
+                <tr>
+                    <td>Obstacles</td>
+                    <td>Describes obstacles in ministry to this people group.</td>
                 </tr>
                 <tr>
                     <td>OfficialLang</td>
@@ -341,6 +349,14 @@
                 <tr>
                     <td>PortionsYear</td>
                     <td>Year of scripture portions availability</td>
+                </tr>
+                <tr>
+                    <td>PrayForChurch</td>
+                    <td>Suggested prayers for the church among this people group.</td>
+                </tr>
+                <tr>
+                    <td>PrayForPG</td>
+                    <td>Suggested prayers for the specific people group.</td>
                 </tr>
                 <tr>
                     <td>PrimaryLanguageDialect</td>

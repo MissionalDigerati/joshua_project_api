@@ -1,3 +1,14 @@
+Version 1.6.5
+
+Added the following columns:
+
+## People Group Columns:
+
+ADDED Obstacles column from all countries endpoints.
+ADDED HowReach column from all countries endpoints.
+ADDED PrayForChurch column from all countries endpoints.
+ADDED PrayForPG column from all countries endpoints.
+
 Version 1.6.4
 
 There were several fields removed in a previous version that were neeeded by many developers.  So we added them back.  Here is what was added:
