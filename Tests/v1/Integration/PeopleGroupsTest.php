@@ -1688,4 +1688,74 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(array_key_exists('Summary', $pg));
         }
     }
+
+    public function testUnreachedShouldProvidePrayerDetails()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
+            array(
+                'api_key'   => $this->APIKey,
+                'month'     =>  '05',
+                'day'       =>  '25'
+            ),
+            "unreached_with_prayer_details_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $pg) {
+            $this->assertTrue(array_key_exists('Obstacles', $pg));
+            $this->assertFalse(empty($pg['Obstacles']));
+            $this->assertTrue(array_key_exists('HowReach', $pg));
+            $this->assertFalse(empty($pg['HowReach']));
+            $this->assertTrue(array_key_exists('PrayForChurch', $pg));
+            $this->assertTrue(array_key_exists('PrayForPG', $pg));
+            $this->assertFalse(empty($pg['PrayForPG']));
+        }
+    }
+
+    public function testShowShouldProvidePrayerDetails()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/16180.json",
+            array(
+                'api_key'       =>  $this->APIKey,
+                'country'       =>  'IN'
+            ),
+            "show_provide_prayer_details_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $pg) {
+            $this->assertTrue(array_key_exists('Obstacles', $pg));
+            $this->assertFalse(empty($pg['Obstacles']));
+            $this->assertTrue(array_key_exists('HowReach', $pg));
+            $this->assertFalse(empty($pg['HowReach']));
+            $this->assertTrue(array_key_exists('PrayForChurch', $pg));
+            $this->assertTrue(array_key_exists('PrayForPG', $pg));
+            $this->assertFalse(empty($pg['PrayForPG']));
+        }
+    }
+
+    public function testIndexShouldProvidePrayerDetails()
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array(
+                'api_key'       => $this->APIKey,
+                'limit'         =>  5
+            ),
+            "index_provide_prayer-details_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $pg) {
+            $this->assertTrue(array_key_exists('Obstacles', $pg));
+            $this->assertTrue(array_key_exists('HowReach', $pg));
+            $this->assertTrue(array_key_exists('PrayForChurch', $pg));
+            $this->assertTrue(array_key_exists('PrayForPG', $pg));
+        }
+    }
 }

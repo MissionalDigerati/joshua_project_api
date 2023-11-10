@@ -158,9 +158,17 @@ $app->get(
                 $statement = $this->db->prepare($profileText->preparedStatement);
                 $statement->execute($profileText->preparedVariables);
                 $profileData = $statement->fetchAll(PDO::FETCH_ASSOC);
-                $data[$key]['Summary'] = (empty($profileData)) ? '' : $profileData[0]['Summary'];
+                $data[$key]['Summary'] = $profileData[0]['Summary'];
+                $data[$key]['Obstacles'] = $profileData[0]['Obstacles'];
+                $data[$key]['HowReach'] = $profileData[0]['HowReach'];
+                $data[$key]['PrayForChurch'] = $profileData[0]['PrayForChurch'];
+                $data[$key]['PrayForPG'] = $profileData[0]['PrayForPG'];
             } catch (Exception $e) {
                 $data[$key]['Summary'] = '';
+                $data[$key]['Obstacles'] = '';
+                $data[$key]['HowReach'] = '';
+                $data[$key]['PrayForChurch'] = '';
+                $data[$key]['PrayForPG'] = '';
             }
         }
         /**
@@ -318,9 +326,17 @@ $app->get(
                 $statement = $this->db->prepare($profileText->preparedStatement);
                 $statement->execute($profileText->preparedVariables);
                 $profileData = $statement->fetchAll(PDO::FETCH_ASSOC);
-                $data[$key]['Summary'] = (empty($profileData)) ? '' : $profileData[0]['Summary'];
+                $data[$key]['Summary'] = $profileData[0]['Summary'];
+                $data[$key]['Obstacles'] = $profileData[0]['Obstacles'];
+                $data[$key]['HowReach'] = $profileData[0]['HowReach'];
+                $data[$key]['PrayForChurch'] = $profileData[0]['PrayForChurch'];
+                $data[$key]['PrayForPG'] = $profileData[0]['PrayForPG'];
             } catch (Exception $e) {
                 $data[$key]['Summary'] = '';
+                $data[$key]['Obstacles'] = '';
+                $data[$key]['HowReach'] = '';
+                $data[$key]['PrayForChurch'] = '';
+                $data[$key]['PrayForPG'] = '';
             }
             try {
                 $resource = new Resource(array('id' => $peopleGroupData['ROL3']));
@@ -677,12 +693,17 @@ $app->get(
                 $statement = $this->db->prepare($profileText->preparedStatement);
                 $statement->execute($profileText->preparedVariables);
                 $profileData = $statement->fetch(PDO::FETCH_ASSOC);
-                $data[$key]['Summary'] = '';
-                if ((!empty($profileData)) && (array_key_exists('Summary', $profileData))) {
-                    $data[$key]['Summary'] = $profileData['Summary'];
-                }
+                $data[$key]['Summary'] = $profileData[0]['Summary'];
+                $data[$key]['Obstacles'] = $profileData[0]['Obstacles'];
+                $data[$key]['HowReach'] = $profileData[0]['HowReach'];
+                $data[$key]['PrayForChurch'] = $profileData[0]['PrayForChurch'];
+                $data[$key]['PrayForPG'] = $profileData[0]['PrayForPG'];
             } catch (Exception $e) {
                 $data[$key]['Summary'] = '';
+                $data[$key]['Obstacles'] = '';
+                $data[$key]['HowReach'] = '';
+                $data[$key]['PrayForChurch'] = '';
+                $data[$key]['PrayForPG'] = '';
             }
             try {
                 $resource = new Resource(array('id' => $peopleGroupData['ROL3']));
