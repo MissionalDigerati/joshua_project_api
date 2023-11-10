@@ -27,6 +27,7 @@ use QueryGenerators\Unreached;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Swagger\Annotations as SWG;
+use Utilities\StringHelper;
 
 // phpcs:disable Generic.Files.LineLength
 /**
@@ -158,11 +159,11 @@ $app->get(
                 $statement = $this->db->prepare($profileText->preparedStatement);
                 $statement->execute($profileText->preparedVariables);
                 $profileData = $statement->fetchAll(PDO::FETCH_ASSOC);
-                $data[$key]['Summary'] = $profileData[0]['Summary'];
-                $data[$key]['Obstacles'] = $profileData[0]['Obstacles'];
-                $data[$key]['HowReach'] = $profileData[0]['HowReach'];
-                $data[$key]['PrayForChurch'] = $profileData[0]['PrayForChurch'];
-                $data[$key]['PrayForPG'] = $profileData[0]['PrayForPG'];
+                $data[$key]['Summary'] = StringHelper::nullToEmpty($profileData[0]['Summary']);
+                $data[$key]['Obstacles'] = StringHelper::nullToEmpty($profileData[0]['Obstacles']);
+                $data[$key]['HowReach'] = StringHelper::nullToEmpty($profileData[0]['HowReach']);
+                $data[$key]['PrayForChurch'] = StringHelper::nullToEmpty($profileData[0]['PrayForChurch']);
+                $data[$key]['PrayForPG'] = StringHelper::nullToEmpty($profileData[0]['PrayForPG']);
             } catch (Exception $e) {
                 $data[$key]['Summary'] = '';
                 $data[$key]['Obstacles'] = '';
@@ -326,11 +327,11 @@ $app->get(
                 $statement = $this->db->prepare($profileText->preparedStatement);
                 $statement->execute($profileText->preparedVariables);
                 $profileData = $statement->fetchAll(PDO::FETCH_ASSOC);
-                $data[$key]['Summary'] = $profileData[0]['Summary'];
-                $data[$key]['Obstacles'] = $profileData[0]['Obstacles'];
-                $data[$key]['HowReach'] = $profileData[0]['HowReach'];
-                $data[$key]['PrayForChurch'] = $profileData[0]['PrayForChurch'];
-                $data[$key]['PrayForPG'] = $profileData[0]['PrayForPG'];
+                $data[$key]['Summary'] = StringHelper::nullToEmpty($profileData[0]['Summary']);
+                $data[$key]['Obstacles'] = StringHelper::nullToEmpty($profileData[0]['Obstacles']);
+                $data[$key]['HowReach'] = StringHelper::nullToEmpty($profileData[0]['HowReach']);
+                $data[$key]['PrayForChurch'] = StringHelper::nullToEmpty($profileData[0]['PrayForChurch']);
+                $data[$key]['PrayForPG'] = StringHelper::nullToEmpty($profileData[0]['PrayForPG']);
             } catch (Exception $e) {
                 $data[$key]['Summary'] = '';
                 $data[$key]['Obstacles'] = '';
@@ -693,11 +694,11 @@ $app->get(
                 $statement = $this->db->prepare($profileText->preparedStatement);
                 $statement->execute($profileText->preparedVariables);
                 $profileData = $statement->fetch(PDO::FETCH_ASSOC);
-                $data[$key]['Summary'] = $profileData[0]['Summary'];
-                $data[$key]['Obstacles'] = $profileData[0]['Obstacles'];
-                $data[$key]['HowReach'] = $profileData[0]['HowReach'];
-                $data[$key]['PrayForChurch'] = $profileData[0]['PrayForChurch'];
-                $data[$key]['PrayForPG'] = $profileData[0]['PrayForPG'];
+                $data[$key]['Summary'] = StringHelper::nullToEmpty($profileData[0]['Summary']);
+                $data[$key]['Obstacles'] = StringHelper::nullToEmpty($profileData[0]['Obstacles']);
+                $data[$key]['HowReach'] = StringHelper::nullToEmpty($profileData[0]['HowReach']);
+                $data[$key]['PrayForChurch'] = StringHelper::nullToEmpty($profileData[0]['PrayForChurch']);
+                $data[$key]['PrayForPG'] = StringHelper::nullToEmpty($profileData[0]['PrayForPG']);
             } catch (Exception $e) {
                 $data[$key]['Summary'] = '';
                 $data[$key]['Obstacles'] = '';
