@@ -56,7 +56,10 @@ class ProfileText extends QueryGenerator
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = array('jpprofiletext.ProfileID', 'jpprofiletext.Summary');
+    protected $fieldsToSelectArray = [
+        'jpprofiletext.ProfileID', 'jpprofiletext.Summary', 'jpprofiletext.Obstacles',
+        'jpprofiletext.HowReach', 'jpprofiletext.PrayForChurch', 'jpprofiletext.PrayForPG'
+    ];
     /**
      * Construct the Profile Text class.
      *
