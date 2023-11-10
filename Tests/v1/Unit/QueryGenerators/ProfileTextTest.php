@@ -114,4 +114,17 @@ class ProfileTextTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array($profileTextResult['ProfileID'], $expectedProfileIDs));
         }
     }
+
+    public function testFindAllByIdAndCountryShouldReturnTheCorrectFields()
+    {
+        $getVars = array('id' => '18432', 'country' => 'CH');
+        $profileText = new \QueryGenerators\ProfileText($getVars);
+        $profileText->findAllByIdAndCountry();
+        $statement = $this->db->prepare($profileText->preparedStatement);
+        $statement->execute($profileText->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        $this->assertTrue(isset($data[0]['Summary']));
+        $this->assertTrue((strpos($data[0]['Summary'], 'when a Daizhan couple decided to marry') !== false));
+    }
 }
