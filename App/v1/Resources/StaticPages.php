@@ -20,8 +20,8 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * Get the home page
@@ -33,15 +33,16 @@ use Slim\Http\Response;
  */
 $app->get(
     "/",
-    function (Request $req, Response $res, $args = []) {
-        $viewDirectory = $this->view->getTemplatePath();
-        $data = $req->getQueryParams();
+    function (Request $request, Response $response): Response {
+        $view = $this->get('view');
+        $viewDirectory = $view->getTemplatePath();
+        $data = $request->getQueryParams();
         $errors = array();
         if ((isset($data['required_fields'])) && ($data['required_fields'] !="")) {
             $errors = explode("|", $data['required_fields']);
         }
-        return $this->view->render(
-            $res,
+        return $view->render(
+            $response,
             'StaticPages/home.html.php',
             array('data' => $data, 'errors' => $errors, 'viewDirectory' => $viewDirectory)
         );
@@ -57,11 +58,12 @@ $app->get(
  */
 $app->get(
     "/getting_started",
-    function (Request $req, Response $res, $args = []) {
+    function (Request $request, Response $response): Response {
         $siteURL = getSiteURL();
-        $viewDirectory = $this->view->getTemplatePath();
-        return $this->view->render(
-            $res,
+        $view = $this->get('view');
+        $viewDirectory = $view->getTemplatePath();
+        return $view->render(
+            $response,
             'StaticPages/getting_started.html.php',
             array('siteURL' => $siteURL, 'viewDirectory' => $viewDirectory)
         );
@@ -76,18 +78,19 @@ $app->get(
  */
 $app->get(
     "/get_my_api_key",
-    function (Request $req, Response $res, $args = []) {
-        $viewDirectory = $this->view->getTemplatePath();
+    function (Request $request, Response $response): Response {
+        $view = $this->get('view');
+        $viewDirectory = $view->getTemplatePath();
         $APIKey = "";
         $message = "";
         $error = "";
-        $token = $req->getParam('authorize_token');
-        if ($token == '') {
+        $params = $request->getQueryParams();
+        if ((!in_array('authorization_token', $params)) || ($params['authorize_token'] == '')) {
             $error = "Unable to locate your API key.";
         } else {
             try {
                 $statement = $this->db->prepare("SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token");
-                $statement->execute(array('authorize_token' => $token));
+                $statement->execute(array('authorize_token' => $params['authorize_token']));
                 $data = $statement->fetchAll(PDO::FETCH_ASSOC);
             } catch (Exception $e) {
                 $error = "Unable to locate your API key.";
@@ -120,8 +123,8 @@ $app->get(
             }
         }
 
-        return $this->view->render(
-            $res,
+        return $view->render(
+            $response,
             'StaticPages/get_my_api_key.html.php',
             array('message' => $message, 'error' => $error, 'APIKey' => $APIKey, 'viewDirectory' => $viewDirectory)
         );
@@ -136,10 +139,11 @@ $app->get(
  */
 $app->get(
     "/resend_activation_links",
-    function (Request $req, Response $res, $args = []) {
-        $viewDirectory = $this->view->getTemplatePath();
-        return $this->view->render(
-            $res,
+    function (Request $request, Response $response): Response {
+        $view = $this->get('view');
+        $viewDirectory = $view->getTemplatePath();
+        return $view->render(
+            $response,
             'StaticPages/resend_activation_links.html.php',
             array('viewDirectory' => $viewDirectory)
         );
@@ -154,12 +158,13 @@ $app->get(
  */
 $app->post(
     "/resend_activation_links",
-    function (Request $req, Response $res, $args = []) {
-        $viewDirectory = $this->view->getTemplatePath();
+    function (Request $request, Response $response): Response {
+        $view = $this->get('view');
+        $viewDirectory = $view->getTemplatePath();
         $siteURL = getSiteURL();
         $errors = array();
         $message = '';
-        $formData = $req->getParsedBody();
+        $formData = $request->getParsedBody();
         $invalidFields = validatePresenceOf(array("email"), $formData);
         if (empty($invalidFields)) {
             try {
@@ -178,8 +183,8 @@ $app->post(
         } else {
             $errors['invalid'] = $invalidFields;
         }
-        return $this->view->render(
-            $res,
+        return $view->render(
+            $response,
             'StaticPages/resend_activation_links.html.php',
             array('errors' => $errors, 'data' => $formData, 'message' => $message, 'viewDirectory' => $viewDirectory)
         );
