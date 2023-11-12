@@ -24,8 +24,10 @@ namespace Middleware;
 
 use Middleware\Traits\PathBasedTrait;
 use Middleware\Traits\ReturnsErrorsTrait;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Routing\RouteContext;
 
 /**
  * A middleware that checks that the request conforms to our API standards.
@@ -54,7 +56,7 @@ class APIStandardsMiddleware
      *
      * @param array   $options      The array of options.
      */
-    public function __construct($options)
+    public function __construct(array $options)
     {
         $this->options['formats'] = [];
         $this->options['versions'] = [];
@@ -64,33 +66,33 @@ class APIStandardsMiddleware
     /**
      * Our invokable class
      *
-     * @param  ServerRequestInterface   $request  PSR7 request
-     * @param  ResponseInterface        $response PSR7 response
-     * @param  callable                 $next     Next middleware
+     * @param  Request          $request    PSR7 request
+     * @param  RequestHandler   $handler    PSR-15 request handler
      *
-     * @return ResponseInterface                  The modified response
+     * @return Response                     The modified response
      */
     public function __invoke(
-        ServerRequestInterface $req,
-        ResponseInterface $res,
-        callable $next
-    ) {
-        $route = $req->getAttribute('route');
+        Request $request,
+        RequestHandler $handler
+    ): Response {
+        $response = $handler->handle($request);
+        $routeContext = RouteContext::fromRequest($request);                                                                                                             
+        $route = $routeContext->getRoute(); 
         if (!$route) {
-            $info = pathinfo($req->getUri()->getPath());
+            $info = pathinfo($request->getUri()->getPath());
             $format = (array_key_exists('extension', $info)) ? $info['extension'] : '';
             return $this->sendError(
                 400,
                 'You are requesting an unavailable API version number.',
                 $format,
                 'Bad Request',
-                $res
+                $response
             );
         }
         $format = $route->getArgument('format');
         $version = $route->getArgument('version');
-        if (!$this->shouldProcess($req)) {
-            return $next($req, $res);
+        if (!$this->shouldProcess($request)) {
+            return $response;
         }
         if (!in_array($format, $this->options['formats'])) {
             return $this->sendError(
@@ -98,7 +100,7 @@ class APIStandardsMiddleware
                 'You are requesting an unsupported format.',
                 $format,
                 'Bad Request',
-                $res
+                $response
             );
         }
         if (!in_array($version, $this->options['versions'])) {
@@ -107,10 +109,10 @@ class APIStandardsMiddleware
                 'You are requesting an unavailable API version number.',
                 $format,
                 'Bad Request',
-                $res
+                $response
             );
         }
 
-        return $next($req, $res);
+        return $response;
     }
 }

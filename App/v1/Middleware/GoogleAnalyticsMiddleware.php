@@ -23,8 +23,10 @@
 namespace Middleware;
 
 use Middleware\Traits\PathBasedTrait;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Routing\RouteContext;
 
 /**
  * Middleware that sends events to Google Analytics 4>. Options:
@@ -44,7 +46,7 @@ class GoogleAnalyticsMiddleware
     /**
      * Are we tracking requests?
      *
-     * @var boolean
+     * @var bool
      */
     protected $isTracking = false;
 
@@ -55,7 +57,7 @@ class GoogleAnalyticsMiddleware
      */
     protected $url = 'https://www.google-analytics.com/mp/collect';
 
-    public function __construct($isTracking, $options)
+    public function __construct(bool $isTracking, array $options)
     {
         $this->isTracking = $isTracking;
         $this->options['measurement_id'] = '';
@@ -69,38 +71,39 @@ class GoogleAnalyticsMiddleware
     /**
      * Our invokable class
      *
-     * @param  ServerRequestInterface   $request  PSR7 request
-     * @param  ResponseInterface        $response PSR7 response
-     * @param  callable                 $next     Next middleware
+     * @param  Request          $request    PSR7 request
+     * @param  RequestHandler   $handler    PSR-15 request handler
      *
-     * @return ResponseInterface                  The modified response
+     * @return Response                     The modified response
      */
     public function __invoke(
-        ServerRequestInterface $req,
-        ResponseInterface $res,
-        callable $next
-    ) {
+        Request $request,
+        RequestHandler $handler
+    ): Response {
+        $routeContext = RouteContext::fromRequest($request);                                                                                                             
+        $route = $routeContext->getRoute();   
+        $response = $handler->handle($request);
         if (!$this->isTracking) {
-            return $next($req, $res);
+            return $response;
         }
-        if (!$this->shouldProcess($req)) {
-            return $next($req, $res);
+        if (!$this->shouldProcess($request)) {
+            return $response;
         }
-        $params = $req->getQueryParams();
+        $params = $request->getQueryParams();
         if (empty($params)) {
-            return $next($req, $res);
+            return $response;
         }
-        $route = $req->getAttribute('route');
+        $route = $request->getAttribute('route');
         // Remove the extension
-        $endpoint = preg_replace('/\\.[^.\\s]{3,4}$/', '', $req->getUri()->getPath());
+        $endpoint = preg_replace('/\\.[^.\\s]{3,4}$/', '', $request->getUri()->getPath());
         $format = $route->getArgument('format');
         $version = ltrim($route->getArgument('version'), 'v');
         $clientId = $params['api_key'];
         if ((!isset($clientId)) || (empty($clientId))) {
-            return $next($req, $res);
+            return $response;
         }
         $this->sendEvent($clientId, $endpoint, $format, $version);
-        return $next($req, $res);
+        return $response;
     }
 
     /**
@@ -114,8 +117,12 @@ class GoogleAnalyticsMiddleware
      *
      * @return void
      */
-    protected function sendEvent($clientId, $endpoint, $format, $version)
-    {
+    protected function sendEvent(
+        string $clientId,
+        string $endpoint,
+        string $format,
+        string $version
+    ): void {
         $url = $this->url . '?measurement_id=' . $this->options['measurement_id'];
         $url .= '&api_secret=' . $this->options['api_secret'];
         $payload = array(

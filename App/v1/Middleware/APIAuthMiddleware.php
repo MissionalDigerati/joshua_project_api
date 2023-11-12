@@ -24,8 +24,10 @@ namespace Middleware;
 
 use Middleware\Traits\PathBasedTrait;
 use Middleware\Traits\ReturnsErrorsTrait;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Routing\RouteContext;
 
 /**
  * Middleware for auth checking for API requests.
@@ -64,21 +66,22 @@ class APIAuthMiddleware
     /**
      * Our invokable class
      *
-     * @param  ServerRequestInterface   $request  PSR7 request
-     * @param  ResponseInterface        $response PSR7 response
-     * @param  callable                 $next     Next middleware
+     * @param  Request          $request    PSR7 request
+     * @param  RequestHandler   $handler    PSR-15 request handler
      *
-     * @return ResponseInterface                  The modified response
+     * @return Response                     The modified response
      */
     public function __invoke(
-        ServerRequestInterface $req,
-        ResponseInterface $res,
-        callable $next
-    ) {
-        $params = $req->getQueryParams();
-        $format = $req->getAttribute('route')->getArgument('format');
-        if (!$this->shouldProcess($req)) {
-            return $next($req, $res);
+        Request $request,
+        RequestHandler $handler
+    ): Response {
+        $routeContext = RouteContext::fromRequest($request);                                                                                                             
+        $route = $routeContext->getRoute();   
+        $response = $handler->handle($request);
+        $params = $request->getQueryParams();
+        $format = $route->getArgument('format');
+        if (!$this->shouldProcess($request)) {
+            return $response;
         }
         if (empty($params)) {
             return $this->sendError(
@@ -86,7 +89,7 @@ class APIAuthMiddleware
                 'You are missing your API key.',
                 $format,
                 'Unauthorized',
-                $res
+                $response
             );
         }
         $apiKey = strip_tags($params['api_key']);
@@ -96,7 +99,7 @@ class APIAuthMiddleware
                 'You are missing your API key.',
                 $format,
                 'Unauthorized',
-                $res
+                $response
             );
         }
         if (!$this->isValidKey($apiKey)) {
@@ -105,12 +108,12 @@ class APIAuthMiddleware
                 'The provided API key is invalid.',
                 $format,
                 'Unauthorized',
-                $res
+                $response
             );
         }
         $this->setLastRequest($apiKey);
 
-        return $next($req, $res);
+        return $response;
     }
 
     /**
@@ -118,9 +121,9 @@ class APIAuthMiddleware
      *
      * @param string $apiKey    The API key
      *
-     * @return boolean          yes|no
+     * @return bool             yes|no
      */
-    private function isValidKey($apiKey)
+    private function isValidKey(string $apiKey): bool
     {
         $query = "SELECT * FROM md_api_keys where api_key = :api_key LIMIT 1";
         $statement = $this->db->prepare($query);
@@ -142,9 +145,10 @@ class APIAuthMiddleware
      * Set the last_request for the given API key to NOW()
      *
      * @param string $apiKey    The API key
+     *
      * @return void
      */
-    private function setLastRequest($apiKey)
+    private function setLastRequest(string $apiKey): void
     {
         $query = "UPDATE md_api_keys SET last_request = NOW() where api_key = :api_key";
         $statement = $this->db->prepare($query);
