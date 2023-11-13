@@ -89,7 +89,7 @@ use Swagger\Annotations as SWG;
 // phpcs:enable Generic.Files.LineLength
 $app->get(
     "/{version}/continents/{id}.{format}",
-    function (Request $request, Response $response, $args = []) {
+    function (Request $request, Response $response, $args = []): Response {
         /**
          * Make sure we have an ID, else crash.
          * This expression ("/\PL/u") removes all non-letter characters
