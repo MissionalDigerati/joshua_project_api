@@ -23,10 +23,10 @@
 namespace Middleware;
 
 use Middleware\Traits\PathBasedTrait;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Psr\Http\Message\ResponseInterface as Response;
-use Slim\Routing\RouteContext;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Middleware that sends events to Google Analytics 4>. Options:
@@ -36,7 +36,7 @@ use Slim\Routing\RouteContext;
  * paths: The paths to cache
  * passthrough: The paths to ignore caching
  */
-class GoogleAnalyticsMiddleware
+class GoogleAnalyticsMiddleware implements MiddlewareInterface
 {
     /**
      * This is a path based middleware
@@ -71,39 +71,39 @@ class GoogleAnalyticsMiddleware
     /**
      * Our invokable class
      *
-     * @param  Request          $request    PSR7 request
-     * @param  RequestHandler   $handler    PSR-15 request handler
+     * @param  ServerRequestInterface   $request    PSR7 request
+     * @param  RequestHandlerInterface  $handler    PSR-15 request handler
      *
-     * @return Response                     The modified response
+     * @return ResponseInterface                    The modified response
      */
-    public function __invoke(
-        Request $request,
-        RequestHandler $handler
-    ): Response {
-        $routeContext = RouteContext::fromRequest($request);                                                                                                             
-        $route = $routeContext->getRoute();   
-        $response = $handler->handle($request);
+    public function process(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
+        $path = $request->getUri()->getPath();
+        $format = pathinfo($path, \PATHINFO_EXTENSION);
+        $version = 0;
+        if (preg_match('/\/v(\d+)\//', $path, $matches)) {
+            $version = intval($matches[1]);
+        }
         if (!$this->isTracking) {
-            return $response;
+            return $handler->handle($request);
         }
         if (!$this->shouldProcess($request)) {
-            return $response;
+            return $handler->handle($request);
         }
         $params = $request->getQueryParams();
         if (empty($params)) {
-            return $response;
+            return $handler->handle($request);
         }
-        $route = $request->getAttribute('route');
         // Remove the extension
         $endpoint = preg_replace('/\\.[^.\\s]{3,4}$/', '', $request->getUri()->getPath());
-        $format = $route->getArgument('format');
-        $version = ltrim($route->getArgument('version'), 'v');
         $clientId = $params['api_key'];
         if ((!isset($clientId)) || (empty($clientId))) {
-            return $response;
+            return $handler->handle($request);
         }
         $this->sendEvent($clientId, $endpoint, $format, $version);
-        return $response;
+        return $handler->handle($request);
     }
 
     /**
