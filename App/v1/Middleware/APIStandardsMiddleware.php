@@ -77,6 +77,9 @@ class APIStandardsMiddleware implements MiddlewareInterface
     ): ResponseInterface {
         $path = $request->getUri()->getPath();
         $format = pathinfo($path, \PATHINFO_EXTENSION);
+        if (!$this->shouldProcess($request)) {
+            return $handler->handle($request);
+        }
         if (preg_match('/\/v(\d+)\//', $path, $matches)) {
             $version = intval($matches[1]);
         } else {
@@ -86,9 +89,6 @@ class APIStandardsMiddleware implements MiddlewareInterface
                 $format,
                 'Bad Request'
             );
-        }
-        if (!$this->shouldProcess($request)) {
-            return $handler->handle($request);
         }
         if (!in_array($format, $this->options['formats'])) {
             return $this->sendError(
