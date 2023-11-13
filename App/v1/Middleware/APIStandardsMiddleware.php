@@ -79,7 +79,7 @@ class APIStandardsMiddleware implements MiddlewareInterface
         $path = $request->getUri()->getPath();
         $format = pathinfo($path, \PATHINFO_EXTENSION);
         if (preg_match('/\/v(\d+)\//', $path, $matches)) {
-            $version = $matches[1];
+            $version = intval($matches[1]);
         } else {
             return $this->sendError(
                 400,
