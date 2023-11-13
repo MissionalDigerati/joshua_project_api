@@ -24,10 +24,11 @@ namespace Middleware;
 
 use Middleware\Traits\PathBasedTrait;
 use Middleware\Traits\ReturnsErrorsTrait;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Psr\Http\Message\ResponseInterface as Response;
-use Slim\Routing\RouteContext;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Slim\Psr7\Response;
 
 /**
  * A middleware that checks that the request conforms to our API standards.
@@ -39,7 +40,7 @@ use Slim\Routing\RouteContext;
  * passthrough: The paths to ignore caching
  * versions: An array of supported version numbers
  */
-class APIStandardsMiddleware
+class APIStandardsMiddleware implements MiddlewareInterface
 {
     /**
      * This is a path based middleware
@@ -66,33 +67,30 @@ class APIStandardsMiddleware
     /**
      * Our invokable class
      *
-     * @param  Request          $request    PSR7 request
-     * @param  RequestHandler   $handler    PSR-15 request handler
+     * @param  ServerRequestInterface   $request    PSR7 request
+     * @param  RequestHandlerInterface  $handler    PSR-15 request handler
      *
-     * @return Response                     The modified response
+     * @return ResponseInterface                    The modified response
      */
-    public function __invoke(
-        Request $request,
-        RequestHandler $handler
-    ): Response {
-        $response = $handler->handle($request);
-        $routeContext = RouteContext::fromRequest($request);                                                                                                             
-        $route = $routeContext->getRoute(); 
-        if (!$route) {
-            $info = pathinfo($request->getUri()->getPath());
-            $format = (array_key_exists('extension', $info)) ? $info['extension'] : '';
+    public function process(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
+        $path = $request->getUri()->getPath();
+        $format = pathinfo($path, \PATHINFO_EXTENSION);
+        if (preg_match('/\/v(\d+)\//', $path, $matches)) {
+            $version = $matches[1];
+        } else {
             return $this->sendError(
                 400,
-                'You are requesting an unavailable API version number.',
+                'You must provide a valid API version number.',
                 $format,
                 'Bad Request',
-                $response
+                new Response()
             );
         }
-        $format = $route->getArgument('format');
-        $version = $route->getArgument('version');
         if (!$this->shouldProcess($request)) {
-            return $response;
+            return $handler->handle($request);
         }
         if (!in_array($format, $this->options['formats'])) {
             return $this->sendError(
@@ -100,7 +98,7 @@ class APIStandardsMiddleware
                 'You are requesting an unsupported format.',
                 $format,
                 'Bad Request',
-                $response
+                new Response()
             );
         }
         if (!in_array($version, $this->options['versions'])) {
@@ -109,10 +107,10 @@ class APIStandardsMiddleware
                 'You are requesting an unavailable API version number.',
                 $format,
                 'Bad Request',
-                $response
+                new Response()
             );
         }
 
-        return $response;
+        return $handler->handle($request);
     }
 }
