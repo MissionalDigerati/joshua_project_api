@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of Joshua Project API.
  *
@@ -19,16 +20,19 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+use DI\ContainerBuilder;
 use Dotenv\Dotenv;
 use Middleware\APIAuthMiddleware;
 use Middleware\APIStandardsMiddleware;
 use Middleware\CachingMiddleware;
 use Middleware\GoogleAnalyticsMiddleware;
 use PHPToolbox\PDODatabase\PDODatabaseConnect;
-use Slim\Middleware\HttpBasicAuthentication;
+use Slim\Factory\AppFactory;
+use Tuupola\Middleware\HttpBasicAuthentication;
 use Slim\Views\PhpRenderer;
 use Utilities\APIErrorResponder;
 use Utilities\Mailer;
+use Psr\Container\ContainerInterface;
 
 $DS = DIRECTORY_SEPARATOR;
 $ROOT_DIRECTORY = dirname(__DIR__);
@@ -79,82 +83,21 @@ if (empty($matches)) {
  */
 $APP_FILES_DIRECTORY = $ROOT_DIRECTORY . $DS . "App" . $DS . $API_VERSION;
 $VIEW_DIRECTORY = $APP_FILES_DIRECTORY . $DS . "Views";
-/**
- * determineRouteBeforeAppMiddleware setting
- *
- * @link https://www.slimframework.com/docs/v3/start/upgrade.html#getting-the-current-route
- */
-$app = new \Slim\App([
-    'settings' => [
-        'determineRouteBeforeAppMiddleware' =>  true,
-    ]
-]);
-/**
- * Add several services to our container for easy use
- */
-$container = $app->getContainer();
-$container['view'] = new PhpRenderer($VIEW_DIRECTORY);
-$container['db'] = function () {
-    $dbSettings = new \stdClass();
-    $dbSettings->default = array(
-        'host'      =>  $_ENV['DB_HOST'],
-        'name'      =>  $_ENV['DB_NAME'],
-        'username'  =>  $_ENV['DB_USERNAME'],
-        'password'  =>  $_ENV['DB_PASSWORD']
-    );
-    $pdoDb = PDODatabaseConnect::getInstance();
-    $pdoDb->setDatabaseSettings($dbSettings);
-    return $pdoDb->getDatabaseInstance();
-};
-$useSMTP = ($_ENV['EMAIL_USE_SMTP'] === 'true');
-$container['mailer'] = new Mailer(
-    $_ENV['EMAIL_HOST'],
-    $_ENV['EMAIL_USERNAME'],
-    $_ENV['EMAIL_PASSWORD'],
-    $_ENV['EMAIL_PORT'],
-    $useSMTP
-);
-$container['errorResponder'] = new APIErrorResponder();
-/**
- * Setup Middleware.
- * IMPORTANT: Last one added is first executed.
- */
-$pathSettings = array(
-    'passthrough' => array('/v\d+/docs/column_descriptions'),
-    'paths'  =>  array(
-        '/v\d+/continents',
-        '/v\d+/countries',
-        '/v\d+/languages',
-        '/v\d+/people_groups',
-        '/v\d+/regions'
-    )
-);
-$cacheSettings = $pathSettings;
-$useCaching = ((isset($_ENV['USE_CACHE'])) && ($_ENV['USE_CACHE'] === 'true'));
-$cacheSettings['host'] = (isset($_ENV['CACHE_HOST'])) ? $_ENV['CACHE_HOST'] : '127.0.0.1';
-$cacheSettings['port'] = (isset($_ENV['CACHE_PORT'])) ? $_ENV['CACHE_PORT'] : '11211';
-$cacheSettings['expire_cache'] = (isset($_ENV['CACHE_SECONDS'])) ? intval($_ENV['CACHE_SECONDS']) : 86400;
-$app->add(new CachingMiddleware($useCaching, $cacheSettings));
 
-$analyticsSettings = $pathSettings;
-$isTracking = ((isset($_ENV['GA_TRACK_REQUESTS'])) && ($_ENV['GA_TRACK_REQUESTS'] === 'true'));
-$analyticsSettings['measurement_id'] = (isset($_ENV['GA_MEASUREMENT_ID'])) ? $_ENV['GA_MEASUREMENT_ID'] : '';
-$analyticsSettings['api_secret'] = (isset($_ENV['GA_SECRET'])) ? $_ENV['GA_SECRET'] : '';
-$app->add(new GoogleAnalyticsMiddleware($isTracking, $analyticsSettings));
+$containerBuilder = new ContainerBuilder();
+$settings = require_once($ROOT_DIRECTORY . $DS . "Bootstrap" . $DS . "Settings.php");
+$settings($containerBuilder);
 
-$standardSettings = $pathSettings;
-$standardSettings['formats'] = ['json', 'xml'];
-$standardSettings['versions'] = ['v1'];
-$app->add(new APIAuthMiddleware($container['db'], $pathSettings));
+$dependencies = require_once($ROOT_DIRECTORY . $DS . "Bootstrap" . $DS . "Dependencies.php");
+$dependencies($containerBuilder, $VIEW_DIRECTORY);
 
-$app->add(new APIStandardsMiddleware($standardSettings));
+// Build PHP-DI Container instance
+$container = $containerBuilder->build();
 
-$authSettings = array(
-    'path'          =>  array('/api_keys'),
-    'passthrough'   =>  array('/api_keys/new')
-);
-$authSettings['users'][$_ENV['ADMIN_USERNAME']] = $_ENV['ADMIN_PASSWORD'];
-$app->add(new HttpBasicAuthentication($authSettings));
+// Create the factory
+AppFactory::setContainer($container);
+$app = AppFactory::create();
+
 if (file_exists($APP_FILES_DIRECTORY)) {
     /**
      * Include common functions
@@ -177,6 +120,10 @@ if (file_exists($APP_FILES_DIRECTORY)) {
     require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Continents.php");
     require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Regions.php");
 }
+
+// Register middleware
+$middleware = require_once($ROOT_DIRECTORY . $DS . "Bootstrap" . $DS . "Middleware.php");
+$middleware($app);
 
 /**
  * Now run the Slim Framework rendering
