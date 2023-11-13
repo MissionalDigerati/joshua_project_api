@@ -23,6 +23,7 @@
 namespace Middleware\Traits;
 
 use Psr\Http\Message\ResponseInterface;
+use Slim\Psr7\Response;
 
 /**
  * This trait handles returning errors based on the provided format.
@@ -33,9 +34,9 @@ trait ReturnsErrorsTrait
         $code,
         $details,
         $format,
-        $message,
-        ResponseInterface $res
-    ) {
+        $message
+    ): ResponseInterface {
+        $response = new Response();
         $error = $this->getResponseError($code, $details, $message);
         switch ($format) {
             case 'json':
@@ -51,8 +52,8 @@ trait ReturnsErrorsTrait
                 $contentType = 'text/html; charset=UTF-8';
                 break;
         }
-        $res->getBody()->write($body);
-        return $res
+        $response->getBody()->write($body);
+        return $response
             ->withHeader('Content-Type', $contentType)
             ->withStatus($code);
     }
@@ -63,12 +64,14 @@ trait ReturnsErrorsTrait
      * @param int       $code       The HTTP status code
      * @param string    $details    The details for the message
      * @param string    $message    The message
-     * @param string    $status     The status of the request (success or error)
      *
      * @return array                The message
      */
-    private function getResponseError($code, $details, $message)
-    {
+    private function getResponseError(
+        int $code,
+        string $details,
+        string $message
+    ): array {
         return array(
             'api'   =>  array(
                 'status'        =>  'error',

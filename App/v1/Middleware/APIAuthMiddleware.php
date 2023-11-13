@@ -28,7 +28,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Psr7\Response;
 
 /**
  * Middleware for auth checking for API requests.
@@ -87,8 +86,7 @@ class APIAuthMiddleware implements MiddlewareInterface
                 401,
                 'You are missing your API key.',
                 $format,
-                'Unauthorized',
-                new Response()
+                'Unauthorized'
             );
         }
         $apiKey = strip_tags($params['api_key']);
@@ -97,8 +95,7 @@ class APIAuthMiddleware implements MiddlewareInterface
                 401,
                 'You are missing your API key.',
                 $format,
-                'Unauthorized',
-                new Response()
+                'Unauthorized'
             );
         }
         if (!$this->isValidKey($apiKey)) {
@@ -106,8 +103,7 @@ class APIAuthMiddleware implements MiddlewareInterface
                 401,
                 'The provided API key is invalid.',
                 $format,
-                'Unauthorized',
-                new Response()
+                'Unauthorized'
             );
         }
         $this->setLastRequest($apiKey);

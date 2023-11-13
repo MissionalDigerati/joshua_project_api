@@ -28,7 +28,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Psr7\Response;
 
 /**
  * A middleware that checks that the request conforms to our API standards.
@@ -85,8 +84,7 @@ class APIStandardsMiddleware implements MiddlewareInterface
                 400,
                 'You must provide a valid API version number.',
                 $format,
-                'Bad Request',
-                new Response()
+                'Bad Request'
             );
         }
         if (!$this->shouldProcess($request)) {
@@ -97,8 +95,7 @@ class APIStandardsMiddleware implements MiddlewareInterface
                 400,
                 'You are requesting an unsupported format.',
                 $format,
-                'Bad Request',
-                new Response()
+                'Bad Request'
             );
         }
         if (!in_array($version, $this->options['versions'])) {
@@ -106,8 +103,7 @@ class APIStandardsMiddleware implements MiddlewareInterface
                 400,
                 'You are requesting an unavailable API version number.',
                 $format,
-                'Bad Request',
-                new Response()
+                'Bad Request'
             );
         }
 
