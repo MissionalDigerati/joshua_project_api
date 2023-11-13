@@ -48,9 +48,9 @@ trait PathBasedTrait
      *
      * @param  ServerRequestInterface $request  PSR7 request
      *
-     * @return  boolean                         yes|no
+     * @return  bool                            yes|no
      */
-    private function shouldProcess(ServerRequestInterface $req)
+    private function shouldProcess(ServerRequestInterface $req): bool
     {
         $uri = "/" . $req->getUri()->getPath();
         $uri = preg_replace("#/+#", "/", $uri);
