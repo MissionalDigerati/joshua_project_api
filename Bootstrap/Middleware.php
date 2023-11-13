@@ -26,6 +26,7 @@ use Middleware\GoogleAnalyticsMiddleware;
 use Tuupola\Middleware\HttpBasicAuthentication;
 use Middleware\APIAuthMiddleware;
 use Middleware\APIStandardsMiddleware;
+use Slim\Middleware\MethodOverrideMiddleware;
 
 /**
  * Add all the required middleware
@@ -69,6 +70,8 @@ return function(App $app) {
     $app->add(new HttpBasicAuthentication($authSettings));
     // Add the routing  middleware
     $app->addRoutingMiddleware();
+    // Allow forms to send the _method param
+    $app->add(new MethodOverrideMiddleware());
 
     $standardSettings = $pathSettings;
     $standardSettings['formats'] = ['json', 'xml'];
