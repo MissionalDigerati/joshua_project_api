@@ -23,10 +23,11 @@
 namespace Middleware;
 
 use Middleware\Traits\PathBasedTrait;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Psr\Http\Message\ResponseInterface as Response;
-use Slim\Routing\RouteContext;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Slim\Psr7\Response;
 
 /**
  * A caching middleware that hashes the url for the key. Options:
@@ -37,7 +38,7 @@ use Slim\Routing\RouteContext;
  * paths: The paths to cache
  * passthrough: The paths to ignore caching
  */
-class CachingMiddleware
+class CachingMiddleware implements MiddlewareInterface
 {
     /**
      * This is a path based middleware
@@ -90,24 +91,22 @@ class CachingMiddleware
     /**
      * Our invokable class
      *
-     * @param  Request          $request    PSR7 request
-     * @param  RequestHandler   $handler    PSR-15 request handler
+     * @param  ServerRequestInterface   $request    PSR7 request
+     * @param  RequestHandlerInterface  $handler    PSR-15 request handler
      *
-     * @return Response                     The modified response
+     * @return ResponseInterface                    The modified response
      */
-    public function __invoke(
-        Request $request,
-        RequestHandler $handler
-    ): Response {
-        $routeContext = RouteContext::fromRequest($request);                                                                                                             
-        $route = $routeContext->getRoute();   
-        $response = $handler->handle($request);
-        $format = $route->getArgument('format');
+    public function process(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
+        $path = $request->getUri()->getPath();
+        $format = pathinfo($path, \PATHINFO_EXTENSION);
         if (!$this->isCaching) {
-            return $response;
+            return $handler->handle($request);
         }
         if (!$this->shouldProcess($request)) {
-            return $response;
+            return $handler->handle($request);
         }
         $cacheKey = $this->getCacheKey($request);
         $cached = $this->cache->get($cacheKey);
@@ -123,6 +122,7 @@ class CachingMiddleware
                     $contentType = 'text/html; charset=UTF-8';
                     break;
             }
+            $response = new Response();
             $response->getBody()->write($cached);
             return $response->withHeader('Content-Type', $contentType);
         }
@@ -131,6 +131,7 @@ class CachingMiddleware
          *
          * @author Johnathan Pulos
          */
+        $response = $handler->handle($request);
         $this->cache->set($cacheKey, (string) $response->getBody(), $this->options['expire_cache']);
         return $response;
     }
@@ -138,10 +139,10 @@ class CachingMiddleware
     /**
      * Generate a unique cache key using the URL and it's parameters.
      *
-     * @param  Request      $request    PSR7 request
-     * @return string                   The key
+     * @param  ServerRequestInterface   $request    PSR7 request
+     * @return string                               The key
      */
-    private function getCacheKey(Request $request): string
+    private function getCacheKey(ServerRequestInterface $request): string
     {
         $path = $request->getUri()->getPath();
         $params = $request->getQueryParams();
