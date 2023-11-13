@@ -89,19 +89,19 @@ use Swagger\Annotations as SWG;
 // phpcs:enable Generic.Files.LineLength
 $app->get(
     "/{version}/continents/{id}.{format}",
-    function (Request $request, Response $response) {
+    function (Request $request, Response $response, $args = []) {
         /**
          * Make sure we have an ID, else crash.
          * This expression ("/\PL/u") removes all non-letter characters
          *
          * @author Johnathan Pulos
          */
-        $format = $request->getAttribute('format');
+        $format = $args['format'];
         $continentId = preg_replace(
             "/\PL/u",
             "",
             strip_tags(
-                strtoupper($request->getAttribute('id'))
+                strtoupper($args['id'])
             )
         );
         if ((empty($continentId)) || (strlen($continentId) != 3)) {
