@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  * 
@@ -22,17 +24,20 @@
  */
 namespace Tests\v1\Unit\Utilities;
 
+use PHPUnit\Framework\TestCase;
+use Utilities\Validator;
+
 /**
  * Test the Validator Utility
  *
  * @author Johnathan Pulos
  */
-class ValidatorTest extends \PHPUnit_Framework_TestCase
+class ValidatorTest extends TestCase
 {
     /**
      * The Validator object
      *
-     * @var \Utilities\Validator
+     * @var Validator
      */
     private $validator;
     /**
@@ -42,9 +47,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function setUp()
+    public function setUp(): void
     {
-        $this->validator = new \Utilities\Validator();
+        $this->validator = new Validator();
     }
     /**
      * Tests that providedRequiredParams throws the correct error if a param is missing
@@ -55,8 +60,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      * 
      * @expectedException InvalidArgumentException
      */
-    public function testShouldErrorIfprovidedRequiredParamsFindsMissingParam()
+    public function testShouldErrorIfprovidedRequiredParamsFindsMissingParam(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $suppliedParams = array('name' => 'John');
         $requiredKeys = array('name', 'address');
         $this->validator->providedRequiredParams($suppliedParams, $requiredKeys);
@@ -70,8 +76,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      * 
      * @expectedException InvalidArgumentException
      */
-    public function testShouldErrorIfprovidedRequiredParamsFindsAnUnsetParam()
+    public function testShouldErrorIfprovidedRequiredParamsFindsAnUnsetParam(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $suppliedParams = array('name' => 'John', 'address' => null);
         $requiredKeys = array('name', 'address');
         $this->validator->providedRequiredParams($suppliedParams, $requiredKeys);
@@ -83,8 +90,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testShouldNotErrorIfprovidedRequiredParamsFindsNoMissingParam()
+    public function testShouldNotErrorIfprovidedRequiredParamsFindsNoMissingParam(): void
     {
+        $this->expectNotToPerformAssertions();
         $suppliedParams = array('name' => 'John', 'address' => '122 East West');
         $requiredKeys = array('name', 'address');
         $this->validator->providedRequiredParams($suppliedParams, $requiredKeys);
@@ -98,8 +106,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      * 
      * @expectedException InvalidArgumentException
      */
-    public function testBarSeperatedStringProvidesAcceptableValuesShouldThrowErrorIfNotAcceptableValues()
+    public function testBarSeperatedStringProvidesAcceptableValuesShouldThrowErrorIfNotAcceptableValues(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $suppliedBarSeperatedParam = '2.3|34.4';
         $acceptableValues = array('1.1', '5.4');
         $this->validator->barSeperatedStringProvidesAcceptableValues($suppliedBarSeperatedParam, $acceptableValues);
@@ -111,8 +120,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testBarSeperatedStringProvidesAcceptableValuesShouldReturnIfAllAcceptableValues()
+    public function testBarSeperatedStringProvidesAcceptableValuesShouldReturnIfAllAcceptableValues(): void
     {
+        $this->expectNotToPerformAssertions();
         $suppliedBarSeperatedParam = '2.3|34.4';
         $acceptableValues = array('2.3', '34.4');
         $this->validator->barSeperatedStringProvidesAcceptableValues($suppliedBarSeperatedParam, $acceptableValues);
@@ -126,8 +136,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      * 
      * @expectedException InvalidArgumentException
      */
-    public function testStringLengthShouldThrowErrorIfLengthIsIncorrect()
+    public function testStringLengthShouldThrowErrorIfLengthIsIncorrect(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $testString = 'I Love Ice Cream!';
         $requiredLength = 5;
         $this->validator->stringLength($testString, $requiredLength);
@@ -139,8 +150,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testStringLengthShouldNotThrowErrorIfLengthIsCorrect()
+    public function testStringLengthShouldNotThrowErrorIfLengthIsCorrect(): void
     {
+        $this->expectNotToPerformAssertions();
         $testString = 'I Love Ice Cream!';
         $requiredLength = 17;
         $this->validator->stringLength($testString, $requiredLength);
@@ -154,8 +166,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      * 
      * @expectedException InvalidArgumentException
      */
-    public function testStringLengthValuesBarSeperatedStringShouldThrowErrorIfLengthIsIncorrect()
+    public function testStringLengthValuesBarSeperatedStringShouldThrowErrorIfLengthIsIncorrect(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $testString = 'Freee|Treee|Key';
         $requiredLength = 5;
         $this->validator->stringLengthValuesBarSeperatedString($testString, $requiredLength);
@@ -167,8 +180,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testStringLengthValuesBarSeperatedStringShouldNotThrowErrorIfLengthIsCorrect()
+    public function testStringLengthValuesBarSeperatedStringShouldNotThrowErrorIfLengthIsCorrect(): void
     {
+        $this->expectNotToPerformAssertions();
         $testString = 'Freee|Treee|Keyee';
         $requiredLength = 5;
         $this->validator->stringLengthValuesBarSeperatedString($testString, $requiredLength);
@@ -182,8 +196,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      * 
      * @expectedException InvalidArgumentException
      */
-    public function testIntegerInRangeShouldThrowErrorIfOutOfRange()
+    public function testIntegerInRangeShouldThrowErrorIfOutOfRange(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $testInteger = 5;
         $rangeStart = 1;
         $rangeEnd = 4;
@@ -196,8 +211,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIntegerInRangeShouldNotThrowErrorIfInRange()
+    public function testIntegerInRangeShouldNotThrowErrorIfInRange(): void
     {
+        $this->expectNotToPerformAssertions();
         $testInteger = 5;
         $rangeStart = 1;
         $rangeEnd = 10;
@@ -212,8 +228,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
      * 
      * @expectedException InvalidArgumentException
      */
-    public function testIntegerInRangeShouldThrowErrorIfInRangeButIsAnException()
+    public function testIntegerInRangeShouldThrowErrorIfInRangeButIsAnException(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $testInteger = 5;
         $rangeStart = 1;
         $rangeEnd = 7;
