@@ -1,3 +1,7 @@
+Version 1.7.0
+
+Upgraded to PHP 8.1 and updated various libraries.
+
 Version 1.6.5
 
 Added the following columns:
