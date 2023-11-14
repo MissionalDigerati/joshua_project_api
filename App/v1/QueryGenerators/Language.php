@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -56,12 +58,12 @@ class Language extends QueryGenerator
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = array(
+    protected $fieldsToSelectArray = [
         'ROL3', 'Language', 'WebLangText', 'Status', 'ROG3', 'HubCountry', 'BibleStatus',
         'GRN_URL', 'TranslationNeedQuestionable', 'BibleYear', 'NTYear', 'PortionsYear',
         'PercentAdherents', 'PercentEvangelical', 'JF', 'JF_URL', 'AudioRecordings', 'JPScale',
         'LeastReached', 'RLG3', 'PrimaryReligion', 'FCBH_URL', 'NbrPGICs', 'NbrCountries'
-    );
+    ];
     /**
      * The Database table to pull the data from.
      *
@@ -108,10 +110,10 @@ class Language extends QueryGenerator
     public function findById()
     {
         $id = strtoupper($this->providedParams['id']);
-        $this->validator->providedRequiredParams($this->providedParams, array('id'));
+        $this->validator->providedRequiredParams($this->providedParams, ['id']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement .
             " FROM " . $this->tableName . " WHERE ROL3 = :id LIMIT 1";
-        $this->preparedVariables = array('id' => $id);
+        $this->preparedVariables = ['id' => $id];
     }
     /**
      * Find all languages using specific filters.
@@ -211,7 +213,7 @@ class Language extends QueryGenerator
         if ($this->paramExists('jpscale')) {
             $this->validator->barSeperatedStringProvidesAcceptableValues(
                 $this->providedParams['jpscale'],
-                array('1', '2', '3', '4', '5')
+                ['1', '2', '3', '4', '5']
             );
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -271,7 +273,7 @@ class Language extends QueryGenerator
         if ($this->paramExists('primary_religions')) {
             $religions = explode('|', $this->providedParams['primary_religions']);
             foreach ($religions as $religion) {
-                $this->validator->integerInRange($religion, 1, 9, array(3));
+                $this->validator->integerInRange(intval($religion), 1, 9, [3]);
             }
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";

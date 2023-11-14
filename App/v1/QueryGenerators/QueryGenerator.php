@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -72,7 +74,7 @@ class QueryGenerator
      * @var     array
      * @access  public
      */
-    public $preparedVariables = array();
+    public $preparedVariables = [];
     /**
      * The Sanitizer class for sanitizing incoming GET data.
      *
@@ -93,7 +95,7 @@ class QueryGenerator
      * @var     array
      * @access  protected
      */
-    protected $providedParams = array();
+    protected $providedParams = [];
     /**
      * An array of column names for this database table that we want to select in searches.
      * Simply remove fields you do not want to expose.
@@ -101,7 +103,7 @@ class QueryGenerator
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = array();
+    protected $fieldsToSelectArray = [];
     /**
      * A string that will hold the fields for the Select statement.
      *
@@ -144,7 +146,7 @@ class QueryGenerator
      * @var     array
      * @access  protected
      **/
-    protected $aliasFields = array();
+    protected $aliasFields = [];
     /**
      * Construct the QueryGenerator class.
      *
@@ -224,7 +226,7 @@ class QueryGenerator
      */
     protected function generateInStatementFromPipedString($str, $columnName)
     {
-        $preparedInVars = array();
+        $preparedInVars = [];
         $i = 0;
         $stringParts = explode("|", $str);
         foreach ($stringParts as $element) {
@@ -334,7 +336,7 @@ class QueryGenerator
      **/
     protected function generateAliasSelectStatement()
     {
-        $statementArray = array();
+        $statementArray = [];
         foreach ($this->aliasFields as $key => $value) {
             $statementArray[] = $key . " AS " . $value;
         }

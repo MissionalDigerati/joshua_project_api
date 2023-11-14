@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -72,16 +74,16 @@ trait ReturnsErrorsTrait
         string $details,
         string $message
     ): array {
-        return array(
-            'api'   =>  array(
+        return [
+            'api'   =>  [
                 'status'        =>  'error',
-                'error'         =>  array(
+                'error'         =>  [
                     'code'      =>  $code,
                     'message'   =>  $message,
                     'details'   =>  $details
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**

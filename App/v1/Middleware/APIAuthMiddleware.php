@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -122,7 +124,7 @@ class APIAuthMiddleware implements MiddlewareInterface
     {
         $query = "SELECT * FROM md_api_keys where api_key = :api_key LIMIT 1";
         $statement = $this->db->prepare($query);
-        $statement->execute(array('api_key' => $apiKey));
+        $statement->execute(['api_key' => $apiKey]);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         if (empty($data)) {
             return false;
@@ -147,6 +149,6 @@ class APIAuthMiddleware implements MiddlewareInterface
     {
         $query = "UPDATE md_api_keys SET last_request = NOW() where api_key = :api_key";
         $statement = $this->db->prepare($query);
-        $statement->execute(array('api_key' => $apiKey));
+        $statement->execute(['api_key' => $apiKey]);
     }
 }

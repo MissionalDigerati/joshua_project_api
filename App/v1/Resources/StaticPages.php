@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -35,14 +37,14 @@ $app->get(
     "/",
     function (Request $request, Response $response): Response {
         $data = $request->getQueryParams();
-        $errors = array();
+        $errors = [];
         if ((isset($data['required_fields'])) && ($data['required_fields'] !="")) {
             $errors = explode("|", $data['required_fields']);
         }
         return $this->get('view')->render(
             $response,
             'StaticPages/home.html.php',
-            array('data' => $data, 'errors' => $errors)
+            ['data' => $data, 'errors' => $errors]
         );
     }
 );
@@ -87,7 +89,7 @@ $app->get(
                     ->prepare(
                         "SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token LIMIT 1"
                     );
-                $statement->execute(array('authorize_token' => $params['authorize_token']));
+                $statement->execute(['authorize_token' => $params['authorize_token']]);
                 $data = $statement->fetch(PDO::FETCH_ASSOC);
             } catch (Exception $e) {
                 $error = "Unable to locate your API key.";
@@ -114,7 +116,7 @@ $app->get(
                 $statement = $this->get('db')->prepare(
                     "UPDATE `md_api_keys` SET status = :status WHERE id = :id"
                 );
-                $statement->execute(array('id' => $data['id'], 'status' => $status));
+                $statement->execute(['id' => $data['id'], 'status' => $status]);
             } catch (Exception $e) {
                 $error = "Unable to update your API Key.";
             }
@@ -162,11 +164,11 @@ $app->post(
         $errors = [];
         $message = '';
         $formData = $request->getParsedBody();
-        $invalidFields = validatePresenceOf(array("email"), $formData);
+        $invalidFields = validatePresenceOf(["email"], $formData);
         if (empty($invalidFields)) {
             try {
                 $statement = $this->db->prepare("SELECT * FROM `md_api_keys` WHERE email = :email AND status = 0");
-                $statement->execute(array('email' => $formData['email']));
+                $statement->execute(['email' => $formData['email']]);
                 $data = $statement->fetchAll(PDO::FETCH_ASSOC);
                 if (empty($data)) {
                     $errors['find_keys'] = "We were unable to locate your pending API keys.";

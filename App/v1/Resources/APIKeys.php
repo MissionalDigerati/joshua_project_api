@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Joshua Project API - An API for accessing Joshua Project Data.
  *

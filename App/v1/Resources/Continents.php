@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -114,7 +116,7 @@ $app->get(
             );
         }
         try {
-            $continent = new Continent(array('id' => $continentId));
+            $continent = new Continent(['id' => $continentId]);
             $continent->findById();
             $statement = $this->get('db')->prepare($continent->preparedStatement);
             $statement->execute($continent->preparedVariables);

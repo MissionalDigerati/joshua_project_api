@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -70,7 +72,7 @@ class Resource extends QueryGenerator
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = array('ROL3', 'Category', 'WebText', 'URL');
+    protected $fieldsToSelectArray = ['ROL3', 'Category', 'WebText', 'URL'];
     /**
      * Construct the Resource class.
      *
@@ -102,10 +104,10 @@ class Resource extends QueryGenerator
      */
     public function findAllByLanguageId()
     {
-        $this->validator->providedRequiredParams($this->providedParams, array('id'));
+        $this->validator->providedRequiredParams($this->providedParams, ['id']);
         $id = strtolower($this->providedParams['id']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName .
             " WHERE ROL3 = :id " . $this->defaultOrderByStatement;
-        $this->preparedVariables = array('id' => $id);
+        $this->preparedVariables = ['id' => $id];
     }
 }

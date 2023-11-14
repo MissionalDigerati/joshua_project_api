@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -102,7 +104,7 @@ class GoogleAnalyticsMiddleware implements MiddlewareInterface
         if ((!isset($clientId)) || (empty($clientId))) {
             return $handler->handle($request);
         }
-        $this->sendEvent($clientId, $endpoint, $format, $version);
+        $this->sendEvent($clientId, $endpoint, $format, strval($version));
         return $handler->handle($request);
     }
 
@@ -125,17 +127,17 @@ class GoogleAnalyticsMiddleware implements MiddlewareInterface
     ): void {
         $url = $this->url . '?measurement_id=' . $this->options['measurement_id'];
         $url .= '&api_secret=' . $this->options['api_secret'];
-        $payload = array(
+        $payload = [
             'client_id'     => $clientId,
-            'events'        =>  array(
+            'events'        =>  [
                 'name'      =>  'api_requests',
-                'params'    =>  array(
+                'params'    =>  [
                     'endpoint'  =>  $endpoint,
                     'format'    =>  $format,
                     'version'   =>  $version
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $ch = curl_init();
         /**
          * Setup cURL, we start by spoofing the user agent since it is from code:
