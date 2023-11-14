@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  * 
@@ -22,12 +24,14 @@
  */
 namespace Tests\v1\Unit;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Test the common functions file
  *
  * @author Johnathan Pulos
  */
-class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
+class CommonFunctionsTest extends TestCase
 {
     
     /**
@@ -37,7 +41,7 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testArrayToXMLShouldCreateCorrectXML()
+    public function testArrayToXMLShouldCreateCorrectXML(): void
     {
         $expected = "<?xml version=\"1.0\"?><api><tests><test><name>test arrayToXML</name></test></tests></api>";
         $actual = arrayToXML(array("data" => array("name" => "test arrayToXML")), "tests", "test");
@@ -51,7 +55,7 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testArrayToXMLShouldDefaultWrappers()
+    public function testArrayToXMLShouldDefaultWrappers(): void
     {
         $expected = "<?xml version=\"1.0\"?><api><items><item><name>test arrayToXML</name></item></items></api>";
         $actual = arrayToXML(array("data" => array("name" => "test arrayToXML")));
@@ -65,7 +69,7 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testAddChildXMLElementGeneratesProperXMLWithArrayChildren()
+    public function testAddChildXMLElementGeneratesProperXMLWithArrayChildren(): void
     {
         $expected = "<?xml version=\"1.0\"?><api><items><item><item_0><name>frog</name><title>Prince and Frog" .
             "</title></item_0></item></items></api>";
@@ -82,7 +86,7 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testReturnPresentOrDefaultShouldReturnPresentedVar()
+    public function testReturnPresentOrDefaultShouldReturnPresentedVar(): void
     {
         $variable = "Frog";
         $default = "Cow";
@@ -98,7 +102,7 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testReturnPresentOrDefaultShouldReturnDefaultVar()
+    public function testReturnPresentOrDefaultShouldReturnDefaultVar(): void
     {
         $variable = "";
         $default = "default";
@@ -114,7 +118,7 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testValidatePresenceShouldReturnAllFieldsIfEmpty()
+    public function testValidatePresenceShouldReturnAllFieldsIfEmpty(): void
     {
         $expected = array("name", "email", "usage");
         $requiredFields = array("name", "email", "usage");
@@ -130,7 +134,7 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testValidatePresenceOfShouldReturnOnlyEmptyFields()
+    public function testValidatePresenceOfShouldReturnOnlyEmptyFields(): void
     {
         $expected = array("name");
         $requiredFields = array("name", "email", "usage");
@@ -145,7 +149,7 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testGenerateRedirectURLCreatesCorrectURLWithInvalidParams()
+    public function testGenerateRedirectURLCreatesCorrectURLWithInvalidParams(): void
     {
         $expected = "/?required_fields=name|email|usage";
         $formData = array("name" => "", "email" => "", "usage" => "");
@@ -161,7 +165,7 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testGenerateRedirectURLCreatesCorrectURLWithValidParams()
+    public function testGenerateRedirectURLCreatesCorrectURLWithValidParams(): void
     {
         $expected = "/?name=Joe&email=joe%40yahoo.com&usage=Free+Willie";
         $formData = array("name" => "Joe", "email" => "joe@yahoo.com", "usage" => "Free Willie");
@@ -177,7 +181,7 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testGenerateRandomKeyShouldReturnAValidKey()
+    public function testGenerateRandomKeyShouldReturnAValidKey(): void
     {
         $result = generateRandomKey(10);
         $this->assertTrue($result != "");
@@ -190,7 +194,7 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testGenerateRandomKeyShouldReturnCorrectLength()
+    public function testGenerateRandomKeyShouldReturnCorrectLength(): void
     {
         $result = generateRandomKey(6);
         $this->assertTrue(strlen($result) == 6);

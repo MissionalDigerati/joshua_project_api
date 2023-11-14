@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Joshua Project API - An API for accessing Joshua Project Data.
  *
@@ -20,8 +21,11 @@
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  */
-use Slim\Http\Request;
-use Slim\Http\Response;
+
+declare(strict_types=1);
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * Get the sample code documentation
@@ -33,12 +37,11 @@ use Slim\Http\Response;
  */
 $app->get(
     "/{version}/docs/sample_code",
-    function (Request $req, Response $res, $args = []) {
-        $viewDirectory = $this->view->getTemplatePath();
-        return $this->view->render(
-            $res,
+    function (Request $request, Response $response): Response {
+        return $this->get('view')->render(
+            $response,
             'Docs/sample_code.html.php',
-            array('viewDirectory' => $viewDirectory)
+            []
         );
     }
 );
@@ -52,12 +55,11 @@ $app->get(
  */
 $app->get(
     "/{version}/docs/available_api_requests",
-    function (Request $req, Response $res, $args = []) {
-        $viewDirectory = $this->view->getTemplatePath();
-        return $this->view->render(
-            $res,
+    function (Request $request, Response $response): Response {
+        return $this->get('view')->render(
+            $response,
             'Docs/available_api_requests.html.php',
-            array('viewDirectory' => $viewDirectory)
+            []
         );
     }
 );
@@ -71,21 +73,20 @@ $app->get(
  */
 $app->get(
     "/{version}/docs/column_descriptions/{type}",
-    function (Request $req, Response $res, $args = []) {
-        $resourceType = $args['type'];
+    function (Request $request, Response $response): Response {
+        $resourceType = $request->getAttribute('type');
         $allowed = [
             'continents', 'countries', 'languages', 'people_groups', 'regions'
         ];
         if (!in_array($resourceType, $allowed)) {
-            return $res->withStatus(404)
+            return $response->withStatus(404)
                 ->withHeader('Content-Type', 'text/html')
                 ->write('Page not found');
         }
-        $viewDirectory = $this->view->getTemplatePath();
-        return $this->view->render(
-            $res,
+        return $this->get('view')->render(
+            $response,
             'Docs/ColumnDescriptions/' . $resourceType . '.html.php',
-            array('viewDirectory' => $viewDirectory)
+            []
         );
     }
 );

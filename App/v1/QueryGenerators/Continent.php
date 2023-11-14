@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,6 +21,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace QueryGenerators;
 
 /**
@@ -55,7 +59,7 @@ class Continent extends QueryGenerator
      * @var     array
      * @access  protected
      **/
-    protected $aliasFields = array();
+    protected $aliasFields = [];
     /**
      * A string that will hold the default ORDER BY for the Select statement.
      *
@@ -70,10 +74,10 @@ class Continent extends QueryGenerator
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = array(
+    protected $fieldsToSelectArray = [
         'ROG2', 'Continent', 'NbrCountries', 'NbrPGIC', 'NbrLR', 'SumContinent',
         'PercentLR', 'SumContinentLR', 'PercentPoplLR'
-    );
+    ];
     /**
      * The Database table to pull the data from.
      *
@@ -93,7 +97,7 @@ class Continent extends QueryGenerator
      * @access  public
      * @author  Johnathan Pulos
      */
-    public function __construct($getParams)
+    public function __construct(array $getParams)
     {
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
@@ -118,18 +122,18 @@ class Continent extends QueryGenerator
      * @throws  \InvalidArgumentException If the 'id' key is not set on the $providedParams class variable.
      * @author  Johnathan Pulos
      **/
-    public function findById()
+    public function findById(): void
     {
-        $this->validator->providedRequiredParams($this->providedParams, array('id'));
+        $this->validator->providedRequiredParams($this->providedParams, ['id']);
         $id = strtolower(strip_tags($this->providedParams['id']));
         $this->validator->stringLength($id, 3);
-        if (!in_array($id, array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam'))) {
+        if (!in_array($id, ['afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam'])) {
             throw new \InvalidArgumentException(
                 "The id you provided is incorrect.  It must be 'afr', 'asi', 'aus', 'eur', 'nar', 'sop', or 'lam'."
             );
         }
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement .
             " FROM " . $this->tableName . " WHERE ROG2 = :id LIMIT 1";
-        $this->preparedVariables = array('id' => $id);
+        $this->preparedVariables = ['id' => $id];
     }
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -22,22 +24,24 @@
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Test the Query Generator for the Language Data
  *
  * @author Johnathan Pulos
  */
-class LanguageTest extends \PHPUnit_Framework_TestCase
+class LanguageTest extends TestCase
 {
 
     private $db;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->db = getDatabaseInstance();
     }
 
-    public function testShouldSanitizeProvidedDataOnInitializing()
+    public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
         $data = array('language' => 'HORSE#%', 'test' => 'CA%$');
         $expected = array('language' => 'HORSE', 'test' => 'CA');
@@ -48,7 +52,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function testFindByIdShouldReturnCorrectLanguage()
+    public function testFindByIdShouldReturnCorrectLanguage(): void
     {
         $expected = array('id'  =>  'amx');
         $expectedLanguage = 'anmatyerre';
@@ -63,7 +67,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedHubCountry, strtolower($data[0]['HubCountry']));
     }
 
-    public function testFindAllWithFiltersShouldReturnAllLanguagesWithoutFilters()
+    public function testFindAllWithFiltersShouldReturnAllLanguagesWithoutFilters(): void
     {
         $expectedCount = 250;
         $expectedFirstLanguage = "a'ou";
@@ -77,7 +81,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedFirstLanguage, strtolower($data[0]['Language']));
     }
 
-    public function testFindAllWithFiltersShouldFilterTheResult()
+    public function testFindAllWithFiltersShouldFilterTheResult(): void
     {
         $expected = array('limit'   =>  5);
         $language = new \QueryGenerators\Language($expected);
@@ -89,7 +93,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected['limit'], count($data));
     }
 
-    public function testFindAllWithFiltersShouldFilterByASetOfIds()
+    public function testFindAllWithFiltersShouldFilterByASetOfIds(): void
     {
         $expected = array('ids'   =>  'ace|boj|smf');
         $language = new \QueryGenerators\Language($expected);
@@ -103,7 +107,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByNotHavingANewTestament()
+    public function testFindAllWithFiltersShouldFilterByNotHavingANewTestament(): void
     {
         $expected = array('has_new_testament'   =>  'N');
         $language = new \QueryGenerators\Language($expected);
@@ -117,7 +121,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByNotHavingPortions()
+    public function testFindAllWithFiltersShouldFilterByNotHavingPortions(): void
     {
         $expected = array('has_portions'   =>  'N');
         $language = new \QueryGenerators\Language($expected);
@@ -131,7 +135,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByNotHavingCompletedBible()
+    public function testFindAllWithFiltersShouldFilterByNotHavingCompletedBible(): void
     {
         $expected = array('has_completed_bible'   =>  'N');
         $language = new \QueryGenerators\Language($expected);
@@ -145,7 +149,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByNotHavingQuestionableTranslationNeed()
+    public function testFindAllWithFiltersShouldFilterByNotHavingQuestionableTranslationNeed(): void
     {
         $expected = array('needs_translation_questionable'   =>  'N');
         $language = new \QueryGenerators\Language($expected);
@@ -159,7 +163,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByNotHavingAudioResources()
+    public function testFindAllWithFiltersShouldFilterByNotHavingAudioResources(): void
     {
         $expected = array('has_audio'   =>  'N');
         $language = new \QueryGenerators\Language($expected);
@@ -173,7 +177,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByNotHavingJesusFilm()
+    public function testFindAllWithFiltersShouldFilterByNotHavingJesusFilm(): void
     {
         $expected = array('has_jesus_film'   =>  'N');
         $language = new \QueryGenerators\Language($expected);
@@ -187,7 +191,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByCountry()
+    public function testFindAllWithFiltersShouldFilterByCountry(): void
     {
         $expected = array('countries'   =>  'af|ni');
         $language = new \QueryGenerators\Language($expected);
@@ -202,7 +206,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByPrimaryReligion()
+    public function testFindAllWithFiltersShouldFilterByPrimaryReligion(): void
     {
         $expected = array('primary_religions'   =>  '6');
         $language = new \QueryGenerators\Language($expected);
@@ -216,7 +220,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByJPScale()
+    public function testFindAllWithFiltersShouldFilterByJPScale(): void
     {
         $expected = array('jpscale'   =>  '3');
         $language = new \QueryGenerators\Language($expected);
@@ -230,7 +234,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByLeastReached()
+    public function testFindAllWithFiltersShouldFilterByLeastReached(): void
     {
         $expected = array('least_reached'   =>  'y');
         $language = new \QueryGenerators\Language($expected);
@@ -244,7 +248,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByAdherent()
+    public function testFindAllWithFiltersShouldFilterByAdherent(): void
     {
         $expected = array('pc_adherent'   =>  '60');
         $language = new \QueryGenerators\Language($expected);
@@ -258,7 +262,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByEvangelical()
+    public function testFindAllWithFiltersShouldFilterByEvangelical(): void
     {
         $expected = array('pc_evangelical'   =>  '10');
         $language = new \QueryGenerators\Language($expected);

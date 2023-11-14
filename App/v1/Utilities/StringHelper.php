@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -13,39 +14,32 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
-use Dotenv\Dotenv;
+
+declare(strict_types=1);
+
+namespace Utilities;
 
 /**
- * Set the default time zone
+ * A class that provides string helper methods.
  */
-date_default_timezone_set('America/Denver');
-$ROOT_DIRECTORY = dirname(__DIR__);
-$DS = DIRECTORY_SEPARATOR;
-/**
- * The version of the API to test for (ex. v1)
- *
- * @param string
- * @author Johnathan Pulos
- */
-$API_VERSION = "v1";
-/**
- * Load up the Composer AutoLoader
- *
- * @author Johnathan Pulos
- */
-require $ROOT_DIRECTORY . $DS . "Vendor" . $DS . "autoload.php";
-/**
- * Load env variables
- *
- * @author Johnathan Pulos
- */
-$dotenv = Dotenv::createImmutable($ROOT_DIRECTORY, '.env.testing');
-$dotenv->load();
-require_once("Tests" . $DS . "Support" . $DS . "HelperFunctions.php");
-require_once("App" . $DS . $API_VERSION . $DS . "Includes" . $DS . "CommonFunctions.php");
+class StringHelper
+{
+    /**
+     * If a string is null, returns an empty string
+     *
+     * @param ?string   $string    The string to convert
+     *
+     * @return string           The string or an empty string if it was null
+     */
+    public static function nullToEmpty(?string $string): string
+    {
+        return (is_null($string)) ? '' : $string;
+    }
+}

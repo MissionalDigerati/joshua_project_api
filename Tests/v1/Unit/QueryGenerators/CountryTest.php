@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -22,21 +24,23 @@
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Test the Query Generator for the Country Data
  *
  * @author Johnathan Pulos
  */
-class CountryTest extends \PHPUnit_Framework_TestCase
+class CountryTest extends TestCase
 {
     private $db;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->db = getDatabaseInstance();
     }
 
-    public function testShouldSanitizeProvidedDataOnInitializing()
+    public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
         $data = array('country' => 'HORSE#%', 'state' => 'CA%$');
         $expected = array('country' => 'HORSE', 'state' => 'CA');
@@ -47,7 +51,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function testFindByIdShouldReturnTheCorrectCountry()
+    public function testFindByIdShouldReturnTheCorrectCountry(): void
     {
         $expected = array('id'  =>  'BE');
         $expectedCountryName = 'Belgium';
@@ -60,7 +64,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCountryName, $data[0]['Ctry']);
     }
 
-    public function testFindAllWithFiltersShouldReturnAllCountriesWithoutFilters()
+    public function testFindAllWithFiltersShouldReturnAllCountriesWithoutFilters(): void
     {
         // Limit is 250, but there is only 238 countries
         $expectedCount = 238;
@@ -74,7 +78,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedFirstCountry, $data[0]['Ctry']);
     }
 
-    public function testFindAllWithFiltersShouldLimitedResults()
+    public function testFindAllWithFiltersShouldLimitedResults(): void
     {
         $expectedCount = 10;
         $country = new \QueryGenerators\Country(array('limit' => $expectedCount));
@@ -85,7 +89,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCount, count($data));
     }
 
-    public function testFindAllWithFiltersShouldFilterByIds()
+    public function testFindAllWithFiltersShouldFilterByIds(): void
     {
         $expectedIDs = array('re', 'qa', 'qo');
         $country = new \QueryGenerators\Country(array('ids' => join('|', $expectedIDs)));
@@ -98,7 +102,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByContinents()
+    public function testFindAllWithFiltersShouldFilterByContinents(): void
     {
         $expectedContinents = array('lam', 'sop');
         $country = new \QueryGenerators\Country(array('continents' => join('|', $expectedContinents)));
@@ -111,7 +115,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByRegions()
+    public function testFindAllWithFiltersShouldFilterByRegions(): void
     {
         $expectedRegions = array(1, 2);
         $country = new \QueryGenerators\Country(array('regions' => join('|', $expectedRegions)));
@@ -120,11 +124,11 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $statement->execute($country->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         foreach ($data as $countryData) {
-            $this->assertTrue(in_array(strtolower($countryData['RegionCode']), $expectedRegions));
+            $this->assertTrue(in_array($countryData['RegionCode'], $expectedRegions));
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByWindow1040()
+    public function testFindAllWithFiltersShouldFilterByWindow1040(): void
     {
         $expectedWindow1040 = 'y';
         $country = new \QueryGenerators\Country(array('window1040' => $expectedWindow1040));
@@ -137,7 +141,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByPrimaryLanguages()
+    public function testFindAllWithFiltersShouldFilterByPrimaryLanguages(): void
     {
         $expectedPrimaryLanguages = array('por', 'eng');
         $country = new \QueryGenerators\Country(array('primary_languages' => join('|', $expectedPrimaryLanguages)));
@@ -150,7 +154,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByPopulationRange()
+    public function testFindAllWithFiltersShouldFilterByPopulationRange(): void
     {
         $expectedMin = 0;
         $expectedMax = 1000;
@@ -166,7 +170,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByExactPopulation()
+    public function testFindAllWithFiltersShouldFilterByExactPopulation(): void
     {
         $expectedPopulation = 44000;
         $country = new \QueryGenerators\Country(array('population' => $expectedPopulation));
@@ -180,7 +184,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByPrimaryReligions()
+    public function testFindAllWithFiltersShouldFilterByPrimaryReligions(): void
     {
         $expectedReligions = array(2 => 'buddhism', 6 => 'islam');
         $country = new \QueryGenerators\Country(
@@ -199,7 +203,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByJPScale()
+    public function testFindAllWithFiltersShouldFilterByJPScale(): void
     {
         $expectedJPScales = "1|2";
         $expectedJPScalesArray = array(1, 2);
@@ -214,7 +218,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryQueryGeneratorShouldSetJPScaleTextToUnreached()
+    public function testCountryQueryGeneratorShouldSetJPScaleTextToUnreached(): void
     {
         $expectedJPScaleText = "unreached";
         $country = new \QueryGenerators\Country(array('jpscale' => '1'));
@@ -228,7 +232,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryQueryGeneratorShouldSetJPScaleTextToMinimallyReached()
+    public function testCountryQueryGeneratorShouldSetJPScaleTextToMinimallyReached(): void
     {
         $expectedJPScaleText = "minimally reached";
         $country = new \QueryGenerators\Country(array('jpscale' => '2'));
@@ -242,7 +246,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryQueryGeneratorShouldSetJPScaleTextToSuperficiallyReached()
+    public function testCountryQueryGeneratorShouldSetJPScaleTextToSuperficiallyReached(): void
     {
         $expectedJPScaleText = "superficially reached";
         $country = new \QueryGenerators\Country(array('jpscale' => '3'));
@@ -256,7 +260,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryQueryGeneratorShouldSetJPScaleTextToPartiallyReached()
+    public function testCountryQueryGeneratorShouldSetJPScaleTextToPartiallyReached(): void
     {
         $expectedJPScaleText = "partially reached";
         $country = new \QueryGenerators\Country(array('jpscale' => '4'));
@@ -270,7 +274,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryQueryGeneratorShouldSetJPScaleTextToSignificantlyReached()
+    public function testCountryQueryGeneratorShouldSetJPScaleTextToSignificantlyReached(): void
     {
         $expectedJPScaleText = "significantly reached";
         $country = new \QueryGenerators\Country(array('jpscale' => '5'));
@@ -284,7 +288,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryQueryGeneratorShouldSetJPScaleImageURLCorrectly()
+    public function testCountryQueryGeneratorShouldSetJPScaleImageURLCorrectly(): void
     {
         $expectedJPScaleText = "established church";
         $country = new \QueryGenerators\Country(array('jpscale' => '4'));
@@ -294,12 +298,12 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
-            $expectedImageURL = "https://joshuaproject.net/images/scale".round($countryData['JPScaleCtry']).".jpg";
+            $expectedImageURL = "https://joshuaproject.net/images/scale".round(intval($countryData['JPScaleCtry'])).".jpg";
             $this->assertEquals(strtolower($countryData['JPScaleImageURL']), $expectedImageURL);
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByCntPrimaryLanguagesInRange()
+    public function testFindAllWithFiltersShouldFilterByCntPrimaryLanguagesInRange(): void
     {
         $min = 2;
         $max = 3;
@@ -318,7 +322,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByCntPrimaryLanguagesAtValue()
+    public function testFindAllWithFiltersShouldFilterByCntPrimaryLanguagesAtValue(): void
     {
         $value = 4;
         $country = new \QueryGenerators\Country(array(
@@ -335,7 +339,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByTranslationUnspecifiedInRange()
+    public function testFindAllWithFiltersShouldFilterByTranslationUnspecifiedInRange(): void
     {
         $min = 1;
         $max = 2;
@@ -354,7 +358,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByTranslationUnspecifiedAtValue()
+    public function testFindAllWithFiltersShouldFilterByTranslationUnspecifiedAtValue(): void
     {
         $value = 1;
         $country = new \QueryGenerators\Country(array(
@@ -371,7 +375,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByTranslationNeededInRange()
+    public function testFindAllWithFiltersShouldFilterByTranslationNeededInRange(): void
     {
         $min = 1;
         $max = 2;
@@ -390,7 +394,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByTranslationNeededAtValue()
+    public function testFindAllWithFiltersShouldFilterByTranslationNeededAtValue(): void
     {
         $value = 1;
         $country = new \QueryGenerators\Country(array(
@@ -407,7 +411,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByTranslationStartedInRange()
+    public function testFindAllWithFiltersShouldFilterByTranslationStartedInRange(): void
     {
         $min = 3;
         $max = 4;
@@ -426,7 +430,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByTranslationStartedAtValue()
+    public function testFindAllWithFiltersShouldFilterByTranslationStartedAtValue(): void
     {
         $value = 1;
         $country = new \QueryGenerators\Country(array(
@@ -443,7 +447,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByBiblePortionsInRange()
+    public function testFindAllWithFiltersShouldFilterByBiblePortionsInRange(): void
     {
         $min = 2;
         $max = 3;
@@ -462,7 +466,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByBiblePortionsAtValue()
+    public function testFindAllWithFiltersShouldFilterByBiblePortionsAtValue(): void
     {
         $value = 0;
         $country = new \QueryGenerators\Country(array(
@@ -479,7 +483,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByBibleNewTestamentInRange()
+    public function testFindAllWithFiltersShouldFilterByBibleNewTestamentInRange(): void
     {
         $min = 3;
         $max = 4;
@@ -498,7 +502,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByBibleNewTestamentAtValue()
+    public function testFindAllWithFiltersShouldFilterByBibleNewTestamentAtValue(): void
     {
         $value = 1;
         $country = new \QueryGenerators\Country(array(
@@ -515,7 +519,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByBibleCompleteInRange()
+    public function testFindAllWithFiltersShouldFilterByBibleCompleteInRange(): void
     {
         $min = 3;
         $max = 4;
@@ -534,7 +538,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByBibleCompleteAtValue()
+    public function testFindAllWithFiltersShouldFilterByBibleCompleteAtValue(): void
     {
         $value = 18;
         $country = new \QueryGenerators\Country(array(
@@ -551,7 +555,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByPopLivingAmongUnreached()
+    public function testFindAllWithFiltersShouldFilterByPopLivingAmongUnreached(): void
     {
         $expectedMin = 0;
         $expectedMax = 1000;
@@ -567,7 +571,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByPopLivingAmongFrontier()
+    public function testFindAllWithFiltersShouldFilterByPopLivingAmongFrontier(): void
     {
         $expectedMin = 1000;
         $expectedMax = 3000;
@@ -583,7 +587,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByPCBuddhist()
+    public function testFindAllWithFiltersShouldFilterByPCBuddhist(): void
     {
         $expectedMin = 15;
         $expectedMax = 45;
@@ -600,7 +604,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByPCChristianity()
+    public function testFindAllWithFiltersShouldFilterByPCChristianity(): void
     {
         $expectedMin = 30;
         $expectedMax = 40;
@@ -617,7 +621,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByPCEthnicReligion()
+    public function testFindAllWithFiltersShouldFilterByPCEthnicReligion(): void
     {
         $expectedMin = 10;
         $expectedMax = 45;
@@ -634,7 +638,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByPCEvangelical()
+    public function testFindAllWithFiltersShouldFilterByPCEvangelical(): void
     {
         $expectedMin = 20;
         $expectedMax = 50;
@@ -651,7 +655,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByPercentHindu()
+    public function testFindAllWithFiltersShouldFilterByPercentHindu(): void
     {
         $expectedMin = 50;
         $expectedMax = 90;
@@ -668,7 +672,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByPCIslam()
+    public function testFindAllWithFiltersShouldFilterByPCIslam(): void
     {
         $expectedMin = 50;
         $expectedMax = 90;
@@ -685,7 +689,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByPCNonReligious()
+    public function testFindAllWithFiltersShouldFilterByPCNonReligious(): void
     {
         $expectedMin = 43;
         $expectedMax = 69;
@@ -702,7 +706,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByPercentOtherReligions()
+    public function testFindAllWithFiltersShouldFilterByPercentOtherReligions(): void
     {
         $expectedMin = 3;
         $expectedMax = 5;
@@ -719,7 +723,7 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByPCUnknown()
+    public function testFindAllWithFiltersShouldFilterByPCUnknown(): void
     {
         $expectedMin = 0;
         $expectedMax = 0.004;

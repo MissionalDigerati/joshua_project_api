@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,6 +21,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace QueryGenerators;
 
 /**
@@ -72,7 +76,7 @@ class QueryGenerator
      * @var     array
      * @access  public
      */
-    public $preparedVariables = array();
+    public $preparedVariables = [];
     /**
      * The Sanitizer class for sanitizing incoming GET data.
      *
@@ -93,7 +97,7 @@ class QueryGenerator
      * @var     array
      * @access  protected
      */
-    protected $providedParams = array();
+    protected $providedParams = [];
     /**
      * An array of column names for this database table that we want to select in searches.
      * Simply remove fields you do not want to expose.
@@ -101,7 +105,7 @@ class QueryGenerator
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = array();
+    protected $fieldsToSelectArray = [];
     /**
      * A string that will hold the fields for the Select statement.
      *
@@ -144,7 +148,7 @@ class QueryGenerator
      * @var     array
      * @access  protected
      **/
-    protected $aliasFields = array();
+    protected $aliasFields = [];
     /**
      * Construct the QueryGenerator class.
      *
@@ -157,7 +161,7 @@ class QueryGenerator
      * @access  public
      * @author  Johnathan Pulos
      */
-    public function __construct($getParams)
+    public function __construct(array $getParams)
     {
         $this->JPScaleTextSelectStatement = "CASE  WHEN JPScale = 1 THEN 'Unreached' WHEN JPScale = 2 THEN" .
         " 'Minimally Reached' WHEN JPScale = 3 THEN 'Superficially Reached' WHEN JPScale = 4 THEN" .
@@ -172,11 +176,11 @@ class QueryGenerator
      * A shorter method for checking if an array key exists in the $providedParams class variable.
      *
      * @param   string  $paramName  The key your looking for in the $providedParams class variable.
-     * @return  boolean
+     * @return  bool
      * @access  protected
      * @author  Johnathan Pulos
      */
-    protected function paramExists($paramName)
+    protected function paramExists(string $paramName): bool
     {
         return array_key_exists($paramName, $this->providedParams);
     }
@@ -191,7 +195,7 @@ class QueryGenerator
      * @access protected
      * @author Johnathan Pulos
      */
-    protected function addLimitFilter()
+    protected function addLimitFilter(): void
     {
         if (($this->paramExists('limit')) && intval($this->providedParams['limit']) > 0) {
             $this->preparedVariables['limit'] = intval($this->providedParams['limit']);
@@ -222,16 +226,16 @@ class QueryGenerator
      * @access  protected
      * @author  Johnathan Pulos
      */
-    protected function generateInStatementFromPipedString($str, $columnName)
+    protected function generateInStatementFromPipedString(string $str, string $columnName): string
     {
-        $preparedInVars = array();
+        $preparedInVars = [];
         $i = 0;
         $stringParts = explode("|", $str);
         foreach ($stringParts as $element) {
             $preparedParamName = str_replace(' ', '', strtolower($columnName)) . '_' . $i;
             array_push($preparedInVars, ':' . $preparedParamName);
             $this->preparedVariables[$preparedParamName] = $element;
-            $i = $i+1;
+            $i = $i + 1;
         }
         return $columnName . " IN (" . join(", ", $preparedInVars) . ")";
     }
@@ -251,8 +255,11 @@ class QueryGenerator
      * @access  protected
      * @author  Johnathan Pulos
      */
-    protected function generateBetweenStatementFromDashSeperatedString($str, $columnName, $suffix)
-    {
+    protected function generateBetweenStatementFromDashSeperatedString(
+        string $str,
+        string $columnName,
+        string $suffix
+    ): string {
         $stringValues = explode('-', $str);
         $stringValuesLength = count($stringValues);
         if ($stringValuesLength == 2) {
@@ -285,7 +292,7 @@ class QueryGenerator
      * @access  protected
      * @author  Johnathan Pulos
      */
-    protected function generateWhereStatementForBoolean($str, $columnName, $suffix)
+    protected function generateWhereStatementForBoolean(string $str, string $columnName, string $suffix): string
     {
         $val = strtoupper($str);
         if ($val == 'Y') {
@@ -310,8 +317,10 @@ class QueryGenerator
      * @access  protected
      * @author  Johnathan Pulos
      */
-    protected function generateWhereStatementForBooleanBasedOnIfFieldHasContentOrNot($str, $columnName)
-    {
+    protected function generateWhereStatementForBooleanBasedOnIfFieldHasContentOrNot(
+        string $str,
+        string $columnName
+    ): string {
         $val = strtoupper($str);
         if ($val == 'Y') {
             return "(" . $columnName . " IS NOT NULL OR " . $columnName . " != '')";
@@ -332,9 +341,9 @@ class QueryGenerator
      * @access protected
      * @author Johnathan Pulos
      **/
-    protected function generateAliasSelectStatement()
+    protected function generateAliasSelectStatement(): string
     {
-        $statementArray = array();
+        $statementArray = [];
         foreach ($this->aliasFields as $key => $value) {
             $statementArray[] = $key . " AS " . $value;
         }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -22,24 +24,28 @@
  */
 namespace Tests\v1\Integration;
 
+use PHPToolbox\CachedRequest\CachedRequest;
+use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use PHPUnit\Framework\TestCase;
+
 /**
  * The class for testing integration of the API Keys
  *
  * @author Johnathan Pulos
  */
-class APIKeysTest extends \PHPUnit_Framework_TestCase
+class APIKeysTest extends TestCase
 {
     /**
      * The CachedRequest Object
      *
-     * @var \PHPToolbox\CachedRequest\CachedRequest
+     * @var CachedRequest
      * @access public
      */
     public $cachedRequest;
     /**
      * The PDO database connection object
      *
-     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     * @var PDODatabaseConnect
      * @access private
      */
     private $db;
@@ -65,13 +71,11 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function setUp()
+    public function setUp(): void
     {
-        global $API_VERSION;
-        $this->APIVersion = $API_VERSION;
-        global $SITE_URL;
-        $this->siteURL = $SITE_URL;
-        $this->cachedRequest = new \PHPToolbox\CachedRequest\CachedRequest;
+        $this->APIVersion = $_ENV['api_version'];
+        $this->siteURL = $_ENV['site_url'];
+        $this->cachedRequest = new CachedRequest();
         $this->cachedRequest->cacheDirectory =
             __DIR__ .
             DIRECTORY_SEPARATOR . ".." .
@@ -87,7 +91,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->cachedRequest->clearCache();
     }
@@ -99,12 +103,12 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestWithMissingPOSTParamsShouldSetAllRequiredFieldsInURL()
+    public function testAPIKeyRequestWithMissingPOSTParamsShouldSetAllRequiredFieldsInURL(): void
     {
         $expectedURL = $this->siteURL . "/?required_fields=name|email|usage";
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => '', 'email' => '', 'usage' => ''),
+            ['name' => '', 'email' => '', 'usage' => ''],
             "api_keys_required_fields"
         );
         $actualURL = $this->cachedRequest->lastVisitedURL;
@@ -118,10 +122,10 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredNameFieldInURL()
+    public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredNameFieldInURL(): void
     {
         $expectedURL = $this->siteURL . "/?required_fields=name&email=joe%40yahoo.com&usage=testing";
-        $response = $this->cachedRequest->post(
+        $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
             array('name' => '', 'email' => 'joe@yahoo.com', 'usage' => 'testing'),
             "api_keys_required_fields"
@@ -137,7 +141,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredEmailFieldInURL()
+    public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredEmailFieldInURL(): void
     {
         $expectedURL = $this->siteURL . "/?required_fields=email&name=joe&usage=testing";
         $this->cachedRequest->post(
@@ -156,7 +160,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredUsageFieldInURL()
+    public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredUsageFieldInURL(): void
     {
         $expectedURL = $this->siteURL . "/?required_fields=usage&name=joe&email=joe%40yahoo.com";
         $this->cachedRequest->post(
@@ -175,7 +179,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestShouldReturnIfAllPOSTParamsSupplied()
+    public function testAPIKeyRequestShouldReturnIfAllPOSTParamsSupplied(): void
     {
         $usage = generateRandomKey(12);
         $this->cachedRequest->post(
@@ -198,7 +202,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestShouldSetStatusToZeroIntially()
+    public function testAPIKeyRequestShouldSetStatusToZeroIntially(): void
     {
         $usage = generateRandomKey(12);
         $content = $this->cachedRequest->post(
@@ -219,7 +223,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestShouldCreateAnAuthorizeToken()
+    public function testAPIKeyRequestShouldCreateAnAuthorizeToken(): void
     {
         $usage = generateRandomKey(12);
         $this->cachedRequest->post(
@@ -243,7 +247,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testGetMyAPIKeySetsProperFields()
+    public function testGetMyAPIKeySetsProperFields(): void
     {
         $usage = generateRandomKey(12);
         $expectedStatus = 1;
@@ -274,7 +278,7 @@ class APIKeysTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testGetMyAPIKeyShouldNotChangeKeysThatWereSuspended()
+    public function testGetMyAPIKeyShouldNotChangeKeysThatWereSuspended(): void
     {
         $usage = generateRandomKey(12);
         $expectedStatus = 2;

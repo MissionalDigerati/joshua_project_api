@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,11 +21,16 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace Middleware;
 
 use Middleware\Traits\PathBasedTrait;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Middleware that sends events to Google Analytics 4>. Options:
@@ -34,7 +40,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * paths: The paths to cache
  * passthrough: The paths to ignore caching
  */
-class GoogleAnalyticsMiddleware
+class GoogleAnalyticsMiddleware implements MiddlewareInterface
 {
     /**
      * This is a path based middleware
@@ -44,7 +50,7 @@ class GoogleAnalyticsMiddleware
     /**
      * Are we tracking requests?
      *
-     * @var boolean
+     * @var bool
      */
     protected $isTracking = false;
 
@@ -55,7 +61,7 @@ class GoogleAnalyticsMiddleware
      */
     protected $url = 'https://www.google-analytics.com/mp/collect';
 
-    public function __construct($isTracking, $options)
+    public function __construct(bool $isTracking, array $options)
     {
         $this->isTracking = $isTracking;
         $this->options['measurement_id'] = '';
@@ -69,38 +75,39 @@ class GoogleAnalyticsMiddleware
     /**
      * Our invokable class
      *
-     * @param  ServerRequestInterface   $request  PSR7 request
-     * @param  ResponseInterface        $response PSR7 response
-     * @param  callable                 $next     Next middleware
+     * @param  ServerRequestInterface   $request    PSR7 request
+     * @param  RequestHandlerInterface  $handler    PSR-15 request handler
      *
-     * @return ResponseInterface                  The modified response
+     * @return ResponseInterface                    The modified response
      */
-    public function __invoke(
-        ServerRequestInterface $req,
-        ResponseInterface $res,
-        callable $next
-    ) {
+    public function process(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
+        $path = $request->getUri()->getPath();
+        $format = pathinfo($path, \PATHINFO_EXTENSION);
+        $version = 0;
+        if (preg_match('/\/v(\d+)\//', $path, $matches)) {
+            $version = intval($matches[1]);
+        }
         if (!$this->isTracking) {
-            return $next($req, $res);
+            return $handler->handle($request);
         }
-        if (!$this->shouldProcess($req)) {
-            return $next($req, $res);
+        if (!$this->shouldProcess($request)) {
+            return $handler->handle($request);
         }
-        $params = $req->getQueryParams();
+        $params = $request->getQueryParams();
         if (empty($params)) {
-            return $next($req, $res);
+            return $handler->handle($request);
         }
-        $route = $req->getAttribute('route');
         // Remove the extension
-        $endpoint = preg_replace('/\\.[^.\\s]{3,4}$/', '', $req->getUri()->getPath());
-        $format = $route->getArgument('format');
-        $version = ltrim($route->getArgument('version'), 'v');
+        $endpoint = preg_replace('/\\.[^.\\s]{3,4}$/', '', $request->getUri()->getPath());
         $clientId = $params['api_key'];
         if ((!isset($clientId)) || (empty($clientId))) {
-            return $next($req, $res);
+            return $handler->handle($request);
         }
-        $this->sendEvent($clientId, $endpoint, $format, $version);
-        return $next($req, $res);
+        $this->sendEvent($clientId, $endpoint, $format, strval($version));
+        return $handler->handle($request);
     }
 
     /**
@@ -114,21 +121,25 @@ class GoogleAnalyticsMiddleware
      *
      * @return void
      */
-    protected function sendEvent($clientId, $endpoint, $format, $version)
-    {
+    protected function sendEvent(
+        string $clientId,
+        string $endpoint,
+        string $format,
+        string $version
+    ): void {
         $url = $this->url . '?measurement_id=' . $this->options['measurement_id'];
         $url .= '&api_secret=' . $this->options['api_secret'];
-        $payload = array(
+        $payload = [
             'client_id'     => $clientId,
-            'events'        =>  array(
+            'events'        =>  [
                 'name'      =>  'api_requests',
-                'params'    =>  array(
+                'params'    =>  [
                     'endpoint'  =>  $endpoint,
                     'format'    =>  $format,
                     'version'   =>  $version
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $ch = curl_init();
         /**
          * Setup cURL, we start by spoofing the user agent since it is from code:

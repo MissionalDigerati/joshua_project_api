@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,6 +21,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace Middleware\Traits;
 
 use Psr\Http\Message\ServerRequestInterface;
@@ -48,9 +52,9 @@ trait PathBasedTrait
      *
      * @param  ServerRequestInterface $request  PSR7 request
      *
-     * @return  boolean                         yes|no
+     * @return  bool                            yes|no
      */
-    private function shouldProcess(ServerRequestInterface $req)
+    private function shouldProcess(ServerRequestInterface $req): bool
     {
         $uri = "/" . $req->getUri()->getPath();
         $uri = preg_replace("#/+#", "/", $uri);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,8 +21,11 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
-use Slim\Http\Request;
-use Slim\Http\Response;
+
+declare(strict_types=1);
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * Get the home page
@@ -33,17 +37,16 @@ use Slim\Http\Response;
  */
 $app->get(
     "/",
-    function (Request $req, Response $res, $args = []) {
-        $viewDirectory = $this->view->getTemplatePath();
-        $data = $req->getQueryParams();
-        $errors = array();
-        if ((isset($data['required_fields'])) && ($data['required_fields'] !="")) {
+    function (Request $request, Response $response): Response {
+        $data = $request->getQueryParams();
+        $errors = [];
+        if ((isset($data['required_fields'])) && ($data['required_fields'] !== "")) {
             $errors = explode("|", $data['required_fields']);
         }
-        return $this->view->render(
-            $res,
+        return $this->get('view')->render(
+            $response,
             'StaticPages/home.html.php',
-            array('data' => $data, 'errors' => $errors, 'viewDirectory' => $viewDirectory)
+            ['data' => $data, 'errors' => $errors]
         );
     }
 );
@@ -57,13 +60,11 @@ $app->get(
  */
 $app->get(
     "/getting_started",
-    function (Request $req, Response $res, $args = []) {
-        $siteURL = getSiteURL();
-        $viewDirectory = $this->view->getTemplatePath();
-        return $this->view->render(
-            $res,
+    function (Request $request, Response $response): Response {
+        return $this->get('view')->render(
+            $response,
             'StaticPages/getting_started.html.php',
-            array('siteURL' => $siteURL, 'viewDirectory' => $viewDirectory)
+            ['siteURL' => getSiteURL()]
         );
     }
 );
@@ -76,54 +77,61 @@ $app->get(
  */
 $app->get(
     "/get_my_api_key",
-    function (Request $req, Response $res, $args = []) {
-        $viewDirectory = $this->view->getTemplatePath();
+    function (Request $request, Response $response): Response {
         $APIKey = "";
         $message = "";
         $error = "";
-        $token = $req->getParam('authorize_token');
-        if ($token == '') {
+        $params = $request->getQueryParams();
+        if ((!array_key_exists('authorize_token', $params)) || ($params['authorize_token'] === '')) {
             $error = "Unable to locate your API key.";
         } else {
             try {
-                $statement = $this->db->prepare("SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token");
-                $statement->execute(array('authorize_token' => $token));
-                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $statement = $this
+                    ->get('db')
+                    ->prepare(
+                        "SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token LIMIT 1"
+                    );
+                $statement->execute(['authorize_token' => $params['authorize_token']]);
+                $data = $statement->fetch(PDO::FETCH_ASSOC);
             } catch (Exception $e) {
                 $error = "Unable to locate your API key.";
             }
         }
         if ($error == '') {
             try {
-                switch ($data[0]['status']) {
+                switch ($data['status']) {
                     case 0:
                         $status = 1;
                         $message = "Your API Key has been activated.";
-                        $APIKey = $data[0]['api_key'];
+                        $APIKey = $data['api_key'];
                         break;
                     case 1:
                         $status = 1;
                         $message = "Your API Key was already activated.";
-                        $APIKey = $data[0]['api_key'];
+                        $APIKey = $data['api_key'];
                         break;
                     case 2:
                         $status = 2;
                         $error = "Your API Key was suspended!";
                         break;
                 }
-                $statement = $this->db->prepare(
+                $statement = $this->get('db')->prepare(
                     "UPDATE `md_api_keys` SET status = :status WHERE id = :id"
                 );
-                $statement->execute(array('id' => $data[0]['id'], 'status' => $status));
+                $statement->execute(['id' => $data['id'], 'status' => $status]);
             } catch (Exception $e) {
                 $error = "Unable to update your API Key.";
             }
         }
 
-        return $this->view->render(
-            $res,
+        return $this->get('view')->render(
+            $response,
             'StaticPages/get_my_api_key.html.php',
-            array('message' => $message, 'error' => $error, 'APIKey' => $APIKey, 'viewDirectory' => $viewDirectory)
+            [
+                'message' => $message,
+                'error' => $error,
+                'APIKey' => $APIKey
+            ]
         );
     }
 );
@@ -136,12 +144,11 @@ $app->get(
  */
 $app->get(
     "/resend_activation_links",
-    function (Request $req, Response $res, $args = []) {
-        $viewDirectory = $this->view->getTemplatePath();
-        return $this->view->render(
-            $res,
+    function (Request $request, Response $response): Response {
+        return $this->get('view')->render(
+            $response,
             'StaticPages/resend_activation_links.html.php',
-            array('viewDirectory' => $viewDirectory)
+            []
         );
     }
 );
@@ -154,17 +161,16 @@ $app->get(
  */
 $app->post(
     "/resend_activation_links",
-    function (Request $req, Response $res, $args = []) {
-        $viewDirectory = $this->view->getTemplatePath();
+    function (Request $request, Response $response): Response {
         $siteURL = getSiteURL();
-        $errors = array();
+        $errors = [];
         $message = '';
-        $formData = $req->getParsedBody();
-        $invalidFields = validatePresenceOf(array("email"), $formData);
+        $formData = $request->getParsedBody();
+        $invalidFields = validatePresenceOf(["email"], $formData);
         if (empty($invalidFields)) {
             try {
                 $statement = $this->db->prepare("SELECT * FROM `md_api_keys` WHERE email = :email AND status = 0");
-                $statement->execute(array('email' => $formData['email']));
+                $statement->execute(['email' => $formData['email']]);
                 $data = $statement->fetchAll(PDO::FETCH_ASSOC);
                 if (empty($data)) {
                     $errors['find_keys'] = "We were unable to locate your pending API keys.";
@@ -178,10 +184,14 @@ $app->post(
         } else {
             $errors['invalid'] = $invalidFields;
         }
-        return $this->view->render(
-            $res,
+        return $this->get('view')->render(
+            $response,
             'StaticPages/resend_activation_links.html.php',
-            array('errors' => $errors, 'data' => $formData, 'message' => $message, 'viewDirectory' => $viewDirectory)
+            [
+                'errors' => $errors,
+                'data' => $formData,
+                'message' => $message
+            ]
         );
     }
 );

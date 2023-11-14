@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,6 +21,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 /**
  * Convert an array of data to XML.
  *
@@ -68,8 +72,8 @@ function addChildXMLElement($parentElement, $childLabel, $childVal)
             }
             addChildXMLElement($newParentElement, $key, $val);
         }
-    } else {
-        $parentElement->addChild($childLabel, htmlspecialchars($childVal));
+    } elseif ($childVal) {
+        $parentElement->addChild($childLabel, htmlspecialchars(strval($childVal)));
     }
 }
 /**
@@ -147,7 +151,7 @@ function stripReturns($str)
  **/
 function validatePresenceOf($requiredFields, $formData)
 {
-    $invalidFields = array();
+    $invalidFields = [];
     foreach ($requiredFields as $field) {
         $fieldParam = strip_tags($formData[$field]);
         if (!$fieldParam) {
@@ -174,7 +178,7 @@ function validatePresenceOf($requiredFields, $formData)
  **/
 function generateRedirectURL($redirectURL, array $formData, array $invalidFields)
 {
-    $validFieldParams = array();
+    $validFieldParams = [];
     $validParamsStartSymbol = "?";
     foreach ($formData as $key => $value) {
         $val = urlencode(strip_tags($value));

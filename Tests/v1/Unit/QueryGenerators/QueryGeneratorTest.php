@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -21,18 +23,20 @@
  *
  */
 namespace Tests\v1\Unit\QueryGenerators;
+use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test the Query Generator for the Country Data
  *
  * @author Johnathan Pulos
  */
-class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
+class QueryGeneratorTest extends TestCase
 {
     /**
      * The PDO database connection object
      *
-     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     * @var PDODatabaseConnect
      */
     private $db;
     /**
@@ -42,7 +46,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->db = getDatabaseInstance();
     }
@@ -53,7 +57,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testShouldSanitizeProvidedDataOnInitializing()
+    public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
         $data = array('country' => 'AZX#%', 'state' => 'AZ%$');
         $expected = array('country' => 'AZX', 'state' => 'AZ');
@@ -70,7 +74,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testParamExistsShouldReturnTrueIfItExists()
+    public function testParamExistsShouldReturnTrueIfItExists(): void
     {
         $params = array('id'  =>  'BE');
         $queryGenerator = new \QueryGenerators\QueryGenerator($params);
@@ -86,7 +90,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testParamExistsShouldReturnFalseIfItDoesNotExists()
+    public function testParamExistsShouldReturnFalseIfItDoesNotExists(): void
     {
         $params = array('id'  =>  'BE');
         $queryGenerator = new \QueryGenerators\QueryGenerator($params);
@@ -102,7 +106,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAddLimitFilterShouldSetTheDefaultLimitAndStartingPreparedVariables()
+    public function testAddLimitFilterShouldSetTheDefaultLimitAndStartingPreparedVariables(): void
     {
         $expectedLimit = 250;
         $expectedStarting = 0;
@@ -121,7 +125,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAddLimitFilterShouldSetTheLimitPreparedVariablesToGivenLimit()
+    public function testAddLimitFilterShouldSetTheLimitPreparedVariablesToGivenLimit(): void
     {
         $expectedLimit = 10;
         $params = array('limit' => $expectedLimit);
@@ -139,7 +143,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAddLimitFilterShouldSetTheStartingPreparedVariablesForPageOne()
+    public function testAddLimitFilterShouldSetTheStartingPreparedVariablesForPageOne(): void
     {
         $params = array('limit' => 10, 'page' => 1);
         $queryGenerator = new \QueryGenerators\QueryGenerator($params);
@@ -157,7 +161,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAddLimitFilterShouldSetTheStartingPreparedVariablesBasedOnGivenLimitAndPageParams()
+    public function testAddLimitFilterShouldSetTheStartingPreparedVariablesBasedOnGivenLimitAndPageParams(): void
     {
         $params = array('limit' => 10, 'page' => 3);
         $queryGenerator = new \QueryGenerators\QueryGenerator($params);
@@ -175,7 +179,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testGenerateInStatementFromPipedStringShouldReturnCorrectStatement()
+    public function testGenerateInStatementFromPipedStringShouldReturnCorrectStatement(): void
     {
         $expectedString = "PeopleId1 IN (:peopleid1_0, :peopleid1_1, :peopleid1_2)";
         $expectedKeys = array('peopleid1_0', 'peopleid1_1', 'peopleid1_2');
@@ -197,7 +201,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testGenerateBetweenStatementFromDashSeperatedStringShouldReturnCorrectStatementWithAMaxAndMin()
+    public function testGenerateBetweenStatementFromDashSeperatedStringShouldReturnCorrectStatementWithAMaxAndMin(): void
     {
         $expectedString = "Population BETWEEN :min_pop AND :max_pop";
         $expectedKeys = array('min_pop', 'max_pop');
@@ -218,7 +222,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testGenerateBetweenStatementFromDashSeperatedStringShouldReturnCorrectStatementWithMinOnly()
+    public function testGenerateBetweenStatementFromDashSeperatedStringShouldReturnCorrectStatementWithMinOnly(): void
     {
         $expectedString = "Population = :total_population";
         $expectedKeys = array('total_population');
@@ -241,13 +245,14 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMoreMinThanMaxGiven()
+    public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMoreMinThanMaxGiven(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $queryGenerator = new \QueryGenerators\QueryGenerator(array());
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('generateBetweenStatementFromDashSeperatedString');
         $method->setAccessible(true);
-        $actualString = $method->invoke($queryGenerator, '10-20-39', 'Population', 'population');
+        $method->invoke($queryGenerator, '10-20-39', 'Population', 'population');
     }
     /**
      * Tests that generateBetweenStatementFromDashSeperatedString() throws error if min is greater than max
@@ -258,13 +263,14 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMinGreaterThanMax()
+    public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMinGreaterThanMax(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $queryGenerator = new \QueryGenerators\QueryGenerator(array());
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('generateBetweenStatementFromDashSeperatedString');
         $method->setAccessible(true);
-        $actualString = $method->invoke($queryGenerator, '30-20', 'Population', 'population');
+        $method->invoke($queryGenerator, '30-20', 'Population', 'population');
     }
     /**
      * Tests that generateWhereStatementForBoolean generates the correct statement for a Yes Boolean
@@ -273,7 +279,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForYes()
+    public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForYes(): void
     {
         $expectedStatement = "IndigenousCode = :indigenous";
         $expectedKeys = array('indigenous');
@@ -294,7 +300,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForNo()
+    public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForNo(): void
     {
         $expectedStatement = "(10_40Window IS NULL OR 10_40Window = '' OR 10_40Window = 'N')";
         $queryGenerator = new \QueryGenerators\QueryGenerator(array());
@@ -314,13 +320,14 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testGenerateWhereStatementFromBooleanShouldThrowErrorIfParamInvalid()
+    public function testGenerateWhereStatementFromBooleanShouldThrowErrorIfParamInvalid(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $queryGenerator = new \QueryGenerators\QueryGenerator(array());
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('generateWhereStatementForBoolean');
         $method->setAccessible(true);
-        $actualString = $method->invoke($queryGenerator, 'p', 'Population', 'population');
+        $method->invoke($queryGenerator, 'p', 'Population', 'population');
     }
     /**
      * Tests that generateAliasSelectStatement() generates the correct statement
@@ -329,7 +336,7 @@ class QueryGeneratorTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testGenerateAliasSelectStatementShouldGenerateTheCorrectStatement()
+    public function testGenerateAliasSelectStatementShouldGenerateTheCorrectStatement(): void
     {
         $aliasFieldsData = array('bob' => 'tom', 'sue' => 'sam');
         $expectedStatement = "bob AS tom, sue AS sam";

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,6 +21,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace QueryGenerators;
 
 /**
@@ -56,10 +60,10 @@ class Region extends QueryGenerator
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = array(
+    protected $fieldsToSelectArray = [
         'RegionCode', 'RegionName', 'NbrCountries', 'NbrPGIC', 'NbrLR', 'SumRegion', 'PercentLR', 'SumRegionLR',
         'PercentPoplLR'
-    );
+    ];
     /**
      * The database table to pull the data from.
      *
@@ -80,7 +84,7 @@ class Region extends QueryGenerator
      * @var     array
      * @access  protected
      **/
-    protected $aliasFields = array();
+    protected $aliasFields = [];
     /**
      * Construct the Region class.
      *
@@ -93,7 +97,7 @@ class Region extends QueryGenerator
      * @access  public
      * @author  Johnathan Pulos
      */
-    public function __construct($getParams)
+    public function __construct(array $getParams)
     {
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
@@ -125,13 +129,13 @@ class Region extends QueryGenerator
      * @access  public
      * @author  Johnathan Pulos
      **/
-    public function findById()
+    public function findById(): void
     {
-        $this->validator->providedRequiredParams($this->providedParams, array('id'));
+        $this->validator->providedRequiredParams($this->providedParams, ['id']);
         $id = intval(strip_tags($this->providedParams['id']));
         $this->validator->integerInRange($id, 1, 12);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName .
             " WHERE RegionCode = :id LIMIT 1";
-        $this->preparedVariables = array('id' => $id);
+        $this->preparedVariables = ['id' => $id];
     }
 }

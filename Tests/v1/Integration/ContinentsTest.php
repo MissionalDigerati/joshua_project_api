@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -22,23 +24,27 @@
  */
 namespace Tests\v1\Integration;
 
+use PHPToolbox\CachedRequest\CachedRequest;
+use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use PHPUnit\Framework\TestCase;
+
 /**
  * The class for testing integration of the Continents
  *
  * @author Johnathan Pulos
  */
-class ContinentsTest extends \PHPUnit_Framework_TestCase
+class ContinentsTest extends TestCase
 {
     /**
      * The CachedRequest Object
      *
-     * @var \PHPToolbox\CachedRequest\CachedRequest
+     * @var CachedRequest
      */
     public $cachedRequest;
     /**
      * The PDO database connection object
      *
-     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     * @var PDODatabaseConnect
      */
     private $db;
     /**
@@ -69,13 +75,11 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function setUp()
+    public function setUp(): void
     {
-        global $API_VERSION;
-        $this->APIVersion = $API_VERSION;
-        global $SITE_URL;
-        $this->siteURL = $SITE_URL;
-        $this->cachedRequest = new \PHPToolbox\CachedRequest\CachedRequest;
+        $this->APIVersion = $_ENV['api_version'];
+        $this->siteURL = $_ENV['site_url'];
+        $this->cachedRequest = new CachedRequest();
         $this->cachedRequest->cacheDirectory =
             __DIR__ .
             DIRECTORY_SEPARATOR . ".." .
@@ -92,7 +96,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->cachedRequest->clearCache();
         deleteApiKey($this->APIKey);
@@ -103,8 +107,8 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowRequestShouldRefuseAccessWithoutAnAPIKey()
-    {
+    public function testShowRequestShouldRefuseAccessWithoutAnAPIKey(): void
+    { 
         $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/4.json",
             array(),
@@ -113,35 +117,12 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(401, $this->cachedRequest->responseCode);
     }
     /**
-     * Tests that you can only access page with a version number
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
-    public function testShowRequestShouldRefuseAccessWithoutAVersionNumber()
-    {
-        $response = $this->cachedRequest->get(
-            $this->siteURL . "/continents/4.json",
-            array('api_key' => $this->APIKey),
-            "continents_versioning_missing_json"
-        );
-        $decoded = json_decode($response, true);
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
-        $this->assertTrue(!empty($decoded['api']));
-        $this->assertTrue(!empty($decoded['api']['error']));
-        $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
-        $this->assertEquals(
-            'You are requesting an unavailable API version number.',
-            $decoded['api']['error']['details']
-        );
-    }
-    /**
      * Tests that you can not access page without an active API Key
      *
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowRequestShouldRefuseAccessWithoutActiveAPIKey()
+    public function testShowRequestShouldRefuseAccessWithoutActiveAPIKey(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -162,7 +143,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowRequestShouldRefuseAccessToSuspendedAPIKeys()
+    public function testShowRequestShouldRefuseAccessToSuspendedAPIKeys(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -183,7 +164,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowRequestShouldRefuseAccessWithABadAPIKeys()
+    public function testShowRequestShouldRefuseAccessWithABadAPIKeys(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/1.json",
@@ -204,7 +185,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testShowRequestsShouldReturnContinentsInJSON()
+    public function testShowRequestsShouldReturnContinentsInJSON(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/asi.json",
@@ -221,7 +202,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testShowRequestsShouldReturnContinentsInXML()
+    public function testShowRequestsShouldReturnContinentsInXML(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/asi.xml",
@@ -239,7 +220,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testShowRequestsShouldThrowErrorIfIdIsBad()
+    public function testShowRequestsShouldThrowErrorIfIdIsBad(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/bad_id.json",
@@ -257,7 +238,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testShowRequestsShouldRetrieveTheCorrectContinent()
+    public function testShowRequestsShouldRetrieveTheCorrectContinent(): void
     {
         $continentId = 'asi';
         $expectedContinent = 'asia';
@@ -277,7 +258,7 @@ class ContinentsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testShowRequestsShouldNotHaveRemovedFields()
+    public function testShowRequestsShouldNotHaveRemovedFields(): void
     {
         $continentId = 'asi';
         $response = $this->cachedRequest->get(

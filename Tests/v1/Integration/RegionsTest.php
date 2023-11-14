@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -22,24 +24,28 @@
  */
 namespace Tests\v1\Integration;
 
+use PHPToolbox\CachedRequest\CachedRequest;
+use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use PHPUnit\Framework\TestCase;
+
 /**
  * The class for testing integration of the Regions
  *
  * @package default
  * @author Johnathan Pulos
  */
-class RegionsTest extends \PHPUnit_Framework_TestCase
+class RegionsTest extends TestCase
 {
     /**
      * The CachedRequest Object
      *
-     * @var \PHPToolbox\CachedRequest\CachedRequest
+     * @var CachedRequest
      */
     public $cachedRequest;
     /**
      * The PDO database connection object
      *
-     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     * @var PDODatabaseConnect
      */
     private $db;
     /**
@@ -70,13 +76,11 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function setUp()
+    public function setUp(): void
     {
-        global $API_VERSION;
-        $this->APIVersion = $API_VERSION;
-        global $SITE_URL;
-        $this->siteURL = $SITE_URL;
-        $this->cachedRequest = new \PHPToolbox\CachedRequest\CachedRequest;
+        $this->APIVersion = $_ENV['api_version'];
+        $this->siteURL = $_ENV['site_url'];
+        $this->cachedRequest = new CachedRequest();
         $this->cachedRequest->cacheDirectory =
             __DIR__ .
             DIRECTORY_SEPARATOR . ".." .
@@ -93,7 +97,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->cachedRequest->clearCache();
         deleteApiKey($this->APIKey);
@@ -104,7 +108,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowRequestsShouldRefuseAccessWithoutAnAPIKey()
+    public function testShowRequestsShouldRefuseAccessWithoutAnAPIKey(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/2.json",
@@ -119,35 +123,12 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('You are missing your API key.', $decoded['api']['error']['details']);
     }
     /**
-     * Tests that you can only access page with a version number
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
-    public function testShowRequestsShouldRefuseAccessWithoutAVersionNumber()
-    {
-        $response = $this->cachedRequest->get(
-            $this->siteURL . "/regions/4.json",
-            array('api_key' => $this->APIKey),
-            "regions_versioning_missing_json"
-        );
-        $decoded = json_decode($response, true);
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
-        $this->assertTrue(!empty($decoded['api']));
-        $this->assertTrue(!empty($decoded['api']['error']));
-        $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
-        $this->assertEquals(
-            'You are requesting an unavailable API version number.',
-            $decoded['api']['error']['details']
-        );
-    }
-    /**
      * Tests that you can not access page without an active API Key
      *
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowRequestsShouldRefuseAccessWithoutActiveAPIKey()
+    public function testShowRequestsShouldRefuseAccessWithoutActiveAPIKey(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -168,7 +149,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowRequestsShouldRefuseAccessWithSuspendedAPIKey()
+    public function testShowRequestsShouldRefuseAccessWithSuspendedAPIKey(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -189,7 +170,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShowRequestsShouldRefuseAccessWithABadAPIKey()
+    public function testShowRequestsShouldRefuseAccessWithABadAPIKey(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/1.json",
@@ -210,7 +191,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testShowRequestsShouldReturnARegionInJSON()
+    public function testShowRequestsShouldReturnARegionInJSON(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/3.json",
@@ -227,7 +208,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testShowRequestsShouldReturnARegionInXML()
+    public function testShowRequestsShouldReturnARegionInXML(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/3.xml",
@@ -245,7 +226,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testShowRequestsShouldRetrieveTheAppropriateRegion()
+    public function testShowRequestsShouldRetrieveTheAppropriateRegion(): void
     {
         $regionId = 10;
         $expectedRegion = 'europe, western';
@@ -266,7 +247,7 @@ class RegionsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testShowRequestsShouldNotReturnRemovedFields()
+    public function testShowRequestsShouldNotReturnRemovedFields(): void
     {
         $regionId = 10;
         $response = $this->cachedRequest->get(

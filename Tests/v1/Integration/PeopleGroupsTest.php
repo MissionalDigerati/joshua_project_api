@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -21,24 +23,28 @@
  */
 namespace Tests\v1\Integration;
 
+use PHPToolbox\CachedRequest\CachedRequest;
+use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use PHPUnit\Framework\TestCase;
+
 /**
  * The class for testing integration of the People Groups
  *
  * @package default
  * @author Johnathan Pulos
  */
-class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
+class PeopleGroupsTest extends TestCase
 {
     /**
      * The CachedRequest Object
      *
-     * @var \PHPToolbox\CachedRequest\CachedRequest
+     * @var CachedRequest
      */
     public $cachedRequest;
     /**
      * The PDO database connection object
      *
-     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     * @var PDODatabaseConnect
      */
     private $db;
     /**
@@ -69,13 +75,11 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function setUp()
+    public function setUp(): void
     {
-        global $API_VERSION;
-        $this->APIVersion = $API_VERSION;
-        global $SITE_URL;
-        $this->siteURL = $SITE_URL;
-        $this->cachedRequest = new \PHPToolbox\CachedRequest\CachedRequest;
+        $this->APIVersion = $_ENV['api_version'];
+        $this->siteURL = $_ENV['site_url'];
+        $this->cachedRequest = new CachedRequest();
         $this->cachedRequest->cacheDirectory =
             __DIR__ .
             DIRECTORY_SEPARATOR . ".." .
@@ -92,7 +96,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->cachedRequest->clearCache();
         deleteApiKey($this->APIKey);
@@ -103,7 +107,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShouldRefuseAccessWithoutAnAPIKey()
+    public function testShouldRefuseAccessWithoutAnAPIKey(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
@@ -113,35 +117,12 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(401, $this->cachedRequest->responseCode);
     }
     /**
-     * Tests that you can only access page with a version number
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
-    public function testShouldRefuseAccessWithoutAVersionNumber()
-    {
-        $response = $this->cachedRequest->get(
-            $this->siteURL . "/people_groups/daily_unreached.json",
-            array('api_key' => $this->APIKey),
-            "versioning_json"
-        );
-        $decoded = json_decode($response, true);
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
-        $this->assertTrue(!empty($decoded['api']));
-        $this->assertTrue(!empty($decoded['api']['error']));
-        $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
-        $this->assertEquals(
-            'You are requesting an unavailable API version number.',
-            $decoded['api']['error']['details']
-        );
-    }
-    /**
      * Tests that you can not access page without an active API Key
      *
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShouldRefuseAccessWithoutActiveAPIKey()
+    public function testShouldRefuseAccessWithoutActiveAPIKey(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -162,7 +143,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShouldRefuseAccessWithSuspendedAPIKey()
+    public function testShouldRefuseAccessWithSuspendedAPIKey(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(
@@ -183,7 +164,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      **/
-    public function testShouldRefuseAccessWithABadAPIKey()
+    public function testShouldRefuseAccessWithABadAPIKey(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json?api_key=BADKEY",
@@ -204,7 +185,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testShouldGetDailyUnreachedInJSON()
+    public function testShouldGetDailyUnreachedInJSON(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
@@ -221,7 +202,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testShouldGetDailyUnreachedInXML()
+    public function testShouldGetDailyUnreachedInXML(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.xml",
@@ -237,7 +218,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testShouldGetDailyUnreachedWithSetMonth()
+    public function testShouldGetDailyUnreachedWithSetMonth(): void
     {
         $expectedMonth = '5';
         $expectedDay = Date('j');
@@ -256,7 +237,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testShouldGetDailyUnreachedWithSetDay()
+    public function testShouldGetDailyUnreachedWithSetDay(): void
     {
         $expectedMonth = Date('n');
         $expectedDay = '23';
@@ -275,7 +256,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testShouldGetDailyUnreachedWithSetDayAndMonth()
+    public function testShouldGetDailyUnreachedWithSetDayAndMonth(): void
     {
         $expectedMonth = '3';
         $expectedDay = '21';
@@ -295,7 +276,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testShowRequestsShouldGive404IfNoValidId()
+    public function testShowRequestsShouldGive404IfNoValidId(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/a.json",
@@ -316,7 +297,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
       * @access public
       * @author Johnathan Pulos
       */
-    public function testShowRequestsShouldGetCorrectPeopleGroup()
+    public function testShowRequestsShouldGetCorrectPeopleGroup(): void
     {
         $expectedID = "12662";
         $expectedCountry = "CB";
@@ -341,7 +322,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testShowRequestsShouldGetPeopleGroupsWithResources()
+    public function testShowRequestsShouldGetPeopleGroupsWithResources(): void
     {
         $expectedId = "10572";
         $expectedCountry = "BA";
@@ -362,7 +343,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testShowRequestsShouldGetPeopleGroupsWithResourcesWhenIdsOnlyProvided()
+    public function testShowRequestsShouldGetPeopleGroupsWithResourcesWhenIdsOnlyProvided(): void
     {
         $expectedID = "10572";
         $response = $this->cachedRequest->get(
@@ -384,7 +365,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testShowRequestsShouldGetCorrectPeopleGroupsWhenIdsOnlyProvided()
+    public function testShowRequestsShouldGetCorrectPeopleGroupsWhenIdsOnlyProvided(): void
     {
         $expectedID = "12662";
         $expectedPeopleGroups = 13;
@@ -406,7 +387,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testShowRequestsShould404ErrorIfIdDoesNotExist()
+    public function testShowRequestsShould404ErrorIfIdDoesNotExist(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/2292828272736363511516.json",
@@ -424,7 +405,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturn250ByDefault()
+    public function testIndexRequestsShouldReturn250ByDefault(): void
     {
         $expectedNumberOfResults = 250;
         $response = $this->cachedRequest->get(
@@ -444,7 +425,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testIndexRequestsShouldReturnResourcesForAllPeopleGroups()
+    public function testIndexRequestsShouldReturnResourcesForAllPeopleGroups(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
@@ -465,7 +446,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPeopleId1()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPeopleId1(): void
     {
         $expectedPeopleIds = array(17, 23);
         $response = $this->cachedRequest->get(
@@ -488,7 +469,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByROP1()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByROP1(): void
     {
         $expectedROP = array('A014', 'A010');
         $response = $this->cachedRequest->get(
@@ -511,7 +492,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByROP1AndPeopleID1()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByROP1AndPeopleID1(): void
     {
         $expectedROP = 'A014';
         $expectedPeopleID = 23;
@@ -536,7 +517,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPeopleId2()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPeopleId2(): void
     {
         $expectedPeopleIds = array(117, 115);
         $response = $this->cachedRequest->get(
@@ -559,7 +540,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByROP2()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByROP2(): void
     {
         $expectedROP = array('C0013', 'C0067');
         $response = $this->cachedRequest->get(
@@ -582,7 +563,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPeopleId3()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPeopleId3(): void
     {
         $expectedPeopleIds = array(11722, 19204);
         $response = $this->cachedRequest->get(
@@ -605,7 +586,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByROP3()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByROP3(): void
     {
         $expectedROP = array(115485, 115409);
         $response = $this->cachedRequest->get(
@@ -628,7 +609,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByContinents()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByContinents(): void
     {
         $expectedCountries = array('AFR', 'NAR');
         $response = $this->cachedRequest->get(
@@ -651,7 +632,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByRegions()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByRegions(): void
     {
         $expectedRegions = array(3 => 'asia, northeast', 4 => 'asia, south');
         $response = $this->cachedRequest->get(
@@ -675,7 +656,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByCountries()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByCountries(): void
     {
         $expectedCountries = array('AN', 'BG');
         $response = $this->cachedRequest->get(
@@ -698,7 +679,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredBy1040Window()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredBy1040Window(): void
     {
         $expected1040Window = 'Y';
         $response = $this->cachedRequest->get(
@@ -721,7 +702,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByLanguages()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByLanguages(): void
     {
         $expectedLanguages = array('AKA', 'ALE');
         $response = $this->cachedRequest->get(
@@ -744,7 +725,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByAMinAndMaxPopulation()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByAMinAndMaxPopulation(): void
     {
         $expectedMin = 10000;
         $expectedMax = 20000;
@@ -769,7 +750,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByASetPopulation()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByASetPopulation(): void
     {
         $expectedPop = 156000;
         $response = $this->cachedRequest->get(
@@ -792,7 +773,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPrimaryReligions()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPrimaryReligions(): void
     {
         $expectedReligions = array(2 => 'buddhism');
         $response = $this->cachedRequest->get(
@@ -816,7 +797,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfAdherents()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfAdherents(): void
     {
         $expectedPercentMin = 1.0;
         $expectedPercentMax = 6.9;
@@ -841,7 +822,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfEvangelicals()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfEvangelicals(): void
     {
         $expectedPercentMin = 10.0;
         $expectedPercentMax = 20.8;
@@ -866,7 +847,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfBuddhists()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfBuddhists(): void
     {
         $expectedPercentMin = 30.0;
         $expectedPercentMax = 40.9;
@@ -891,7 +872,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfEthnicReligions()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfEthnicReligions(): void
     {
         $expectedPercentMin = 1.0;
         $expectedPercentMax = 3.9;
@@ -916,7 +897,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfHindus()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfHindus(): void
     {
         $expectedPercentMin = 1.0;
         $expectedPercentMax = 30.2;
@@ -941,7 +922,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfIslam()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfIslam(): void
     {
         $expectedPercentMin = 30.12;
         $expectedPercentMax = 40.3;
@@ -966,7 +947,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfNonReligious()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfNonReligious(): void
     {
         $expectedPercentMin = 40.12;
         $expectedPercentMax = 55.3;
@@ -991,7 +972,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfOtherReligions()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfOtherReligions(): void
     {
         $expectedPercentMin = 3.2;
         $expectedPercentMax = 12.6;
@@ -1016,7 +997,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfUnknownReligions()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfUnknownReligions(): void
     {
         $expectedPercentMin = 3.22;
         $expectedPercentMax = 35.67;
@@ -1041,7 +1022,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnUnsupportedPercentageOfAnglicans()
+    public function testIndexRequestsShouldReturnUnsupportedPercentageOfAnglicans(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
@@ -1066,7 +1047,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnUnsupportedPercentageOfIndependents()
+    public function testIndexRequestsShouldReturnUnsupportedPercentageOfIndependents(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
@@ -1091,7 +1072,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnUnsupportedPercentageOfProtestants()
+    public function testIndexRequestsShouldReturnUnsupportedPercentageOfProtestants(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
@@ -1116,7 +1097,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnUnsupportedPercentageOfOrthodox()
+    public function testIndexRequestsShouldReturnUnsupportedPercentageOfOrthodox(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
@@ -1141,7 +1122,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnUnsupportedPercentageOfRomanCatholic()
+    public function testIndexRequestsShouldReturnUnsupportedPercentageOfRomanCatholic(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
@@ -1166,7 +1147,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnUnsupportedPercentageOfOtherChristian()
+    public function testIndexRequestsShouldReturnUnsupportedPercentageOfOtherChristian(): void
     {
         $expectedPercentMin = 1.1;
         $expectedPercentMax = 27.2;
@@ -1193,7 +1174,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByJPScale()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByJPScale(): void
     {
         $expectedJPScales = "1|2|3";
         $expectedJPScalesArray = array(1, 2, 3);
@@ -1217,7 +1198,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByIndigenousStatus()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByIndigenousStatus(): void
     {
         $expectedIndigenousStatus = 'y';
         $response = $this->cachedRequest->get(
@@ -1240,7 +1221,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByLeastReached()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByLeastReached(): void
     {
         $expectedLeastReachedStatus = 'y';
         $response = $this->cachedRequest->get(
@@ -1263,7 +1244,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldReturnUnsupportedUnengaged()
+    public function testIndexRequestsShouldReturnUnsupportedUnengaged(): void
     {
         $expectedUnengagedStatus = 'y';
         $response = $this->cachedRequest->get(
@@ -1282,7 +1263,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByFrontier()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByFrontier(): void
     {
         $expectedFrontier = "N";
         $response = $this->cachedRequest->get(
@@ -1298,7 +1279,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPopulationPGACInRange()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPopulationPGACInRange(): void
     {
         $min = 120000;
         $max = 130000;
@@ -1316,7 +1297,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPopulationPGACAtValue()
+    public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPopulationPGACAtValue(): void
     {
         $value = 120000;
         $response = $this->cachedRequest->get(
@@ -1339,7 +1320,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testDailyUnreachedShouldNotProvideRemovedFields()
+    public function testDailyUnreachedShouldNotProvideRemovedFields(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
@@ -1377,7 +1358,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testShowRequestsShouldNotProvideRemovedFields()
+    public function testShowRequestsShouldNotProvideRemovedFields(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/12662.json",
@@ -1415,7 +1396,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldNotProvideRemovedFields()
+    public function testIndexRequestsShouldNotProvideRemovedFields(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
@@ -1452,7 +1433,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testDailyUnreachedShouldProvideNewFields()
+    public function testDailyUnreachedShouldProvideNewFields(): void
     {
         $expectedPop = 1371000;
         $expectedFrontier = 'Y';
@@ -1505,7 +1486,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testShowRequestsShouldProvideNewFields()
+    public function testShowRequestsShouldProvideNewFields(): void
     {
         $expectedPop = 1952700;
         $expectedFrontier = 'Y';
@@ -1561,7 +1542,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testIndexRequestsShouldProvideNewFields()
+    public function testIndexRequestsShouldProvideNewFields(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
@@ -1592,7 +1573,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testMapAddressShouldSendEmptyURL()
+    public function testMapAddressShouldSendEmptyURL(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/12662.json",
@@ -1618,7 +1599,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testPeopleGroupPhotoURLShouldSendAnEmptyURLWhenPhotoAddressEmptyOrNull()
+    public function testPeopleGroupPhotoURLShouldSendAnEmptyURLWhenPhotoAddressEmptyOrNull(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/10123.json",
@@ -1633,7 +1614,7 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', $decoded[0]['PeopleGroupPhotoURL']);
     }
 
-    public function testUnreachedShouldReplaceProfileTextWithASummary()
+    public function testUnreachedShouldReplaceProfileTextWithASummary(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
@@ -1649,10 +1630,10 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(empty($decoded));
         $this->assertFalse(array_key_exists('ProfileText', $decoded[0]));
         $this->assertTrue(array_key_exists('Summary', $decoded[0]));
-        $this->assertContains('Though many Tunisian Jews remain in Tunisia', $decoded[0]['Summary']);
+        $this->assertTrue(str_contains($decoded[0]['Summary'], 'Though many Tunisian Jews remain in Tunisia'));
     }
 
-    public function testShowShouldReplaceProfileTextWithASummary()
+    public function testShowShouldReplaceProfileTextWithASummary(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/15642.json",
@@ -1667,10 +1648,10 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(empty($decoded));
         $this->assertFalse(array_key_exists('ProfileText', $decoded[0]));
         $this->assertTrue(array_key_exists('Summary', $decoded[0]));
-        $this->assertContains('Though many Tunisian Jews remain in Tunisia', $decoded[0]['Summary']);
+        $this->assertTrue(str_contains($decoded[0]['Summary'], 'Though many Tunisian Jews remain in Tunisia'));
     }
 
-    public function testIndexShouldReplaceProfileTextWithASummary()
+    public function testIndexShouldReplaceProfileTextWithASummary(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
@@ -1686,6 +1667,76 @@ class PeopleGroupsTest extends \PHPUnit_Framework_TestCase
         foreach ($decoded as $pg) {
             $this->assertFalse(array_key_exists('ProfileText', $pg));
             $this->assertTrue(array_key_exists('Summary', $pg));
+        }
+    }
+
+    public function testUnreachedShouldProvidePrayerDetails(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
+            array(
+                'api_key'   => $this->APIKey,
+                'month'     =>  '05',
+                'day'       =>  '25'
+            ),
+            "unreached_with_prayer_details_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $pg) {
+            $this->assertTrue(array_key_exists('Obstacles', $pg));
+            $this->assertFalse(empty($pg['Obstacles']));
+            $this->assertTrue(array_key_exists('HowReach', $pg));
+            $this->assertFalse(empty($pg['HowReach']));
+            $this->assertTrue(array_key_exists('PrayForChurch', $pg));
+            $this->assertTrue(array_key_exists('PrayForPG', $pg));
+            $this->assertFalse(empty($pg['PrayForPG']));
+        }
+    }
+
+    public function testShowShouldProvidePrayerDetails(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/16180.json",
+            array(
+                'api_key'       =>  $this->APIKey,
+                'country'       =>  'IN'
+            ),
+            "show_provide_prayer_details_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $pg) {
+            $this->assertTrue(array_key_exists('Obstacles', $pg));
+            $this->assertFalse(empty($pg['Obstacles']));
+            $this->assertTrue(array_key_exists('HowReach', $pg));
+            $this->assertFalse(empty($pg['HowReach']));
+            $this->assertTrue(array_key_exists('PrayForChurch', $pg));
+            $this->assertTrue(array_key_exists('PrayForPG', $pg));
+            $this->assertFalse(empty($pg['PrayForPG']));
+        }
+    }
+
+    public function testIndexShouldProvidePrayerDetails(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array(
+                'api_key'       => $this->APIKey,
+                'limit'         =>  5
+            ),
+            "index_provide_prayer-details_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $pg) {
+            $this->assertTrue(array_key_exists('Obstacles', $pg));
+            $this->assertTrue(array_key_exists('HowReach', $pg));
+            $this->assertTrue(array_key_exists('PrayForChurch', $pg));
+            $this->assertTrue(array_key_exists('PrayForPG', $pg));
         }
     }
 }

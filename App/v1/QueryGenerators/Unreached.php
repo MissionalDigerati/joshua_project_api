@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,6 +21,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace QueryGenerators;
 
 /**
@@ -56,7 +60,7 @@ class Unreached extends PeopleGroup
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = array(
+    protected $fieldsToSelectArray = [
         'jpupgotd.ROG3', 'jpupgotd.PeopleID3', 'jpupgotd.PeopNameInCountry', 'jpupgotd.ROG2', 'jpupgotd.Continent',
         'jpupgotd.RegionName', 'jpupgotd.PeopleID1', 'jpupgotd.AffinityBloc', 'jpupgotd.PeopleID2',
         'jpupgotd.PeopleCluster', 'jpupgotd.PeopNameAcrossCountries', 'jpupgotd.Population', 'jpupgotd.ROL3',
@@ -85,7 +89,7 @@ class Unreached extends PeopleGroup
         'COALESCE(jppeoples.MapCCVersionURL, "") AS MapCCVersionURL',
         'COALESCE(jppeoples.PhotoCCVersionText, "") AS PhotoCCVersionText',
         'COALESCE(jppeoples.PhotoCCVersionURL, "") AS PhotoCCVersionURL'
-    );
+    ];
     /**
      * The database table to pull the data from.
      *
@@ -106,7 +110,7 @@ class Unreached extends PeopleGroup
      * @var     array
      * @access  protected
      **/
-    protected $aliasFields = array('jpupgotd.10_40Window'    =>  'Window1040');
+    protected $aliasFields = ['jpupgotd.10_40Window'    =>  'Window1040'];
     /**
      * Construct the Unreached class.
      *
@@ -119,7 +123,7 @@ class Unreached extends PeopleGroup
      * @access  public
      * @author  Johnathan Pulos
      */
-    public function __construct($getParams)
+    public function __construct(array $getParams)
     {
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " .
@@ -172,9 +176,9 @@ class Unreached extends PeopleGroup
      * @throws  \InvalidArgumentException   If the 'day' key is not set or it is not between 1-31.
      * @author  Johnathan Pulos
      */
-    public function daily()
+    public function daily(): void
     {
-        $this->validator->providedRequiredParams($this->providedParams, array('month', 'day'));
+        $this->validator->providedRequiredParams($this->providedParams, ['month', 'day']);
         $set = 1;
         $month = intval($this->providedParams['month']);
         $day = intval($this->providedParams['day']);
@@ -183,6 +187,6 @@ class Unreached extends PeopleGroup
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jpupgotd AS jpupgotd JOIN " .
             "jppeoples AS jppeoples ON jpupgotd.PeopleID3 = jppeoples.PeopleID3 WHERE " .
             "jpupgotd.LRofTheDayMonth = :month AND jpupgotd.LRofTheDayDay = :day AND ROL3Profile = 'eng' LIMIT 1";
-        $this->preparedVariables = array('month' => $month, 'day' => $day);
+        $this->preparedVariables = ['month' => $month, 'day' => $day];
     }
 }
