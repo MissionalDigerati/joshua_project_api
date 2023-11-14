@@ -30,11 +30,11 @@ class StringHelper
     /**
      * If a string is null, returns an empty string
      *
-     * @param string $string    The string to convert
+     * @param ?string   $string    The string to convert
      *
      * @return string           The string or an empty string if it was null
      */
-    public static function nullToEmpty($string)
+    public static function nullToEmpty(?string $string)
     {
         return (is_null($string)) ? '' : $string;
     }
