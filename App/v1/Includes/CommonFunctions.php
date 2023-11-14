@@ -68,7 +68,7 @@ function addChildXMLElement($parentElement, $childLabel, $childVal)
             }
             addChildXMLElement($newParentElement, $key, $val);
         }
-    } else if ($childVal) {
+    } elseif ($childVal) {
         $parentElement->addChild($childLabel, htmlspecialchars($childVal));
     }
 }
