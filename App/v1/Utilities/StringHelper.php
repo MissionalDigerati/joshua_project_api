@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,6 +21,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace Utilities;
 
 /**
@@ -30,11 +34,11 @@ class StringHelper
     /**
      * If a string is null, returns an empty string
      *
-     * @param string $string    The string to convert
+     * @param ?string   $string    The string to convert
      *
      * @return string           The string or an empty string if it was null
      */
-    public static function nullToEmpty($string)
+    public static function nullToEmpty(?string $string): string
     {
         return (is_null($string)) ? '' : $string;
     }

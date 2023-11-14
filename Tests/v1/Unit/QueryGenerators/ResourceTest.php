@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -22,17 +24,20 @@
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
+use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use PHPUnit\Framework\TestCase;
+
 /**
  * Test the Query Generator for the people group ProfileText Data
  *
  * @author Johnathan Pulos
  */
-class ResourceTest extends \PHPUnit_Framework_TestCase
+class ResourceTest extends TestCase
 {
     /**
      * The PDO database connection object
      *
-     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     * @var PDODatabaseConnect
      */
     private $db;
     /**
@@ -42,7 +47,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->db = getDatabaseInstance();
     }
@@ -53,7 +58,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testShouldSanitizeProvidedDataOnInitializing()
+    public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
         $data = array('country' => 'TYE#%', 'state' => 'YU%$');
         $expected = array('country' => 'TYE', 'state' => 'YU');
@@ -72,8 +77,9 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testFindAllByLanguageIdShouldThrowErrorIfMissingId()
+    public function testFindAllByLanguageIdShouldThrowErrorIfMissingId(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $getVars = array();
         $resource = new \QueryGenerators\Resource($getVars);
         $resource->findAllByLanguageId();
@@ -85,7 +91,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindAllByLanguageIdShouldLowerCaseTheId()
+    public function testFindAllByLanguageIdShouldLowerCaseTheId(): void
     {
         $expectedId = 'abv';
         $getVars = array('id' => $expectedId);
@@ -101,7 +107,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindAllByLanguageIdShouldReturnCorrectResources()
+    public function testFindAllByLanguageIdShouldReturnCorrectResources(): void
     {
         $expectedId = 'abv';
         $getVars = array('id' => $expectedId);

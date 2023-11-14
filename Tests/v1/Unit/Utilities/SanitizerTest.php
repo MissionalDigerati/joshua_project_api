@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  * 
@@ -22,17 +24,20 @@
  */
 namespace Tests\v1\Unit\Utilities;
 
+use PHPUnit\Framework\TestCase;
+use Utilities\Sanitizer;
+
 /**
  * Test the Sanitizer Utility
  *
  * @author Johnathan Pulos
  */
-class SanitizerTest extends \PHPUnit_Framework_TestCase
+class SanitizerTest extends TestCase
 {
     /**
      * The Sanitizer object
      *
-     * @var \Utilities\Sanitizer
+     * @var Sanitizer
      */
     private $sanitizer;
     /**
@@ -42,9 +47,9 @@ class SanitizerTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function setUp()
+    public function setUp(): void
     {
-        $this->sanitizer = new \Utilities\Sanitizer();
+        $this->sanitizer = new Sanitizer();
     }
     /**
      * cleanParam() should return a cleaned parameter
@@ -52,7 +57,7 @@ class SanitizerTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testCleanParamRemovesUnnecessaryCharacters()
+    public function testCleanParamRemovesUnnecessaryCharacters(): void
     {
         $param = "gi|ti+=%&*123";
         $expected = "gi|ti123";
@@ -65,7 +70,7 @@ class SanitizerTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testCleanArrayValuesRemovesUnnecessaryCharacters()
+    public function testCleanArrayValuesRemovesUnnecessaryCharacters(): void
     {
         $str1 = "gi|ti+=%&*123";
         $expected1 = "gi|ti123";

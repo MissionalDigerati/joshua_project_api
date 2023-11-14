@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,11 +21,16 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace Middleware;
 
 use Middleware\Traits\PathBasedTrait;
 use Middleware\Traits\ReturnsErrorsTrait;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -37,7 +43,7 @@ use Psr\Http\Message\ResponseInterface;
  * passthrough: The paths to ignore caching
  * versions: An array of supported version numbers
  */
-class APIStandardsMiddleware
+class APIStandardsMiddleware implements MiddlewareInterface
 {
     /**
      * This is a path based middleware
@@ -54,7 +60,7 @@ class APIStandardsMiddleware
      *
      * @param array   $options      The array of options.
      */
-    public function __construct($options)
+    public function __construct(array $options)
     {
         $this->options['formats'] = [];
         $this->options['versions'] = [];
@@ -64,41 +70,36 @@ class APIStandardsMiddleware
     /**
      * Our invokable class
      *
-     * @param  ServerRequestInterface   $request  PSR7 request
-     * @param  ResponseInterface        $response PSR7 response
-     * @param  callable                 $next     Next middleware
+     * @param  ServerRequestInterface   $request    PSR7 request
+     * @param  RequestHandlerInterface  $handler    PSR-15 request handler
      *
-     * @return ResponseInterface                  The modified response
+     * @return ResponseInterface                    The modified response
      */
-    public function __invoke(
-        ServerRequestInterface $req,
-        ResponseInterface $res,
-        callable $next
-    ) {
-        $route = $req->getAttribute('route');
-        if (!$route) {
-            $info = pathinfo($req->getUri()->getPath());
-            $format = (array_key_exists('extension', $info)) ? $info['extension'] : '';
+    public function process(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
+        $path = $request->getUri()->getPath();
+        $format = pathinfo($path, \PATHINFO_EXTENSION);
+        if (!$this->shouldProcess($request)) {
+            return $handler->handle($request);
+        }
+        if (preg_match('/\/v(\d+)\//', $path, $matches)) {
+            $version = intval($matches[1]);
+        } else {
             return $this->sendError(
                 400,
-                'You are requesting an unavailable API version number.',
+                'You must provide a valid API version number.',
                 $format,
-                'Bad Request',
-                $res
+                'Bad Request'
             );
-        }
-        $format = $route->getArgument('format');
-        $version = $route->getArgument('version');
-        if (!$this->shouldProcess($req)) {
-            return $next($req, $res);
         }
         if (!in_array($format, $this->options['formats'])) {
             return $this->sendError(
                 400,
                 'You are requesting an unsupported format.',
                 $format,
-                'Bad Request',
-                $res
+                'Bad Request'
             );
         }
         if (!in_array($version, $this->options['versions'])) {
@@ -106,11 +107,10 @@ class APIStandardsMiddleware
                 400,
                 'You are requesting an unavailable API version number.',
                 $format,
-                'Bad Request',
-                $res
+                'Bad Request'
             );
         }
 
-        return $next($req, $res);
+        return $handler->handle($request);
     }
 }

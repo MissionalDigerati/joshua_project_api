@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -22,17 +24,20 @@
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
+use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use PHPUnit\Framework\TestCase;
+
 /**
  * Test the Query Generator for the Continet Data
  *
  * @author Johnathan Pulos
  */
-class ContinentTest extends \PHPUnit_Framework_TestCase
+class ContinentTest extends TestCase
 {
     /**
      * The PDO database connection object
      *
-     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     * @var PDODatabaseConnect
      */
     private $db;
     /**
@@ -42,7 +47,7 @@ class ContinentTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->db = getDatabaseInstance();
     }
@@ -53,7 +58,7 @@ class ContinentTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testShouldSanitizeProvidedDataOnInitializing()
+    public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
         $data = array('continent' => 'HORSE#%', 'test' => 'CA%$');
         $expected = array('continent' => 'HORSE', 'test' => 'CA');
@@ -70,7 +75,7 @@ class ContinentTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testFindByIdShouldReturnCorrectContinent()
+    public function testFindByIdShouldReturnCorrectContinent(): void
     {
         $expected = array('id'  =>  'lam');
         $expectedContinent = 'south america';
@@ -91,8 +96,9 @@ class ContinentTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testFindByIdShouldThrowErrorIfNoIdFound()
+    public function testFindByIdShouldThrowErrorIfNoIdFound(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $expected = array();
         $continent = new \QueryGenerators\Continent($expected);
         $continent->findById();
@@ -106,8 +112,9 @@ class ContinentTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testFindByIdShouldThrowErrorIfIdInvalid()
+    public function testFindByIdShouldThrowErrorIfIdInvalid(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $expected = array('id' => 'WWQQ');
         $continent = new \QueryGenerators\Continent($expected);
         $continent->findById();
@@ -121,8 +128,9 @@ class ContinentTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testFindByIdShouldThrowErrorIfIdNotAcceptable()
+    public function testFindByIdShouldThrowErrorIfIdNotAcceptable(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $expected = array('id' => 'ggi');
         $continent = new \QueryGenerators\Continent($expected);
         $continent->findById();

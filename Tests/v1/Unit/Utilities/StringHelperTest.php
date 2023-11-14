@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  * 
@@ -22,16 +24,17 @@
  */
 namespace Tests\v1\Unit\Utilities;
 
+use PHPUnit\Framework\TestCase;
 use Utilities\StringHelper;
 
-class StringHelperTest extends \PHPUnit_Framework_TestCase
+class StringHelperTest extends TestCase
 {
-    public function testNullToEmptyShouldReturnAnEmptyString()
+    public function testNullToEmptyShouldReturnAnEmptyString(): void
     {
         $this->assertNotNull(StringHelper::nullToEmpty(null));
     }
 
-    public function testNullToEmptyShouldReturnTheOriginalString()
+    public function testNullToEmptyShouldReturnTheOriginalString(): void
     {
         $this->assertEquals('I am a string.', StringHelper::nullToEmpty('I am a string.'));
     }

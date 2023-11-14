@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,6 +21,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace Utilities;
 
 /**
@@ -42,7 +46,7 @@ class Sanitizer
      * @access  public
      * @author  Johnathan Pulos
      **/
-    public function cleanParam($param)
+    public function cleanParam(string $param): string
     {
         return preg_replace('/[^a-z\d\-|\.]/i', '', strip_tags($param));
     }
@@ -55,11 +59,11 @@ class Sanitizer
      * @return  array   The cleaned array.
      * @author  Johnathan Pulos
      **/
-    public function cleanArrayValues($arr)
+    public function cleanArrayValues(array $arr): array
     {
-        $cleanedArray = array();
+        $cleanedArray = [];
         foreach ($arr as $key => $value) {
-            $cleanedArray[$key] = $this->cleanParam($value);
+            $cleanedArray[$key] = $this->cleanParam(strval($value));
         }
         return $cleanedArray;
     }

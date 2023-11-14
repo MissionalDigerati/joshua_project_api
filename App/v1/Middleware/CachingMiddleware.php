@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,11 +21,17 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace Middleware;
 
 use Middleware\Traits\PathBasedTrait;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
+use Slim\Psr7\Response;
 
 /**
  * A caching middleware that hashes the url for the key. Options:
@@ -35,7 +42,7 @@ use Psr\Http\Message\ResponseInterface;
  * paths: The paths to cache
  * passthrough: The paths to ignore caching
  */
-class CachingMiddleware
+class CachingMiddleware implements MiddlewareInterface
 {
     /**
      * This is a path based middleware
@@ -57,10 +64,10 @@ class CachingMiddleware
     /**
      * Build the middleware
      *
-     * @param boolean $isCaching    Do you want to enable caching? (default: false)
-     * @param array   $options      The array of options.
+     * @param bool      $isCaching    Do you want to enable caching? (default: false)
+     * @param array     $options      The array of options.
      */
-    public function __construct($isCaching = false, $options = [])
+    public function __construct(bool $isCaching = false, array $options = [])
     {
         /**
          * Set defaults
@@ -88,27 +95,24 @@ class CachingMiddleware
     /**
      * Our invokable class
      *
-     * @param  ServerRequestInterface   $request  PSR7 request
-     * @param  ResponseInterface        $response PSR7 response
-     * @param  callable                 $next     Next middleware
+     * @param  ServerRequestInterface   $request    PSR7 request
+     * @param  RequestHandlerInterface  $handler    PSR-15 request handler
      *
-     * @return ResponseInterface                  The modified response
+     * @return ResponseInterface                    The modified response
      */
-    public function __invoke(
-        ServerRequestInterface $req,
-        ResponseInterface $res,
-        callable $next
-    ) {
-        $format = $req
-            ->getAttribute('route')
-            ->getArgument('format');
+    public function process(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
+        $path = $request->getUri()->getPath();
+        $format = pathinfo($path, \PATHINFO_EXTENSION);
         if (!$this->isCaching) {
-            return $next($req, $res);
+            return $handler->handle($request);
         }
-        if (!$this->shouldProcess($req)) {
-            return $next($req, $res);
+        if (!$this->shouldProcess($request)) {
+            return $handler->handle($request);
         }
-        $cacheKey = $this->getCacheKey($req);
+        $cacheKey = $this->getCacheKey($request);
         $cached = $this->cache->get($cacheKey);
         if (!empty($cached)) {
             switch ($format) {
@@ -122,16 +126,16 @@ class CachingMiddleware
                     $contentType = 'text/html; charset=UTF-8';
                     break;
             }
-            $res->getBody()->write($cached);
-            return $res->withHeader('Content-Type', $contentType);
+            $response = new Response();
+            $response->getBody()->write($cached);
+            return $response->withHeader('Content-Type', $contentType);
         }
-        // Get the format, and return the correct response
-        $response = $next($req, $res);
         /**
          * Set the data to the cache using it's cache key, and expire it in 1 day
          *
          * @author Johnathan Pulos
          */
+        $response = $handler->handle($request);
         $this->cache->set($cacheKey, (string) $response->getBody(), $this->options['expire_cache']);
         return $response;
     }
@@ -139,13 +143,13 @@ class CachingMiddleware
     /**
      * Generate a unique cache key using the URL and it's parameters.
      *
-     * @param  ServerRequestInterface   $request  PSR7 request
-     * @return string                             The key
+     * @param  ServerRequestInterface   $request    PSR7 request
+     * @return string                               The key
      */
-    private function getCacheKey(ServerRequestInterface $req)
+    private function getCacheKey(ServerRequestInterface $request): string
     {
-        $path = $req->getUri()->getPath();
-        $params = $req->getQueryParams();
+        $path = $request->getUri()->getPath();
+        $params = $request->getQueryParams();
         if (array_key_exists('api_key', $params)) {
             unset($params['api_key']);
         }

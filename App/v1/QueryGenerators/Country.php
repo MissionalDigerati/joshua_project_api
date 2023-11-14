@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,6 +21,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace QueryGenerators;
 
 /**
@@ -56,14 +60,14 @@ class Country extends QueryGenerator
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = array('JPScaleCtry', 'Ctry', 'PercentBuddhism', 'PercentChristianity',
+    protected $fieldsToSelectArray = ['JPScaleCtry', 'Ctry', 'PercentBuddhism', 'PercentChristianity',
         'PercentEthnicReligions', 'PercentEvangelical', 'PercentHinduism', 'PercentIslam', 'PercentNonReligious',
         'PercentOtherSmall', 'PercentUnknown', 'ReligionPrimary', 'RLG3Primary', 'ROG2', 'ROG3',
         'ROL3OfficialLanguage', 'RLG3Primary', 'RegionCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName',
         'Capital', 'Population', 'SecurityLevel', 'CntPeoples', 'CntPeoplesLR', 'CntPrimaryLanguages',
         'TranslationUnspecified', 'TranslationNeeded', 'TranslationStarted', 'BiblePortions', 'BibleNewTestament',
         'BibleComplete', 'PoplPeoplesLR', 'PoplPeoplesFPG'
-    );
+    ];
     /**
      * The Database table to pull the data from.
      *
@@ -84,7 +88,7 @@ class Country extends QueryGenerator
      * @var     array
      * @access  protected
      **/
-    protected $aliasFields = array('10_40Window'    =>  'Window1040');
+    protected $aliasFields = ['10_40Window'    =>  'Window1040'];
     /**
      * Construct the Country class.
      *
@@ -97,7 +101,7 @@ class Country extends QueryGenerator
      * @access  public
      * @author  Johnathan Pulos
      */
-    public function __construct($getParams)
+    public function __construct(array $getParams)
     {
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) .
@@ -119,13 +123,13 @@ class Country extends QueryGenerator
      * @access  public
      * @author  Johnathan Pulos
      */
-    public function findById()
+    public function findById(): void
     {
-        $this->validator->providedRequiredParams($this->providedParams, array('id'));
+        $this->validator->providedRequiredParams($this->providedParams, ['id']);
         $id = strtoupper($this->providedParams['id']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement .
             " FROM " . $this->tableName . " WHERE ROG3 = :id LIMIT 1";
-        $this->preparedVariables = array('id' => $id);
+        $this->preparedVariables = ['id' => $id];
     }
     /**
      * Find all countries using specified filters.
@@ -138,7 +142,7 @@ class Country extends QueryGenerator
      * @throws  \InvalidArgumentException When you set a filter, but fail to provide a valid parameter
      * @author  Johnathan Pulos
      **/
-    public function findAllWithFilters()
+    public function findAllWithFilters(): void
     {
         $where = "";
         $appendAndOnWhere = false;
@@ -147,7 +151,7 @@ class Country extends QueryGenerator
             $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['continents'], 3);
             $this->validator->barSeperatedStringProvidesAcceptableValues(
                 $this->providedParams['continents'],
-                array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam')
+                ['afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam']
             );
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -166,7 +170,7 @@ class Country extends QueryGenerator
         if ($this->paramExists('jpscale')) {
             $this->validator->barSeperatedStringProvidesAcceptableValues(
                 $this->providedParams['jpscale'],
-                array('1', '2', '3', '4', '5')
+                ['1', '2', '3', '4', '5']
             );
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -320,7 +324,7 @@ class Country extends QueryGenerator
         if ($this->paramExists('primary_religions')) {
             $religions = explode('|', $this->providedParams['primary_religions']);
             foreach ($religions as $religion) {
-                $this->validator->integerInRange($religion, 1, 9, array(3));
+                $this->validator->integerInRange(intval($religion), 1, 9, [3]);
             }
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -334,7 +338,7 @@ class Country extends QueryGenerator
         if ($this->paramExists('regions')) {
             $regions = explode('|', $this->providedParams['regions']);
             foreach ($regions as $region) {
-                $this->validator->integerInRange($region, 1, 12);
+                $this->validator->integerInRange(intval($region), 1, 12);
             }
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";

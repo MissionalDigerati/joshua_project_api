@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,17 +21,22 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+ declare(strict_types=1);
+
 namespace Middleware;
 
 use Middleware\Traits\PathBasedTrait;
 use Middleware\Traits\ReturnsErrorsTrait;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
  * Middleware for auth checking for API requests.
  */
-class APIAuthMiddleware
+class APIAuthMiddleware implements MiddlewareInterface
 {
     /**
      * This is a path based middleware
@@ -64,29 +70,27 @@ class APIAuthMiddleware
     /**
      * Our invokable class
      *
-     * @param  ServerRequestInterface   $request  PSR7 request
-     * @param  ResponseInterface        $response PSR7 response
-     * @param  callable                 $next     Next middleware
+     * @param  ServerRequestInterface       $request    PSR7 request
+     * @param  RequestHandlerInterface      $handler    PSR-15 request handler
      *
-     * @return ResponseInterface                  The modified response
+     * @return ResponseInterface                        The modified response
      */
-    public function __invoke(
-        ServerRequestInterface $req,
-        ResponseInterface $res,
-        callable $next
-    ) {
-        $params = $req->getQueryParams();
-        $format = $req->getAttribute('route')->getArgument('format');
-        if (!$this->shouldProcess($req)) {
-            return $next($req, $res);
+    public function process(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
+        $path = $request->getUri()->getPath();
+        $format = pathinfo($path, \PATHINFO_EXTENSION);
+        $params = $request->getQueryParams();
+        if (!$this->shouldProcess($request)) {
+            return $handler->handle($request);
         }
         if (empty($params)) {
             return $this->sendError(
                 401,
                 'You are missing your API key.',
                 $format,
-                'Unauthorized',
-                $res
+                'Unauthorized'
             );
         }
         $apiKey = strip_tags($params['api_key']);
@@ -95,8 +99,7 @@ class APIAuthMiddleware
                 401,
                 'You are missing your API key.',
                 $format,
-                'Unauthorized',
-                $res
+                'Unauthorized'
             );
         }
         if (!$this->isValidKey($apiKey)) {
@@ -104,13 +107,12 @@ class APIAuthMiddleware
                 401,
                 'The provided API key is invalid.',
                 $format,
-                'Unauthorized',
-                $res
+                'Unauthorized'
             );
         }
         $this->setLastRequest($apiKey);
 
-        return $next($req, $res);
+        return $handler->handle($request);
     }
 
     /**
@@ -118,13 +120,13 @@ class APIAuthMiddleware
      *
      * @param string $apiKey    The API key
      *
-     * @return boolean          yes|no
+     * @return bool             yes|no
      */
-    private function isValidKey($apiKey)
+    private function isValidKey(string $apiKey): bool
     {
         $query = "SELECT * FROM md_api_keys where api_key = :api_key LIMIT 1";
         $statement = $this->db->prepare($query);
-        $statement->execute(array('api_key' => $apiKey));
+        $statement->execute(['api_key' => $apiKey]);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         if (empty($data)) {
             return false;
@@ -142,12 +144,13 @@ class APIAuthMiddleware
      * Set the last_request for the given API key to NOW()
      *
      * @param string $apiKey    The API key
+     *
      * @return void
      */
-    private function setLastRequest($apiKey)
+    private function setLastRequest(string $apiKey): void
     {
         $query = "UPDATE md_api_keys SET last_request = NOW() where api_key = :api_key";
         $statement = $this->db->prepare($query);
-        $statement->execute(array('api_key' => $apiKey));
+        $statement->execute(['api_key' => $apiKey]);
     }
 }

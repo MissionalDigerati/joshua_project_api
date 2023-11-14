@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -22,17 +24,20 @@
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
+use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use PHPUnit\Framework\TestCase;
+
 /**
  * Test the Query Generator for the people group ProfileText Data
  *
  * @author Johnathan Pulos
  */
-class ProfileTextTest extends \PHPUnit_Framework_TestCase
+class ProfileTextTest extends TestCase
 {
     /**
      * The PDO database connection object
      *
-     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     * @var PDODatabaseConnect
      */
     private $db;
     /**
@@ -42,7 +47,7 @@ class ProfileTextTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->db = getDatabaseInstance();
     }
@@ -53,7 +58,7 @@ class ProfileTextTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testShouldSanitizeProvidedDataOnInitializing()
+    public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
         $data = array('country' => 'AZXTE#%', 'state' => 'MA%$');
         $expected = array('country' => 'AZXTE', 'state' => 'MA');
@@ -72,8 +77,9 @@ class ProfileTextTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testFindAllByIdAndCountryShouldThrowErrorIfMissingId()
+    public function testFindAllByIdAndCountryShouldThrowErrorIfMissingId(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $getVars = array('country' => 'CB');
         $profileText = new \QueryGenerators\ProfileText($getVars);
         $profileText->findAllByIdAndCountry();
@@ -87,8 +93,9 @@ class ProfileTextTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testFindAllByIdAndCountryShouldThrowErrorIfMissingCountry()
+    public function testFindAllByIdAndCountryShouldThrowErrorIfMissingCountry(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $getVars = array('id' => '12662');
         $profileText = new \QueryGenerators\ProfileText($getVars);
         $profileText->findAllByIdAndCountry();
@@ -100,7 +107,7 @@ class ProfileTextTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllByIdAndCountryShouldReturnTheCorrectProfileText()
+    public function testFindAllByIdAndCountryShouldReturnTheCorrectProfileText(): void
     {
         $expectedProfileIDs = array('9584', '3550');
         $getVars = array('id' => '12662', 'country' => 'CB');
@@ -115,7 +122,7 @@ class ProfileTextTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllByIdAndCountryShouldReturnTheCorrectFields()
+    public function testFindAllByIdAndCountryShouldReturnTheCorrectFields(): void
     {
         $getVars = array('id' => '18432', 'country' => 'CH');
         $profileText = new \QueryGenerators\ProfileText($getVars);

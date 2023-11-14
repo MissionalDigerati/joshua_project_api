@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,6 +21,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace Utilities;
 
 use Slim\Http\Response;
@@ -36,24 +40,29 @@ class APIErrorResponder
      * @param string    $details    The details for the error
      * @param string    $format     The preferred format (json or xml)
      * @param string    $message    The message to send
-     * @param Response  $res        The response message
+     * @param Response  $response   The response message
      *
      * @return Response             The modified response
      */
-    public function get($code, $details, $format, $message, Response $res)
-    {
+    public function get(
+        int $code,
+        string $details,
+        string $format,
+        string $message,
+        Response $response
+    ): Response {
         if ($format === 'json') {
-            $data = array(
-                'api' =>    array(
+            $data = [
+                'api' =>    [
                     'status'    =>  'error',
-                    'error'     =>  array(
+                    'error'     =>  [
                         'code'    =>  $code,
                         'message'  =>  $message,
                         'details' => $details
-                    )
-                )
-            );
-            return $res->withStatus($code)->withJson($data);
+                    ]
+                ]
+            ];
+            return $response->withStatus($code)->withJson($data);
         }
         $data = '<api>
             <status>error</status>
@@ -64,7 +73,7 @@ class APIErrorResponder
             </error>
         </api>';
 
-        return $res
+        return $response
             ->withStatus($code)
             ->withHeader('Content-type', 'text/xml')
             ->write($data);

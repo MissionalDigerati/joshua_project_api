@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,6 +21,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace QueryGenerators;
 
 /**
@@ -72,7 +76,7 @@ class ProfileText extends QueryGenerator
      * @access  public
      * @author  Johnathan Pulos
      */
-    public function __construct($getParams)
+    public function __construct(array $getParams)
     {
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
@@ -92,9 +96,9 @@ class ProfileText extends QueryGenerator
      * @throws  \InvalidArgumentException   If the 'country' key is not set on the $providedParams class variable.
      * @author  Johnathan Pulos
      */
-    public function findAllByIdAndCountry()
+    public function findAllByIdAndCountry(): void
     {
-        $this->validator->providedRequiredParams($this->providedParams, array('id', 'country'));
+        $this->validator->providedRequiredParams($this->providedParams, ['id', 'country']);
         $id = intval($this->providedParams['id']);
         $country = strtoupper($this->providedParams['country']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement .
@@ -103,6 +107,6 @@ class ProfileText extends QueryGenerator
             "AND jpprofiletopeople.ROL3Profile = 'eng' AND jpprofiletext.ROL3Profile = 'eng' " .
             "AND jpprofiletext.Format = 'M' ORDER BY jpprofiletopeople.EditDate DESC LIMIT 1";
 
-        $this->preparedVariables = array('id' => $id, 'country' => $country);
+        $this->preparedVariables = ['id' => $id, 'country' => $country];
     }
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -22,17 +24,20 @@
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
+use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use PHPUnit\Framework\TestCase;
+
 /**
  * Test the Query Generator for the People Group Data
  *
  * @author Johnathan Pulos
  */
-class PeopleGroupTest extends \PHPUnit_Framework_TestCase
+class PeopleGroupTest extends TestCase
 {
     /**
      * The PDO database connection object
      *
-     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     * @var PDODatabaseConnect
      */
     private $db;
     /**
@@ -42,7 +47,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->db = getDatabaseInstance();
     }
@@ -53,7 +58,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testShouldSanitizeProvidedDataOnInitializing()
+    public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
         $data = array('country' => 'AZX#%', 'state' => 'AZ%$');
         $expected = array('country' => 'AZX', 'state' => 'AZ');
@@ -70,7 +75,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindByIdAndCountryShouldReturnTheCorrectPeopleGroup()
+    public function testFindByIdAndCountryShouldReturnTheCorrectPeopleGroup(): void
     {
         $expected = array('id' => '12662', 'country' => 'CB');
         $expectedName = "Khmer";
@@ -90,7 +95,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupURL()
+    public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupURL(): void
     {
         $expected = array('id' => '12662', 'country' => 'CB');
         $expectedURL = "https://joshuaproject.net/people_groups/12662/cb";
@@ -108,7 +113,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupPhotoURL()
+    public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupPhotoURL(): void
     {
         $expected = array('id' => '12662', 'country' => 'CB');
         $expectedURL = "https://joshuaproject.net/assets/media/profiles/photos/";
@@ -127,7 +132,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testPeopleGroupQueryGeneratorShouldReturnCorrectCountryURL()
+    public function testPeopleGroupQueryGeneratorShouldReturnCorrectCountryURL(): void
     {
         $expected = array('id' => '12662', 'country' => 'CB');
         $expectedURL = "https://joshuaproject.net/countries/cb";
@@ -145,7 +150,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testPeopleGroupQueryGeneratorShouldReturnCorrectJPScaleImageURL()
+    public function testPeopleGroupQueryGeneratorShouldReturnCorrectJPScaleImageURL(): void
     {
         $paramData = array('id' => '10350', 'country' => 'AA');
         $peopleGroup = new \QueryGenerators\PeopleGroup($paramData);
@@ -153,7 +158,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $expectedImageURL = "https://joshuaproject.net/images/scale".round($data[0]['JPScale']).".jpg";
+        $expectedImageURL = "https://joshuaproject.net/images/scale".round(intval($data[0]['JPScale'])).".jpg";
         $this->assertEquals($expectedImageURL, $data[0]['JPScaleImageURL']);
     }
     /**
@@ -165,8 +170,9 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testFindByIdAndCountryShouldErrorIfNoIdProvided()
+    public function testFindByIdAndCountryShouldErrorIfNoIdProvided(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $expected = array('country' => 'CB');
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
@@ -180,8 +186,9 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testFindByIdAndCountryShouldErrorIfNoCountryProvided()
+    public function testFindByIdAndCountryShouldErrorIfNoCountryProvided(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $expected = array('id' => '12662');
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
@@ -193,7 +200,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindByIdShouldReturnTheCorrectPeopleGroups()
+    public function testFindByIdShouldReturnTheCorrectPeopleGroups(): void
     {
         $expected = array('id' => '12662');
         $expectedPeopleGroups = 13;
@@ -214,8 +221,9 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testFindByIdShouldErrorIfNoIDProvided()
+    public function testFindByIdShouldErrorIfNoIDProvided(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $expected = array();
         $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
         $peopleGroup->findById();
@@ -227,7 +235,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersReturnsLimitedResultsWithNoFiltersByDefault()
+    public function testFindAllWithFiltersReturnsLimitedResultsWithNoFiltersByDefault(): void
     {
         $expectedNumberOfResults = 250;
         $peopleGroup = new \QueryGenerators\PeopleGroup(array());
@@ -244,7 +252,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPeopleID1()
+    public function testFindAllWithFiltersShouldFilterByPeopleID1(): void
     {
         $expectedPeopleIds = array(17, 23);
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('people_id1' => join("|", $expectedPeopleIds)));
@@ -264,7 +272,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByROP1()
+    public function testFindAllWithFiltersShouldFilterByROP1(): void
     {
         $expectedROP = array('A014', 'A010');
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('rop1' => join("|", $expectedROP)));
@@ -284,7 +292,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByROP1AndPeopleID1()
+    public function testFindAllWithFiltersShouldFilterByROP1AndPeopleID1(): void
     {
         $expectedROP = 'A014';
         $expectedPeopleID = 23;
@@ -310,7 +318,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPeopleID2()
+    public function testFindAllWithFiltersShouldFilterByPeopleID2(): void
     {
         $expectedPeopleIDs = array(117, 115);
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('people_id2' => join("|", $expectedPeopleIDs)));
@@ -330,7 +338,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByROP2()
+    public function testFindAllWithFiltersShouldFilterByROP2(): void
     {
         $expectedROP = array('C0013', 'C0067');
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('rop2' => join("|", $expectedROP)));
@@ -350,7 +358,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPeopleID3()
+    public function testFindAllWithFiltersShouldFilterByPeopleID3(): void
     {
         $expectedPeopleIDs = array(11722, 19204);
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('people_id3' => join("|", $expectedPeopleIDs)));
@@ -370,7 +378,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByROP3()
+    public function testFindAllWithFiltersShouldFilterByROP3(): void
     {
         $expectedROP = array(115485, 115409);
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('rop3' => join("|", $expectedROP)));
@@ -390,7 +398,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByContinents()
+    public function testFindAllWithFiltersShouldFilterByContinents(): void
     {
         $expectedContinents = array('AFR', 'NAR');
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('continents' => join("|", $expectedContinents)));
@@ -410,7 +418,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByCountries()
+    public function testFindAllWithFiltersShouldFilterByCountries(): void
     {
         $expectedCountries = array('AN', 'BG');
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('countries' => join("|", $expectedCountries)));
@@ -432,8 +440,9 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
       *
       * @expectedException InvalidArgumentException
       */
-    public function testFindAllWithFilterShouldErrorIfIncorrectContinent()
+    public function testFindAllWithFilterShouldErrorIfIncorrectContinent(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $expectedCountries = array('BBC', 'DED');
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('continents' => join("|", $expectedCountries)));
         $peopleGroup->findAllWithFilters();
@@ -447,8 +456,9 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
       *
       * @expectedException InvalidArgumentException
       */
-    public function testFindAllWithFilterShouldErrorIfIncorrectRegionCode()
+    public function testFindAllWithFilterShouldErrorIfIncorrectRegionCode(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $regionCodes = array(0, 13);
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('regions' => join("|", $regionCodes)));
         $peopleGroup->findAllWithFilters();
@@ -460,7 +470,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByRegions()
+    public function testFindAllWithFiltersShouldFilterByRegions(): void
     {
         $expectedRegions = array(3 => 'asia, northeast', 4 => 'asia, south');
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('regions' => join("|", array_keys($expectedRegions))));
@@ -481,7 +491,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterBy1040Window()
+    public function testFindAllWithFiltersShouldFilterBy1040Window(): void
     {
         $expected1040Window = 'N';
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('window1040' => $expected1040Window));
@@ -501,7 +511,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByLanguages()
+    public function testFindAllWithFiltersShouldFilterByLanguages(): void
     {
         $expectedLanguages = array('AKA', 'ALE');
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('languages' => join("|", $expectedLanguages)));
@@ -521,7 +531,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPopulationRange()
+    public function testFindAllWithFiltersShouldFilterByPopulationRange(): void
     {
         $expectedMin = 10000;
         $expectedMax = 20000;
@@ -543,7 +553,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPrimaryReligions()
+    public function testFindAllWithFiltersShouldFilterByPrimaryReligions(): void
     {
         $expectedReligions = array(2 => 'buddhism', 6 => 'islam');
         $peopleGroup = new \QueryGenerators\PeopleGroup(
@@ -568,7 +578,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterBySinglePopulation()
+    public function testFindAllWithFiltersShouldFilterBySinglePopulation(): void
     {
         $expectedPop = 3900;
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('population' => $expectedPop));
@@ -590,8 +600,9 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testFindAllWithFiltersShouldThrowErrorWithIncorrectPopulation()
+    public function testFindAllWithFiltersShouldThrowErrorWithIncorrectPopulation(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('population' => '1900-23000-3400'));
         $peopleGroup->findAllWithFilters();
     }
@@ -604,8 +615,9 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testFindAllWithFiltersShouldThrowErrorWithMinPopulationGreaterThanMaxPopulation()
+    public function testFindAllWithFiltersShouldThrowErrorWithMinPopulationGreaterThanMaxPopulation(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('population' => '30000-1000'));
         $peopleGroup->findAllWithFilters();
     }
@@ -616,7 +628,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPercentOfAdherents()
+    public function testFindAllWithFiltersShouldFilterByPercentOfAdherents(): void
     {
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
@@ -642,7 +654,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPercentOfAdherentsWithOnlyOneDecimalParameter()
+    public function testFindAllWithFiltersShouldFilterByPercentOfAdherentsWithOnlyOneDecimalParameter(): void
     {
         $expectedPercent = 1.6;
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_adherent' => $expectedPercent));
@@ -662,7 +674,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPercentOfEvangelicals()
+    public function testFindAllWithFiltersShouldFilterByPercentOfEvangelicals(): void
     {
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
@@ -688,7 +700,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPercentOfBuddhists()
+    public function testFindAllWithFiltersShouldFilterByPercentOfBuddhists(): void
     {
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
@@ -714,7 +726,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPercentOfEthnicReligions()
+    public function testFindAllWithFiltersShouldFilterByPercentOfEthnicReligions(): void
     {
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
@@ -740,7 +752,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPercentOfHindus()
+    public function testFindAllWithFiltersShouldFilterByPercentOfHindus(): void
     {
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
@@ -766,7 +778,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPercentOfIslam()
+    public function testFindAllWithFiltersShouldFilterByPercentOfIslam(): void
     {
         $expectedPercentMin = 20.0;
         $expectedPercentMax = 30.1;
@@ -792,7 +804,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPercentOfNonReligious()
+    public function testFindAllWithFiltersShouldFilterByPercentOfNonReligious(): void
     {
         $expectedPercentMin = 22.0;
         $expectedPercentMax = 40.1;
@@ -818,7 +830,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPercentOfOtherReligions()
+    public function testFindAllWithFiltersShouldFilterByPercentOfOtherReligions(): void
     {
         $expectedPercentMin = 2.0;
         $expectedPercentMax = 10.3;
@@ -844,7 +856,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterByPercentOfUnknownReligions()
+    public function testFindAllWithFiltersShouldFilterByPercentOfUnknownReligions(): void
     {
         $expectedPercentMin = 2.0;
         $expectedPercentMax = 10.3;
@@ -870,7 +882,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterOutIndigenousPeopleGroups()
+    public function testFindAllWithFiltersShouldFilterOutIndigenousPeopleGroups(): void
     {
         $expectedIndigenousStatus = 'n';
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('indigenous' => $expectedIndigenousStatus));
@@ -890,7 +902,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFilterOutLeastReachedPeopleGroups()
+    public function testFindAllWithFiltersShouldFilterOutLeastReachedPeopleGroups(): void
     {
         $expectedLeastReachedStatus = 'n';
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('least_reached' => $expectedLeastReachedStatus));
@@ -910,7 +922,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testFindAllWithFiltersShouldFiltersByJPScale()
+    public function testFindAllWithFiltersShouldFiltersByJPScale(): void
     {
         $expectedJPScales = "1|2";
         $expectedJPScalesArray = array(1, 2);
@@ -934,8 +946,9 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
       *
       * @expectedException InvalidArgumentException
       */
-    public function testFindAllWithFilterShouldErrorIfIncorrectJPScale()
+    public function testFindAllWithFilterShouldErrorIfIncorrectJPScale(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $expectedJPScales = "1.5|2.6";
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('jpscale' => $expectedJPScales));
         $peopleGroup->findAllWithFilters();
@@ -949,14 +962,14 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
       *
       * @expectedException InvalidArgumentException
       */
-    public function testFindAllWithFilterShouldErrorIfIncorrectWindow1040()
+    public function testFindAllWithFilterShouldErrorIfIncorrectWindow1040(): void
     {
-        $regionCodes = array(0, 13);
+        $this->expectException(\InvalidArgumentException::class);
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('window1040' => 'b'));
         $peopleGroup->findAllWithFilters();
     }
 
-    public function testFindAllWithFilterShouldFilterByFrontier()
+    public function testFindAllWithFilterShouldFilterByFrontier(): void
     {
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('is_frontier' => 'N'));
         $peopleGroup->findAllWithFilters();
@@ -969,7 +982,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFilterShouldFilterByAllCountryPopulationInRange()
+    public function testFindAllWithFilterShouldFilterByAllCountryPopulationInRange(): void
     {
         $min = 10000;
         $max = 11000;
@@ -985,7 +998,7 @@ class PeopleGroupTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindAllWithFilterShouldFilterByAllCountryPopulationSingleValue()
+    public function testFindAllWithFilterShouldFilterByAllCountryPopulationSingleValue(): void
     {
         $expected = 12000;
         $peopleGroup = new \QueryGenerators\PeopleGroup(array('population_pgac' => $expected));

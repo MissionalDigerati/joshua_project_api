@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,9 +21,12 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 use QueryGenerators\Continent;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Swagger\Annotations as SWG;
 
 // phpcs:disable Generic.Files.LineLength
@@ -89,45 +93,52 @@ use Swagger\Annotations as SWG;
 // phpcs:enable Generic.Files.LineLength
 $app->get(
     "/{version}/continents/{id}.{format}",
-    function (Request $req, Response $res, $args = []) {
+    function (Request $request, Response $response, $args = []): Response {
         /**
          * Make sure we have an ID, else crash.
          * This expression ("/\PL/u") removes all non-letter characters
          *
          * @author Johnathan Pulos
          */
-        $continentId = preg_replace("/\PL/u", "", strip_tags(strtoupper($args['id'])));
+        $format = $args['format'];
+        $continentId = preg_replace(
+            "/\PL/u",
+            "",
+            strip_tags(
+                strtoupper($args['id'])
+            )
+        );
         if ((empty($continentId)) || (strlen($continentId) != 3)) {
-            return $this->errorResponder->get(
+            return $this->get('errorResponder')->get(
                 400,
                 'You provided an invalid continent id.',
-                $args['format'],
+                $format,
                 'Bad Request',
-                $res
+                $response
             );
         }
         try {
-            $continent = new Continent(array('id' => $continentId));
+            $continent = new Continent(['id' => $continentId]);
             $continent->findById();
-            $statement = $this->db->prepare($continent->preparedStatement);
+            $statement = $this->get('db')->prepare($continent->preparedStatement);
             $statement->execute($continent->preparedVariables);
             $data = $statement->fetchAll(PDO::FETCH_ASSOC);
             if (empty($data)) {
-                return $this->errorResponder->get(
+                return $this->get('errorResponder')->get(
                     404,
                     'The continent does not exist for the given id.',
-                    $args['format'],
+                    $format,
                     'Not Found',
-                    $res
+                    $response
                 );
             }
         } catch (Exception $e) {
-            return $this->errorResponder->get(
+            return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),
-                $args['format'],
+                $format,
                 'Internal Server Error',
-                $res
+                $response
             );
         }
         /**
@@ -135,11 +146,13 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
-        if ($args['format'] == 'json') {
-            return $res->withJson($data);
+        if ($format == 'json') {
+            return $response
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($data));
         } else {
-            return $res
-                ->withHeader('Content-type', 'text/xml')
+            return $response
+                ->withHeader('Content-Type', 'text/xml')
                 ->write(arrayToXML($data, "continents", "continent"));
         }
     }

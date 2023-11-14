@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -24,13 +26,14 @@ namespace Tests\v1\Integration;
 
 use \PHPToolbox\CachedRequest\CachedRequest;
 use \PHPToolbox\PDODatabase\PDODatabaseConnect;
+use PHPUnit\Framework\TestCase;
 
 /**
  * The class for testing middleware integration
  *
  * @author Johnathan Pulos
  */
-class MiddlewareTest extends \PHPUnit_Framework_TestCase
+class MiddlewareTest extends TestCase
 {
     /**
      * The CachedRequest Object
@@ -72,12 +75,10 @@ class MiddlewareTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function setUp()
+    public function setUp(): void
     {
-        global $API_VERSION;
-        $this->APIVersion = $API_VERSION;
-        global $SITE_URL;
-        $this->siteURL = $SITE_URL;
+        $this->APIVersion = $_ENV['api_version'];
+        $this->siteURL = $_ENV['site_url'];
         $this->cachedRequest = new CachedRequest();
         $this->cachedRequest->cacheDirectory =
             __DIR__ .
@@ -95,13 +96,13 @@ class MiddlewareTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->cachedRequest->clearCache();
         deleteApiKey($this->APIKey);
     }
 
-    public function testItShouldRecordTheLastRequestDateOnEveryRequest()
+    public function testItShouldRecordTheLastRequestDateOnEveryRequest(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET last_request = '2012-10-21 10:05:00' WHERE  `api_key` = '" . $this->APIKey . "'");
         $response = $this->cachedRequest->get(

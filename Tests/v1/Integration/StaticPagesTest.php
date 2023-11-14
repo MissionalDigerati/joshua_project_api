@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -22,24 +24,28 @@
  */
 namespace Tests\v1\Integration;
 
+use PHPToolbox\CachedRequest\CachedRequest;
+use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use PHPUnit\Framework\TestCase;
+
 /**
  * The class for testing integration of the Static Pages
  *
  * @package default
  * @author Johnathan Pulos
  */
-class StaticPagesTest extends \PHPUnit_Framework_TestCase
+class StaticPagesTest extends TestCase
 {
     /**
      * The CachedRequest Object
      *
-     * @var \PHPToolbox\CachedRequest\CachedRequest
+     * @var CachedRequest
      */
     public $cachedRequest;
     /**
      * The PDO database connection object
      *
-     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     * @var PDODatabaseConnect
      */
     private $db;
     /**
@@ -64,13 +70,11 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function setUp()
+    public function setUp(): void
     {
-        global $API_VERSION;
-        $this->APIVersion = $API_VERSION;
-        global $SITE_URL;
-        $this->siteURL = $SITE_URL;
-        $this->cachedRequest = new \PHPToolbox\CachedRequest\CachedRequest;
+        $this->APIVersion = $_ENV['api_version'];
+        $this->siteURL = $_ENV['site_url'];
+        $this->cachedRequest = new CachedRequest();
         $this->cachedRequest->cacheDirectory =
             __DIR__ .
             DIRECTORY_SEPARATOR . ".." .
@@ -86,7 +90,7 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->cachedRequest->clearCache();
         /**
@@ -102,7 +106,7 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      */
-    public function testWebsiteShouldDisplayTheHomePage()
+    public function testWebsiteShouldDisplayTheHomePage(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/",
@@ -117,7 +121,7 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      */
-    public function testWebsiteShouldAllowUsersToGetAnAPIKeyIfValidAuthorizationKey()
+    public function testWebsiteShouldAllowUsersToGetAnAPIKeyIfValidAuthorizationKey(): void
     {
         $authorizationToken = 'l543g3$4';
         $expectedAPIKey = generateRandomKey(12);
@@ -127,7 +131,7 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
         );
         $response = $this->cachedRequest->get(
             $this->siteURL . "/get_my_api_key",
-            array('authorize_token' => $authorizationToken),
+            ['authorize_token' => $authorizationToken],
             "get_my_api_key"
         );
         deleteApiKey($expectedAPIKey);
@@ -140,7 +144,7 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      */
-    public function testWebsiteShouldTellUsersThatAPIKeyAlreadyUpdated()
+    public function testWebsiteShouldTellUsersThatAPIKeyAlreadyUpdated(): void
     {
         $authorizationToken = 'l543g3$4Ac';
         $expectedAPIKey = generateRandomKey(12);
@@ -163,7 +167,7 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      */
-    public function testWebsiteShouldTellUsersThatAPIKeyIsSuspended()
+    public function testWebsiteShouldTellUsersThatAPIKeyIsSuspended(): void
     {
         $authorizationToken = 'l543g3$4Ac';
         $expectedAPIKey = generateRandomKey(12);
@@ -186,7 +190,7 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      */
-    public function testWebsiteShouldWarnUsersWhenTheAuthorizationTokenIsMissing()
+    public function testWebsiteShouldWarnUsersWhenTheAuthorizationTokenIsMissing(): void
     {
         $authorizationToken = 'l543g3$4Ac';
         $expectedAPIKey = 'AKey$43Ac';
@@ -209,7 +213,7 @@ class StaticPagesTest extends \PHPUnit_Framework_TestCase
      * @return void
      * @author Johnathan Pulos
      */
-    public function testWebsiteShouldDisplayTheResendActivationLinkPage()
+    public function testWebsiteShouldDisplayTheResendActivationLinkPage(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/resend_activation_links",

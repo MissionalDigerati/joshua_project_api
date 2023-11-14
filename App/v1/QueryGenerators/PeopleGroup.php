@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,6 +21,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace QueryGenerators;
 
 /**
@@ -56,7 +60,7 @@ class PeopleGroup extends QueryGenerator
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = array(
+    protected $fieldsToSelectArray = [
         'ROG3', 'PeopleID3', 'ROP3', 'PeopNameInCountry', 'ROG2', 'Continent', 'RegionName', 'ISO3',
         'LocationInCountry', 'PeopleID1', 'ROP1', 'AffinityBloc', 'PeopleID2', 'ROP2', 'PeopleCluster',
         'PeopNameAcrossCountries', 'Population', 'Category', 'ROL3', 'PrimaryLanguageName',
@@ -76,7 +80,7 @@ class PeopleGroup extends QueryGenerator
         'COALESCE(MapCredits, "") AS MapCredits', 'COALESCE(MapCreditURL, "") AS MapCreditURL',
         'COALESCE(MapCopyright, "") AS MapCopyright', 'COALESCE(MapCCVersionText, "") AS MapCCVersionText',
         'COALESCE(MapCCVersionURL, "") AS MapCCVersionURL'
-    );
+    ];
     /**
      * The database table to pull the data from.
      *
@@ -135,9 +139,9 @@ class PeopleGroup extends QueryGenerator
      * @var     array
      * @access  protected
      **/
-    protected $aliasFields = array(
+    protected $aliasFields = [
         '10_40Window'           =>  'Window1040'
-    );
+    ];
     /**
      * Construct the People Group class.
      *
@@ -150,7 +154,7 @@ class PeopleGroup extends QueryGenerator
      * @access  public
      * @author  Johnathan Pulos
      */
-    public function __construct($getParams)
+    public function __construct(array $getParams)
     {
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " .
@@ -178,14 +182,14 @@ class PeopleGroup extends QueryGenerator
      * @throws  \InvalidArgumentException   If the 'country' key is not set on the $providedParams class variable.
      * @author  Johnathan Pulos
      */
-    public function findByIdAndCountry()
+    public function findByIdAndCountry(): void
     {
-        $this->validator->providedRequiredParams($this->providedParams, array('id', 'country'));
+        $this->validator->providedRequiredParams($this->providedParams, ['id', 'country']);
         $id = intval($this->providedParams['id']);
         $country = strtoupper($this->providedParams['country']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName .
             " WHERE PeopleID3 = :id AND ROG3 = :country LIMIT 1";
-        $this->preparedVariables = array('id' => $id, 'country' => $country);
+        $this->preparedVariables = ['id' => $id, 'country' => $country];
     }
     /**
      * Find the People Group by Id (PeopleID3).
@@ -198,13 +202,13 @@ class PeopleGroup extends QueryGenerator
      * @throws  \InvalidArgumentException   If the 'id' key is not set on the $providedParams class variable.
      * @author  Johnathan Pulos
      */
-    public function findById()
+    public function findById(): void
     {
-        $this->validator->providedRequiredParams($this->providedParams, array('id'));
+        $this->validator->providedRequiredParams($this->providedParams, ['id']);
         $id = intval($this->providedParams['id']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName .
             " WHERE PeopleID3 = :id";
-        $this->preparedVariables = array('id' => $id);
+        $this->preparedVariables = ['id' => $id];
     }
     /**
      * Find all People Groups using specified filters.
@@ -217,7 +221,7 @@ class PeopleGroup extends QueryGenerator
      * @throws  \InvalidArgumentException   When you set a filter, but fail to provide a valid parameter
      * @author  Johnathan Pulos
      */
-    public function findAllWithFilters()
+    public function findAllWithFilters(): void
     {
         $where = "";
         $appendAndOnWhere = false;
@@ -238,7 +242,7 @@ class PeopleGroup extends QueryGenerator
             $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['continents'], 3);
             $this->validator->barSeperatedStringProvidesAcceptableValues(
                 $this->providedParams['continents'],
-                array('afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam')
+                ['afr', 'asi', 'aus', 'eur', 'nar', 'sop', 'lam']
             );
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -269,7 +273,7 @@ class PeopleGroup extends QueryGenerator
         if ($this->paramExists('jpscale')) {
             $this->validator->barSeperatedStringProvidesAcceptableValues(
                 $this->providedParams['jpscale'],
-                array('1', '2', '3', '4', '5')
+                ['1', '2', '3', '4', '5']
             );
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -431,7 +435,7 @@ class PeopleGroup extends QueryGenerator
         if ($this->paramExists('primary_religions')) {
             $religions = explode('|', $this->providedParams['primary_religions']);
             foreach ($religions as $religion) {
-                $this->validator->integerInRange($religion, 1, 9, array(3));
+                $this->validator->integerInRange(intval($religion), 1, 9, [3]);
             }
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
@@ -445,7 +449,7 @@ class PeopleGroup extends QueryGenerator
         if ($this->paramExists('regions')) {
             $regions = explode('|', $this->providedParams['regions']);
             foreach ($regions as $region) {
-                $this->validator->integerInRange($region, 1, 12);
+                $this->validator->integerInRange(intval($region), 1, 12);
             }
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";

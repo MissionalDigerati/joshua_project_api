@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -22,17 +24,20 @@
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
+use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use PHPUnit\Framework\TestCase;
+
 /**
  * Test the Query Generator for the People Group Data
  *
  * @author Johnathan Pulos
  */
-class UnreachedTest extends \PHPUnit_Framework_TestCase
+class UnreachedTest extends TestCase
 {
     /**
      * The PDO database connection object
      *
-     * @var \PHPToolbox\PDODatabase\PDODatabaseConnect
+     * @var PDODatabaseConnect
      */
     private $db;
     /**
@@ -42,7 +47,7 @@ class UnreachedTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->db = getDatabaseInstance();
     }
@@ -53,7 +58,7 @@ class UnreachedTest extends \PHPUnit_Framework_TestCase
      * @access public
      * @author Johnathan Pulos
      */
-    public function testDailyUnreachedRequestsShouldReturnCorrectResults()
+    public function testDailyUnreachedRequestsShouldReturnCorrectResults(): void
     {
         $expected = array('month' => 1, 'day' => 11);
         $unreached = new \QueryGenerators\Unreached($expected);
@@ -73,8 +78,9 @@ class UnreachedTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testDailyUnreachedRequestsShouldThrowErrorIfMissingMonth()
+    public function testDailyUnreachedRequestsShouldThrowErrorIfMissingMonth(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $getVars = array('day' => 11);
         $unreached = new \QueryGenerators\Unreached($getVars);
         $unreached->daily();
@@ -88,8 +94,9 @@ class UnreachedTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testDailyUnreachedRequestsShouldThrowErrorIfMissingDay()
+    public function testDailyUnreachedRequestsShouldThrowErrorIfMissingDay(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $getVars = array('month' => 11);
         $unreached = new \QueryGenerators\Unreached($getVars);
         $unreached->daily();
@@ -103,8 +110,9 @@ class UnreachedTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testDailyUnreachedRequestsShouldThrowErrorIfMonthIsOutOfRange()
+    public function testDailyUnreachedRequestsShouldThrowErrorIfMonthIsOutOfRange(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $getVars = array('month' => 13, 'day' => 1);
         $unreached = new \QueryGenerators\Unreached($getVars);
         $unreached->daily();
@@ -118,8 +126,9 @@ class UnreachedTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testDailyUnreachedRequestsShouldThrowErrorIfDayIsOutOfRange()
+    public function testDailyUnreachedRequestsShouldThrowErrorIfDayIsOutOfRange(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $getVars = array('month' => 12, 'day' => 32);
         $unreached = new \QueryGenerators\Unreached($getVars);
         $unreached->daily();
