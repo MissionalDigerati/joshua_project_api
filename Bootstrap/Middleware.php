@@ -64,7 +64,7 @@ return function(App $app) {
 
     $authSettings = [
         'path'          =>  ['/api_keys'],
-        'passthrough'   =>  ['/api_keys/new']
+        'ignore'        =>  ['/api_keys/new']
     ];
     $authSettings['users'][$_ENV['ADMIN_USERNAME']] = $_ENV['ADMIN_PASSWORD'];
     $app->add(new HttpBasicAuthentication($authSettings));

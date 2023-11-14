@@ -28,13 +28,6 @@ date_default_timezone_set('America/Denver');
 $ROOT_DIRECTORY = dirname(__DIR__);
 $DS = DIRECTORY_SEPARATOR;
 /**
- * The URL for the testing server
- *
- * @param string
- * @author Johnathan Pulos
- */
-$SITE_URL = $_ENV['site_url'];
-/**
  * The version of the API to test for (ex. v1)
  *
  * @param string

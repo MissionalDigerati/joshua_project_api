@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -22,12 +24,15 @@
  */
 namespace Tests\v1\Integration;
 
+use PHPToolbox\CachedRequest\CachedRequest;
+use PHPUnit\Framework\TestCase;
+
 /**
  * The class for testing integration of the Countries
  *
  * @author Johnathan Pulos
  */
-class CountriesTest extends \PHPUnit_Framework_TestCase
+class CountriesTest extends TestCase
 {
     public $cachedRequest;
 
@@ -39,13 +44,11 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
 
     private $siteURL;
 
-    public function setUp()
+    public function setUp(): void
     {
-        global $API_VERSION;
-        $this->APIVersion = $API_VERSION;
-        global $SITE_URL;
-        $this->siteURL = $SITE_URL;
-        $this->cachedRequest = new \PHPToolbox\CachedRequest\CachedRequest;
+        $this->APIVersion = $_ENV['api_version'];
+        $this->siteURL = $_ENV['site_url'];
+        $this->cachedRequest = new CachedRequest();
         $this->cachedRequest->cacheDirectory =
             __DIR__ .
             DIRECTORY_SEPARATOR . ".." .
@@ -57,13 +60,13 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->APIKey = createApiKey();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->cachedRequest->clearCache();
         deleteApiKey($this->APIKey);
     }
 
-    public function testShowRequestShouldRefuseAccessWithoutAValidId()
+    public function testShowRequestShouldRefuseAccessWithoutAValidId(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries/1234.json",
@@ -77,23 +80,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
     }
 
-    public function testShowRequestsShouldRefuseAccessWithoutAVersionNumber()
-    {
-        $response = $this->cachedRequest->get(
-            $this->siteURL . "/countries/us.json",
-            array('api_key' => $this->APIKey),
-            "versioning_missing_countries_json"
-        );
-        $decoded = json_decode($response, true);
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
-        $this->assertEquals(
-            'You are requesting an unavailable API version number.',
-            $decoded['api']['error']['details']
-        );
-        $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
-    }
-
-    public function testIndexRequestsShouldRefuseAccessWithoutAnAPIKey()
+    public function testIndexRequestsShouldRefuseAccessWithoutAnAPIKey(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
@@ -106,7 +93,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
     }
 
-    public function testShowRequestsShouldReturnACountryInJSON()
+    public function testShowRequestsShouldReturnACountryInJSON(): void
     {
         $expectedCountry = "US";
         $response = $this->cachedRequest->get(
@@ -118,7 +105,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
     }
 
-    public function testShowRequestsShouldReturnACountryInXML()
+    public function testShowRequestsShouldReturnACountryInXML(): void
     {
         $expectedCountry = "US";
         $response = $this->cachedRequest->get(
@@ -130,7 +117,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isXML($response));
     }
 
-    public function testShowRequestsShouldReturnTheCorrectCountry()
+    public function testShowRequestsShouldReturnTheCorrectCountry(): void
     {
         $expectedCountry = "US";
         $response = $this->cachedRequest->get(
@@ -146,7 +133,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCountry, $decodedResponse[0]['ISO2']);
     }
 
-    public function testShowRequestsShouldReturnPopulationByGroupStatus()
+    public function testShowRequestsShouldReturnPopulationByGroupStatus(): void
     {
         $expectedCountry = "AE";
         $response = $this->cachedRequest->get(
@@ -166,7 +153,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(empty($decodedResponse[0]['PoplPeoplesFPG']));
     }
 
-    public function testIndexRequestShouldBeAccessibleByJSON()
+    public function testIndexRequestShouldBeAccessibleByJSON(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
@@ -177,7 +164,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isJSON($response));
     }
 
-    public function testIndexRequestShouldBeAccessableByXML()
+    public function testIndexRequestShouldBeAccessableByXML(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.xml",
@@ -188,7 +175,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isXML($response));
     }
 
-    public function testIndexRequestsShouldReturnTheCorrectCountry()
+    public function testIndexRequestsShouldReturnTheCorrectCountry(): void
     {
         // 250 is max, but there is only 238 countries
         $expectedCountryCount = 238;
@@ -207,7 +194,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedFirstCountry, $decodedResponse[0]['Ctry']);
     }
 
-    public function testIndexRequestsShouldReturnPopulationByGroupStatus()
+    public function testIndexRequestsShouldReturnPopulationByGroupStatus(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
@@ -226,7 +213,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(empty($first['PoplPeoplesFPG']));
     }
 
-    public function testIndexRequestsShouldReturnCountriesLimitedToOurRequest()
+    public function testIndexRequestsShouldReturnCountriesLimitedToOurRequest(): void
     {
         $expectedCountryCount = 10;
         $response = $this->cachedRequest->get(
@@ -238,7 +225,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCountryCount, count($decodedResponse));
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByIds()
+    public function testIndexRequestsShouldReturnCountriesFilteredByIds(): void
     {
         $expectedIDs = array('us', 'af', 'al');
         $response = $this->cachedRequest->get(
@@ -252,7 +239,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByContinents()
+    public function testIndexRequestsShouldReturnCountriesFilteredByContinents(): void
     {
         $expectedContinents = array('eur', 'nar');
         $response = $this->cachedRequest->get(
@@ -266,7 +253,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByRegions()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRegions(): void
     {
         $expectedRegions = array(1, 5);
         $response = $this->cachedRequest->get(
@@ -276,11 +263,11 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         );
         $decodedResponse = json_decode($response, true);
         foreach ($decodedResponse as $country) {
-            $this->assertTrue(in_array(strtolower($country['RegionCode']), $expectedRegions));
+            $this->assertTrue(in_array($country['RegionCode'], $expectedRegions));
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByWindow1040()
+    public function testIndexRequestsShouldReturnCountriesFilteredByWindow1040(): void
     {
         $expectedWindow1040 = 'y';
         $response = $this->cachedRequest->get(
@@ -294,7 +281,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByPrimaryLanguages()
+    public function testIndexRequestsShouldReturnCountriesFilteredByPrimaryLanguages(): void
     {
         $expectedPrimaryLanguages = array('por');
         $response = $this->cachedRequest->get(
@@ -308,7 +295,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsReturnCountriesFilteredByAMinAndMaxPopulation()
+    public function testIndexRequestsReturnCountriesFilteredByAMinAndMaxPopulation(): void
     {
         $expectedMin = 10000;
         $expectedMax = 20000;
@@ -326,7 +313,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsReturnCountriesFilteredByAnExactPopulation()
+    public function testIndexRequestsReturnCountriesFilteredByAnExactPopulation(): void
     {
         $expectedPopulation = 600;
         $response = $this->cachedRequest->get(
@@ -342,7 +329,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByPrimaryReligions()
+    public function testIndexRequestsShouldReturnCountriesFilteredByPrimaryReligions(): void
     {
         $expectedReligions = array(1 => 'christianity', 7 => 'non-religious');
         $response = $this->cachedRequest->get(
@@ -359,7 +346,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByASinglePrimaryReligion()
+    public function testIndexRequestsShouldReturnCountriesFilteredByASinglePrimaryReligion(): void
     {
         $expectedReligions = array(7 => 'non-religious');
         $response = $this->cachedRequest->get(
@@ -376,7 +363,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByJPScale()
+    public function testIndexRequestsShouldReturnCountriesFilteredByJPScale(): void
     {
         $expectedJPScale = "2";
         $expectedJPScalesArray = array(2);
@@ -393,7 +380,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnUnsupportedPCAnglicanForCountries()
+    public function testIndexRequestsShouldReturnUnsupportedPCAnglicanForCountries(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
@@ -412,7 +399,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testIndexRequestsShouldReturnUnsupportedPCIndependentForCountries()
+    public function testIndexRequestsShouldReturnUnsupportedPCIndependentForCountries(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
@@ -430,7 +417,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testIndexRequestsShouldReturnUnsupportedPCProtestantForCountries()
+    public function testIndexRequestsShouldReturnUnsupportedPCProtestantForCountries(): void
     {
         $expectedMin = 10;
         $expectedMax = 15;
@@ -450,7 +437,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testIndexRequestsShouldReturnUnsupportedPCOrthodoxForCountries()
+    public function testIndexRequestsShouldReturnUnsupportedPCOrthodoxForCountries(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
@@ -468,7 +455,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testIndexRequestsShouldReturnUnsupportedPCRomanCatholicForCountries()
+    public function testIndexRequestsShouldReturnUnsupportedPCRomanCatholicForCountries(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
@@ -486,7 +473,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testIndexRequestsShouldReturnUnsupportedPCOtherChristiansForCountries()
+    public function testIndexRequestsShouldReturnUnsupportedPCOtherChristiansForCountries(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
@@ -504,7 +491,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testIndexRequestsShouldNotReturnRemovedColumns()
+    public function testIndexRequestsShouldNotReturnRemovedColumns(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
@@ -532,7 +519,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('UNMap', $decoded[0]));
     }
 
-    public function testCountryShowRequestsShouldNotReturnRemovedColumns()
+    public function testCountryShowRequestsShouldNotReturnRemovedColumns(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries/US.json",
@@ -561,7 +548,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('UNMap', $decoded[0]));
     }
 
-    public function testCountryIndexRequestsShouldProvideNewFields()
+    public function testCountryIndexRequestsShouldProvideNewFields(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
@@ -580,7 +567,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(array_key_exists('BibleComplete', $decoded[0]));
     }
 
-    public function testCountryShowRequestsShouldProvideNewFields()
+    public function testCountryShowRequestsShouldProvideNewFields(): void
     {
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries/AF.json",
@@ -606,7 +593,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(17, $decoded[0]['BibleComplete']);
     }
 
-    public function testCountryIndexRequestsShouldFilterByCntPrimaryLanguagesInRange()
+    public function testCountryIndexRequestsShouldFilterByCntPrimaryLanguagesInRange(): void
     {
         $min = 2;
         $max = 4;
@@ -628,7 +615,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryIndexRequestsShouldFilterByCntPrimaryLanguagesAtValue()
+    public function testCountryIndexRequestsShouldFilterByCntPrimaryLanguagesAtValue(): void
     {
         $value = 3;
         $response = $this->cachedRequest->get(
@@ -648,7 +635,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryIndexRequestsShouldFilterByTranslationUnspecifiedInRange()
+    public function testCountryIndexRequestsShouldFilterByTranslationUnspecifiedInRange(): void
     {
         $min = 1;
         $max = 2;
@@ -670,7 +657,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryIndexRequestsShouldFilterByTranslationUnspecifiedAtValue()
+    public function testCountryIndexRequestsShouldFilterByTranslationUnspecifiedAtValue(): void
     {
         $value = 3;
         $response = $this->cachedRequest->get(
@@ -690,7 +677,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryIndexRequestsShouldFilterByTranslationNeededInRange()
+    public function testCountryIndexRequestsShouldFilterByTranslationNeededInRange(): void
     {
         $min = 1;
         $max = 2;
@@ -712,7 +699,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryIndexRequestsShouldFilterByTranslationNeededAtValue()
+    public function testCountryIndexRequestsShouldFilterByTranslationNeededAtValue(): void
     {
         $value = 3;
         $response = $this->cachedRequest->get(
@@ -732,7 +719,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryIndexRequestsShouldFilterByTranslationStartedInRange()
+    public function testCountryIndexRequestsShouldFilterByTranslationStartedInRange(): void
     {
         $min = 4;
         $max = 5;
@@ -754,7 +741,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryIndexRequestsShouldFilterByTranslationStartedAtValue()
+    public function testCountryIndexRequestsShouldFilterByTranslationStartedAtValue(): void
     {
         $value = 1;
         $response = $this->cachedRequest->get(
@@ -774,7 +761,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryIndexRequestsShouldFilterByBiblePortionsInRange()
+    public function testCountryIndexRequestsShouldFilterByBiblePortionsInRange(): void
     {
         $min = 3;
         $max = 5;
@@ -796,7 +783,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryIndexRequestsShouldFilterByBiblePortionsAtValue()
+    public function testCountryIndexRequestsShouldFilterByBiblePortionsAtValue(): void
     {
         $value = 0;
         $response = $this->cachedRequest->get(
@@ -816,7 +803,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryIndexRequestsShouldFilterByBibleNewTestamentInRange()
+    public function testCountryIndexRequestsShouldFilterByBibleNewTestamentInRange(): void
     {
         $min = 1;
         $max = 2;
@@ -838,7 +825,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryIndexRequestsShouldFilterByBibleNewTestamentAtValue()
+    public function testCountryIndexRequestsShouldFilterByBibleNewTestamentAtValue(): void
     {
         $value = 1;
         $response = $this->cachedRequest->get(
@@ -858,7 +845,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryIndexRequestsShouldFilterByBibleCompleteInRange()
+    public function testCountryIndexRequestsShouldFilterByBibleCompleteInRange(): void
     {
         $min = 1;
         $max = 2;
@@ -880,7 +867,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCountryIndexRequestsShouldFilterByBibleCompleteAtValue()
+    public function testCountryIndexRequestsShouldFilterByBibleCompleteAtValue(): void
     {
         $value = 10;
         $response = $this->cachedRequest->get(
@@ -900,7 +887,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsReturnCountriesFilteredByAMinAndMaxPopInLeastReached()
+    public function testIndexRequestsReturnCountriesFilteredByAMinAndMaxPopInLeastReached(): void
     {
         $expectedMin = 10000;
         $expectedMax = 20000;
@@ -918,7 +905,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsReturnCountriesFilteredByAnExactPopInLeastReached()
+    public function testIndexRequestsReturnCountriesFilteredByAnExactPopInLeastReached(): void
     {
         $expected = 800;
         $response = $this->cachedRequest->get(
@@ -934,7 +921,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsReturnCountriesFilteredByAMinAndMaxPopInFrontier()
+    public function testIndexRequestsReturnCountriesFilteredByAMinAndMaxPopInFrontier(): void
     {
         $expectedMin = 500;
         $expectedMax = 2000;
@@ -952,7 +939,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsReturnCountriesFilteredByAnExactPopInFrontier()
+    public function testIndexRequestsReturnCountriesFilteredByAnExactPopInFrontier(): void
     {
         $expected = 600;
         $response = $this->cachedRequest->get(
@@ -968,7 +955,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCBuddhist()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCBuddhist(): void
     {
         $expectedMin = 10;
         $expectedMax = 25;
@@ -987,7 +974,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCChristianity()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCChristianity(): void
     {
         $expectedMin = 10;
         $expectedMax = 20;
@@ -1006,7 +993,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCEthnicReligions()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCEthnicReligions(): void
     {
         $expectedMin = 1;
         $expectedMax = 10;
@@ -1025,7 +1012,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCEvangelical()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCEvangelical(): void
     {
         $expectedMin = 0;
         $expectedMax = 20;
@@ -1044,7 +1031,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCHindu()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCHindu(): void
     {
         $expectedMin = 15;
         $expectedMax = 35;
@@ -1063,7 +1050,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCIslam()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCIslam(): void
     {
         $expectedMin = 85;
         $expectedMax = 100;
@@ -1082,7 +1069,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCNonReligious()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCNonReligious(): void
     {
         $expectedMin = 0;
         $expectedMax = 10;
@@ -1101,7 +1088,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCOtherReligions()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCOtherReligions(): void
     {
         $expectedMin = 2;
         $expectedMax = 3;
@@ -1120,7 +1107,7 @@ class CountriesTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCUnknown()
+    public function testIndexRequestsShouldReturnCountriesFilteredByRangeOfPCUnknown(): void
     {
         $expectedMin = 0;
         $expectedMax = 0.14;

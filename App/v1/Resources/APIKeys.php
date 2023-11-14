@@ -71,7 +71,9 @@ $app->put(
         $body = $request->getParsedBody();
         $state = $body['state'];
         if (!$state) {
-            return $response->withHeader('Location', "/api_keys?saving_error=true");
+            return $response
+            ->withHeader('Location', "/api_keys?saving_error=true")
+            ->withStatus(302);
         }
         $query = "UPDATE md_api_keys SET status = :state WHERE id = :id";
         try {
@@ -112,7 +114,9 @@ $app->post(
         $invalidFields = validatePresenceOf(["name", "email", "usage"], $formData);
         $redirectURL = generateRedirectURL("/", $formData, $invalidFields);
         if (!empty($invalidFields)) {
-            return $response->withHeader('Location', $redirectURL);
+            return $response
+                ->withHeader('Location', $redirectURL)
+                ->withStatus(302);
         }
         $newAPIKey = generateRandomKey(12);
         $authorizeToken = generateRandomKey(12);
