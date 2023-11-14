@@ -34,17 +34,15 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 $app->get(
     "/",
     function (Request $request, Response $response): Response {
-        $view = $this->get('view');
-        $viewDirectory = $view->getTemplatePath();
         $data = $request->getQueryParams();
         $errors = array();
         if ((isset($data['required_fields'])) && ($data['required_fields'] !="")) {
             $errors = explode("|", $data['required_fields']);
         }
-        return $view->render(
+        return $this->get('view')->render(
             $response,
             'StaticPages/home.html.php',
-            array('data' => $data, 'errors' => $errors, 'viewDirectory' => $viewDirectory)
+            array('data' => $data, 'errors' => $errors)
         );
     }
 );
@@ -59,13 +57,10 @@ $app->get(
 $app->get(
     "/getting_started",
     function (Request $request, Response $response): Response {
-        $siteURL = getSiteURL();
-        $view = $this->get('view');
-        $viewDirectory = $view->getTemplatePath();
-        return $view->render(
+        return $this->get('view')->render(
             $response,
             'StaticPages/getting_started.html.php',
-            array('siteURL' => $siteURL, 'viewDirectory' => $viewDirectory)
+            ['siteURL' => getSiteURL()]
         );
     }
 );
@@ -79,8 +74,6 @@ $app->get(
 $app->get(
     "/get_my_api_key",
     function (Request $request, Response $response): Response {
-        $view = $this->get('view');
-        $viewDirectory = $view->getTemplatePath();
         $APIKey = "";
         $message = "";
         $error = "";
@@ -89,7 +82,11 @@ $app->get(
             $error = "Unable to locate your API key.";
         } else {
             try {
-                $statement = $this->get('db')->prepare("SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token LIMIT 1");
+                $statement = $this
+                    ->get('db')
+                    ->prepare(
+                        "SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token LIMIT 1"
+                    );
                 $statement->execute(array('authorize_token' => $params['authorize_token']));
                 $data = $statement->fetch(PDO::FETCH_ASSOC);
             } catch (Exception $e) {
@@ -123,10 +120,14 @@ $app->get(
             }
         }
 
-        return $view->render(
+        return $this->get('view')->render(
             $response,
             'StaticPages/get_my_api_key.html.php',
-            array('message' => $message, 'error' => $error, 'APIKey' => $APIKey, 'viewDirectory' => $viewDirectory)
+            [
+                'message' => $message,
+                'error' => $error,
+                'APIKey' => $APIKey
+            ]
         );
     }
 );
@@ -140,12 +141,10 @@ $app->get(
 $app->get(
     "/resend_activation_links",
     function (Request $request, Response $response): Response {
-        $view = $this->get('view');
-        $viewDirectory = $view->getTemplatePath();
-        return $view->render(
+        return $this->get('view')->render(
             $response,
             'StaticPages/resend_activation_links.html.php',
-            array('viewDirectory' => $viewDirectory)
+            []
         );
     }
 );
@@ -159,10 +158,8 @@ $app->get(
 $app->post(
     "/resend_activation_links",
     function (Request $request, Response $response): Response {
-        $view = $this->get('view');
-        $viewDirectory = $view->getTemplatePath();
         $siteURL = getSiteURL();
-        $errors = array();
+        $errors = [];
         $message = '';
         $formData = $request->getParsedBody();
         $invalidFields = validatePresenceOf(array("email"), $formData);
@@ -183,10 +180,14 @@ $app->post(
         } else {
             $errors['invalid'] = $invalidFields;
         }
-        return $view->render(
+        return $this->get('view')->render(
             $response,
             'StaticPages/resend_activation_links.html.php',
-            array('errors' => $errors, 'data' => $formData, 'message' => $message, 'viewDirectory' => $viewDirectory)
+            [
+                'errors' => $errors,
+                'data' => $formData,
+                'message' => $message
+            ]
         );
     }
 );

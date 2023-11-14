@@ -34,7 +34,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 $app->get(
     "/api_keys",
     function (Request $request, Response $response, $args = []): Response {
-        $viewDirectory = $this->get('view')->getTemplatePath();
         $data = $request->getQueryParams();
         $query = "SELECT * FROM md_api_keys ORDER BY created DESC";
         try {
@@ -50,8 +49,7 @@ $app->get(
             'APIKeys/index.html.php',
             [
                 'api_keys' => $api_keys,
-                'data' => $data,
-                'viewDirectory' => $viewDirectory
+                'data' => $data
             ]
         );
     }

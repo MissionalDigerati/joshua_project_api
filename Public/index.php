@@ -82,7 +82,7 @@ if (empty($matches)) {
  * @author Johnathan Pulos
  */
 $APP_FILES_DIRECTORY = $ROOT_DIRECTORY . $DS . "App" . $DS . $API_VERSION;
-$VIEW_DIRECTORY = $APP_FILES_DIRECTORY . $DS . "Views";
+$VIEW_DIRECTORY = $APP_FILES_DIRECTORY . $DS . "Views" . $DS;
 
 $containerBuilder = new ContainerBuilder();
 $settings = require_once($ROOT_DIRECTORY . $DS . "Bootstrap" . $DS . "Settings.php");

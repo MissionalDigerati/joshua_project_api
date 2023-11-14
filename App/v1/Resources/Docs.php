@@ -34,12 +34,10 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 $app->get(
     "/{version}/docs/sample_code",
     function (Request $request, Response $response): Response {
-        $view = $this->get('view');
-        $viewDirectory = $view->getTemplatePath();
-        return $view->render(
+        return $this->get('view')->render(
             $response,
             'Docs/sample_code.html.php',
-            array('viewDirectory' => $viewDirectory)
+            []
         );
     }
 );
@@ -54,12 +52,10 @@ $app->get(
 $app->get(
     "/{version}/docs/available_api_requests",
     function (Request $request, Response $response): Response {
-        $view = $this->get('view');
-        $viewDirectory = $view->getTemplatePath();
-        return $view->render(
+        return $this->get('view')->render(
             $response,
             'Docs/available_api_requests.html.php',
-            array('viewDirectory' => $viewDirectory)
+            []
         );
     }
 );
@@ -74,7 +70,6 @@ $app->get(
 $app->get(
     "/{version}/docs/column_descriptions/{type}",
     function (Request $request, Response $response): Response {
-        $view = $this->get('view');
         $resourceType = $request->getAttribute('type');
         $allowed = [
             'continents', 'countries', 'languages', 'people_groups', 'regions'
@@ -84,11 +79,10 @@ $app->get(
                 ->withHeader('Content-Type', 'text/html')
                 ->write('Page not found');
         }
-        $viewDirectory = $view->getTemplatePath();
-        return $view->render(
+        return $this->get('view')->render(
             $response,
             'Docs/ColumnDescriptions/' . $resourceType . '.html.php',
-            array('viewDirectory' => $viewDirectory)
+            []
         );
     }
 );

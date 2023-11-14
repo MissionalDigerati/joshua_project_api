@@ -30,7 +30,7 @@ use Utilities\APIErrorResponder;
  /**
   * Add the dependencies to the container
   */
-return function(ContainerBuilder $containerBuilder, string $viewsDirectory) {
+return function(ContainerBuilder $containerBuilder, string $viewDirectory) {
     $containerBuilder->addDefinitions([
         'db'    =>  function(ContainerInterface $interface) {
             $dbSettings = new \stdClass();
@@ -57,8 +57,11 @@ return function(ContainerBuilder $containerBuilder, string $viewsDirectory) {
                 $useSMTP
             );
         },
-        'view'  =>  function(ContainerInterface $interface) use ($viewsDirectory) {
-            return new PhpRenderer($viewsDirectory);
+        'view'  =>  function(ContainerInterface $interface) use ($viewDirectory) {
+            return new PhpRenderer(
+                $viewDirectory,
+                ['viewDirectory' => $viewDirectory]
+            );
         }
     ]);
 };
