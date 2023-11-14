@@ -85,39 +85,39 @@ $app->get(
         $message = "";
         $error = "";
         $params = $request->getQueryParams();
-        if ((!in_array('authorization_token', $params)) || ($params['authorize_token'] == '')) {
+        if ((!array_key_exists('authorize_token', $params)) || ($params['authorize_token'] === '')) {
             $error = "Unable to locate your API key.";
         } else {
             try {
-                $statement = $this->db->prepare("SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token");
+                $statement = $this->get('db')->prepare("SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token LIMIT 1");
                 $statement->execute(array('authorize_token' => $params['authorize_token']));
-                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $data = $statement->fetch(PDO::FETCH_ASSOC);
             } catch (Exception $e) {
                 $error = "Unable to locate your API key.";
             }
         }
         if ($error == '') {
             try {
-                switch ($data[0]['status']) {
+                switch ($data['status']) {
                     case 0:
                         $status = 1;
                         $message = "Your API Key has been activated.";
-                        $APIKey = $data[0]['api_key'];
+                        $APIKey = $data['api_key'];
                         break;
                     case 1:
                         $status = 1;
                         $message = "Your API Key was already activated.";
-                        $APIKey = $data[0]['api_key'];
+                        $APIKey = $data['api_key'];
                         break;
                     case 2:
                         $status = 2;
                         $error = "Your API Key was suspended!";
                         break;
                 }
-                $statement = $this->db->prepare(
+                $statement = $this->get('db')->prepare(
                     "UPDATE `md_api_keys` SET status = :status WHERE id = :id"
                 );
-                $statement->execute(array('id' => $data[0]['id'], 'status' => $status));
+                $statement->execute(array('id' => $data['id'], 'status' => $status));
             } catch (Exception $e) {
                 $error = "Unable to update your API Key.";
             }
