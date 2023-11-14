@@ -81,7 +81,7 @@ class CachingMiddleware implements MiddlewareInterface
                 $this->cache = new \Memcached();
                 $this->cache->addServer(
                     $this->options['host'],
-                    $this->options['port']
+                    intval($this->options['port'])
                 );
                 $this->isCaching = true;
             } catch (\Exception $e) {
