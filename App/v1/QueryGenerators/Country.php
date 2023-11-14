@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 /**
  * This file is part of Joshua Project API.
@@ -22,6 +21,9 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace QueryGenerators;
 
 /**
@@ -99,7 +101,7 @@ class Country extends QueryGenerator
      * @access  public
      * @author  Johnathan Pulos
      */
-    public function __construct($getParams)
+    public function __construct(array $getParams)
     {
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) .
@@ -121,7 +123,7 @@ class Country extends QueryGenerator
      * @access  public
      * @author  Johnathan Pulos
      */
-    public function findById()
+    public function findById(): void
     {
         $this->validator->providedRequiredParams($this->providedParams, ['id']);
         $id = strtoupper($this->providedParams['id']);
@@ -140,7 +142,7 @@ class Country extends QueryGenerator
      * @throws  \InvalidArgumentException When you set a filter, but fail to provide a valid parameter
      * @author  Johnathan Pulos
      **/
-    public function findAllWithFilters()
+    public function findAllWithFilters(): void
     {
         $where = "";
         $appendAndOnWhere = false;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,6 +21,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace Utilities;
 
 /**
@@ -46,7 +50,7 @@ class Validator
      * @access public
      * @author Johnathan Pulos
      **/
-    public function providedRequiredParams($providedParams, $requiredKeys)
+    public function providedRequiredParams(array $providedParams, array $requiredKeys): void
     {
         foreach ($requiredKeys as $key) {
             if (array_key_exists($key, $providedParams) === false) {
@@ -71,8 +75,10 @@ class Validator
      * @access  public
      * @author  Johnathan Pulos
      **/
-    public function barSeperatedStringProvidesAcceptableValues($barSeperatedString, $acceptableValues)
-    {
+    public function barSeperatedStringProvidesAcceptableValues(
+        string $barSeperatedString,
+        array $acceptableValues
+    ): void {
         $barSeperatedValues = explode('|', $barSeperatedString);
         foreach ($barSeperatedValues as $barValue) {
             if (in_array(strtolower($barValue), $acceptableValues) === false) {
@@ -87,13 +93,13 @@ class Validator
      *  each item in $barSeperatedString, and checks if each key is a set $length.  If not then it will throw an error.
      *
      * @param   string  $barSeperatedString     The bar seperated string to test.
-     * @param   integer $length                 The length that you want each key to be.
+     * @param   int     $length                 The length that you want each key to be.
      * @return  void
      * @throws  \InvalidArgumentException   If the key is not equal to $length.
      * @access public
      * @author Johnathan Pulos
      **/
-    public function stringLengthValuesBarSeperatedString($barSeperatedString, $length)
+    public function stringLengthValuesBarSeperatedString(string $barSeperatedString, int $length): void
     {
         $barSeperatedValues = explode('|', $barSeperatedString);
         foreach ($barSeperatedValues as $barValue) {
@@ -104,13 +110,13 @@ class Validator
      * Validates a string is a given length.
      *
      * @param   string  $str    The string to test.
-     * @param   integer $length The required length of the string.
+     * @param   int     $length The required length of the string.
      * @return  void
      * @throws  \InvalidArgumentException if the length is not equal.
      * @access  public
      * @author  Johnathan Pulos
      **/
-    public function stringLength($str, $length)
+    public function stringLength(string $str, int $length): void
     {
         if (strlen($str) != $length) {
             throw new \InvalidArgumentException("One of your parameters are not the correct length.");
@@ -122,9 +128,9 @@ class Validator
      * Validates the integer is within the given range. [$start - $end].  You can supply an array of integers to exclude
      * from the comparison.  If the integer is in the $exceptions or out of range, it will throw an error.
      *
-     * @param   integer     $int        The integer to check.
-     * @param   integer     $start      The starting integer for the range.
-     * @param   integer     $end        The ending integer for the range.
+     * @param   int         $int        The integer to check.
+     * @param   int         $start      The starting integer for the range.
+     * @param   int         $end        The ending integer for the range.
      * @param   array       $exceptions An array of integers in the range that should not be accepted.
      * @return  void
      * @throws  \InvalidArgumentException if the integer is not in range.
@@ -132,7 +138,7 @@ class Validator
      * @access public
      * @author Johnathan Pulos
      **/
-    public function integerInRange($int, $start, $end, $exceptions = array())
+    public function integerInRange(int $int, int $start, int $end, $exceptions = []): void
     {
         if ((($int >= $start) && ($int <= $end)) == false) {
             throw new \InvalidArgumentException("One of the provided integers are out of range.");

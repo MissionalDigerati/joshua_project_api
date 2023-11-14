@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<ruleset name="JP API Coding Standard">
+    <description>JP API Coding Standard</description>
+
+    <!-- display progress -->
+    <arg value="p"/>
+    <!-- use colors in output -->
+    <arg name="colors"/>
+
+    <!-- inherit rules from: -->
+    <rule ref="PSR12"/>
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
+    <!-- Paths to check -->
+    <file>Public/index.php</file>
+    <file>App/</file>
+    <exclude-pattern type="relative">*/Views/*</exclude-pattern>
+</ruleset>

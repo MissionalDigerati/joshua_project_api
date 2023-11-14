@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 /**
  * This file is part of Joshua Project API.
@@ -22,6 +21,9 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace QueryGenerators;
 
 /**
@@ -74,7 +76,7 @@ class ProfileText extends QueryGenerator
      * @access  public
      * @author  Johnathan Pulos
      */
-    public function __construct($getParams)
+    public function __construct(array $getParams)
     {
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
@@ -94,7 +96,7 @@ class ProfileText extends QueryGenerator
      * @throws  \InvalidArgumentException   If the 'country' key is not set on the $providedParams class variable.
      * @author  Johnathan Pulos
      */
-    public function findAllByIdAndCountry()
+    public function findAllByIdAndCountry(): void
     {
         $this->validator->providedRequiredParams($this->providedParams, ['id', 'country']);
         $id = intval($this->providedParams['id']);

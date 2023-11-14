@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 /**
  * This file is part of Joshua Project API.
@@ -22,6 +21,9 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace QueryGenerators;
 
 /**
@@ -121,7 +123,7 @@ class Unreached extends PeopleGroup
      * @access  public
      * @author  Johnathan Pulos
      */
-    public function __construct($getParams)
+    public function __construct(array $getParams)
     {
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " .
@@ -174,7 +176,7 @@ class Unreached extends PeopleGroup
      * @throws  \InvalidArgumentException   If the 'day' key is not set or it is not between 1-31.
      * @author  Johnathan Pulos
      */
-    public function daily()
+    public function daily(): void
     {
         $this->validator->providedRequiredParams($this->providedParams, ['month', 'day']);
         $set = 1;

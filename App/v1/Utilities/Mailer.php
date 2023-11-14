@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -20,6 +21,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace Utilities;
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -55,13 +59,13 @@ class Mailer
         $port = 465,
         $useSMTP = false
     ) {
-        $settings = array(
+        $settings = [
             'host'      =>  $host,
             'username'  =>  $username,
             'password'  =>  $password,
             'port'      =>  $port,
             'use_smtp'  =>  $useSMTP
-        );
+        ];
         $this->mailer = $this->getMailInstance($settings);
     }
 
@@ -75,10 +79,10 @@ class Mailer
      * @return  void
      * @author  Johnathan Pulos
      */
-    public function sendAuthorizeToken($email, $authorizeUrl)
+    public function sendAuthorizeToken(string $email, string $authorizeUrl)
     {
         $this->mailer->Subject = 'Joshua Project API Key';
-        $this->mailer->setFrom('info@joshuaproject.net', 'Joshua Project', 0);
+        $this->mailer->setFrom('info@joshuaproject.net', 'Joshua Project', false);
         $this->mailer->addAddress($email);
         $emailMessage = "Dear Developer,<br>Thank you for your request for a Joshua Project API Key.";
         $emailMessage .= "Please click the following link to retrieve your key:<br><br>";
@@ -100,10 +104,10 @@ class Mailer
      * @return  void
      * @author  Johnathan Pulos
      */
-    public function sendAuthorizationLinks($email, $apiKeys, $domain)
+    public function sendAuthorizationLinks(string $email, array $apiKeys, string $domain): void
     {
         $this->mailer->Subject = 'Joshua Project API Key';
-        $this->mailer->setFrom('info@joshuaproject.net', 'Joshua Project', 0);
+        $this->mailer->setFrom('info@joshuaproject.net', 'Joshua Project', false);
         $this->mailer->addAddress($email);
         $emailMessage = "Dear Developer,<br>";
         $emailMessage .= "You have requested your authorization tokens that have not been activated. ";
@@ -121,9 +125,11 @@ class Mailer
     /**
      * Get the instance of the mailer to send.
      *
+     * @param array $settings   PHPMailer settings
+     *
      * @return PHPMailer    The PHPMailer instance
      */
-    private function getMailInstance($settings)
+    private function getMailInstance(array $settings): PHPMailer
     {
         $mail = new PHPMailer(true);
         $mail->isHTML(true);

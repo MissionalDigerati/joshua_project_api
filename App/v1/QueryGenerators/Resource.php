@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 /**
  * This file is part of Joshua Project API.
@@ -22,6 +21,9 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace QueryGenerators;
 
 /**
@@ -85,7 +87,7 @@ class Resource extends QueryGenerator
      * @access  public
      * @author  Johnathan Pulos
      */
-    public function __construct($getParams)
+    public function __construct(array $getParams)
     {
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
@@ -102,7 +104,7 @@ class Resource extends QueryGenerator
      * @throws  \InvalidArgumentException If the 'id' key is not set on the $providedParams class variable.
      * @author  Johnathan Pulos
      */
-    public function findAllByLanguageId()
+    public function findAllByLanguageId(): void
     {
         $this->validator->providedRequiredParams($this->providedParams, ['id']);
         $id = strtolower($this->providedParams['id']);

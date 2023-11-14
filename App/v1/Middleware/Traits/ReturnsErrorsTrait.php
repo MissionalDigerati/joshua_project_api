@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 /**
  * This file is part of Joshua Project API.
@@ -22,6 +21,9 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
+declare(strict_types=1);
+
 namespace Middleware\Traits;
 
 use Psr\Http\Message\ResponseInterface;
