@@ -21,8 +21,8 @@
  *
  */
 use QueryGenerators\Country;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Swagger\Annotations as SWG;
 
 // phpcs:disable Generic.Files.LineLength
@@ -89,7 +89,7 @@ use Swagger\Annotations as SWG;
 // phpcs:enable Generic.Files.LineLength
 $app->get(
     "/{version}/countries/{id}.{format}",
-    function (Request $req, Response $res, $args = []) {
+    function (Request $request, Response $response, $args = []): Response {
         /**
          * Make sure we have an ID, else crash
          * This expression ("/\PL/u") removes all non-letter characters
@@ -98,36 +98,36 @@ $app->get(
          */
         $countryId = preg_replace("/\PL/u", "", strip_tags(strtoupper($args['id'])));
         if (empty($countryId)) {
-            return $this->errorResponder->get(
+            return $this->get('errorResponder')->get(
                 400,
                 'You provided an invalid country id.',
                 $args['format'],
                 'Bad Request',
-                $res
+                $response
             );
         }
         try {
-            $country = new Country(array('id' => $countryId));
+            $country = new Country(['id' => $countryId]);
             $country->findById();
-            $statement = $this->db->prepare($country->preparedStatement);
+            $statement = $this->get('db')->prepare($country->preparedStatement);
             $statement->execute($country->preparedVariables);
             $data = $statement->fetchAll(PDO::FETCH_ASSOC);
             if (empty($data)) {
-                return $this->errorResponder->get(
+                return $this->get('errorResponder')->get(
                     404,
                     'The country does not exist for the given id.',
                     $args['format'],
                     'Not Found',
-                    $res
+                    $response
                 );
             }
         } catch (Exception $e) {
-            return $this->errorResponder->get(
+            return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),
                 $args['format'],
                 'Internal Server Error',
-                $res
+                $response
             );
         }
         /**
@@ -136,9 +136,11 @@ $app->get(
          * @author Johnathan Pulos
          */
         if ($args['format'] === 'json') {
-            return $res->withJson($data);
+            return $response
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($data));
         } else {
-            return $res
+            return $response
                 ->withHeader('Content-type', 'text/xml')
                 ->write(arrayToXML($data, "countries", "country"));
         }
@@ -417,37 +419,37 @@ $app->get(
 // phpcs:enable Generic.Files.LineLength
 $app->get(
     "/{version}/countries.{format}",
-    function (Request $req, Response $res, $args = []) {
-        $noLongerSupportedParams = array(
+    function (Request $request, Response $response, $args = []): Response {
+        $noLongerSupportedParams = [
             'pc_anglican', 'pc_independent', 'pc_protestant', 'pc_orthodox', 'pc_rcatholic',
             'pc_other_christian'
-        );
-        $params = $req->getQueryParams();
+        ];
+        $params = $request->getQueryParams();
         $requestKeys = array_keys($params);
         $check = array_intersect($requestKeys, $noLongerSupportedParams);
         if (!empty($check)) {
             $unsupported = join(', ', $check);
-            return $this->errorResponder->get(
+            return $this->get('errorResponder')->get(
                 400,
                 'Sorry, these parameters are no longer supported: ' . $unsupported,
                 $args['format'],
                 'Bad Request',
-                $res
+                $response
             );
         }
         try {
             $country = new Country($params);
             $country->findAllWithFilters();
-            $statement = $this->db->prepare($country->preparedStatement);
+            $statement = $this->get('db')->prepare($country->preparedStatement);
             $statement->execute($country->preparedVariables);
             $data = $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            return $this->errorResponder->get(
+            return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),
                 $args['format'],
                 'Internal Server Error',
-                $res
+                $response
             );
         }
         /**
@@ -456,9 +458,11 @@ $app->get(
          * @author Johnathan Pulos
          */
         if ($args['format'] === 'json') {
-            return $res->withJson($data);
+            return $response
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($data));
         } else {
-            return $res
+            return $response
                 ->withHeader('Content-type', 'text/xml')
                 ->write(arrayToXML($data, "countries", "country"));
         }
