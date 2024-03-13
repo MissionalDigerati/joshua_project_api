@@ -82,3 +82,9 @@ ul.sidenav .nav > .active > a, ul.sidenav .nav > .active:hover > a, ul.sidenav .
 pre span.code_highlight {
 	color: #428bca;
 }
+
+@media (min-width: 768px) {
+	.form-horizontal .control-label {
+		text-align: left !important;
+	}
+}

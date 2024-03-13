@@ -198,88 +198,78 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
 ?>
                             </div>
                         </div>
+
                         <div class="form-group">
-                            <label class="control-label col-lg-4" for="input-name">Organization</label>
-                            <div class="controls col-lg-8">
-<?php
-if ((isset($data['organization'])) && ($data['organization'] != "")) {
-    ?>
-    <input type="text" name="organization" id="input-organization"  value="<?php echo $data['organization']; ?>"
-    class="form-control">
-    <?php
-} else {
-    ?>
-        <input type="text" name="organization" id="input-organization" placeholder="Organization" class="form-control">
-    <?php
-}
-?>
+                            <label class="control-label col-lg-12 text-left" for="data-usage">
+                                Anticipated use of data (check all that apply)<span class="required-field">*</span>
+                            </label>
+                            <div class="col-md-offset-2 col-lg-12">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="usage[]" data-tag="personal" value="Personal interest"> Personal interest
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="usage[]" data-tag="presentation" value="Presentation or to share with others"> Presentation or to share with others
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="usage[]" data-tag="research" value="Research"> Research
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="usage[]" data-tag="internal" value="Organization internal use"> Organization internal use
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="usage[]" data-tag="website" value="For a website"> For a website
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="usage[]" data-tag="app" value="For a mobile app"> For a mobile app
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="usage[]" data-tag="other" value="Other"> Other
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-lg-4" for="input-name">Website</label>
+
+                        <div class="form-group hidden" id="form-website-url">
+                            <label class="control-label col-lg-4" for="input-website-url">Website URL <small>(If Published)</small></label>
                             <div class="controls col-lg-8">
-<?php
-if ((isset($data['website'])) && ($data['website'] != "")) {
-    ?>
-    <input type="text" name="website" id="input-website"  value="<?php echo $data['website']; ?>" class="form-control">
-    <?php
-} else {
-    ?>
-                    <input type="text" name="website" id="input-website" placeholder="Website" class="form-control">
-    <?php
-}
-?>
+                                <input type="text" name="website-url" id="input-website-url" placeholder="Website URL" class="form-control">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-lg-4" for="input-name">Phone Number</label>
+
+                        <div class="form-group hidden" id="apple-store-url">
+                            <label class="control-label col-lg-4" for="input-apple-store-url">Apple App Store URL <small>(If Published)</small></label>
                             <div class="controls col-lg-8">
-<?php
-if ((isset($data['phone_number'])) && ($data['phone_number'] != "")) {
-    ?>
-    <input type="text" name="phone_number" id="input-phone_number"  value="<?php echo $data['phone_number']; ?>"
-    class="form-control">
-    <?php
-} else {
-    ?>
-        <input type="text" name="phone_number" id="input-phone_number" placeholder="Phone Number" class="form-control">
-    <?php
-}
-?>
+                                <input type="text" name="apple-store-url" id="input-apple-store-url" placeholder="Apple App Store URL" class="form-control">
                             </div>
                         </div>
-<?php
-if ((!empty($errors)) && (in_array('usage', $errors))) {
-    ?>
-                        <div class="form-group has-error">
-    <?php
-} else {
-    ?>
-                        <div class="form-group">
-    <?php
-}
-?>
-                            <label class="control-label col-lg-4" for="input-usage">How Will You Use the API?
-                                <span class="required-field">*</span></label>
+
+                        <div class="form-group hidden" id="google-store-url">
+                            <label class="control-label col-lg-4" for="input-google-store-url">Google Play Store URL <small>(If Published)</small></label>
                             <div class="controls col-lg-8">
-<?php
-if ((isset($data['usage'])) && ($data['usage'] != "")) {
-    ?>
-        <textarea rows="6" id="input-usage" name="usage" class="form-control"><?php echo $data['usage']; ?></textarea>
-    <?php
-} else {
-    ?>
-            <textarea rows="6" id="input-usage" name="usage" class="form-control"></textarea>
-    <?php
-}
-if ((!empty($errors)) && (in_array('usage', $errors))) {
-    ?>
-                                <span class="help-block">Usage is Required!</span>
-    <?php
-}
-?>
+                                <input type="text" name="google-store-url" id="input-google-store-url" placeholder="Google Play Store URL" class="form-control">
                             </div>
                         </div>
+
+                        <div class="form-group hidden" id="other-purpose">
+                            <label class="control-label col-lg-4" for="input-other-purpose">Other Use  <small>(Please explain)</small><span class="required-field">*</span></label>
+                            <div class="controls col-lg-8">
+                                <input type="text" name="other-purpose" id="input-other-purpose" placeholder="Other Use" class="form-control">
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="controls col-lg-12">
                                 <button type="submit" class="btn btn-primary btn-block">Send request</button><br>
@@ -305,6 +295,7 @@ if ((!empty($errors)) && (in_array('usage', $errors))) {
                     $('div.beginner_panel div.panel-body').height('auto');
                 });
                 $('li.home-nav').addClass('active');
+                handleForm();
             });
             function equalHeight(group) {
                 var tallest = 0;
@@ -315,6 +306,31 @@ if ((!empty($errors)) && (in_array('usage', $errors))) {
                     }
                 });
                 group.height(tallest);
+            };
+            function handleForm() {
+                $('input[data-tag="website"]').click(function() {
+                    if ($(this).is(':checked')) {
+                        $('#form-website-url').removeClass('hidden');
+                    } else {
+                        $('#form-website-url').addClass('hidden');
+                    }
+                });
+                $('input[data-tag="app"]').click(function() {
+                    if ($(this).is(':checked')) {
+                        $('#apple-store-url').removeClass('hidden');
+                        $('#google-store-url').removeClass('hidden');
+                    } else {
+                        $('#apple-store-url').addClass('hidden');
+                        $('#google-store-url').addClass('hidden');
+                    }
+                });
+                $('input[data-tag="other"]').click(function() {
+                    if ($(this).is(':checked')) {
+                        $('#other-purpose').removeClass('hidden');
+                    } else {
+                        $('#other-purpose').addClass('hidden');
+                    }
+                });
             };
         </script>
     </body>
