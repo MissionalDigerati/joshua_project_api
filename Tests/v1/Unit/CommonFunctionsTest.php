@@ -128,6 +128,21 @@ class CommonFunctionsTest extends TestCase
     }
 
     /**
+     * Tests whether validatePresenceOf() returns a field missing in the form data
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testValidatePresenceShouldReturnAFieldMissingInFormData(): void {
+        $expected = array("usage");
+        $requiredFields = array("name", "email", "usage");
+        $formData = array("name" => "Bob", "email" => "bob@yahoo.com");
+        $actual = validatePresenceOf($requiredFields, $formData);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
      * Tests whether validatePresenceOf() returns only empty fields
      *
      * @return void
