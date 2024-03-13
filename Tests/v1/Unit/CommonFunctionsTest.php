@@ -142,6 +142,16 @@ class CommonFunctionsTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function testValidatePresenceShouldReturnnEmptyCheckboxArray(): void
+    {
+        $expected = array("usage");
+        $requiredFields = array("name", "email", "usage");
+        $formData = array("name" => "Bob", "email" => "bob@yahoo.com", "usage" => []);
+        $actual = validatePresenceOf($requiredFields, $formData);
+        $this->assertEquals($expected, $actual);
+    }
+
+
     /**
      * Tests whether validatePresenceOf() returns only empty fields
      *

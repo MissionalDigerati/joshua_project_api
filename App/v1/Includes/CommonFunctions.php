@@ -157,9 +157,13 @@ function validatePresenceOf($requiredFields, $formData)
             array_push($invalidFields, $field);
             continue;
         }
-        $fieldParam = strip_tags($formData[$field]);
-        if (!$fieldParam) {
+        $fieldParam = $formData[$field];
+        if (is_string($fieldParam)) {
+            $fieldParam = strip_tags($fieldParam);
+        }
+        if ((!$fieldParam) || (is_array($fieldParam) && (count($fieldParam) === 0))) {
             array_push($invalidFields, $field);
+            continue;
         }
     }
     return $invalidFields;
