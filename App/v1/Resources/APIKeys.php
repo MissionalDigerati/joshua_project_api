@@ -113,34 +113,43 @@ $app->post(
     "/api_keys/new",
     function (Request $request, Response $response, $args = []): Response {
         $formData = $request->getParsedBody();
-        $invalidFields = validatePresenceOf(["name", "email", "usage"], $formData);
-        $redirectURL = generateRedirectURL("/", $formData, $invalidFields);
-        if (!empty($invalidFields)) {
+        $required = ["name", "email", "usage"];
+        if (!array_key_exists('usage', $formData)) {
+            $formData['usage'] = [];
+        }
+        $formData["usage"] = array_map('strtolower', $formData["usage"]);
+        $invalid = validatePresenceOf($required, $formData);
+        /**
+         * Check required fields for provided usage
+         */
+        $websiteUrl = returnPresentIfKeyExistsOrDefault($formData, 'website_url', '');
+        if ((in_array('for a website', $formData['usage'])) && (!$websiteUrl)) {
+            $invalid[] = 'website_url';
+        }
+        $redirectURL = generateRedirectURL("/", $formData, $invalid);
+        if (!empty($invalid)) {
             return $response
                 ->withHeader('Location', $redirectURL)
                 ->withStatus(302);
         }
         $newAPIKey = generateRandomKey(12);
         $authorizeToken = generateRandomKey(12);
-        $phoneNumber = returnPresentIfKeyExistsOrDefault($formData, 'phone_number', '');
-        $organization = returnPresentIfKeyExistsOrDefault($formData, 'organization', '');
-        $website = returnPresentIfKeyExistsOrDefault($formData, 'website', '');
-        $cleanedPhoneNumber = preg_replace("/[^0-9]/", "", $phoneNumber);
+        // $phoneNumber = returnPresentIfKeyExistsOrDefault($formData, 'phone_number', '');
+        // $organization = returnPresentIfKeyExistsOrDefault($formData, 'organization', '');
+        $usage = join(",", $formData['usage']);
         $apiKeyValues = [
             'name' => $formData['name'],
             'email' => $formData['email'],
-            'organization' => $organization,
-            'website' => $website,
-            'phone_number' => $cleanedPhoneNumber,
-            'api_usage' => $formData['usage'],
+            'api_usage' => $usage,
             'resource_used' =>  'API',
             'api_key' => $newAPIKey,
             'authorize_token' => $authorizeToken,
-            'status' => 0
+            'status' => 0,
+            'website_url'=> $websiteUrl,
         ];
-        $query = "INSERT INTO md_api_keys (name, email, organization, website, phone_number, api_usage, api_key, " .
-        "authorize_token, resource_used, status, created) VALUES (:name, :email, :organization, :website, " .
-        ":phone_number, :api_usage, :api_key, :authorize_token, :resource_used, :status, NOW())";
+        $query = "INSERT INTO md_api_keys (name, email, api_usage, api_key, authorize_token, " .
+        "resource_used, status,website_url, created) VALUES (:name, :email, :api_usage, :api_key, :authorize_token, " .
+        ":resource_used, :status, :website_url, NOW())";
         try {
             $statement = $this->get('db')->prepare($query);
             $statement->execute($apiKeyValues);

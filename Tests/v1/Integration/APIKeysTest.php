@@ -94,6 +94,7 @@ class APIKeysTest extends TestCase
     public function tearDown(): void
     {
         $this->cachedRequest->clearCache();
+        $this->db->query("DELETE FROM `md_api_keys`");
     }
 
     /**
@@ -108,7 +109,7 @@ class APIKeysTest extends TestCase
         $expectedURL = $this->siteURL . "/?required_fields=name|email|usage";
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            ['name' => '', 'email' => '', 'usage' => ''],
+            ['name' => '', 'email' => '', 'usage' => []],
             "api_keys_required_fields"
         );
         $actualURL = $this->cachedRequest->lastVisitedURL;
@@ -127,7 +128,7 @@ class APIKeysTest extends TestCase
         $expectedURL = $this->siteURL . "/?required_fields=name&email=joe%40yahoo.com&usage=testing";
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => '', 'email' => 'joe@yahoo.com', 'usage' => 'testing'),
+            array('name' => '', 'email' => 'joe@yahoo.com', 'usage' => ['testing']),
             "api_keys_required_fields"
         );
         $actualURL = $this->cachedRequest->lastVisitedURL;
@@ -146,7 +147,7 @@ class APIKeysTest extends TestCase
         $expectedURL = $this->siteURL . "/?required_fields=email&name=joe&usage=testing";
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => 'joe', 'email' => '', 'usage' => 'testing'),
+            array('name' => 'joe', 'email' => '', 'usage' => ['testing']),
             "api_keys_required_fields"
         );
         $actualURL = $this->cachedRequest->lastVisitedURL;
@@ -165,7 +166,7 @@ class APIKeysTest extends TestCase
         $expectedURL = $this->siteURL . "/?required_fields=usage&name=joe&email=joe%40yahoo.com";
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => 'joe', 'email' => 'joe@yahoo.com', 'usage' => ''),
+            array('name' => 'joe', 'email' => 'joe@yahoo.com', 'usage' => []),
             "api_keys_required_fields"
         );
         $actualURL = $this->cachedRequest->lastVisitedURL;
@@ -181,18 +182,94 @@ class APIKeysTest extends TestCase
      **/
     public function testAPIKeyRequestShouldReturnIfAllPOSTParamsSupplied(): void
     {
-        $usage = generateRandomKey(12);
+        $name = 'testAPIKeyRequestShouldReturnIfAllPOSTParamsSupplied';
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => 'used', 'email' => 'joe@yahoo.com', 'usage' => $usage),
+            array(
+                'name' => $name,
+                'email' => 'joe@yahoo.com',
+                'usage' => ['api development']
+            ),
             "api_keys_required_fields"
         );
         $lastVisitedURL = $this->cachedRequest->lastVisitedURL;
-        $APIKeyCheck = preg_match('/api_key=(.*)/', $lastVisitedURL, $matches);
-        $this->db->query("DELETE FROM `md_api_keys` WHERE `api_usage` = '" . $usage . "'");
+        preg_match('/api_key=(.*)/', $lastVisitedURL, $matches);
         $this->assertFalse(empty($matches));
         $this->assertTrue(isset($matches[1]));
         $this->assertFalse($matches[1] == "");
+    }
+
+    /**
+     * Tests that APIKey request should correctly store the usage information
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testAPIKeyRequestShouldCreateCorrectUsageString(): void
+    {
+        $name = "testAPIKeyRequestShouldCreateCorrectUsageString";
+        $usage = ["Api development", "Testing", "Research project"];
+        $expectedUsage = "api development,testing,research project";
+        $this->cachedRequest->post(
+            $this->siteURL . "/api_keys/new",
+            array(
+                'name' => $name,
+                'email' => 'joe@yahoo.com',
+                'usage' => $usage
+            ),
+            "api_key_request_correct_usage"
+        );
+        $statement = $this->db->query("SELECT api_usage from `md_api_keys` WHERE `name` = '" . $name . "'");
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($expectedUsage, $data[0]['api_usage']);
+    }
+
+    /**
+     * Tests that APIKey request should require website if For a website is in usage
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testAPIKeyRequestShouldRequireWebsiteIfForWebsiteUsage(): void
+    {
+        $this->cachedRequest->post(
+            $this->siteURL . "/api_keys/new",
+            [
+                'name' => 'require-website-on-website-usage',
+                'email' => 'joe@yahoo.com',
+                'usage' => ['for a website'],
+            ],
+            "api_key_request_require_website"
+        );
+        $lastVisitedURL = $this->cachedRequest->lastVisitedURL;
+        $this->assertStringContainsString("required_fields=website_url", $lastVisitedURL);
+    }
+
+    /**
+     * Tests that APIKey request should save a website if For a website is in usage
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testAPIKeyRequestShouldStoreWebsiteIfForWebsiteUsage(): void
+    {
+        $this->cachedRequest->post(
+            $this->siteURL . "/api_keys/new",
+            [
+                'name' => 'store-website-on-website-usage',
+                'email' => 'joe@yahoo.com',
+                'usage' => ['for a website'],
+                'website_url' => 'http://www.pokemon.com',
+            ],
+            "api_key_request_store_website"
+        );
+        $statement = $this->db->query("SELECT `api_usage`, `website_url` from `md_api_keys` WHERE `name` = 'store-website-on-website-usage'");
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals('for a website', $data[0]['api_usage']);
+        $this->assertEquals('http://www.pokemon.com', $data[0]['website_url']);
     }
 
     /**
@@ -207,12 +284,11 @@ class APIKeysTest extends TestCase
         $usage = generateRandomKey(12);
         $content = $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => 'status_should_be_zero', 'email' => 'joe@yahoo.com', 'usage' => $usage),
+            array('name' => 'status_should_be_zero', 'email' => 'joe@yahoo.com', 'usage' => [$usage]),
             "status_should_be_zero"
         );
         $statement = $this->db->query("SELECT status from `md_api_keys` WHERE `name` = 'status_should_be_zero'");
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->db->query("DELETE FROM `md_api_keys` WHERE `api_usage` = '" . $usage . "'");
         $this->assertEquals(0, $data[0]['status']);
     }
 
@@ -228,14 +304,13 @@ class APIKeysTest extends TestCase
         $usage = generateRandomKey(12);
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => 'should_set_authorize_token', 'email' => 'joe@gmail.com', 'usage' => $usage),
+            array('name' => 'should_set_authorize_token', 'email' => 'joe@gmail.com', 'usage' => [$usage]),
             "should_set_authorize_token"
         );
         $statement = $this->db->query(
             "SELECT authorize_token from `md_api_keys` WHERE `name` = 'should_set_authorize_token'"
         );
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->db->query("DELETE FROM `md_api_keys` WHERE `api_usage` = '" . $usage . "'");
         $this->assertNotNull($data[0]['authorize_token']);
         $this->assertNotEmpty($data[0]['authorize_token']);
     }
@@ -253,7 +328,7 @@ class APIKeysTest extends TestCase
         $expectedStatus = 1;
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => 'i_should_become_active', 'email' => 'joe@gmail.com', 'usage' => $usage),
+            array('name' => 'i_should_become_active', 'email' => 'joe@gmail.com', 'usage' => [$usage]),
             "i_should_become_active"
         );
         $statement = $this->db->query(
@@ -267,7 +342,6 @@ class APIKeysTest extends TestCase
         );
         $statement = $this->db->query("SELECT * from `md_api_keys` WHERE `api_usage` = '" . $usage . "'");
         $actualData = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->db->query("DELETE FROM `md_api_keys` WHERE `api_usage` = '" . $usage . "'");
         $this->assertEquals($expectedStatus, $actualData[0]['status']);
     }
 
@@ -284,7 +358,7 @@ class APIKeysTest extends TestCase
         $expectedStatus = 2;
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => 'i_should_stay_suspended', 'email' => 'joe@gmail.com', 'usage' => $usage),
+            array('name' => 'i_should_stay_suspended', 'email' => 'joe@gmail.com', 'usage' => [$usage]),
             "i_should_stay_suspended"
         );
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE  `api_usage` = '" . $usage . "'");
@@ -299,7 +373,6 @@ class APIKeysTest extends TestCase
         );
         $statement = $this->db->query("SELECT * from `md_api_keys` WHERE `api_usage` = '" . $usage . "'");
         $actualData = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->db->query("DELETE FROM `md_api_keys` WHERE `api_usage` = '" . $usage . "'");
         $this->assertEquals($expectedStatus, $actualData[0]['status']);
     }
 }
