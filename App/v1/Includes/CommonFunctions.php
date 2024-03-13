@@ -189,7 +189,15 @@ function generateRedirectURL($redirectURL, array $formData, array $invalidFields
     $validFieldParams = [];
     $validParamsStartSymbol = "?";
     foreach ($formData as $key => $value) {
-        $val = urlencode(strip_tags($value));
+        if (is_string($value)) {
+            $val = urlencode(strip_tags($value));
+        } elseif (is_array($value)) {
+            // Pipe separate the array values and then url encode them
+            $val = implode("|", array_map('urlencode', $value));
+        } else {
+            continue;
+        }
+        
         if ($val) {
             array_push($validFieldParams, $key . "=" . $val);
         }

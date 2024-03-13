@@ -185,6 +185,24 @@ class CommonFunctionsTest extends TestCase
     }
 
     /**
+     * Tests that the valid URL is created based on all valid params for generateRedirectURL including
+     * an array of values
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testGenerateRedirectURLCreatesCorrectURLWithArrayValues(): void
+    {
+        $expected = "/?name=Joe&email=joe%40yahoo.com&usage=website|app+development|research";
+        $formData = array("name" => "Joe", "email" => "joe@yahoo.com", "usage" => ["website", "app development", "research"]);
+        $invalidFields = array();
+        $redirectUrl = "/";
+        $actual = generateRedirectURL($redirectUrl, $formData, $invalidFields);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
      * Tests that the valid URL is created based on all valid params for generateRedirectURL
      *
      * @return void
