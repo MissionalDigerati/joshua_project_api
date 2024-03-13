@@ -153,6 +153,10 @@ function validatePresenceOf($requiredFields, $formData)
 {
     $invalidFields = [];
     foreach ($requiredFields as $field) {
+        if (!array_key_exists($field, $formData)) {
+            array_push($invalidFields, $field);
+            continue;
+        }
         $fieldParam = strip_tags($formData[$field]);
         if (!$fieldParam) {
             array_push($invalidFields, $field);
