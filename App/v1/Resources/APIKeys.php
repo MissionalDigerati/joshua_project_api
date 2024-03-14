@@ -125,11 +125,9 @@ $app->post(
         $websiteUrl = returnPresentIfKeyExistsOrDefault($formData, 'website_url', '');
         $appleStoreUrl = returnPresentIfKeyExistsOrDefault($formData, 'apple_app_store', '');
         $googlePlayUrl = returnPresentIfKeyExistsOrDefault($formData, 'google_play_store', '');
-        if ((in_array('for a website', $formData['usage'])) && (!$websiteUrl)) {
-            $invalid[] = 'website_url';
-        }
-        if ((in_array('for a mobile app', $formData['usage'])) && ((!$appleStoreUrl) && (!$googlePlayUrl))) {
-            $invalid[] = 'app_store_url';
+        $otherPurpose = returnPresentIfKeyExistsOrDefault($formData, 'other_purpose', '');
+        if ((in_array('other', $formData['usage'])) && (!$otherPurpose)) {
+            $invalid[] = 'other_purpose';
         }
         $redirectURL = generateRedirectURL("/", $formData, $invalid);
         if (!empty($invalid)) {
@@ -137,10 +135,11 @@ $app->post(
                 ->withHeader('Location', $redirectURL)
                 ->withStatus(302);
         }
+        if ($otherPurpose) {
+            array_push($formData['usage'], strtolower($otherPurpose));
+        }
         $newAPIKey = generateRandomKey(12);
         $authorizeToken = generateRandomKey(12);
-        // $phoneNumber = returnPresentIfKeyExistsOrDefault($formData, 'phone_number', '');
-        // $organization = returnPresentIfKeyExistsOrDefault($formData, 'organization', '');
         $usage = join(",", $formData['usage']);
         $apiKeyValues = [
             'name' => $formData['name'],

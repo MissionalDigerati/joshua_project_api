@@ -226,28 +226,6 @@ class APIKeysTest extends TestCase
     }
 
     /**
-     * Tests that APIKey request should require website if For a website is in usage
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
-    public function testAPIKeyRequestShouldRequireWebsiteIfForWebsiteUsage(): void
-    {
-        $this->cachedRequest->post(
-            $this->siteURL . "/api_keys/new",
-            [
-                'name' => 'require-website-on-website-usage',
-                'email' => 'joe@yahoo.com',
-                'usage' => ['for a website'],
-            ],
-            "api_key_request_require_website"
-        );
-        $lastVisitedURL = $this->cachedRequest->lastVisitedURL;
-        $this->assertStringContainsString("required_fields=website_url", $lastVisitedURL);
-    }
-
-    /**
      * Tests that APIKey request should save a website if For a website is in usage
      *
      * @return void
@@ -273,25 +251,26 @@ class APIKeysTest extends TestCase
     }
 
     /**
-     * Tests that APIKey request should require one app store url if For a mobile app is in usage
+     * Tests that APIKey request should require other description if other is in usage
      *
      * @return void
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestShouldRequireAnAppStoreUrlIfForMobileAppUsage(): void
+    public function testAPIKeyRequestShouldRequireOtherDescIfOtherUsage(): void
     {
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
             [
-                'name' => 'require-app-store-url-on-app-usage',
+                'name' => 'require-other-purpose-on-other-usage',
                 'email' => 'joe@yahoo.com',
-                'usage' => ['For a mobile app'],
+                'usage' => ['other'],
+                'other_purpose'=> '',
             ],
-            "require_app_store_url_on_app_usage"
+            "require_other_purpose_on_other_usage"
         );
         $lastVisitedURL = $this->cachedRequest->lastVisitedURL;
-        $this->assertStringContainsString("required_fields=app_store_url", $lastVisitedURL);
+        $this->assertStringContainsString("required_fields=other_purpose", $lastVisitedURL);
     }
 
     /**
@@ -301,23 +280,23 @@ class APIKeysTest extends TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testAPIKeyRequestShouldStoreAppleAppStoreIfForMobileAppUsage(): void
+    public function testAPIKeyRequestShouldStoreOtherPurposeIfForOtherUsage(): void
     {
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
             [
-                'name' => 'store-app-store-on-mobile-app-usage',
+                'name' => 'store-other-purpose-on-other-usage',
                 'email' => 'app-store@yahoo.com',
-                'usage' => ['For a mobile app'],
+                'usage' => ['For a mobile app', 'other'],
                 'apple_app_store' => 'http://www.apple.com/my-awesome-app',
+                'other_purpose' => 'I am gathering stats for a specific survey.',
             ],
-            "api_key_request_store_app_store"
+            "api_key_request_store_other_purpose_on_other_usage"
         );
-        $statement = $this->db->query("SELECT `api_usage`, `apple_app_store`, `google_play_store` from `md_api_keys` WHERE `name` = 'store-app-store-on-mobile-app-usage'");
+        $statement = $this->db->query("SELECT `api_usage`, `apple_app_store`, `google_play_store` from `md_api_keys` WHERE `name` = 'store-other-purpose-on-other-usage'");
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertEquals('for a mobile app', $data[0]['api_usage']);
+        $this->assertEquals('for a mobile app,other,i am gathering stats for a specific survey.', $data[0]['api_usage']);
         $this->assertEquals('http://www.apple.com/my-awesome-app', $data[0]['apple_app_store']);
-        $this->assertEquals(null, $data[0]['google_play_store']);
     }
 
     /**
