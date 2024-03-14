@@ -128,6 +128,31 @@ class CommonFunctionsTest extends TestCase
     }
 
     /**
+     * Tests whether validatePresenceOf() returns a field missing in the form data
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testValidatePresenceShouldReturnAFieldMissingInFormData(): void {
+        $expected = array("usage");
+        $requiredFields = array("name", "email", "usage");
+        $formData = array("name" => "Bob", "email" => "bob@yahoo.com");
+        $actual = validatePresenceOf($requiredFields, $formData);
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testValidatePresenceShouldReturnnEmptyCheckboxArray(): void
+    {
+        $expected = array("usage");
+        $requiredFields = array("name", "email", "usage");
+        $formData = array("name" => "Bob", "email" => "bob@yahoo.com", "usage" => []);
+        $actual = validatePresenceOf($requiredFields, $formData);
+        $this->assertEquals($expected, $actual);
+    }
+
+
+    /**
      * Tests whether validatePresenceOf() returns only empty fields
      *
      * @return void
@@ -154,6 +179,24 @@ class CommonFunctionsTest extends TestCase
         $expected = "/?required_fields=name|email|usage";
         $formData = array("name" => "", "email" => "", "usage" => "");
         $invalidFields = array("name", "email", "usage");
+        $redirectUrl = "/";
+        $actual = generateRedirectURL($redirectUrl, $formData, $invalidFields);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * Tests that the valid URL is created based on all valid params for generateRedirectURL including
+     * an array of values
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testGenerateRedirectURLCreatesCorrectURLWithArrayValues(): void
+    {
+        $expected = "/?name=Joe&email=joe%40yahoo.com&usage=website|app+development|research";
+        $formData = array("name" => "Joe", "email" => "joe@yahoo.com", "usage" => ["website", "app development", "research"]);
+        $invalidFields = array();
         $redirectUrl = "/";
         $actual = generateRedirectURL($redirectUrl, $formData, $invalidFields);
         $this->assertEquals($expected, $actual);

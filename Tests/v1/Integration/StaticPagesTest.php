@@ -116,6 +116,22 @@ class StaticPagesTest extends TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
     }
     /**
+     * Users should be able to access the Terms of Use Page
+     *
+     * @return void
+     * @author Johnathan Pulos
+     */
+    public function testWebsiteShouldDisplayTheTermsOfUsePage(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/terms_of_use",
+            array(),
+            "show_terms_of_use"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertStringContainsString('<h2>API Terms of Use</h2>', $response);
+    }
+    /**
      * Users should be able to get their API Key
      *
      * @return void

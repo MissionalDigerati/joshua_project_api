@@ -24,6 +24,7 @@
 
 declare(strict_types=1);
 
+use Utilities\Validator;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -113,34 +114,67 @@ $app->post(
     "/api_keys/new",
     function (Request $request, Response $response, $args = []): Response {
         $formData = $request->getParsedBody();
-        $invalidFields = validatePresenceOf(["name", "email", "usage"], $formData);
-        $redirectURL = generateRedirectURL("/", $formData, $invalidFields);
-        if (!empty($invalidFields)) {
+        /**
+         * Validate the recaptcha
+         */
+        $validator = new Validator();
+        if (!$validator->isValidRecaptcha($_ENV['RECAPTCHA_SECRET_KEY'], $formData['g-recaptcha-response'])) {
+            $redirectURL = generateRedirectURL("/", $formData, ['recaptcha_error']);
             return $response
                 ->withHeader('Location', $redirectURL)
                 ->withStatus(302);
         }
+        unset($formData['g-recaptcha-response']);
+        /**
+         * Validate the form data
+         */
+        $required = ["name", "email", "usage", "terms_of_use"];
+        if (!array_key_exists('usage', $formData)) {
+            $formData['usage'] = [];
+        }
+        $formData["usage"] = array_map('strtolower', $formData["usage"]);
+        $invalid = validatePresenceOf($required, $formData);
+        /**
+         * Check required fields for provided usage
+         */
+        $websiteUrl = returnPresentIfKeyExistsOrDefault($formData, 'website_url', '');
+        $appleStoreUrl = returnPresentIfKeyExistsOrDefault($formData, 'apple_app_store', '');
+        $googlePlayUrl = returnPresentIfKeyExistsOrDefault($formData, 'google_play_store', '');
+        $otherPurpose = returnPresentIfKeyExistsOrDefault($formData, 'other_purpose', '');
+        if ((in_array('other', $formData['usage'])) && (!$otherPurpose)) {
+            $invalid[] = 'other_purpose';
+        }
+        $redirectURL = generateRedirectURL("/", $formData, $invalid);
+        if (!empty($invalid)) {
+            return $response
+                ->withHeader('Location', $redirectURL)
+                ->withStatus(302);
+        }
+        if ($otherPurpose) {
+            array_push($formData['usage'], strtolower($otherPurpose));
+        }
+        /**
+         * Create the API key
+         */
         $newAPIKey = generateRandomKey(12);
         $authorizeToken = generateRandomKey(12);
-        $phoneNumber = returnPresentIfKeyExistsOrDefault($formData, 'phone_number', '');
-        $organization = returnPresentIfKeyExistsOrDefault($formData, 'organization', '');
-        $website = returnPresentIfKeyExistsOrDefault($formData, 'website', '');
-        $cleanedPhoneNumber = preg_replace("/[^0-9]/", "", $phoneNumber);
+        $usage = join(",", $formData['usage']);
         $apiKeyValues = [
             'name' => $formData['name'],
             'email' => $formData['email'],
-            'organization' => $organization,
-            'website' => $website,
-            'phone_number' => $cleanedPhoneNumber,
-            'api_usage' => $formData['usage'],
+            'api_usage' => $usage,
             'resource_used' =>  'API',
             'api_key' => $newAPIKey,
             'authorize_token' => $authorizeToken,
-            'status' => 0
+            'status' => 0,
+            'website_url' => $websiteUrl,
+            'google_play_store' => $googlePlayUrl,
+            'apple_app_store' => $appleStoreUrl,
         ];
-        $query = "INSERT INTO md_api_keys (name, email, organization, website, phone_number, api_usage, api_key, " .
-        "authorize_token, resource_used, status, created) VALUES (:name, :email, :organization, :website, " .
-        ":phone_number, :api_usage, :api_key, :authorize_token, :resource_used, :status, NOW())";
+        $query = "INSERT INTO md_api_keys (name, email, api_usage, api_key, authorize_token, " .
+        "resource_used, status, website_url, google_play_store, apple_app_store, created) " .
+        "VALUES (:name, :email, :api_usage, :api_key, :authorize_token, " .
+        ":resource_used, :status, :website_url, :google_play_store, :apple_app_store, NOW())";
         try {
             $statement = $this->get('db')->prepare($query);
             $statement->execute($apiKeyValues);
