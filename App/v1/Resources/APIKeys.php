@@ -24,6 +24,7 @@
 
 declare(strict_types=1);
 
+use Utilities\Validator;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -113,6 +114,20 @@ $app->post(
     "/api_keys/new",
     function (Request $request, Response $response, $args = []): Response {
         $formData = $request->getParsedBody();
+        /**
+         * Validate the recaptcha
+         */
+        $validator = new Validator();
+        if (!$validator->isValidRecaptcha($_ENV['RECAPTCHA_SECRET_KEY'], $formData['g-recaptcha-response'])) {
+            $redirectURL = generateRedirectURL("/", $formData, ['recaptcha_error']);
+            return $response
+                ->withHeader('Location', $redirectURL)
+                ->withStatus(302);
+        }
+        unset($formData['g-recaptcha-response']);
+        /**
+         * Validate the form data
+         */
         $required = ["name", "email", "usage", "terms_of_use"];
         if (!array_key_exists('usage', $formData)) {
             $formData['usage'] = [];
@@ -138,6 +153,9 @@ $app->post(
         if ($otherPurpose) {
             array_push($formData['usage'], strtolower($otherPurpose));
         }
+        /**
+         * Create the API key
+         */
         $newAPIKey = generateRandomKey(12);
         $authorizeToken = generateRandomKey(12);
         $usage = join(",", $formData['usage']);

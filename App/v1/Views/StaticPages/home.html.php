@@ -28,6 +28,7 @@
 <?php
     include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'site_wide_css_meta.html');
 ?>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </head>
     <body>
 <?php
@@ -282,6 +283,8 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
                                 <span class="help-block">You must accept the Terms of Use!</span>
 <?php } ?>
                         </div>
+
+                        <div class="g-recaptcha" data-sitekey="<?php echo $recaptchaSiteKey; ?>"></div>
 
                         <div class="form-group">
                             <div class="controls col-lg-12">

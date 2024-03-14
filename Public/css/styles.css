@@ -2,6 +2,9 @@ body {
 	position: relative;
 	padding-top: 50px !important;
 }
+body > .container {
+	padding-top: 20px;
+}
 .required-field{
 	color: red;
 	font-weight: bold;
@@ -91,4 +94,8 @@ pre span.code_highlight {
 	.form-horizontal .control-label {
 		text-align: left !important;
 	}
+}
+.g-recaptcha {
+	width: 304px;
+    margin: 0 auto 15px;
 }

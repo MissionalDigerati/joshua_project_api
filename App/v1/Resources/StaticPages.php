@@ -43,10 +43,11 @@ $app->get(
         if ((isset($data['required_fields'])) && ($data['required_fields'] !== "")) {
             $errors = explode("|", $data['required_fields']);
         }
+        $recaptchaSiteKey = $_ENV['RECAPTCHA_SITE_KEY'] ?? '';
         return $this->get('view')->render(
             $response,
             'StaticPages/home.html.php',
-            ['data' => $data, 'errors' => $errors]
+            ['data' => $data, 'errors' => $errors, 'recaptchaSiteKey' => $recaptchaSiteKey]
         );
     }
 );
