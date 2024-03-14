@@ -197,7 +197,7 @@ function generateRedirectURL($redirectURL, array $formData, array $invalidFields
         } else {
             continue;
         }
-        
+
         if ($val) {
             array_push($validFieldParams, $key . "=" . $val);
         }
