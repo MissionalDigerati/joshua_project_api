@@ -198,7 +198,9 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
 ?>
                             </div>
                         </div>
-
+<?php
+    $usage = (isset($data['usage'])) ? explode('|', $data['usage']) : [];
+?>
                         <div class="form-group">
                             <label class="control-label col-lg-12 text-left" for="data-usage">
                                 Anticipated use of data (check all that apply)<span class="required-field">*</span>
@@ -206,37 +208,37 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
                             <div class="col-md-offset-2 col-lg-12">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="usage[]" data-tag="personal" value="Personal interest"> Personal interest
+                                        <input type="checkbox" name="usage[]" data-tag="personal" value="personal interest" <?php echo in_array('personal interest', $usage) ? 'checked' : ''; ?>> Personal interest
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="usage[]" data-tag="presentation" value="Presentation or to share with others"> Presentation or to share with others
+                                        <input type="checkbox" name="usage[]" data-tag="presentation" value="presentation or to share with others" <?php echo in_array('presentation or to share with others', $usage) ? 'checked' : ''; ?>> Presentation or to share with others
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="usage[]" data-tag="research" value="Research"> Research
+                                        <input type="checkbox" name="usage[]" data-tag="research" value="research" <?php echo in_array('research', $usage) ? 'checked' : ''; ?>> Research
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="usage[]" data-tag="internal" value="Organization internal use"> Organization internal use
+                                        <input type="checkbox" name="usage[]" data-tag="internal" value="organization internal use" <?php echo in_array('organization internal use', $usage) ? 'checked' : ''; ?>> Organization internal use
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="usage[]" data-tag="website" value="For a website"> For a website
+                                        <input type="checkbox" name="usage[]" data-tag="website" value="for a website" <?php echo in_array('for a website', $usage) ? 'checked' : ''; ?>> For a website
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="usage[]" data-tag="app" value="For a mobile app"> For a mobile app
+                                        <input type="checkbox" name="usage[]" data-tag="app" value="for a mobile app" <?php echo in_array('for a mobile app', $usage) ? 'checked' : ''; ?>> For a mobile app
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="usage[]" data-tag="other" value="Other"> Other
+                                        <input type="checkbox" name="usage[]" data-tag="other" value="other" <?php echo in_array('other', $usage) ? 'checked' : ''; ?>> Other
                                     </label>
                                 </div>
                             </div>
@@ -245,28 +247,29 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
                         <div class="form-group hidden" id="form-website-url">
                             <label class="control-label col-lg-4" for="input-website-url">Website URL <small>(If Published)</small></label>
                             <div class="controls col-lg-8">
-                                <input type="text" name="website-url" id="input-website-url" placeholder="Website URL" class="form-control">
+                                <input type="text" name="website_url" id="input-website-url" placeholder="Website URL" class="form-control" value="<?php if ((isset($data['website_url'])) && ($data['website_url'] != "")) { echo $data['website_url']; } ?>">
                             </div>
                         </div>
 
                         <div class="form-group hidden" id="apple-store-url">
                             <label class="control-label col-lg-4" for="input-apple-store-url">Apple App Store URL <small>(If Published)</small></label>
                             <div class="controls col-lg-8">
-                                <input type="text" name="apple-store-url" id="input-apple-store-url" placeholder="Apple App Store URL" class="form-control">
+                                <input type="text" name="apple_app_store" id="input-apple-store-url" placeholder="Apple App Store URL" class="form-control" value="<?php if ((isset($data['apple_app_store'])) && ($data['apple_app_store'] != "")) { echo $data['apple_app_store']; } ?>">
                             </div>
                         </div>
 
                         <div class="form-group hidden" id="google-store-url">
                             <label class="control-label col-lg-4" for="input-google-store-url">Google Play Store URL <small>(If Published)</small></label>
                             <div class="controls col-lg-8">
-                                <input type="text" name="google-store-url" id="input-google-store-url" placeholder="Google Play Store URL" class="form-control">
+                                <input type="text" name="google_play_store" id="input-google-store-url" placeholder="Google Play Store URL" class="form-control" value="<?php if ((isset($data['google_play_store'])) && ($data['google_play_store'] != "")) { echo $data['google_play_store']; } ?>">
                             </div>
                         </div>
 
-                        <div class="form-group hidden" id="other-purpose">
+                        <div class="form-group hidden<?php echo ((!empty($errors)) && (in_array('other_purpose', $errors))) ? ' has-error' : ''; ?>" id="other-purpose">
                             <label class="control-label col-lg-4" for="input-other-purpose">Other Use  <small>(Please explain)</small><span class="required-field">*</span></label>
                             <div class="controls col-lg-8">
-                                <input type="text" name="other-purpose" id="input-other-purpose" placeholder="Other Use" class="form-control">
+                                
+                                <input type="text" name="other_purpose" id="input-other-purpose" placeholder="Other Use" class="form-control" value="<?php if ((isset($data['other_purpose'])) && ($data['other_purpose'] != "")) { echo $data['other_purpose']; } ?>">
                             </div>
                         </div>
 
@@ -308,14 +311,24 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
                 group.height(tallest);
             };
             function handleForm() {
-                $('input[data-tag="website"]').click(function() {
+                // check if is checked then display
+                var $website = $('input[data-tag="website"]');
+                if ($website.is(':checked')) {
+                    $('#form-website-url').removeClass('hidden');
+                }
+                $website.click(function() {
                     if ($(this).is(':checked')) {
                         $('#form-website-url').removeClass('hidden');
                     } else {
                         $('#form-website-url').addClass('hidden');
                     }
                 });
-                $('input[data-tag="app"]').click(function() {
+                var $app = $('input[data-tag="app"]');
+                if ($app.is(':checked')) {
+                    $('#apple-store-url').removeClass('hidden');
+                    $('#google-store-url').removeClass('hidden');
+                }
+                $app.click(function() {
                     if ($(this).is(':checked')) {
                         $('#apple-store-url').removeClass('hidden');
                         $('#google-store-url').removeClass('hidden');
@@ -324,7 +337,11 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
                         $('#google-store-url').addClass('hidden');
                     }
                 });
-                $('input[data-tag="other"]').click(function() {
+                var $other = $('input[data-tag="other"]');
+                if ($other.is(':checked')) {
+                    $('#other-purpose').removeClass('hidden');
+                }
+                $other.click(function() {
                     if ($(this).is(':checked')) {
                         $('#other-purpose').removeClass('hidden');
                     } else {
