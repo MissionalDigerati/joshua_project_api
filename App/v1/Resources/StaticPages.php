@@ -195,3 +195,21 @@ $app->post(
         );
     }
 );
+/**
+ * Get the terms_of_use page
+ *
+ * GET /terms_of_use
+ * Available Formats HTML
+ *
+ * @author Johnathan Pulos
+ */
+$app->get(
+    "/terms_of_use",
+    function (Request $request, Response $response): Response {
+        return $this->get('view')->render(
+            $response,
+            'StaticPages/terms_of_use.html.php',
+            ['siteURL' => getSiteURL()]
+        );
+    }
+);
