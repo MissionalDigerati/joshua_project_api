@@ -123,8 +123,13 @@ $app->post(
          * Check required fields for provided usage
          */
         $websiteUrl = returnPresentIfKeyExistsOrDefault($formData, 'website_url', '');
+        $appleStoreUrl = returnPresentIfKeyExistsOrDefault($formData, 'apple_app_store', '');
+        $googlePlayUrl = returnPresentIfKeyExistsOrDefault($formData, 'google_play_store', '');
         if ((in_array('for a website', $formData['usage'])) && (!$websiteUrl)) {
             $invalid[] = 'website_url';
+        }
+        if ((in_array('for a mobile app', $formData['usage'])) && ((!$appleStoreUrl) && (!$googlePlayUrl))) {
+            $invalid[] = 'app_store_url';
         }
         $redirectURL = generateRedirectURL("/", $formData, $invalid);
         if (!empty($invalid)) {
@@ -145,11 +150,14 @@ $app->post(
             'api_key' => $newAPIKey,
             'authorize_token' => $authorizeToken,
             'status' => 0,
-            'website_url'=> $websiteUrl,
+            'website_url' => $websiteUrl,
+            'google_play_store' => $googlePlayUrl,
+            'apple_app_store' => $appleStoreUrl,
         ];
         $query = "INSERT INTO md_api_keys (name, email, api_usage, api_key, authorize_token, " .
-        "resource_used, status,website_url, created) VALUES (:name, :email, :api_usage, :api_key, :authorize_token, " .
-        ":resource_used, :status, :website_url, NOW())";
+        "resource_used, status, website_url, google_play_store, apple_app_store, created) " .
+        "VALUES (:name, :email, :api_usage, :api_key, :authorize_token, " .
+        ":resource_used, :status, :website_url, :google_play_store, :apple_app_store, NOW())";
         try {
             $statement = $this->get('db')->prepare($query);
             $statement->execute($apiKeyValues);

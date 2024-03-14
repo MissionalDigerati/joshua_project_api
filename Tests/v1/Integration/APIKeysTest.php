@@ -273,6 +273,80 @@ class APIKeysTest extends TestCase
     }
 
     /**
+     * Tests that APIKey request should require one app store url if For a mobile app is in usage
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testAPIKeyRequestShouldRequireAnAppStoreUrlIfForMobileAppUsage(): void
+    {
+        $this->cachedRequest->post(
+            $this->siteURL . "/api_keys/new",
+            [
+                'name' => 'require-app-store-url-on-app-usage',
+                'email' => 'joe@yahoo.com',
+                'usage' => ['For a mobile app'],
+            ],
+            "require_app_store_url_on_app_usage"
+        );
+        $lastVisitedURL = $this->cachedRequest->lastVisitedURL;
+        $this->assertStringContainsString("required_fields=app_store_url", $lastVisitedURL);
+    }
+
+    /**
+     * Tests that APIKey request should save apple app store url if For a mobile app is in usage
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testAPIKeyRequestShouldStoreAppleAppStoreIfForMobileAppUsage(): void
+    {
+        $this->cachedRequest->post(
+            $this->siteURL . "/api_keys/new",
+            [
+                'name' => 'store-app-store-on-mobile-app-usage',
+                'email' => 'app-store@yahoo.com',
+                'usage' => ['For a mobile app'],
+                'apple_app_store' => 'http://www.apple.com/my-awesome-app',
+            ],
+            "api_key_request_store_app_store"
+        );
+        $statement = $this->db->query("SELECT `api_usage`, `apple_app_store`, `google_play_store` from `md_api_keys` WHERE `name` = 'store-app-store-on-mobile-app-usage'");
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals('for a mobile app', $data[0]['api_usage']);
+        $this->assertEquals('http://www.apple.com/my-awesome-app', $data[0]['apple_app_store']);
+        $this->assertEquals(null, $data[0]['google_play_store']);
+    }
+
+    /**
+     * Tests that APIKey request should save google app store url if For a mobile app is in usage
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testAPIKeyRequestShouldStoreGoogleAppStoreIfForMobileAppUsage(): void
+    {
+        $this->cachedRequest->post(
+            $this->siteURL . "/api_keys/new",
+            [
+                'name' => 'store-google-store-on-mobile-app-usage',
+                'email' => 'app-store@yahoo.com',
+                'usage' => ['For a mobile app'],
+                'google_play_store' => 'http://www.google.com/my-awesome-app',
+            ],
+            "api_key_request_google_store_app_store"
+        );
+        $statement = $this->db->query("SELECT `api_usage`, `apple_app_store`, `google_play_store` from `md_api_keys` WHERE `name` = 'store-google-store-on-mobile-app-usage'");
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals('for a mobile app', $data[0]['api_usage']);
+        $this->assertEquals('http://www.google.com/my-awesome-app', $data[0]['google_play_store']);
+        $this->assertEquals(null, $data[0]['apple_app_store']);
+    }
+
+    /**
      * Tests that APIKey requests with all fields should set status to 0 (ie. pending)
      *
      * @return void
