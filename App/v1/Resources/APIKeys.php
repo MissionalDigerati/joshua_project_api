@@ -114,11 +114,15 @@ $app->post(
     "/api_keys/new",
     function (Request $request, Response $response, $args = []): Response {
         $formData = $request->getParsedBody();
+        $isLocal = ((array_key_exists('IS_LOCAL', $_ENV)) && ($_ENV['IS_LOCAL'] === 'true'));
         /**
          * Validate the recaptcha
          */
         $validator = new Validator();
-        if (!$validator->isValidRecaptcha($_ENV['RECAPTCHA_SECRET_KEY'], $formData['g-recaptcha-response'])) {
+        if (
+            (!$isLocal) &&
+            (!$validator->isValidRecaptcha($_ENV['RECAPTCHA_SECRET_KEY'], $formData['g-recaptcha-response']))
+        ) {
             $redirectURL = generateRedirectURL("/", $formData, ['recaptcha_error']);
             return $response
                 ->withHeader('Location', $redirectURL)
