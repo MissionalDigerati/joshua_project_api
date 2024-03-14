@@ -62,20 +62,23 @@ class APIErrorResponder
                     ]
                 ]
             ];
-            return $response->withStatus($code)->withJson($data);
+            $body = json_encode($data);
+            $contentType = 'application/json; charset=UTF-8';
+        } else {
+            $body = '<api>
+                <status>error</status>
+                <error>
+                    <code>' . $code . '</code>
+                    <message>' . $message . '</message>
+                    <details>' . $details . '</details>
+                </error>
+            </api>';
+            $contentType = 'application/xml; charset=UTF-8';
         }
-        $data = '<api>
-            <status>error</status>
-            <error>
-                <code>' . $code . '</code>
-                <message>' . $message . '</message>
-                <details>' . $details . '</details>
-            </error>
-        </api>';
 
+        $response->getBody()->write($body);
         return $response
-            ->withStatus($code)
-            ->withHeader('Content-type', 'text/xml')
-            ->write($data);
+            ->withHeader('Content-Type', $contentType)
+            ->withStatus($code);
     }
 }
