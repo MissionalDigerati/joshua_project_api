@@ -106,14 +106,18 @@ class APIKeysTest extends TestCase
      **/
     public function testAPIKeyRequestWithMissingPOSTParamsShouldSetAllRequiredFieldsInURL(): void
     {
-        $expectedURL = $this->siteURL . "/?required_fields=name|email|usage";
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            ['name' => '', 'email' => '', 'usage' => []],
+            [
+                'name' => '',
+                'email' => '',
+                'usage' => [],
+                'terms_of_use' => 'true',
+            ],
             "api_keys_required_fields"
         );
         $actualURL = $this->cachedRequest->lastVisitedURL;
-        $this->assertEquals($expectedURL, $actualURL);
+        $this->assertStringContainsString('required_fields=name|email|usage', $actualURL);
     }
 
     /**
@@ -125,14 +129,18 @@ class APIKeysTest extends TestCase
      **/
     public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredNameFieldInURL(): void
     {
-        $expectedURL = $this->siteURL . "/?required_fields=name&email=joe%40yahoo.com&usage=testing";
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => '', 'email' => 'joe@yahoo.com', 'usage' => ['testing']),
+            array(
+                'name' => '',
+                'email' => 'joe@yahoo.com',
+                'usage' => ['testing'],
+                'terms_of_use' => 'true',
+            ),
             "api_keys_required_fields"
         );
         $actualURL = $this->cachedRequest->lastVisitedURL;
-        $this->assertEquals($expectedURL, $actualURL);
+        $this->assertStringContainsString('required_fields=name&email=joe%40yahoo.com&usage=testing', $actualURL);
     }
 
     /**
@@ -144,14 +152,18 @@ class APIKeysTest extends TestCase
      **/
     public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredEmailFieldInURL(): void
     {
-        $expectedURL = $this->siteURL . "/?required_fields=email&name=joe&usage=testing";
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => 'joe', 'email' => '', 'usage' => ['testing']),
+            array(
+                'name' => 'joe',
+                'email' => '',
+                'usage' => ['testing'],
+                'terms_of_use' => 'true',
+            ),
             "api_keys_required_fields"
         );
         $actualURL = $this->cachedRequest->lastVisitedURL;
-        $this->assertEquals($expectedURL, $actualURL);
+        $this->assertStringContainsString('required_fields=email&name=joe&usage=testing', $actualURL);
     }
 
     /**
@@ -163,14 +175,18 @@ class APIKeysTest extends TestCase
      **/
     public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredUsageFieldInURL(): void
     {
-        $expectedURL = $this->siteURL . "/?required_fields=usage&name=joe&email=joe%40yahoo.com";
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => 'joe', 'email' => 'joe@yahoo.com', 'usage' => []),
+            array(
+                'name' => 'joe',
+                'email' => 'joe@yahoo.com',
+                'usage' => [],
+                'terms_of_use' => 'true',
+            ),
             "api_keys_required_fields"
         );
         $actualURL = $this->cachedRequest->lastVisitedURL;
-        $this->assertEquals($expectedURL, $actualURL);
+        $this->assertStringContainsString('required_fields=usage&name=joe&email=joe%40yahoo.com', $actualURL);
     }
 
     /**
@@ -188,7 +204,8 @@ class APIKeysTest extends TestCase
             array(
                 'name' => $name,
                 'email' => 'joe@yahoo.com',
-                'usage' => ['api development']
+                'usage' => ['api development'],
+                'terms_of_use' => 'true',
             ),
             "api_keys_required_fields"
         );
@@ -216,7 +233,8 @@ class APIKeysTest extends TestCase
             array(
                 'name' => $name,
                 'email' => 'joe@yahoo.com',
-                'usage' => $usage
+                'usage' => $usage,
+                'terms_of_use' => 'true',
             ),
             "api_key_request_correct_usage"
         );
@@ -241,6 +259,7 @@ class APIKeysTest extends TestCase
                 'email' => 'joe@yahoo.com',
                 'usage' => ['for a website'],
                 'website_url' => 'http://www.pokemon.com',
+                'terms_of_use' => 'true',
             ],
             "api_key_request_store_website"
         );
@@ -266,6 +285,7 @@ class APIKeysTest extends TestCase
                 'email' => 'joe@yahoo.com',
                 'usage' => ['other'],
                 'other_purpose'=> '',
+                'terms_of_use' => 'true',
             ],
             "require_other_purpose_on_other_usage"
         );
@@ -290,6 +310,7 @@ class APIKeysTest extends TestCase
                 'usage' => ['For a mobile app', 'other'],
                 'apple_app_store' => 'http://www.apple.com/my-awesome-app',
                 'other_purpose' => 'I am gathering stats for a specific survey.',
+                'terms_of_use' => 'true',
             ],
             "api_key_request_store_other_purpose_on_other_usage"
         );
@@ -315,6 +336,7 @@ class APIKeysTest extends TestCase
                 'email' => 'app-store@yahoo.com',
                 'usage' => ['For a mobile app'],
                 'google_play_store' => 'http://www.google.com/my-awesome-app',
+                'terms_of_use' => 'true',
             ],
             "api_key_request_google_store_app_store"
         );
@@ -323,6 +345,29 @@ class APIKeysTest extends TestCase
         $this->assertEquals('for a mobile app', $data[0]['api_usage']);
         $this->assertEquals('http://www.google.com/my-awesome-app', $data[0]['google_play_store']);
         $this->assertEquals(null, $data[0]['apple_app_store']);
+    }
+
+    /**
+     * Tests that APIKey request should require terms of use to be checked
+     *
+     * @return void
+     * @access public
+     * @author Johnathan Pulos
+     **/
+    public function testAPIKeyRequestShouldRequireTermsOfUseChecked(): void
+    {
+        $this->cachedRequest->post(
+            $this->siteURL . "/api_keys/new",
+            [
+                'name' => 'require-other-purpose-on-other-usage',
+                'email' => 'joe@yahoo.com',
+                'usage' => ['other'],
+                'other_purpose'=> '',
+            ],
+            "require_other_purpose_on_other_usage"
+        );
+        $lastVisitedURL = $this->cachedRequest->lastVisitedURL;
+        $this->assertStringContainsString("required_fields=terms_of_use", $lastVisitedURL);
     }
 
     /**
@@ -337,7 +382,12 @@ class APIKeysTest extends TestCase
         $usage = generateRandomKey(12);
         $content = $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => 'status_should_be_zero', 'email' => 'joe@yahoo.com', 'usage' => [$usage]),
+            array(
+                'name' => 'status_should_be_zero',
+                'email' => 'joe@yahoo.com',
+                'usage' => [$usage],
+                'terms_of_use' => 'true',
+            ),
             "status_should_be_zero"
         );
         $statement = $this->db->query("SELECT status from `md_api_keys` WHERE `name` = 'status_should_be_zero'");
@@ -357,7 +407,12 @@ class APIKeysTest extends TestCase
         $usage = generateRandomKey(12);
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => 'should_set_authorize_token', 'email' => 'joe@gmail.com', 'usage' => [$usage]),
+            array(
+                'name' => 'should_set_authorize_token',
+                'email' => 'joe@gmail.com',
+                'usage' => [$usage],
+                'terms_of_use' => 'true',
+            ),
             "should_set_authorize_token"
         );
         $statement = $this->db->query(
@@ -381,7 +436,12 @@ class APIKeysTest extends TestCase
         $expectedStatus = 1;
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => 'i_should_become_active', 'email' => 'joe@gmail.com', 'usage' => [$usage]),
+            array(
+                'name' => 'i_should_become_active',
+                'email' => 'joe@gmail.com',
+                'usage' => [$usage],
+                'terms_of_use' => 'true',
+            ),
             "i_should_become_active"
         );
         $statement = $this->db->query(
@@ -411,7 +471,12 @@ class APIKeysTest extends TestCase
         $expectedStatus = 2;
         $this->cachedRequest->post(
             $this->siteURL . "/api_keys/new",
-            array('name' => 'i_should_stay_suspended', 'email' => 'joe@gmail.com', 'usage' => [$usage]),
+            array(
+                'name' => 'i_should_stay_suspended',
+                'email' => 'joe@gmail.com',
+                'usage' => [$usage],
+                'terms_of_use' => 'true',
+            ),
             "i_should_stay_suspended"
         );
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE  `api_usage` = '" . $usage . "'");

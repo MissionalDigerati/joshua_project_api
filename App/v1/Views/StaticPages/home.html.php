@@ -273,6 +273,16 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
                             </div>
                         </div>
 
+                        <div class="terms-of-use checkbox<?php echo ((!empty($errors)) && (in_array('terms_of_use', $errors))) ? ' has-error' : ''; ?>">
+                            <label>
+                                <input type="checkbox" name="terms_of_use" value="true">
+                                I agree to the <a href="/terms_of_use" target="_blank">Terms of Use</a><span class="required-field">*</span>
+                            </label>
+<?php if ((!empty($errors)) && (in_array('terms_of_use', $errors))) { ?>
+                                <span class="help-block">You must accept the Terms of Use!</span>
+<?php } ?>
+                        </div>
+
                         <div class="form-group">
                             <div class="controls col-lg-12">
                                 <button type="submit" class="btn btn-primary btn-block">Send request</button><br>

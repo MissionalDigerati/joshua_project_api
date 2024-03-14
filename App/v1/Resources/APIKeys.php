@@ -113,7 +113,7 @@ $app->post(
     "/api_keys/new",
     function (Request $request, Response $response, $args = []): Response {
         $formData = $request->getParsedBody();
-        $required = ["name", "email", "usage"];
+        $required = ["name", "email", "usage", "terms_of_use"];
         if (!array_key_exists('usage', $formData)) {
             $formData['usage'] = [];
         }
