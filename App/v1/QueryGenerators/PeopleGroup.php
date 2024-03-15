@@ -238,6 +238,17 @@ class PeopleGroup extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('bible_status')) {
+            $this->validator->barSeperatedStringProvidesAcceptableValues(
+                $this->providedParams['bible_status'],
+                ['0', '1', '2', '3', '4', '5']
+            );
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['bible_status'], 'BibleStatus');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('continents')) {
             $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['continents'], 3);
             $this->validator->barSeperatedStringProvidesAcceptableValues(

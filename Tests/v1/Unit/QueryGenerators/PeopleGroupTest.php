@@ -1011,4 +1011,32 @@ class PeopleGroupTest extends TestCase
             $this->assertEquals($expected, $peopleGroup['PopulationPGAC']);
         }
     }
+
+    public function testFindAllWithFliterShouldFilterByBibleStatus(): void
+    {
+        $expected = 2;
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('bible_status' => $expected));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals($expected, $peopleGroup['BibleStatus']);
+        }
+    }
+
+    public function testFindAllWithFliterShouldFilterByMultipleBibleStatus(): void
+    {
+        $expected = [2, 3];
+        $peopleGroup = new \QueryGenerators\PeopleGroup(array('bible_status' => join('|', $expected)));
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(in_array((int) $peopleGroup['BibleStatus'], $expected));
+        }
+    }
 }
