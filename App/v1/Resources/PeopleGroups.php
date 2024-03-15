@@ -410,7 +410,15 @@ $app->get(
  *                  allowMultiple="false",
  *                  dataType="string"
  *              ),
-*              @SWG\Parameter(
+ *              @SWG\Parameter(
+ *                  name="bible_status",
+ *                  description="A bar separated list of one or more BibleStatus levels. Only accepts the following codes: 0, 1, 2, 3, 4, 5.  The statuses are:<br><ul><li>0 = Unspecified</li><li>1 = Translation needed</li><li>2 = Translation started</li><li>3 = Portions</li><li>4 = New Testament</li><li>5 = Complete Bible</li></ul>",
+ *                  paramType="query",
+ *                  required="false",
+ *                  allowMultiple="false",
+ *                  dataType="string"
+ *              ),
+ *              @SWG\Parameter(
  *                  name="continents",
  *                  description="A bar separated list of one or more continents to filter by. Use the following codes:<br><ul><li>AFR - Africa</li><li>ASI - Asia</li><li>AUS - Australia</li><li>EUR - Europe</li><li>NAR - North America</li><li>SOP - Oceania (South Pacific)</li><li>LAM - South America</li></ul>",
  *                  paramType="query",

@@ -27,7 +27,17 @@
                 </tr>
                 <tr>
                     <td>BibleStatus</td>
-                    <td>Bible status</td>
+                    <td>
+                        The current Bible status:
+                        <ul>
+                            <li>0 = Unspecified</li>
+                            <li>1 = Translation needed</li>
+                            <li>2 = Translation started</li>
+                            <li>3 = Portions</li>
+                            <li>4 = New Testament</li>
+                            <li>5 = Complete Bible</li>
+                        </ul>
+                    </td>
                 </tr>
                 <tr>
                     <td>BibleYear</td>

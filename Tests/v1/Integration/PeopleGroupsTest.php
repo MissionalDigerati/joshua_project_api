@@ -1313,6 +1313,22 @@ class PeopleGroupsTest extends TestCase
         }
     }
 
+    public function testIndexRequestShouldReturnPeopleGroupsFilteredByBibleStatus(): void
+    {
+        $expected = [0, 5];
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array('api_key' => $this->APIKey, 'bible_status' => join('|', $expected)),
+            "filter_by_bible_status_on_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $peopleGroup) {
+            $this->assertTrue(in_array((int) $peopleGroup["BibleStatus"], $expected));
+        }
+    }
+
     /**
      * GET: /people_groups/daily_unreached.json
      * test page no longer provides removed outdated fields
