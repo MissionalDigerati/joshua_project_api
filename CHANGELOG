@@ -1,3 +1,11 @@
+Version 1.7.1
+
+We updated the requirements for receiving an API key.  We also now outline the Terms of Service for the API.
+
+## People Group Endpoint Parameters:
+
+ADDED bible_status argument for /people_groups endpoint.
+
 Version 1.7.0
 
 Upgraded to PHP 8.1 and updated various libraries.
