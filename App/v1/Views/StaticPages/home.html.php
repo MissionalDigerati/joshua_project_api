@@ -28,6 +28,7 @@
 <?php
     include($viewDirectory . 'Partials' . DIRECTORY_SEPARATOR . 'site_wide_css_meta.html');
 ?>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </head>
     <body>
 <?php
@@ -198,88 +199,93 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
 ?>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-lg-4" for="input-name">Organization</label>
-                            <div class="controls col-lg-8">
 <?php
-if ((isset($data['organization'])) && ($data['organization'] != "")) {
-    ?>
-    <input type="text" name="organization" id="input-organization"  value="<?php echo $data['organization']; ?>"
-    class="form-control">
-    <?php
-} else {
-    ?>
-        <input type="text" name="organization" id="input-organization" placeholder="Organization" class="form-control">
-    <?php
-}
+    $usage = (isset($data['usage'])) ? explode('|', $data['usage']) : [];
 ?>
+                        <div class="form-group">
+                            <label class="control-label col-lg-12 text-left" for="data-usage">
+                                Anticipated use of data (check all that apply)<span class="required-field">*</span>
+                            </label>
+                            <div class="col-md-offset-2 col-lg-12">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="usage[]" data-tag="personal" value="personal interest" <?php echo in_array('personal interest', $usage) ? 'checked' : ''; ?>> Personal interest
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="usage[]" data-tag="presentation" value="presentation or to share with others" <?php echo in_array('presentation or to share with others', $usage) ? 'checked' : ''; ?>> Presentation or to share with others
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="usage[]" data-tag="research" value="research" <?php echo in_array('research', $usage) ? 'checked' : ''; ?>> Research
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="usage[]" data-tag="internal" value="organization internal use" <?php echo in_array('organization internal use', $usage) ? 'checked' : ''; ?>> Organization internal use
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="usage[]" data-tag="website" value="for a website" <?php echo in_array('for a website', $usage) ? 'checked' : ''; ?>> For a website
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="usage[]" data-tag="app" value="for a mobile app" <?php echo in_array('for a mobile app', $usage) ? 'checked' : ''; ?>> For a mobile app
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="usage[]" data-tag="other" value="other" <?php echo in_array('other', $usage) ? 'checked' : ''; ?>> Other
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-lg-4" for="input-name">Website</label>
+
+                        <div class="form-group hidden" id="form-website-url">
+                            <label class="control-label col-lg-4" for="input-website-url">Website URL <small>(If Published)</small></label>
                             <div class="controls col-lg-8">
-<?php
-if ((isset($data['website'])) && ($data['website'] != "")) {
-    ?>
-    <input type="text" name="website" id="input-website"  value="<?php echo $data['website']; ?>" class="form-control">
-    <?php
-} else {
-    ?>
-                    <input type="text" name="website" id="input-website" placeholder="Website" class="form-control">
-    <?php
-}
-?>
+                                <input type="text" name="website_url" id="input-website-url" placeholder="Website URL" class="form-control" value="<?php if ((isset($data['website_url'])) && ($data['website_url'] != "")) { echo $data['website_url']; } ?>">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-lg-4" for="input-name">Phone Number</label>
+
+                        <div class="form-group hidden" id="apple-store-url">
+                            <label class="control-label col-lg-4" for="input-apple-store-url">Apple App Store URL <small>(If Published)</small></label>
                             <div class="controls col-lg-8">
-<?php
-if ((isset($data['phone_number'])) && ($data['phone_number'] != "")) {
-    ?>
-    <input type="text" name="phone_number" id="input-phone_number"  value="<?php echo $data['phone_number']; ?>"
-    class="form-control">
-    <?php
-} else {
-    ?>
-        <input type="text" name="phone_number" id="input-phone_number" placeholder="Phone Number" class="form-control">
-    <?php
-}
-?>
+                                <input type="text" name="apple_app_store" id="input-apple-store-url" placeholder="Apple App Store URL" class="form-control" value="<?php if ((isset($data['apple_app_store'])) && ($data['apple_app_store'] != "")) { echo $data['apple_app_store']; } ?>">
                             </div>
                         </div>
-<?php
-if ((!empty($errors)) && (in_array('usage', $errors))) {
-    ?>
-                        <div class="form-group has-error">
-    <?php
-} else {
-    ?>
-                        <div class="form-group">
-    <?php
-}
-?>
-                            <label class="control-label col-lg-4" for="input-usage">How Will You Use the API?
-                                <span class="required-field">*</span></label>
+
+                        <div class="form-group hidden" id="google-store-url">
+                            <label class="control-label col-lg-4" for="input-google-store-url">Google Play Store URL <small>(If Published)</small></label>
                             <div class="controls col-lg-8">
-<?php
-if ((isset($data['usage'])) && ($data['usage'] != "")) {
-    ?>
-        <textarea rows="6" id="input-usage" name="usage" class="form-control"><?php echo $data['usage']; ?></textarea>
-    <?php
-} else {
-    ?>
-            <textarea rows="6" id="input-usage" name="usage" class="form-control"></textarea>
-    <?php
-}
-if ((!empty($errors)) && (in_array('usage', $errors))) {
-    ?>
-                                <span class="help-block">Usage is Required!</span>
-    <?php
-}
-?>
+                                <input type="text" name="google_play_store" id="input-google-store-url" placeholder="Google Play Store URL" class="form-control" value="<?php if ((isset($data['google_play_store'])) && ($data['google_play_store'] != "")) { echo $data['google_play_store']; } ?>">
                             </div>
                         </div>
+
+                        <div class="form-group hidden<?php echo ((!empty($errors)) && (in_array('other_purpose', $errors))) ? ' has-error' : ''; ?>" id="other-purpose">
+                            <label class="control-label col-lg-4" for="input-other-purpose">Other Use  <small>(Please explain)</small><span class="required-field">*</span></label>
+                            <div class="controls col-lg-8">
+                                
+                                <input type="text" name="other_purpose" id="input-other-purpose" placeholder="Other Use" class="form-control" value="<?php if ((isset($data['other_purpose'])) && ($data['other_purpose'] != "")) { echo $data['other_purpose']; } ?>">
+                            </div>
+                        </div>
+
+                        <div class="terms-of-use checkbox<?php echo ((!empty($errors)) && (in_array('terms_of_use', $errors))) ? ' has-error' : ''; ?>">
+                            <label>
+                                <input type="checkbox" name="terms_of_use" value="true">
+                                I agree to the <a href="/terms_of_use" target="_blank">Terms of Use</a><span class="required-field">*</span>
+                            </label>
+<?php if ((!empty($errors)) && (in_array('terms_of_use', $errors))) { ?>
+                                <span class="help-block">You must accept the Terms of Use!</span>
+<?php } ?>
+                        </div>
+
+                        <div class="g-recaptcha" data-sitekey="<?php echo $recaptchaSiteKey; ?>"></div>
+
                         <div class="form-group">
                             <div class="controls col-lg-12">
                                 <button type="submit" class="btn btn-primary btn-block">Send request</button><br>
@@ -305,6 +311,7 @@ if ((!empty($errors)) && (in_array('usage', $errors))) {
                     $('div.beginner_panel div.panel-body').height('auto');
                 });
                 $('li.home-nav').addClass('active');
+                handleForm();
             });
             function equalHeight(group) {
                 var tallest = 0;
@@ -315,6 +322,45 @@ if ((!empty($errors)) && (in_array('usage', $errors))) {
                     }
                 });
                 group.height(tallest);
+            };
+            function handleForm() {
+                // check if is checked then display
+                var $website = $('input[data-tag="website"]');
+                if ($website.is(':checked')) {
+                    $('#form-website-url').removeClass('hidden');
+                }
+                $website.click(function() {
+                    if ($(this).is(':checked')) {
+                        $('#form-website-url').removeClass('hidden');
+                    } else {
+                        $('#form-website-url').addClass('hidden');
+                    }
+                });
+                var $app = $('input[data-tag="app"]');
+                if ($app.is(':checked')) {
+                    $('#apple-store-url').removeClass('hidden');
+                    $('#google-store-url').removeClass('hidden');
+                }
+                $app.click(function() {
+                    if ($(this).is(':checked')) {
+                        $('#apple-store-url').removeClass('hidden');
+                        $('#google-store-url').removeClass('hidden');
+                    } else {
+                        $('#apple-store-url').addClass('hidden');
+                        $('#google-store-url').addClass('hidden');
+                    }
+                });
+                var $other = $('input[data-tag="other"]');
+                if ($other.is(':checked')) {
+                    $('#other-purpose').removeClass('hidden');
+                }
+                $other.click(function() {
+                    if ($(this).is(':checked')) {
+                        $('#other-purpose').removeClass('hidden');
+                    } else {
+                        $('#other-purpose').addClass('hidden');
+                    }
+                });
             };
         </script>
     </body>

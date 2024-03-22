@@ -43,10 +43,11 @@ $app->get(
         if ((isset($data['required_fields'])) && ($data['required_fields'] !== "")) {
             $errors = explode("|", $data['required_fields']);
         }
+        $recaptchaSiteKey = $_ENV['RECAPTCHA_SITE_KEY'] ?? '';
         return $this->get('view')->render(
             $response,
             'StaticPages/home.html.php',
-            ['data' => $data, 'errors' => $errors]
+            ['data' => $data, 'errors' => $errors, 'recaptchaSiteKey' => $recaptchaSiteKey]
         );
     }
 );
@@ -192,6 +193,24 @@ $app->post(
                 'data' => $formData,
                 'message' => $message
             ]
+        );
+    }
+);
+/**
+ * Get the terms_of_use page
+ *
+ * GET /terms_of_use
+ * Available Formats HTML
+ *
+ * @author Johnathan Pulos
+ */
+$app->get(
+    "/terms_of_use",
+    function (Request $request, Response $response): Response {
+        return $this->get('view')->render(
+            $response,
+            'StaticPages/terms_of_use.html.php',
+            ['siteURL' => getSiteURL()]
         );
     }
 );
