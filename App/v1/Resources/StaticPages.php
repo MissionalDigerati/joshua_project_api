@@ -170,13 +170,15 @@ $app->post(
         $invalidFields = validatePresenceOf(["email"], $formData);
         if (empty($invalidFields)) {
             try {
-                $statement = $this->db->prepare("SELECT * FROM `md_api_keys` WHERE email = :email AND status = 0");
+                $statement = $this
+                    ->get('db')
+                    ->prepare("SELECT * FROM `md_api_keys` WHERE email = :email AND status = 0");
                 $statement->execute(['email' => $formData['email']]);
                 $data = $statement->fetchAll(PDO::FETCH_ASSOC);
                 if (empty($data)) {
                     $errors['find_keys'] = "We were unable to locate your pending API keys.";
                 } else {
-                    $this->mailer->sendAuthorizationLinks($formData['email'], $data, $siteURL);
+                    $this->get('mailer')->sendAuthorizationLinks($formData['email'], $data, $siteURL);
                     $message = "Your activation links have been emailed to you.";
                 }
             } catch (Exception $e) {

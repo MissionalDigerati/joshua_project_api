@@ -1,3 +1,7 @@
+Version 1.7.2
+
+This was a hot fix to solve an issue with getting your activation codes.  The issue has been fixed.
+
 Version 1.7.1
 
 We updated the requirements for receiving an API key.  We also now outline the Terms of Service for the API.
