@@ -43,7 +43,7 @@
         <h3>Non-Commercial Use:</h3>
         <p>You may not use the Joshua Project data or API for commercial purposes.  Commercial use includes, but is not limited to, the sale of the data, creating commercial products, or using the data to generate revenue.</p>
         <h3>Attribution:</h3>
-        <p>When using Joshua Project data, you agree to provide proper attribution by displaying the following acknowledgment: "Data provided by Joshua Project www.joshuaproject.net"</p>
+        <p>When using Joshua Project data, you agree to provide proper attribution by displaying the following acknowledgment: "Data provided by Joshua Project <a href="https://www.joshuaproject.net">www.joshuaproject.net</a>"</p>
         <p>Ensure that the attribution is clear and visible in your application or project using the data. Joshua Project reserves the right to review the placement and adequacy of the attribution provided by users and request modifications if necessary.</p>
         <h3>No Direct Replication:</h3>
         <p>You may not use the data in a manner that substantially replicates the services or presentation offered by Joshua Project.  Heavily replicating the core functionalities or providing a highly overlapping service using Joshua Project data is prohibited.  Please contact us at <a href="mailto:info@joshuaproject.net">info@joshuaproject.net</a> if you have any questions.</p>
