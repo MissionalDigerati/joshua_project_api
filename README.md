@@ -11,6 +11,23 @@ This tool uses [Composer](http://getcomposer.org/) to install the project specif
 
 Questions or problems? Please post them on the [issue tracker](https://github.com/MissionalDigerati/vts_cakephp_plugin/issues). You can contribute changes by forking the project and submitting a pull request.
 
+Local Set Up
+------------
+
+If you would like to set up this code locally, you will need to follow these steps:
+
+- Clone the repository to your machine
+- Change to the root directory of the project
+- Copy the file `.env.example` to `.env`.
+- Open the file, and set the appropriate settings.
+- Copy the file `Public/.htaccess.example` to `Public/.htaccess`.
+- Copy the database file to **_docker/database/data/**.  You may need to request a copy of the database from our team.
+- If you are on the latest Mac, you should open the **docker-compose.yml** file, and add `platform: linux/x86_64` to each container.
+- Start up Docker Desktop.
+- On Terminal, in the root directory of the code, run `docker-compose build --no-cache`
+- After it completes, get the containers running with the following command: `docker-compose up -d`
+- Now install the dependencies using this command: `docker exec -it jp_api_php composer install`
+
 Deployment
 ----------
 
