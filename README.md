@@ -27,6 +27,7 @@ If you would like to set up this code locally, you will need to follow these ste
 - On Terminal, in the root directory of the code, run `docker-compose build --no-cache`
 - After it completes, get the containers running with the following command: `docker-compose up -d`
 - Now install the dependencies using this command: `docker exec -it jp_api_php composer install`
+- If everything ran successfully, you can open your browser and visit http://localhost:8080/.
 
 Deployment
 ----------
