@@ -6,7 +6,6 @@ networks:
 services:
   memcached:
     image: memcached:latest
-    platform: linux/x86_64
     networks:
       - jp_api_v1
 
@@ -15,7 +14,6 @@ services:
     container_name: jp_api_mysql
     restart: unless-stopped
     tty: true
-    platform: linux/x86_64
     ports:
       - "4306:3306"
     volumes:
@@ -39,7 +37,6 @@ services:
       - .:/var/www/html/
     depends_on:
       - mysql
-    platform: linux/x86_64
     ports:
       - "9000:9000"
       - "8080:80"
