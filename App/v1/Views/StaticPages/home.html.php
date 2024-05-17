@@ -277,7 +277,7 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
                         <div class="terms-of-use checkbox<?php echo ((!empty($errors)) && (in_array('terms_of_use', $errors))) ? ' has-error' : ''; ?>">
                             <label>
                                 <input type="checkbox" name="terms_of_use" value="true">
-                                I agree to the <a href="/terms_of_use" target="_blank">Terms of Use</a><span class="required-field">*</span>&nbsp;&nbsp;(<a href="\files\pdfs\Joshua-Project-API-Terms-of-Use">PDF</a> <a href="\files\pdfs\Joshua-Project-API-Terms-of-Use"><span aria-hidden='true' class='glyphicon glyphicon-download-alt'></span></a>)
+                                I agree to the <a href="/terms_of_use" target="_blank">Terms of Use</a><span class="required-field">*</span>&nbsp;&nbsp;(<a href="\files\pdfs\Joshua-Project-API-Terms-of-Use">PDF</a> <a href="\files\pdfs\joshua-project-API-terms-of-use.pdf"><span aria-hidden='true' class='glyphicon glyphicon-download-alt'></span></a>)
                             </label>
 <?php if ((!empty($errors)) && (in_array('terms_of_use', $errors))) { ?>
                                 <span class="help-block">You must accept the Terms of Use!</span>
