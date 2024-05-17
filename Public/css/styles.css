@@ -89,6 +89,9 @@ pre span.code_highlight {
 .terms-of-use {
 	margin-bottom: 15px !important;
 }
+h3 {
+	margin-bottom: 5px !important;
+}
 
 @media (min-width: 768px) {
 	.form-horizontal .control-label {

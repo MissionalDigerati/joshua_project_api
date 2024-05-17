@@ -41,12 +41,11 @@
         <h3>Permitted Use:</h3>
         <p>You are granted a non-exclusive, non-transferable, and revocable license to access and use the Joshua Project data via the API.  Your use of the data is free of charge.</p>
         <h3>Non-Commercial Use:</h3>
-        <p>You may not use the Joshua Project data or API for commercial purposes.  Commercial use includes, but is not limited to, the sale of the data, creating commercial products, or using the data to generate revenue.</p>
+        <p>You may not use the Joshua Project data or API for commercial purposes. Commercial use includes, but is not limited to, the sale of the data, creating commercial products, or using the data to generate revenue.</p>
         <h3>Attribution:</h3>
-        <p>When using Joshua Project data, you agree to provide proper attribution by displaying the following acknowledgment: "Data provided by Joshua Project <a href="https://www.joshuaproject.net">www.joshuaproject.net</a>"</p>
-        <p>Ensure that the attribution is clear and visible in your application or project using the data. Joshua Project reserves the right to review the placement and adequacy of the attribution provided by users and request modifications if necessary.</p>
+        <p>When using Joshua Project data, you agree to provide proper attribution by displaying the following acknowledgment: "Data provided by <a href="https://www.joshuaproject.net">Joshua Project</a>" (including the hyperlink). This attribution should appear on pages displaying content provided by Joshua Project. Ensure that the attribution is clear and visible in your application or project using the data. Joshua Project reserves the right to review the placement and adequacy of the attribution provided by users and request modifications if necessary.</p>
         <h3>No Direct Replication:</h3>
-        <p>You may not use the data in a manner that substantially replicates the services or presentation offered by Joshua Project.  Heavily replicating the core functionalities or providing a highly overlapping service using Joshua Project data is prohibited.  Please contact us at <a href="mailto:info@joshuaproject.net">info@joshuaproject.net</a> if you have any questions.</p>
+        <p>You may not use the data in a public manner that replicates the services or presentation offered by Joshua Project. Heavily replicating the core functionalities or providing a highly overlapping service using Joshua Project content is prohibited. API users creating public presentations should provide some kind of value-added rather than a re-packaging of Joshua Project content. Please contact us at <a href="mailto:info@joshuaproject.net">info@joshuaproject.net</a> if you have any questions.</p>
         <h3>API Access Limits:</h3>
         <p>You agree not to abuse the API to the extent that it impacts the performance or availability of the service for other API users.</p>
         <h3>No Warranty:</h3>
@@ -57,8 +56,7 @@
         <h3>Changes to Terms:</h3>
         <p>Joshua Project reserves the right to modify or update these Terms of Use at any time.  Users are encouraged to review the terms periodically for changes.</p>
         <h3>Contact Information:</h3>
-        <p>For inquiries or permission requests not covered in this Terms of Use, please contact Joshua Project at <a href="mailto:info@joshuaproject.net">info@joshuaproject.net</a></p>
-        <p>By using the Joshua Project Data API, you agree to abide by these Terms of Use. If you do not agree with any part of these terms, please do not use the API.</p>
+        <p>By using the Joshua Project Data API, you agree to abide by these Terms of Use. If you do not agree with any part of these terms, please do not use the API. For inquiries or permission requests not covered in this Terms of Use, please contact Joshua Project at <a href="mailto:info@joshuaproject.net">info@joshuaproject.net</a>.</p>
         <p>Thank you for your cooperation and adherence to these terms.</p>
     </div>
 <?php
