@@ -34,7 +34,7 @@ use Swagger\Annotations as SWG;
  * @SWG\Resource(
  *     apiVersion="1",
  *     swaggerVersion="1.1",
- *     resourcePath="/totals",
+ *     resourcePath="/totals.{format}",
  *     basePath="/v1"
  * )
  */
@@ -115,5 +115,102 @@ $app->get(
                 ->write(arrayToXML($data, "totals", "total"));
         }
 
+    }
+);
+
+// phpcs:disable Generic.Files.LineLength
+/**
+ * @SWG\Resource(
+ *     apiVersion="1",
+ *     swaggerVersion="1.1",
+ *     resourcePath="/totals/{id}.{format}",
+ *     basePath="/v1"
+ * )
+ */
+/**
+  *
+  * @SWG\API(
+  *  path="/totals/{id}.{format}",
+  *  description="Retrieve the global totals based on the provided id (case insensitive). Look at the column descriptions for Totals to see all the provided information.",
+  *  @SWG\Operations(
+  *      @SWG\Operation(
+  *          httpMethod="GET",
+  *          nickname="totalsIndex",
+  *          summary="Retrieve the global total for a specific id (case insensitive) in various formats. (JSON or XML)",
+  *          notes="Retrieve the global total for a specific id (case insensitive). Look at the <a href='/v1/docs/column_descriptions/totals' target='_blank'>column descriptions</a> for Totals to see all the provided information.",
+  *          @SWG\Parameters(
+  *              @SWG\Parameter(
+  *                  name="api_key",
+  *                  description="Your Joshua Project API key.",
+  *                  paramType="query",
+  *                  required="true",
+  *                  allowMultiple="false",
+  *                  dataType="string"
+  *              ),
+    *            @SWG\Parameter(
+  *                  name="id",
+  *                  description="The unique total id (case insensitive).",
+  *                  paramType="path",
+  *                  required="true",
+  *                  allowMultiple="false",
+  *                  dataType="string"
+  *              )
+  *          ),
+  *          @SWG\ErrorResponses(
+  *              @SWG\ErrorResponse(
+  *                  code="400",
+  *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="401",
+  *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="404",
+  *                  reason="Not found.  The requested route was not found."
+  *              ),
+  *              @SWG\ErrorResponse(
+  *                  code="500",
+  *                  reason="Internal server error.  Please try again later."
+  *              )
+  *          )
+  *      )
+  *  )
+  * )
+  *
+  */
+// phpcs:enable Generic.Files.LineLength
+$app->get(
+    '/{version}/totals/{id}.{format}',
+    function (Request $request, Response $response, $args = []): Response {
+        $data = [];
+        $id = strip_tags($args['id']);
+        try {
+            $total = new Total(['id' => $id]);
+            $total->findById();
+            $statement = $this->get('db')->prepare($total->preparedStatement);
+            $statement->execute($total->preparedVariables);
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return $this->get('errorResponder')->get(
+                500,
+                $e->getMessage(),
+                $args['format'],
+                'Internal Server Error',
+                $response
+            );
+        }
+        /**
+         * Render the final data
+         */
+        if ($args['format'] == 'json') {
+            return $response
+            ->withHeader('Content-Type', 'application/json')
+            ->write(json_encode($data));
+        } else {
+            return $response
+                ->withHeader('Content-type', 'text/xml')
+                ->write(arrayToXML($data, "totals", "total"));
+        }
     }
 );
