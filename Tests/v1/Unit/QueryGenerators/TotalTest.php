@@ -36,7 +36,7 @@ class TotalTest extends TestCase
         $this->db = getDatabaseInstance();
     }
 
-    public function testAllShouldReturnAllTotals()
+    public function testAllShouldReturnAllTotals(): void
     {
         $totals = new \QueryGenerators\Total([]);
         $totals->all();
