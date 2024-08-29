@@ -84,14 +84,14 @@ if (empty($matches)) {
  * @var string
  * @author Johnathan Pulos
  */
-$APP_FILES_DIRECTORY = $ROOT_DIRECTORY . $DS . "App" . $DS . $API_VERSION;
-$VIEW_DIRECTORY = $APP_FILES_DIRECTORY . $DS . "Views" . $DS;
+$APP_FILES_DIRECTORY = "{$ROOT_DIRECTORY}{$DS}App{$DS}{$API_VERSION}";
+$VIEW_DIRECTORY = "{$APP_FILES_DIRECTORY}{$DS}Views{$DS}";
 
 $containerBuilder = new ContainerBuilder();
-$settings = require_once($ROOT_DIRECTORY . $DS . "Bootstrap" . $DS . "Settings.php");
+$settings = require_once("{$ROOT_DIRECTORY}{$DS}Bootstrap{$DS}Settings.php");
 $settings($containerBuilder);
 
-$dependencies = require_once($ROOT_DIRECTORY . $DS . "Bootstrap" . $DS . "Dependencies.php");
+$dependencies = require_once("{$ROOT_DIRECTORY}{$DS}Bootstrap{$DS}Dependencies.php");
 $dependencies($containerBuilder, $VIEW_DIRECTORY);
 
 // Build PHP-DI Container instance
@@ -107,25 +107,26 @@ if (file_exists($APP_FILES_DIRECTORY)) {
      *
      * @author Johnathan Pulos
      */
-    require($APP_FILES_DIRECTORY . $DS . "Includes" . $DS . "CommonFunctions.php");
+    require("{$APP_FILES_DIRECTORY}{$DS}Includes{$DS}CommonFunctions.php");
     $siteURL = getSiteURL();
     /**
      * Include our resources
      *
      * @author Johnathan Pulos
      */
-    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "StaticPages.php");
-    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Docs.php");
-    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "APIKeys.php");
-    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "PeopleGroups.php");
-    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Countries.php");
-    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Languages.php");
-    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Continents.php");
-    require($APP_FILES_DIRECTORY . $DS . "Resources" . $DS . "Regions.php");
+    require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}StaticPages.php");
+    require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}Docs.php");
+    require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}APIKeys.php");
+    require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}PeopleGroups.php");
+    require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}Countries.php");
+    require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}Languages.php");
+    require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}Continents.php");
+    require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}Regions.php");
+    require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}Totals.php");
 }
 
 // Register middleware
-$middleware = require_once($ROOT_DIRECTORY . $DS . "Bootstrap" . $DS . "Middleware.php");
+$middleware = require_once("{$ROOT_DIRECTORY}{$DS}Bootstrap{$DS}Middleware.php");
 $middleware($app);
 
 /**

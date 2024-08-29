@@ -46,7 +46,8 @@ return function(App $app) {
             '/v\d+/countries',
             '/v\d+/languages',
             '/v\d+/people_groups',
-            '/v\d+/regions'
+            '/v\d+/regions',
+            '/v\d+/totals',
         ]
     ];
     $cacheSettings = $pathSettings;

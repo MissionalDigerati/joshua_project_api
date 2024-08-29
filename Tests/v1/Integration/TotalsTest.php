@@ -72,4 +72,91 @@ class TotalsTest extends TestCase
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
         $this->assertEquals('You are missing your API key.', $decoded['api']['error']['details']);
     }
+
+    public function testIndexShouldRefuseAccessWithoutActiveAPIKey(): void
+    {
+        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '{$this->APIKey}'");
+        $response = $this->cachedRequest->get(
+            "{$this->siteURL}/{$this->APIVersion}/totals.json",
+            ['api_key' => $this->APIKey],
+            "totals_non_active_key_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
+    }
+
+    public function testIndexShouldRefuseAccessWithSuspendedAPIKey(): void
+    {
+        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '{$this->APIKey}'");
+        $response = $this->cachedRequest->get(
+            "{$this->siteURL}/{$this->APIVersion}/totals.json",
+            ['api_key' => $this->APIKey],
+            "totals_suspended_key_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
+    }
+
+    public function testIndexShouldRefuseAccessWithABadAPIKey(): void
+    {
+        $response = $this->cachedRequest->get(
+            "{$this->siteURL}/{$this->APIVersion}/totals.json",
+            ['api_key' => 'BADKEY'],
+            "totals_bad_key_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
+    }
+
+    public function testIndexShouldReturnARegionInJSON(): void
+    {
+        $response = $this->cachedRequest->get(
+            "{$this->siteURL}/{$this->APIVersion}/totals.json",
+            ['api_key' => $this->APIKey],
+            "totals_show_accessible_in_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+
+    public function testIndexShouldReturnARegionInXML(): void
+    {
+        $response = $this->cachedRequest->get(
+            "{$this->siteURL}/{$this->APIVersion}/totals.xml",
+            ['api_key' => $this->APIKey],
+            "totals_show_accessible_in_xml"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isXML($response));
+    }
+
+    public function testIndexShouldReturnResults(): void
+    {
+        $response = $this->cachedRequest->get(
+            "{$this->siteURL}/{$this->APIVersion}/totals.json",
+            ['api_key' => $this->APIKey],
+            "totals_show_returns_results"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertNotEmpty($decoded);
+        $this->assertEquals(41, count($decoded));
+        $this->assertArrayHasKey('id', $decoded[0]);
+        $this->assertNotEmpty($decoded[0]['id']);
+        $this->assertArrayHasKey('Value', $decoded[0]);
+        $this->assertNotEmpty($decoded[0]['Value']);
+        $this->assertArrayHasKey('RoundPrecision', $decoded[0]);
+    }
 }
