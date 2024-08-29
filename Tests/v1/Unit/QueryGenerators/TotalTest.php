@@ -53,4 +53,30 @@ class TotalTest extends TestCase
         $this->assertNotEmpty($data[0]['Value']);
         $this->assertArrayHasKey('RoundPrecision', $data[0]);
     }
+
+    public function testFindByIdShouldRequireId(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $totals = new \QueryGenerators\Total([]);
+        $totals->findById();
+    }
+
+    public function testFindByIdShouldReturnTotalById(): void
+    {
+        $totals = new \QueryGenerators\Total(['id' => 'CntContinents']);
+        $totals->findById();
+        $this->assertNotEmpty($totals->preparedStatement);
+        $this->assertNotEmpty($totals->preparedVariables);
+        $statement = $this->db->prepare($totals->preparedStatement);
+        $statement->execute($totals->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertNotEmpty($data);
+        $this->assertEquals(1, count($data));
+        $this->assertArrayHasKey('id', $data[0]);
+        $this->assertEquals('CntContinents', $data[0]['id']);
+        $this->assertArrayHasKey('Value', $data[0]);
+        $this->assertEquals(7, $data[0]['Value']);
+        $this->assertArrayHasKey('RoundPrecision', $data[0]);
+        $this->assertEquals(0, $data[0]['RoundPrecision']);
+    }
 }

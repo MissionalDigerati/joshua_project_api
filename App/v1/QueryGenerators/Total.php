@@ -103,4 +103,18 @@ class Total extends QueryGenerator
         $this->preparedStatement = "SELECT {$this->selectFieldsStatement} FROM {$this->tableName} {$this->defaultOrderByStatement}";
         $this->preparedVariables = [];
     }
+
+    /**
+     * Find the total for the specified ID
+     *
+     * @return void
+     * @access  public
+     */
+    public function findById(): void
+    {
+        $this->validator->providedRequiredParams($this->providedParams, ['id']);
+        $id = $this->providedParams['id'];
+        $this->preparedStatement = "SELECT {$this->selectFieldsStatement} FROM {$this->tableName} WHERE ID = :id";
+        $this->preparedVariables = ['id' => $id];
+    }
 }
