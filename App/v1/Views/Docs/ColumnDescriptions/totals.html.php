@@ -25,167 +25,139 @@
                             <tbody>
                                 <tr>
                                     <td>CntBuddhistPeopGroups</td>
-                                    <td>The total number of people groups where Buddhism is the primary religion.</td>
+                                    <td>Count of People Groups with Primary Religion Buddhist</td>
                                 </tr>
                                 <tr>
                                     <td>CntChristianPeopGroups</td>
-                                    <td>The total number of people groups where Christianity is the primary religion.</td>
+                                    <td>Count of People Groups with Primary Religion Christian</td>
                                 </tr>
                                 <tr>
                                     <td>CntContinents</td>
-                                    <td>The total number of continents in the world.</td>
+                                    <td>Count of Continents</td>
                                 </tr>
                                 <tr>
                                     <td>CntCountries</td>
-                                    <td>The total number of countries in the world.</td>
+                                    <td>Count of Countries</td>
                                 </tr>
                                 <tr>
                                     <td>CntCountries1040</td>
-                                    <td><a>The total number of people groups living in the <a href="https://joshuaproject.net/resources/articles/10_40_window" target="_blank">1040 Window</a>.</td>
+                                    <td>Count of Countries in the <a href="https://joshuaproject.net/resources/articles/10_40_window" target="_blank">10/40 Window</a>.</td>
                                 </tr>
                                 <tr>
                                     <td>CntCountriesLR</td>
-                                    <td>The total number of people groups that are considered <a href="https://joshuaproject.net/help/definitions#least-reached" target="_blank">least reached</a>.</td>
+                                    <td>Count of Countries considered <a href="https://joshuaproject.net/help/definitions#unreached" target="_blank">Unreached using 2% / 5% rule</a>.</td>
                                 </tr>
                                 <tr>
                                     <td>CntCtryChristian</td>
-                                    <td>The total number of countries where Christianity is the primary religion.</td>
+                                    <td>Count of Countries with Primary Religion Christian</td>
                                 </tr>
                                 <tr>
                                     <td>CntHinduPeopGroups</td>
-                                    <td>The total number of people groups where Hinduism is the primary religion.</td>
+                                    <td>Count of People Groups with Primary Religion Hindu</td>
                                 </tr>
                                 <tr>
                                     <td>CntLangJesusFilm</td>
-                                    <td>The total number of languages that have access to the Jesus Film.</td>
+                                    <td>Count of Languages that have the Jesus Film</td>
                                 </tr>
                                 <tr>
                                     <td>CntLangNoResources</td>
-                                    <td>The total number of langauges that have no access to Biblical resources.</td>
+                                    <td>Count of Languages with no reported resources e.g. Bible, stories, app, training</td>
                                 </tr>
                                 <tr>
                                     <td>CntLangPortions</td>
-                                    <td>The total number of langauges that have access to only portions of the Bible.</td>
+                                    <td>Count of Languages with Bible Portions</td>
                                 </tr>
                                 <tr>
                                     <td>CntLangRecordings</td>
-                                    <td>The total number of langauges that have access to Biblical recordings.</td>
+                                    <td>Count of Languages with Audio Recordings</td>
                                 </tr>
                                 <tr>
                                     <td>CntMuslimPeopGroups</td>
-                                    <td>The total number of people groups where Islam is the primary religion.</td>
+                                    <td>Count of People Groups with Primary Religion Muslim</td>
                                 </tr>
                                 <tr>
                                     <td>CntPCLR</td>
-                                    <td>The total number of people clusters  that are considered <a href="https://joshuaproject.net/help/definitions#least-reached" target="_blank">least reached</a>.</td>
+                                    <td>Count of People Clusters considered <a href="https://joshuaproject.net/help/definitions#unreached" target="_blank">Unreached using 2% / 5% rule</a>.</td>
                                 </tr>
                                 <tr>
                                     <td>CntPeopCtry</td>
-                                    <td></td>
+                                    <td>Count of People Groups using PGIC perspective</td>
                                 </tr>
                                 <tr>
                                     <td>CntPeopCtry1040</td>
-                                    <td></td>
+                                    <td>Count of People Groups in the 10/40 Window</td>
                                 </tr>
                                 <tr>
                                     <td>CntPeopCtryFrontier</td>
-                                    <td></td>
+                                    <td>Count of People Groups considered Frontier using 0.1% and no movement rule</td>
                                 </tr>
                                 <tr>
                                     <td>CntPeopCtryGreat50KLR</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>CntPeopCtryLess10K</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>CntPeopCtryLess10KLR</td>
-                                    <td></td>
+                                    <td>Count of People Groups greater than 50K population considered unreached</td>
                                 </tr>
                                 <tr>
                                     <td>CntPeopCtryLR</td>
-                                    <td></td>
+                                    <td>Count of People Groups considered <a href="https://joshuaproject.net/help/definitions#unreached" target="_blank">Unreached</a></td>
                                 </tr>
                                 <tr>
                                     <td>CntPeopCtryLR1040</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>CntPeopCtryLRNo5PctAdherents</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>CntPeopCtryNoPopl</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>CntPeopCtryNoPoplLR</td>
-                                    <td></td>
+                                    <td>Count of People Groups in the 10/40 Window considered <a href="https://joshuaproject.net/help/definitions#unreached" target="_blank">Unreached</a></td>
                                 </tr>
                                 <tr>
                                     <td>CntPeopleID1</td>
-                                    <td></td>
+                                    <td>Count of Affinity Blocs</td>
                                 </tr>
                                 <tr>
                                     <td>CntPeopleID2</td>
-                                    <td></td>
+                                    <td>Count of People Clusters</td>
                                 </tr>
                                 <tr>
                                     <td>CntPeopleID3</td>
-                                    <td></td>
+                                    <td>Count of People Groups Across Countries (PGAC)</td>
                                 </tr>
                                 <tr>
                                     <td>CntPGACLR</td>
-                                    <td></td>
+                                    <td>Count of People Groups Across Countries (PGAC) considered <a href="https://joshuaproject.net/help/definitions#unreached" target="_blank">Unreached using 2% / 5% rule</a></td>
                                 </tr>
                                 <tr>
                                     <td>CntRegions</td>
-                                    <td>The total number of regions in the world.</td>
+                                    <td>Count of Regions</td>
                                 </tr>
                                 <tr>
                                     <td>CntTotalLanguages</td>
-                                    <td>The total number of languages in the world.</td>
-                                </tr>
-                                <tr>
-                                    <td>CntTotalSubgroups</td>
-                                    <td>The total number of subgroups in the world.</td>
+                                    <td>Count of Languages</td>
                                 </tr>
                                 <tr>
                                     <td>CntWorkersNeeded</td>
-                                    <td>The total number of people groups where workers are needed.</td>
-                                </tr>
-                                <tr>
-                                    <td>PoplCtryUN</td>
-                                    <td>The total world population provided by the United Nations.</td>
+                                    <td>Count of Workers Needed</td>
                                 </tr>
                                 <tr>
                                     <td>PoplPeopCtry</td>
-                                    <td>The total world population.</td>
+                                    <td>Summation of all People Group populations i.e. World Population</td>
                                 </tr>
                                 <tr>
                                     <td>PoplPeopCtry1040</td>
-                                    <td>The total world population in the <a href="https://joshuaproject.net/resources/articles/10_40_window" target="_blank">1040 Window</a>.</td>
+                                    <td>Population of People Groups in the <a href="https://joshuaproject.net/resources/articles/10_40_window" target="_blank">10/40 Window</a></td>
                                 </tr>
                                 <tr>
                                     <td>PoplPeopCtryFrontier</td>
-                                    <td>The total world population that are considered <a href="https://joshuaproject.net/frontier" target="_blank">frontier unreached people</a>.</td>
+                                    <td>Population of People Groups considered <a href="https://joshuaproject.net/frontier" target="_blank">Unreached Frontier</a></td>
                                 </tr>
                                 <tr>
                                     <td>PoplPeopCtryLR</td>
-                                    <td>The total world population that are considered <a href="https://joshuaproject.net/help/definitions#least-reached" target="_blank">least reached people</a>.</td>
+                                    <td>Population of People Groups considered <a href="https://joshuaproject.net/help/definitions#unreached" target="_blank">Unreached</a></td>
                                 </tr>
                                 <tr>
                                     <td>PoplPeopCtryLR1040</td>
-                                    <td>The total world population that are considered <a href="https://joshuaproject.net/help/definitions#least-reached" target="_blank">least reached people</a> ans reside in the <a href="https://joshuaproject.net/resources/articles/10_40_window" target="_blank">1040 Window</a>.</td>
+                                    <td>Population of People Groups considered <a href="https://joshuaproject.net/help/definitions#unreached" target="_blank">Unreached</a> in the <a href="https://joshuaproject.net/resources/articles/10_40_window" target="_blank">10/40 Window</a></td>
                                 </tr>
                                 <tr>
                                     <td>WorldChristianPct</td>
-                                    <td>The percentage of the world that identifies as Christians.</td>
+                                    <td>Global Percent Christian Adherent</td>
                                 </tr>
                                 <tr>
                                     <td>WorldEvangelicalPct</td>
-                                    <td>The percentage of the world that identifies as Evangelical Christians.</td>
+                                    <td>Global Percent Evangelical</td>
                                 </tr>
                             </tbody>
                         </table>
