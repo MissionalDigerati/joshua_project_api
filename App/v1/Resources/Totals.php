@@ -114,7 +114,6 @@ $app->get(
                 ->withHeader('Content-type', 'text/xml')
                 ->write(arrayToXML($data, "totals", "total"));
         }
-
     }
 );
 
