@@ -24,7 +24,6 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use PHPUnit\Framework\TestCase;
 
 class TotalTest extends TestCase
@@ -46,7 +45,7 @@ class TotalTest extends TestCase
         $statement->execute($totals->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertNotEmpty($data);
-        $this->assertEquals(41, count($data));
+        $this->assertEquals(34, count($data));
         $this->assertArrayHasKey('id', $data[0]);
         $this->assertNotEmpty($data[0]['id']);
         $this->assertArrayHasKey('Value', $data[0]);
@@ -78,5 +77,43 @@ class TotalTest extends TestCase
         $this->assertEquals(7, $data[0]['Value']);
         $this->assertArrayHasKey('RoundPrecision', $data[0]);
         $this->assertEquals(0, $data[0]['RoundPrecision']);
+    }
+
+    public function testIndexShouldNotReturnRestrictedIds(): void
+    {
+        $totals = new \QueryGenerators\Total([]);
+        $totals->all();
+        $this->assertNotEmpty($totals->preparedStatement);
+        $this->assertEmpty($totals->preparedVariables);
+        $statement = $this->db->prepare($totals->preparedStatement);
+        $statement->execute($totals->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertNotEmpty($data);
+        $ids = array_column($data, 'id');
+        $this->assertNotContains('CntPeopCtryLess10K', $ids);
+        $this->assertNotContains('CntPeopCtryLess10KLR', $ids);
+        $this->assertNotContains('CntPeopCtryLRNo5PctAdherents', $ids);
+        $this->assertNotContains('CntPeopCtryNoPopl', $ids);
+        $this->assertNotContains('CntPeopCtryNoPoplLR', $ids);
+        $this->assertNotContains('CntTotalSubgroups', $ids);
+        $this->assertNotContains('PoplCtryUN', $ids);
+    }
+
+    public function testShowShouldNotReturnRestrictedIds(): void
+    {
+        $restricted = [
+            'CntPeopCtryLess10K', 'CntPeopCtryLess10KLR', 'CntPeopCtryLRNo5PctAdherents',
+            'CntPeopCtryNoPopl', 'CntPeopCtryNoPoplLR', 'CntTotalSubgroups', 'PoplCtryUN'
+        ];
+        foreach ($restricted as $id) {
+            $totals = new \QueryGenerators\Total(['id' => $id]);
+            $totals->findById();
+            $this->assertNotEmpty($totals->preparedStatement);
+            $this->assertNotEmpty($totals->preparedVariables);
+            $statement = $this->db->prepare($totals->preparedStatement);
+            $statement->execute($totals->preparedVariables);
+            $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            $this->assertEmpty($data);
+        }
     }
 }

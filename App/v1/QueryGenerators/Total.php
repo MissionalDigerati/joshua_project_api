@@ -76,6 +76,15 @@ class Total extends QueryGenerator
      */
     protected $fieldsToSelectArray = ['ID AS id', 'IDValue AS Value', 'RoundPrecision'];
     /**
+     * A list of ids that we do not want to return in the results.
+     *
+     * @var array
+     */
+    protected $restrictedIds = [
+        'CntPeopCtryLess10K', 'CntPeopCtryLess10KLR', 'CntPeopCtryLRNo5PctAdherents', 'CntPeopCtryNoPopl',
+        'CntPeopCtryNoPoplLR', 'CntTotalSubgroups', 'PoplCtryUN'
+    ];
+    /**
      * Construct the Totals class.
      *
      * During construction,  the $getParams are checked and inserted in the $providedParams class variable.
@@ -91,7 +100,7 @@ class Total extends QueryGenerator
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
     }
-    
+
     /**
      * Find all the totals in the table
      *
@@ -100,7 +109,9 @@ class Total extends QueryGenerator
      */
     public function all(): void
     {
-        $this->preparedStatement = "SELECT {$this->selectFieldsStatement} FROM {$this->tableName} {$this->defaultOrderByStatement}";
+        $where = $this->createWhereForRestrictedIds();
+        $this->preparedStatement = "SELECT {$this->selectFieldsStatement} FROM {$this->tableName} " .
+                                   "WHERE {$where} {$this->defaultOrderByStatement}";
         $this->preparedVariables = [];
     }
 
@@ -112,9 +123,30 @@ class Total extends QueryGenerator
      */
     public function findById(): void
     {
+        $where = "WHERE ID = :id AND {$this->createWhereForRestrictedIds()}";
         $this->validator->providedRequiredParams($this->providedParams, ['id']);
         $id = $this->providedParams['id'];
-        $this->preparedStatement = "SELECT {$this->selectFieldsStatement} FROM {$this->tableName} WHERE ID = :id";
+        $this->preparedStatement = "SELECT {$this->selectFieldsStatement} FROM {$this->tableName} {$where}";
         $this->preparedVariables = ['id' => $id];
+    }
+
+    /**
+     * Create the where statement for hiding the restricted ids.
+     *
+     * @return string
+     */
+    protected function createWhereForRestrictedIds(): string
+    {
+        if (!empty($this->restrictedIds)) {
+            $quotedIds = array_map(function ($id) {
+                return "'{$id}'";
+            }, $this->restrictedIds);
+            $ids = implode(',', $quotedIds);
+            $where = "ID NOT IN ({$ids})";
+        } else {
+            $where = '';
+        }
+
+        return $where;
     }
 }

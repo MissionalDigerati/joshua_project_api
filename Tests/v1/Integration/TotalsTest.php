@@ -152,7 +152,7 @@ class TotalsTest extends TestCase
         $decoded = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertNotEmpty($decoded);
-        $this->assertEquals(41, count($decoded));
+        $this->assertEquals(34, count($decoded));
         $this->assertArrayHasKey('id', $decoded[0]);
         $this->assertNotEmpty($decoded[0]['id']);
         $this->assertArrayHasKey('Value', $decoded[0]);
