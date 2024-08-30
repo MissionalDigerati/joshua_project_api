@@ -181,7 +181,7 @@
 ?>
         <script type="text/javascript">
             $(document).ready(function() {
-                $('li.documentation-nav, li.regions-column-desc-nav').addClass('active');
+                $('li.documentation-nav, li.totals-column-desc-nav').addClass('active');
             });
         </script>
 </body>
