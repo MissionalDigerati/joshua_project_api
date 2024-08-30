@@ -1451,16 +1451,16 @@ class PeopleGroupsTest extends TestCase
      */
     public function testDailyUnreachedShouldProvideNewFields(): void
     {
-        $expectedPop = 1371000;
+        $expectedPop = 265000;
         $expectedFrontier = 'Y';
-        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m22099.png';
-        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m22099.pdf';
-        $expectedPhotoCCVersionText = '';
-        $expectedPhotoCCVersionURL = '';
-        $expectedMapCredits = 'People Group data: Omid.  Map geography: UNESCO / GMI.  ' .
-        'Map Design: Joshua Project';
+        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m10252_gm.png';
+        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m10252_gm.pdf';
+        $expectedPhotoCCVersionText = 'CC BY-SA 4.0';
+        $expectedPhotoCCVersionURL = 'https://creativecommons.org/licenses/by-sa/4.0/';
+        $expectedMapCredits = 'People Group location: Joshua Project, Map geography' .
+        ': ESRI / GMI. Map design: Joshua Project.';
         $expectedMapCreditsURL = '';
-        $expectedMapCopyright = '';
+        $expectedMapCopyright = 'N';
         $expectedMapCCVersionText = '';
         $expectedMapCCVersionURL = '';
         $response = $this->cachedRequest->get(
@@ -1504,7 +1504,7 @@ class PeopleGroupsTest extends TestCase
      */
     public function testShowRequestsShouldProvideNewFields(): void
     {
-        $expectedPop = 1952700;
+        $expectedPop = 1948100;
         $expectedFrontier = 'Y';
         $expectedMapAddress = 'm00324_aj.png';
         $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m00324_aj.png';
@@ -1646,7 +1646,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertFalse(empty($decoded));
         $this->assertFalse(array_key_exists('ProfileText', $decoded[0]));
         $this->assertTrue(array_key_exists('Summary', $decoded[0]));
-        $this->assertTrue(str_contains($decoded[0]['Summary'], 'Though many Tunisian Jews remain in Tunisia'));
+        $this->assertTrue(str_contains($decoded[0]['Summary'], 'Mongols in Inner Mongolia survive bitter winters'));
     }
 
     public function testShowShouldReplaceProfileTextWithASummary(): void

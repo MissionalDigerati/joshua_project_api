@@ -21,6 +21,10 @@
         {
             "path": "/resources/regions.{format}",
             "description": "Retrieve the details of a specific Region."
+        },
+        {
+            "path": "/resources/totals.{format}",
+            "description": "Retrieve global totals in various formats."
         }
     ]
 }

@@ -585,11 +585,11 @@ class CountriesTest extends TestCase
         $this->assertTrue(array_key_exists('BibleNewTestament', $decoded[0]));
         $this->assertTrue(array_key_exists('BibleComplete', $decoded[0]));
         $this->assertEquals(53, $decoded[0]['CntPrimaryLanguages']);
-        $this->assertEquals(22, $decoded[0]['TranslationUnspecified']);
-        $this->assertEquals(2, $decoded[0]['TranslationNeeded']);
-        $this->assertEquals(0, $decoded[0]['TranslationStarted']);
+        $this->assertEquals(17, $decoded[0]['TranslationUnspecified']);
+        $this->assertEquals(5, $decoded[0]['TranslationNeeded']);
+        $this->assertEquals(1, $decoded[0]['TranslationStarted']);
         $this->assertEquals(10, $decoded[0]['BiblePortions']);
-        $this->assertEquals(2, $decoded[0]['BibleNewTestament']);
+        $this->assertEquals(3, $decoded[0]['BibleNewTestament']);
         $this->assertEquals(17, $decoded[0]['BibleComplete']);
     }
 

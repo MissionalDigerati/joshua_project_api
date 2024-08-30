@@ -100,7 +100,8 @@ function getDatabaseInstance()
  */
 function isJSON($string)
 {
-    return json_decode($string) != null;
+    json_decode($string);
+    return (json_last_error() === JSON_ERROR_NONE);
 }
 /**
  * Checks if a string is XML
