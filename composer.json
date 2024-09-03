@@ -1,7 +1,7 @@
 {
     "name": "joshua-project/api-v1",
     "description": "An API for connecting to the Joshua Project data.",
-    "version": "1.7.0",
+    "version": "1.8.0",
     "config": {
         "vendor-dir": "Vendor",
         "platform": {
