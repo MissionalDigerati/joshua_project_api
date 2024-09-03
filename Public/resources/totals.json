@@ -1,0 +1,96 @@
+{
+    "basePath": "/v1",
+    "swaggerVersion": "1.1",
+    "apiVersion": "1",
+    "resourcePath": "/totals",
+    "apis": [
+        {
+            "path": "/totals.{format}",
+            "operations": [
+                {
+                    "httpMethod": "GET",
+                    "summary": "Retrieve global totals in various formats. (JSON or XML)",
+                    "nickname": "totalsIndex",
+                    "parameters": [
+                        {
+                            "name": "api_key",
+                            "description": "Your Joshua Project API key.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": true
+                        }
+                    ],
+                    "errorResponses": [
+                        {
+                            "reason": "Bad request.  Your request is malformed in some way.  Check your supplied parameters.",
+                            "code": 400
+                        },
+                        {
+                            "reason": "Unauthorized.  Your missing your API key, or it has been suspended.",
+                            "code": 401
+                        },
+                        {
+                            "reason": "Not found.  The requested route was not found.",
+                            "code": 404
+                        },
+                        {
+                            "reason": "Internal server error.  Please try again later.",
+                            "code": 500
+                        }
+                    ],
+                    "notes": "Retrieve various global totals including total Christian people groups, continents, reagions and many more. Look at the <a href='/v1/docs/column_descriptions/totals' target='_blank'>column descriptions</a> for Totals to see all the provided information."
+                }
+            ],
+            "description": "Retrieve global totals in various formats."
+        },
+        {
+            "path": "/totals/{id}.{format}",
+            "operations": [
+                {
+                    "httpMethod": "GET",
+                    "summary": "Retrieve the global totals based on the provided id (case insensitive). (JSON or XML)",
+                    "nickname": "totalsShow",
+                    "parameters": [
+                        {
+                            "name": "api_key",
+                            "description": "Your Joshua Project API key.",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "query",
+                            "required": true
+                        },
+                        {
+                            "name": "id",
+                            "description": "The unique total id (case insensitive).",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "path",
+                            "required": true
+                        }
+                    ],
+                    "errorResponses": [
+                        {
+                            "reason": "Bad request.  Your request is malformed in some way.  Check your supplied parameters.",
+                            "code": 400
+                        },
+                        {
+                            "reason": "Unauthorized.  Your missing your API key, or it has been suspended.",
+                            "code": 401
+                        },
+                        {
+                            "reason": "Not found.  The requested route was not found.",
+                            "code": 404
+                        },
+                        {
+                            "reason": "Internal server error.  Please try again later.",
+                            "code": 500
+                        }
+                    ],
+                    "notes": "Retrieve the global total for a specific id (case insensitive). Look at the <a href='/v1/docs/column_descriptions/totals' target='_blank'>column descriptions</a> for Totals to see all the provided information."
+                }
+            ],
+            "description": "Retrieve the global total for a specific id (case insensitive) in various formats."
+        }
+    ]
+}

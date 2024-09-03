@@ -1,3 +1,10 @@
+Version 1.8.0
+
+Added two new endpoints for retrieving global statistical data.
+
+/totals.{format} - Get all available statistics.
+/totals/{id}.{format} - Get the statistic for a specific id.
+
 Version 1.7.2
 
 This was a hot fix to solve an issue with getting your activation codes.  The issue has been fixed.

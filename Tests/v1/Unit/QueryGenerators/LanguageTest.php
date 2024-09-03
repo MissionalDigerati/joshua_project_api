@@ -55,7 +55,7 @@ class LanguageTest extends TestCase
     public function testFindByIdShouldReturnCorrectLanguage(): void
     {
         $expected = array('id'  =>  'amx');
-        $expectedLanguage = 'anmatyerre';
+        $expectedLanguage = 'anmatyerr';
         $expectedHubCountry = 'australia';
         $language = new \QueryGenerators\Language($expected);
         $language->findById();
