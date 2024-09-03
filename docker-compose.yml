@@ -5,6 +5,7 @@ networks:
 
 services:
   memcached:
+    platform: linux/x86_64
     image: memcached:latest
     networks:
       - jp_api_v1
