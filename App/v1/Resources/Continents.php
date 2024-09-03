@@ -27,69 +27,103 @@ declare(strict_types=1);
 use QueryGenerators\Continent;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Swagger\Annotations as SWG;
+use OpenApi\Attributes as OA;
+
+/**
+ * @OA\Info(
+ *     title="Joshua Project API",
+ *     version="1"
+ * )
+ */
 
 // phpcs:disable Generic.Files.LineLength
 /**
- * @SWG\Resource(
- *     apiVersion="1",
- *     swaggerVersion="1.1",
- *     resourcePath="/continents",
- *     basePath="/v1"
+ * @OA\Get(
+ *     path="/continents/{id}.{format}",
+ *     summary="Get the details about a specific continent.",
+ *     description="Retrieve the details of a specific Continent by supplying a three letter ISO Continent code (id).  Use the following codes:<br><ul><li>AFR - Africa</li><li>ASI  - Asia</li><li>AUS - Australia</li><li>EUR - Europe</li><li>NAR - North America</li><li>SOP - Oceania (South Pacific)</li><li>LAM - South America</li></ul>",
+ *     @OA\Parameter(
+ *         name="api_key",
+ *         description="Your Joshua Project API key.",
+ *         in="query",
+ *         required=true,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         description="The 3 letter ISO Continent Code for the Continent you want to view. Use the codes indicated above.",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="format",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="string", enum={"json", "xml"})
+ *     ),
+ *     @OA\Response(
+ *         response="200",
+ *         description="The details about the specific continent.",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(type="object")
+ *         ),
+ *         @OA\MediaType(
+ *             mediaType="application/xml",
+ *             @OA\Schema(type="object")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="400",
+ *         description="Bad request. Your request is malformed in some way. Check your supplied parameters.",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(type="object")
+ *         ),
+ *         @OA\MediaType(
+ *             mediaType="application/xml",
+ *             @OA\Schema(type="object")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="401",
+ *         description="Unauthorized. You are missing your API key, or it has been suspended.",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(type="object")
+ *         ),
+ *         @OA\MediaType(
+ *             mediaType="application/xml",
+ *             @OA\Schema(type="object")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="404",
+ *         description="Not found. The requested route was not found.",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(type="object")
+ *         ),
+ *         @OA\MediaType(
+ *             mediaType="application/xml",
+ *             @OA\Schema(type="object")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="500",
+ *         description="Internal server error. Please try again later.",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(type="object")
+ *         ),
+ *         @OA\MediaType(
+ *             mediaType="application/xml",
+ *             @OA\Schema(type="object")
+ *         )
+ *     )
  * )
  */
-/**
-  *
-  * @SWG\API(
-  *  path="/continents/{id}.{format}",
-  *  description="Retrieve the details of a specific Continent.",
-  *  @SWG\Operations(
-  *      @SWG\Operation(
-  *          httpMethod="GET",
-  *          nickname="continentShow",
-  *          summary="Retrieve the details of a specific Continent (JSON or XML)",
-  *          notes="Retrieve the details of a specific Continent by supplying a three letter ISO Continent code (id).  Use the following codes:<br><ul><li>AFR - Africa</li><li>ASI  - Asia</li><li>AUS - Australia</li><li>EUR - Europe</li><li>NAR - North America</li><li>SOP - Oceania (South Pacific)</li><li>LAM - South America</li></ul>",
-  *          @SWG\Parameters(
-  *              @SWG\Parameter(
-  *                  name="api_key",
-  *                  description="Your Joshua Project API key.",
-  *                  paramType="query",
-  *                  required="true",
-  *                  allowMultiple="false",
-  *                  dataType="string"
-  *              ),
-  *              @SWG\Parameter(
-  *                  name="id",
-  *                  description="The 3 letter ISO Continent Code for the Continent you want to view. Use the codes indicated above.",
-  *                  paramType="path",
-  *                  required="true",
-  *                  allowMultiple="false",
-  *                  dataType="string"
-  *              )
-  *          ),
-  *          @SWG\ErrorResponses(
-  *              @SWG\ErrorResponse(
-  *                  code="400",
-  *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
-  *              ),
-  *              @SWG\ErrorResponse(
-  *                  code="401",
-  *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
-  *              ),
-  *              @SWG\ErrorResponse(
-  *                  code="404",
-  *                  reason="Not found.  The requested route was not found."
-  *              ),
-  *              @SWG\ErrorResponse(
-  *                  code="500",
-  *                  reason="Internal server error.  Please try again later."
-  *              )
-  *          )
-  *      )
-  *  )
-  * )
-  *
-  */
 // phpcs:enable Generic.Files.LineLength
 $app->get(
     "/{version}/continents/{id}.{format}",

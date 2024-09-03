@@ -10,6 +10,7 @@ services:
       - jp_api_v1
 
   mysql:
+    platform: linux/x86_64
     image: mysql:5.7.22
     container_name: jp_api_mysql
     restart: unless-stopped
@@ -28,6 +29,7 @@ services:
       - jp_api_v1
 
   php:
+    platform: linux/x86_64
     hostname: docker-php
     build:
       context: .
