@@ -263,7 +263,7 @@ $app->get(
  *     ),
  *     @OA\Parameter(
  *         name="limit",
- *         description="The maximum results to return. (Defaults to 250)",
+ *         description="The maximum results to return.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(
@@ -280,7 +280,7 @@ $app->get(
  *     ),
  *     @OA\Parameter(
  *         name="page",
- *         description="The page of results to display  (Defaults to 1)",
+ *         description="The page of results to display.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(
@@ -305,15 +305,14 @@ $app->get(
  *     @OA\Parameter(
  *         name="primary_religions",
  *         description="A bar separated list of one or more primary religions to filter by. Use the following numbers:
- *
- * - **1** = Christianity
- * - **2** = Buddhism
- * - **4** = Ethnic Religions
- * - **5** = Hinduism
- * - **6** = Islam
- * - **7** = Non-Religious
- * - **8** = Other/Small
- * - **9** = Unknown",
+ * **1** = Christianity
+ * **2** = Buddhism
+ * **4** = Ethnic Religions
+ * **5** = Hinduism
+ * **6** = Islam
+ * **7** = Non-Religious
+ * **8** = Other/Small
+ * **9** = Unknown",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")

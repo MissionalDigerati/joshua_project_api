@@ -40,9 +40,8 @@ use Utilities\StringHelper;
  *     path="/people_groups/daily_unreached.{format}",
  *     summary="Retrieve the Unreached of the Day information (JSON or XML)",
  *     description="Retrieve the daily Unreached of the Day people group information. You have two options when retrieving the Unreached of the Day:
- * 
- * 1. Get today's Unreached of the Day. This is the default if you do not send parameters.
- * 2. You can specify the month and day parameter to get a specific day of the year. For example, `/daily_unreached.json?month=01&day=31` will get the people group for Jan. 31st. You must provide both parameters!",
+ * Get today's Unreached of the Day. This is the default if you do not send parameters.
+ * You can specify the month and day parameter to get a specific day of the year. For example, `/daily_unreached.json?month=01&day=31` will get the people group for Jan. 31st. You must provide both parameters!",
  *     @OA\Parameter(
  *         name="api_key",
  *         description="Your Joshua Project API key.",
@@ -240,9 +239,8 @@ $app->get(
  *     path="/people_groups/{id}.{format}",
  *     summary="Retrieve the details of a specific People Group (JSON or XML)",
  *     description="Retrieve the details of a specific People Group around the world or in a specific country.  You can either:
- *
- * 1. Get a summary of all occurances of the People Group by supplying the PeopleGroup.id (PeopleID3) only, or
- * 2. Get the details of a specific people group in a specific country by providing the PeopleGroup.id (PeopleID3) and the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J).",
+ * Get a summary of all occurances of the People Group by supplying the PeopleGroup.id (PeopleID3) only, or
+ * Get the details of a specific people group in a specific country by providing the PeopleGroup.id (PeopleID3) and the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J).",
  *     @OA\Parameter(
  *         name="api_key",
  *         description="Your Joshua Project API key.",
@@ -261,7 +259,7 @@ $app->get(
  *         name="id",
  *         description="Joshua Project's PeopleID3.",
  *         in="path",
- *         required=false,
+ *         required=true,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
@@ -469,13 +467,12 @@ $app->get(
  *     @OA\Parameter(
  *         name="bible_status",
  *         description="A bar separated list of one or more BibleStatus levels. Only accepts the following codes: 0, 1, 2, 3, 4, 5.  The statuses are: 
- *
- * - **0** = Unspecified
- * - **1** = Translation needed
- * - **2** = Translation started
- * - **3** = Portions
- * - **4** = New Testament
- * - **5** = Complete Bible",
+ * **0** = Unspecified
+ * **1** = Translation needed
+ * **2** = Translation started
+ * **3** = Portions
+ * **4** = New Testament
+ * **5** = Complete Bible",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
@@ -483,14 +480,13 @@ $app->get(
  *     @OA\Parameter(
  *         name="continents",
  *         description="A bar separated list of one or more continents to filter by. Use the following codes:
- *
- * - **AFR** = Africa
- * - **ASI** = Asia
- * - **AUS** = Australia
- * - **EUR** = Europe
- * - **NAR** = North America
- * - **SOP** = Oceania (South Pacific)
- * - **LAM** = South America",
+ * **AFR** = Africa
+ * **ASI** = Asia
+ * **AUS** = Australia
+ * **EUR** = Europe
+ * **NAR** = North America
+ * **SOP** = Oceania (South Pacific)
+ * **LAM** = South America",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
@@ -539,7 +535,7 @@ $app->get(
  *     ),
  *     @OA\Parameter(
  *         name="limit",
- *         description="The maximum results to return. (Defaults to 250)",
+ *         description="The maximum results to return.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(
@@ -549,7 +545,7 @@ $app->get(
  *     ),
  *     @OA\Parameter(
  *         name="page",
- *         description="The page of results to display  (Defaults to 1)",
+ *         description="The page of results to display.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(
@@ -658,15 +654,14 @@ $app->get(
  *     @OA\Parameter(
  *         name="primary_religions",
  *         description="A bar separated list of one or more primary religions to filter by. Use the following numbers:
- *
- * - **1** = Christianity
- * - **2** = Buddhism
- * - **4** = Ethnic Religions
- * - **5** = Hinduism
- * - **6** = Islam
- * - **7** = Non-Religious
- * - **8** = Other/Small
- * - **9** = Unknown",
+ * **1** = Christianity
+ * **2** = Buddhism
+ * **4** = Ethnic Religions
+ * **5** = Hinduism
+ * **6** = Islam
+ * **7** = Non-Religious
+ * **8** = Other/Small
+ * **9** = Unknown",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
@@ -674,19 +669,18 @@ $app->get(
  *     @OA\Parameter(
  *         name="regions",
  *         description="A bar separated list of one or more regions to filter by. Use the following numbers:
- *
- * - **1** = South Pacific
- * - **2** = Southeast Asia
- * - **3** = Northeast Asia
- * - **4** = South Asia
- * - **5** = Central Asia
- * - **6** = Middle East and North Africa
- * - **7** = East and Southern Africa
- * - **8** = West and Central Africa
- * - **9** = Eastern Europe and Eurasia
- * - **10** = Western Europe
- * - **11** = Central and South America
- * - **12** = North America and Caribbean",
+ * **1** = South Pacific
+ * **2** = Southeast Asia
+ * **3** = Northeast Asia
+ * **4** = South Asia
+ * **5** = Central Asia
+ * **6** = Middle East and North Africa
+ * **7** = East and Southern Africa
+ * **8** = West and Central Africa
+ * **9** = Eastern Europe and Eurasia
+ * **10** = Western Europe
+ * **11** = Central and South America
+ * **12** = North America and Caribbean",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")

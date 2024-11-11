@@ -36,19 +36,18 @@ use OpenApi\Attributes as OA;
  *     path="/regions/{id}.{format}",
  *     summary="Retrieve the details of a specific Region (JSON or XML)",
  *     description="Retrieve the details of a specific Region by supplying a unique id for the region.  Use the following numbers:
- *
- * - **1** = South Pacific
- * - **2** = Southeast Asia
- * - **3** = Northeast Asia
- * - **4** = South Asia
- * - **5** = Central Asia
- * - **6** = Middle East and North Africa
- * - **7** = East and Southern Africa
- * - **8** = West and Central Africa
- * - **9** = Eastern Europe and Eurasia
- * - **10** = Western Europe
- * - **11** = Central and South America
- * - **12** = North America and Caribbean",
+ * **1** = South Pacific
+ * **2** = Southeast Asia
+ * **3** = Northeast Asia
+ * **4** = South Asia
+ * **5** = Central Asia
+ * **6** = Middle East and North Africa
+ * **7** = East and Southern Africa
+ * **8** = West and Central Africa
+ * **9** = Eastern Europe and Eurasia
+ * **10** = Western Europe
+ * **11** = Central and South America
+ * **12** = North America and Caribbean",
  *     @OA\Parameter(
  *         name="api_key",
  *         description="Your Joshua Project API key.",

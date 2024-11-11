@@ -42,14 +42,13 @@ use OpenApi\Attributes as OA;
  *     path="/continents/{id}.{format}",
  *     summary="Get the details about a specific continent.",
  *     description="Retrieve the details of a specific Continent by supplying a three letter ISO Continent code (id).  Use the following codes:
- *
- * - **AFR** = Africa
- * - **ASI** = Asia
- * - **AUS** = Australia
- * - **EUR** = Europe
- * - **NAR** = North America
- * - **SOP** = Oceania (South Pacific)
- * - **LAM** = South America",
+ * **AFR** = Africa
+ * **ASI** = Asia
+ * **AUS** = Australia
+ * **EUR** = Europe
+ * **NAR** = North America
+ * **SOP** = Oceania (South Pacific)
+ * **LAM** = South America",
  *     @OA\Parameter(
  *         name="api_key",
  *         description="Your Joshua Project API key.",
