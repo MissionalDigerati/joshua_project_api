@@ -27,7 +27,7 @@ declare(strict_types=1);
 use QueryGenerators\Total;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Swagger\Annotations as SWG;
+use OpenApi\Attributes as OA;
 
 // phpcs:disable Generic.Files.LineLength
 /**
