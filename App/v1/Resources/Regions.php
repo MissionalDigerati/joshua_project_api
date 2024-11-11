@@ -27,69 +27,110 @@ declare(strict_types=1);
 use QueryGenerators\Region;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Swagger\Annotations as SWG;
+use OpenApi\Attributes as OA;
 
 // phpcs:disable Generic.Files.LineLength
 /**
- * @SWG\Resource(
- *     apiVersion="1",
- *     swaggerVersion="1.1",
- *     resourcePath="/regions",
- *     basePath="/v1"
+ *
+ * @OA\Get(
+ *     path="/regions/{id}.{format}",
+ *     summary="Retrieve the details of a specific Region (JSON or XML)",
+ *     description="Retrieve the details of a specific Region by supplying a unique id for the region.  Use the following numbers:
+ *
+ * - **1** = South Pacific
+ * - **2** = Southeast Asia
+ * - **3** = Northeast Asia
+ * - **4** = South Asia
+ * - **5** = Central Asia
+ * - **6** = Middle East and North Africa
+ * - **7** = East and Southern Africa
+ * - **8** = West and Central Africa
+ * - **9** = Eastern Europe and Eurasia
+ * - **10** = Western Europe
+ * - **11** = Central and South America
+ * - **12** = North America and Caribbean",
+ *     @OA\Parameter(
+ *         name="api_key",
+ *         description="Your Joshua Project API key.",
+ *         in="query",
+ *         required=true,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         description="The unique id for the region. Use the codes indicated above.",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="format",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="string", enum={"json", "xml"})
+ *     ),
+ *     @OA\Response(
+ *         response="200",
+ *         description="The details about the specific region.",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(type="object")
+ *         ),
+ *         @OA\MediaType(
+ *             mediaType="application/xml",
+ *             @OA\Schema(type="object")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="400",
+ *         description="Bad request. Your request is malformed in some way. Check your supplied parameters.",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(type="object")
+ *         ),
+ *         @OA\MediaType(
+ *             mediaType="application/xml",
+ *             @OA\Schema(type="object")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="401",
+ *         description="Unauthorized. You are missing your API key, or it has been suspended.",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(type="object")
+ *         ),
+ *         @OA\MediaType(
+ *             mediaType="application/xml",
+ *             @OA\Schema(type="object")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="404",
+ *         description="Not found. The requested route was not found.",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(type="object")
+ *         ),
+ *         @OA\MediaType(
+ *             mediaType="application/xml",
+ *             @OA\Schema(type="object")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="500",
+ *         description="Internal server error. Please try again later.",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(type="object")
+ *         ),
+ *         @OA\MediaType(
+ *             mediaType="application/xml",
+ *             @OA\Schema(type="object")
+ *         )
+ *     )
  * )
  */
-/**
-  *
-  * @SWG\API(
-  *  path="/regions/{id}.{format}",
-  *  description="Retrieve the details of a specific Region.",
-  *  @SWG\Operations(
-  *      @SWG\Operation(
-  *          httpMethod="GET",
-  *          nickname="regionShow",
-  *          summary="Retrieve the details of a specific Region (JSON or XML)",
-  *          notes="Retrieve the details of a specific Region by supplying a unique id for the region.  Use the following numbers:<br><ul><li>1 - South Pacific</li><li>2 - Southeast Asia</li><li>3 - Northeast Asia</li><li>4 - South Asia</li><li>5 - Central Asia</li><li>6 - Middle East and North Africa</li><li>7 - East and Southern Africa</li><li>8 - West and Central Africa</li><li>9 - Eastern Europe and Eurasia</li><li>10 - Western Europe</li><li>11 - Central and South America</li><li>12 - North America and Caribbean</li></ul>",
-  *          @SWG\Parameters(
-  *              @SWG\Parameter(
-  *                  name="api_key",
-  *                  description="Your Joshua Project API key.",
-  *                  paramType="query",
-  *                  required="true",
-  *                  allowMultiple="false",
-  *                  dataType="string"
-  *              ),
-  *              @SWG\Parameter(
-  *                  name="id",
-  *                  description="The unique id for the region. Use the codes indicated above.",
-  *                  paramType="path",
-  *                  required="true",
-  *                  allowMultiple="false",
-  *                  dataType="int"
-  *              )
-  *          ),
-  *          @SWG\ErrorResponses(
-  *              @SWG\ErrorResponse(
-  *                  code="400",
-  *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
-  *              ),
-  *              @SWG\ErrorResponse(
-  *                  code="401",
-  *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
-  *              ),
-  *              @SWG\ErrorResponse(
-  *                  code="404",
-  *                  reason="Not found.  The requested route was not found."
-  *              ),
-  *              @SWG\ErrorResponse(
-  *                  code="500",
-  *                  reason="Internal server error.  Please try again later."
-  *              )
-  *          )
-  *      )
-  *  )
-  * )
-  *
-  */
 // phpcs:enable Generic.Files.LineLength
 $app->get(
     "/{version}/regions/{id}.{format}",

@@ -34,7 +34,7 @@ use OpenApi\Attributes as OA;
  * @OA\Get(
  *     path="/countries/{id}.{format}",
  *     summary="Retrieve the details of a specific country.",
- *     description="Retrieve the details of a specific Country by supplying the country's <a href='https://goo.gl/yYWY4J' target='_blank'>2 letter FIPS 10-4 Code</a> (id).",
+ *     description="Retrieve the details of a specific Country by supplying the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J) (id).",
  *     @OA\Parameter(
  *         name="api_key",
  *         description="Your Joshua Project API key.",
@@ -44,7 +44,7 @@ use OpenApi\Attributes as OA;
  *     ),
  *     @OA\Parameter(
  *         name="id",
- *         description="The 2 letter FIPS 10-4 Country Code for the Country you want to view. [<a href='https://goo.gl/yYWY4J' target='_blank'>View all Country Codes</a>]",
+ *         description="The 2 letter FIPS 10-4 Country Code for the Country you want to view. [View all Country Codes](https://goo.gl/yYWY4J)",
  *         in="path",
  *         required=true,
  *         @OA\Schema(type="string")
@@ -57,7 +57,7 @@ use OpenApi\Attributes as OA;
  *     ),
  *     @OA\Response(
  *         response="200",
- *         description="The details about the specific continent.",
+ *         description="The details about the specific country.",
  *         @OA\MediaType(
  *             mediaType="application/json",
  *             @OA\Schema(type="object")
@@ -214,7 +214,14 @@ $app->get(
  *     ),
  *     @OA\Parameter(
  *         name="continents",
- *         description="A bar separated list of one or more continents to filter by.Use the following codes:<br><ul><li>AFR - Africa</li><li>ASI - Asia</li><li>AUS - Australia</li><li>EUR - Europe</li><li>NAR - North America</li><li>SOP - Oceania (South Pacific)</li><li>LAM - South America</li></ul>",
+ *         description="A bar separated list of one or more continents to filter by.Use the following codes:
+ * - **AFR** = Africa
+ * - **ASI** = Asia
+ * - **AUS** = Australia
+ * - **EUR** = Europe
+ * - **NAR** = North America
+ * - **SOP** = Oceania (South Pacific)
+ * - **LAM** = South America",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
@@ -228,14 +235,14 @@ $app->get(
  *     ),
  *     @OA\Parameter(
  *         name="ids",
- *         description="A bar separated list of one or more FIPS 10-4 Letter Country Codes to filter by. See <a href='https://goo.gl/yYWY4J' target='_blank'>https://goo.gl/yYWY4J</a>.",
+ *         description="A bar separated list of one or more FIPS 10-4 Letter Country Codes to filter by. See [https://goo.gl/yYWY4J](https://goo.gl/yYWY4J).",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="jpscale",
- *         description="A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out <a href='https://joshuaproject.net/global_list/progress' target='_blank'>https://joshuaproject.net/global_list/progress</a>.",
+ *         description="A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out [https://joshuaproject.net/global/progress](https://joshuaproject.net/global/progress).",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
@@ -346,49 +353,71 @@ $app->get(
  *     ),
  *     @OA\Parameter(
  *         name="primary_languages",
- *         description="A bar seperated list of ISO 3 Letter Codes.  For more information check out <a href='http://www.loc.gov/standards/iso639-2/php/code_list.php' target='_blank'>http://www.loc.gov/standards/iso639-2/php/code_list.php</a>.",
+ *         description="A bar seperated list of ISO 3 Letter Codes.  For more information check out this [code list](http://www.loc.gov/standards/iso639-2/php/code_list.php).",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="primary_religions",
- *         description="A bar separated list of one or more primary religions to filter by. Use the following numbers:<br><ul><li>1 - Christianity</li><li>2 - Buddhism</li><li>4 - Ethnic Religions</li><li>5 - Hinduism</li><li>6 - Islam</li><li>7 - Non-Religious</li><li>8 - Other/Small</li><li>9 - Unknown</li></ul>",
+ *         description="A bar separated list of one or more primary religions to filter by. Use the following numbers:
+ *
+ * - **1** = Christianity
+ * - **2** = Buddhism
+ * - **4** = Ethnic Religions
+ * - **5** = Hinduism
+ * - **6** = Islam
+ * - **7** = Non-Religious
+ * - **8** = Other/Small
+ * - **9** = Unknown",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="regions",
- *         description="A bar separated list of one or more regions to filter by. Use the following numbers:<br><ul><li>1 - South Pacific</li><li>2 - Southeast Asia</li><li>3 - Northeast Asia</li><li>4 - South Asia</li><li>5 - Central Asia</li><li>6 - Middle East and North Africa</li><li>7 - East and Southern Africa</li><li>8 - West and Central Africa</li><li>9 - Eastern Europe and Eurasia</li><li>10 - Western Europe</li><li>11 - Central and South America</li><li>12 - North America and Caribbean</li></ul>",
+ *         description="A bar separated list of one or more regions to filter by. Use the following numbers:
+ *
+ * - **1** = South Pacific
+ * - **2** = Southeast Asia
+ * - **3** = Northeast Asia
+ * - **4** = South Asia
+ * - **5** = Central Asia
+ * - **6** = Middle East and North Africa
+ * - **7** = East and Southern Africa
+ * - **8** = West and Central Africa
+ * - **9** = Eastern Europe and Eurasia
+ * - **10** = Western Europe
+ * - **11** = Central and South America
+ * - **12** = North America and Caribbean",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="translation_needed",
- *         description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Translation Needed</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+ *         description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of **Translation Needed**.(min-max) You can supply just the minimum to get a total matching that number.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="translation_started",
- *         description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Translation Started</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+ *         description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of **Translation Started**.(min-max) You can supply just the minimum to get a total matching that number.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="translation_unspecified",
- *         description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Unspecified</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+ *         description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of **Unspecified**.(min-max) You can supply just the minimum to get a total matching that number.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="window1040",
- *         description="A single letter (y or n) representing a boolean that states whether you want Countries in the 1040 Window.",
+ *         description="A boolean (represented as a string Y or N) that states whether you want countries in the 1040 Window.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
@@ -401,7 +430,7 @@ $app->get(
  *     ),
  *     @OA\Response(
  *         response="200",
- *         description="The details about the specific continent.",
+ *         description="The results of your filtered countries.",
  *         @OA\MediaType(
  *             mediaType="application/json",
  *             @OA\Schema(type="object")
