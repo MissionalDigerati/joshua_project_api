@@ -43,7 +43,6 @@ use OpenApi\Attributes as OA;
  * **NAR** = North America
  * **SOP** = Oceania (South Pacific)
  * **LAM** = South America",
- *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Parameter(
  *         name="id",
  *         description="The 3 letter ISO Continent Code for the Continent you want to view. Use the codes indicated above.",
@@ -52,6 +51,7 @@ use OpenApi\Attributes as OA;
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Response(
  *         response="200",
  *         description="The details about the specific continent.",

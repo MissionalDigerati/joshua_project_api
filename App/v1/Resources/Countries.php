@@ -36,7 +36,6 @@ use OpenApi\Attributes as OA;
  *     path="/v1/countries/{id}.{format}",
  *     summary="Retrieve the details of a specific country.",
  *     description="Retrieve the details of a specific Country by supplying the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J) (id).",
- *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Parameter(
  *         name="id",
  *         description="The 2 letter FIPS 10-4 Country Code for the Country you want to view. [View all Country Codes](https://goo.gl/yYWY4J)",
@@ -45,6 +44,7 @@ use OpenApi\Attributes as OA;
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Response(
  *         response="200",
  *         description="The details about the specific country.",

@@ -14,9 +14,6 @@
                 "description": "Retrieve the details of a specific Continent by supplying a three letter ISO Continent code (id).  Use the following codes:\n * **AFR** = Africa\n * **ASI** = Asia\n * **AUS** = Australia\n * **EUR** = Europe\n * **NAR** = North America\n * **SOP** = Oceania (South Pacific)\n * **LAM** = South America",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/APIKeyParameter"
-                    },
-                    {
                         "name": "id",
                         "in": "path",
                         "description": "The 3 letter ISO Continent Code for the Continent you want to view. Use the codes indicated above.",
@@ -27,6 +24,9 @@
                     },
                     {
                         "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
                     }
                 ],
                 "responses": {
@@ -69,9 +69,6 @@
                 "description": "Retrieve the details of a specific Country by supplying the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J) (id).",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/APIKeyParameter"
-                    },
-                    {
                         "name": "id",
                         "in": "path",
                         "description": "The 2 letter FIPS 10-4 Country Code for the Country you want to view. [View all Country Codes](https://goo.gl/yYWY4J)",
@@ -82,6 +79,9 @@
                     },
                     {
                         "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
                     }
                 ],
                 "responses": {
@@ -1154,14 +1154,23 @@
                 }
             }
         },
-        "/v1/totals.{format}": {
+        "/v1/totals/{id}.{format}": {
             "get": {
                 "tags": [
                     "Totals"
                 ],
-                "summary": "Retrieve global totals in various formats. (JSON or XML)",
-                "description": "Retrieve various global totals including total Christian people groups, continents, reagions and many more. Look at the [column descriptions](/v1/docs/column_descriptions/totals) for Totals to see all the provided information.",
+                "summary": "Retrieve the global total for a specific id (case insensitive) in various formats. (JSON or XML)",
+                "description": "Retrieve the global total for a specific id (case insensitive). Look at the [column descriptions](/v1/docs/column_descriptions/totals) for Totals to see all the provided information.",
                 "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The unique total id (case insensitive).",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "$ref": "#/components/parameters/APIFormatParameter"
                     },
@@ -1171,7 +1180,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "The totals.",
+                        "description": "The requested totals.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1200,23 +1209,14 @@
                 }
             }
         },
-        "/v1/totals/{id}.{format}": {
+        "/v1/totals.{format}": {
             "get": {
                 "tags": [
                     "Totals"
                 ],
-                "summary": "Retrieve the global total for a specific id (case insensitive) in various formats. (JSON or XML)",
-                "description": "Retrieve the global total for a specific id (case insensitive). Look at the [column descriptions](/v1/docs/column_descriptions/totals) for Totals to see all the provided information.",
+                "summary": "Retrieve global totals in various formats. (JSON or XML)",
+                "description": "Retrieve various global totals including total Christian people groups, continents, reagions and many more. Look at the [column descriptions](/v1/docs/column_descriptions/totals) for Totals to see all the provided information.",
                 "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "The unique total id (case insensitive).",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
                     {
                         "$ref": "#/components/parameters/APIFormatParameter"
                     },
@@ -1226,7 +1226,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "The requested totals.",
+                        "description": "The totals.",
                         "content": {
                             "application/json": {
                                 "schema": {
