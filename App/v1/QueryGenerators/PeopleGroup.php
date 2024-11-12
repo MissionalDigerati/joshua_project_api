@@ -61,7 +61,7 @@ class PeopleGroup extends QueryGenerator
      * @access  protected
      */
     protected $fieldsToSelectArray = [
-        'ROG3', 'PeopleID3', 'ROP3', 'PeopNameInCountry', 'ROG2', 'Continent', 'RegionName', 'ISO3',
+        'PeopleID3ROG3', 'ROG3', 'PeopleID3', 'ROP3', 'PeopNameInCountry', 'ROG2', 'Continent', 'RegionName', 'ISO3',
         'LocationInCountry', 'PeopleID1', 'ROP1', 'AffinityBloc', 'PeopleID2', 'ROP2', 'PeopleCluster',
         'PeopNameAcrossCountries', 'Population', 'Category', 'ROL3', 'PrimaryLanguageName',
         'PrimaryLanguageDialect', 'NumberLanguagesSpoken', 'OfficialLang', 'SpeakNationalLang',

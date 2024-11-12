@@ -24,57 +24,16 @@ declare(strict_types=1);
 namespace Tests\v1\Integration;
 
 use PHPToolbox\CachedRequest\CachedRequest;
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use PHPUnit\Framework\TestCase;
 
-/**
- * The class for testing integration of the People Groups
- *
- * @package default
- * @author Johnathan Pulos
- */
 class PeopleGroupsTest extends TestCase
 {
-    /**
-     * The CachedRequest Object
-     *
-     * @var CachedRequest
-     */
     public $cachedRequest;
-    /**
-     * The PDO database connection object
-     *
-     * @var PDODatabaseConnect
-     */
     private $db;
-    /**
-     * The APIKey to access the API
-     *
-     * @var string
-     * @access private
-     **/
     private $APIKey = '';
-    /**
-     * The current API version number
-     *
-     * @var string
-     * @access private
-     **/
     private $APIVersion;
-    /**
-     * The URL for the testing server
-     *
-     * @var string
-     * @access private
-     **/
     private $siteURL;
-    /**
-     * Set up the test class
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function setUp(): void
     {
         $this->APIVersion = $_ENV['api_version'];
@@ -90,23 +49,13 @@ class PeopleGroupsTest extends TestCase
         $this->db = getDatabaseInstance();
         $this->APIKey = createApiKey([]);
     }
-    /**
-     * Runs at the end of each test
-     *
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function tearDown(): void
     {
         $this->cachedRequest->clearCache();
         deleteApiKey($this->APIKey);
     }
-    /**
-     * Tests that you can only access page with an API Key
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
+
     public function testShouldRefuseAccessWithoutAnAPIKey(): void
     {
         $response = $this->cachedRequest->get(
@@ -116,12 +65,7 @@ class PeopleGroupsTest extends TestCase
         );
         $this->assertEquals(401, $this->cachedRequest->responseCode);
     }
-    /**
-     * Tests that you can not access page without an active API Key
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
+
     public function testShouldRefuseAccessWithoutActiveAPIKey(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
@@ -137,12 +81,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
         $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
     }
-    /**
-     * Tests that you can not access page with a suspended API Key
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
+
     public function testShouldRefuseAccessWithSuspendedAPIKey(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
@@ -158,12 +97,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
         $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
     }
-    /**
-     * Tests that you can only access page with a valid API Key
-     *
-     * @return void
-     * @author Johnathan Pulos
-     **/
+
     public function testShouldRefuseAccessWithABadAPIKey(): void
     {
         $response = $this->cachedRequest->get(
@@ -178,13 +112,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
         $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
     }
-     /**
-      * GET /people_groups/daily_unreached.json
-      * test page is available, and delivers JSON
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testShouldGetDailyUnreachedInJSON(): void
     {
         $response = $this->cachedRequest->get(
@@ -195,13 +123,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertTrue(isJSON($response));
     }
-     /**
-      * GET /people_groups/daily_unreached.xml
-      * test page is available, and delivers XML
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testShouldGetDailyUnreachedInXML(): void
     {
         $response = $this->cachedRequest->get(
@@ -212,12 +134,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertTrue(isXML($response));
     }
-    /**
-     * A request for Daily Unreached should allow setting the month
-     *
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testShouldGetDailyUnreachedWithSetMonth(): void
     {
         $expectedMonth = '5';
@@ -231,12 +148,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals($expectedMonth, $decodedResponse[0]['LRofTheDayMonth']);
         $this->assertEquals($expectedDay, $decodedResponse[0]['LRofTheDayDay']);
     }
-    /**
-     * A request for Daily Unreached should allow setting the day
-     *
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testShouldGetDailyUnreachedWithSetDay(): void
     {
         $expectedMonth = Date('n');
@@ -250,12 +162,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals($expectedMonth, $decodedResponse[0]['LRofTheDayMonth']);
         $this->assertEquals($expectedDay, $decodedResponse[0]['LRofTheDayDay']);
     }
-    /**
-     * A request for Daily Unreached should allow setting the day and month
-     *
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testShouldGetDailyUnreachedWithSetDayAndMonth(): void
     {
         $expectedMonth = '3';
@@ -269,13 +176,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals($expectedMonth, $decodedResponse[0]['LRofTheDayMonth']);
         $this->assertEquals($expectedDay, $decodedResponse[0]['LRofTheDayDay']);
     }
-     /**
-      * GET /people_groups/[ID].json
-      * test page is available, and delivers JSON
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testShowRequestsShouldGive404IfNoValidId(): void
     {
         $response = $this->cachedRequest->get(
@@ -290,13 +191,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals('Bad Request', $decoded['api']['error']['message']);
         $this->assertEquals('You provided an invalid PeopleID3.', $decoded['api']['error']['details']);
     }
-     /**
-      * GET /people_groups/[ID].json?country=CB
-      * test page is available, and delivers the correct People Group
-      *
-      * @access public
-      * @author Johnathan Pulos
-      */
+
     public function testShowRequestsShouldGetCorrectPeopleGroup(): void
     {
         $expectedID = "12662";
@@ -314,14 +209,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals($expectedCountry, $decodedResponse[0]['ROG3']);
         $this->assertEquals($expectedName, $decodedResponse[0]['PeopNameInCountry']);
     }
-    /**
-     * GET /people_groups/[ID].json?country=BA
-     * test page is available, and delivers the PeopleGroups Resources
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testShowRequestsShouldGetPeopleGroupsWithResources(): void
     {
         $expectedId = "10572";
@@ -335,14 +223,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertTrue(isset($decodedResponse[0]['Resources']));
         $this->assertTrue(is_array($decodedResponse[0]['Resources']));
     }
-    /**
-     * GET /people_groups/[ID].json?country=BA
-     * test page is available, and delivers the People Group's Resources when only an id is provided
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testShowRequestsShouldGetPeopleGroupsWithResourcesWhenIdsOnlyProvided(): void
     {
         $expectedID = "10572";
@@ -357,14 +238,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(is_array($peopleGroupData['Resources']));
         }
     }
-    /**
-     * GET /people_groups/[ID].json
-     * test page is available, and delivers the correct number of people groups
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testShowRequestsShouldGetCorrectPeopleGroupsWhenIdsOnlyProvided(): void
     {
         $expectedID = "12662";
@@ -379,14 +253,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals($expectedID, $decodedResponse[0]['PeopleID3']);
         $this->assertEquals($expectedPeopleGroups, count($decodedResponse));
     }
-    /**
-     * GET /people_groups/[ID].json
-     * test page returns a 404 error because the PeopleGroup by that ID does not exists
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testShowRequestsShould404ErrorIfIdDoesNotExist(): void
     {
         $response = $this->cachedRequest->get(
@@ -397,14 +264,7 @@ class PeopleGroupsTest extends TestCase
         $decodedResponse = json_decode($response, true);
         $this->assertEquals(404, $this->cachedRequest->responseCode);
     }
-    /**
-     * GET /people_groups.json
-     * test page returns all the people groups if no filters are applied
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturn250ByDefault(): void
     {
         $expectedNumberOfResults = 250;
@@ -417,14 +277,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals(200, $this->cachedRequest->responseCode);
         $this->assertEquals($expectedNumberOfResults, count($decodedResponse));
     }
-    /**
-     * GET /people_groups.json
-     * test page returns Resources for all people groups
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     **/
+
     public function testIndexRequestsShouldReturnResourcesForAllPeopleGroups(): void
     {
         $response = $this->cachedRequest->get(
@@ -438,14 +291,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(is_array($peopleGroupData['Resources']));
         }
     }
-    /**
-     * GET /people_groups.json?people_id1=17
-     * test page filters by people_id1
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPeopleId1(): void
     {
         $expectedPeopleIds = array(17, 23);
@@ -461,14 +307,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(in_array(intval($peopleGroup['PeopleID1']), $expectedPeopleIds));
         }
     }
-    /**
-     * GET /people_groups.json?rop1=A014
-     * test page filters by ROP1
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByROP1(): void
     {
         $expectedROP = array('A014', 'A010');
@@ -484,14 +323,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(in_array($peopleGroup['ROP1'], $expectedROP));
         }
     }
-    /**
-     * GET /people_groups.json?rop1=A014&people_id=23
-     * test page filters by ROP1
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByROP1AndPeopleID1(): void
     {
         $expectedROP = 'A014';
@@ -509,14 +341,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertEquals($expectedPeopleID, intval($peopleGroup['PeopleID1']));
         }
     }
-    /**
-     * GET /people_groups.json?people_id2=115
-     * test page filters by people_id2
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPeopleId2(): void
     {
         $expectedPeopleIds = array(117, 115);
@@ -532,14 +357,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(in_array(intval($peopleGroup['PeopleID2']), $expectedPeopleIds));
         }
     }
-    /**
-     * GET /people_groups.json?rop2=C0013
-     * test page filters by ROP2
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByROP2(): void
     {
         $expectedROP = array('C0013', 'C0067');
@@ -555,14 +373,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(in_array($peopleGroup['ROP2'], $expectedROP));
         }
     }
-    /**
-     * GET /people_groups.json?people_id3=11722
-     * test page filters by people_id3
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPeopleId3(): void
     {
         $expectedPeopleIds = array(11722, 19204);
@@ -578,14 +389,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(in_array(intval($peopleGroup['PeopleID3']), $expectedPeopleIds));
         }
     }
-    /**
-     * GET /people_groups.json?rop3=115485
-     * test page filters by ROP3
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByROP3(): void
     {
         $expectedROP = array(115485, 115409);
@@ -601,14 +405,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(in_array(intval($peopleGroup['ROP3']), $expectedROP));
         }
     }
-    /**
-     * GET /people_groups.json?continents=afr|nar
-     * test page filters by continents
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByContinents(): void
     {
         $expectedCountries = array('AFR', 'NAR');
@@ -624,14 +421,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(in_array($peopleGroup['ROG2'], $expectedCountries));
         }
     }
-    /**
-     * GET /people_groups.json?regions=3|4
-     * test page filters by regions
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByRegions(): void
     {
         $expectedRegions = array(3 => 'asia, northeast', 4 => 'asia, south');
@@ -648,14 +438,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(in_array(strtolower($peopleGroup['RegionName']), array_values($expectedRegions)));
         }
     }
-    /**
-     * GET /people_groups.json?countries=an|bg
-     * test page filters by countries
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByCountries(): void
     {
         $expectedCountries = array('AN', 'BG');
@@ -671,14 +454,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(in_array($peopleGroup['ROG3'], $expectedCountries));
         }
     }
-    /**
-     * GET /people_groups.json?window1040=y
-     * test page filters by window1040
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredBy1040Window(): void
     {
         $expected1040Window = 'Y';
@@ -694,14 +470,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertEquals($expected1040Window, $peopleGroup['Window1040']);
         }
     }
-    /**
-     * GET /people_groups.json?languages=aka|ale
-     * test page filters by languages
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByLanguages(): void
     {
         $expectedLanguages = array('AKA', 'ALE');
@@ -717,14 +486,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(in_array(strtoupper($peopleGroup['ROL3']), $expectedLanguages));
         }
     }
-    /**
-     * GET /people_groups.json?population=10000-20000
-     * test page filters by a set range of population
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByAMinAndMaxPopulation(): void
     {
         $expectedMin = 10000;
@@ -742,14 +504,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedMin, intval($peopleGroup['Population']));
         }
     }
-    /**
-     * GET /people_groups.json?population=10000
-     * test page filters by a single population number
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByASetPopulation(): void
     {
         $expectedPop = 156000;
@@ -765,14 +520,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertEquals($expectedPop, intval($peopleGroup['Population']));
         }
     }
-    /**
-     * GET /people_groups.json?primary_religions=3|6
-     * test page filters by primary religions
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPrimaryReligions(): void
     {
         $expectedReligions = array(2 => 'buddhism');
@@ -789,14 +537,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(in_array($peopleGroup['RLG3'], array_keys($expectedReligions)));
         }
     }
-    /**
-     * GET /people_groups.json?pc_adherent=1.0-6.9
-     * test page filters by percentage of adherents
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfAdherents(): void
     {
         $expectedPercentMin = 1.0;
@@ -814,14 +555,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PercentAdherents']));
         }
     }
-    /**
-     * GET /people_groups.json?pc_evangelical=10.0-20.8
-     * test page filters by percentage of evangelicals
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfEvangelicals(): void
     {
         $expectedPercentMin = 10.0;
@@ -839,14 +573,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PercentEvangelical']));
         }
     }
-    /**
-     * GET /people_groups.json?pc_buddhist=30.0-40.9
-     * test page filters by percentage of buddhists
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfBuddhists(): void
     {
         $expectedPercentMin = 30.0;
@@ -864,14 +591,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCBuddhism']));
         }
     }
-    /**
-     * GET /people_groups.json?pc_ethnic_religion=1.0-3.9
-     * test page filters by percentage of ethnic religions
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfEthnicReligions(): void
     {
         $expectedPercentMin = 1.0;
@@ -889,14 +609,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCEthnicReligions']));
         }
     }
-    /**
-     * GET /people_groups.json?pc_hindu=1.0-30.2
-     * test page filters by percentage of Hinduism
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfHindus(): void
     {
         $expectedPercentMin = 1.0;
@@ -914,14 +627,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCHinduism']));
         }
     }
-    /**
-     * GET /people_groups.json?pc_islam=30.12-40.3
-     * test page filters by percentage of Islam
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfIslam(): void
     {
         $expectedPercentMin = 30.12;
@@ -939,14 +645,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCIslam']));
         }
     }
-    /**
-     * GET /people_groups.json?pc_non_religious=40.12-55.3
-     * test page filters by percentage of Non Religious
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfNonReligious(): void
     {
         $expectedPercentMin = 40.12;
@@ -964,14 +663,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCNonReligious']));
         }
     }
-    /**
-     * GET /people_groups.json?pc_other_religion=3.2-12.6
-     * test page filters by percentage of Other Religions
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfOtherReligions(): void
     {
         $expectedPercentMin = 3.2;
@@ -989,14 +681,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCOtherSmall']));
         }
     }
-    /**
-     * GET /people_groups.json?pc_unknown=3.22-35.67
-     * test page filters by percentage of Unknown Religions
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPercentageOfUnknownReligions(): void
     {
         $expectedPercentMin = 3.22;
@@ -1014,14 +699,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCUnknown']));
         }
     }
-    /**
-     * GET /people_groups.json?pc_anglican=8.7-40.1
-     * test page no longer supports percentage of Anglicans
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnUnsupportedPercentageOfAnglicans(): void
     {
         $response = $this->cachedRequest->get(
@@ -1039,14 +717,7 @@ class PeopleGroupsTest extends TestCase
             $decodedResponse['api']['error']['details']
         );
     }
-    /**
-     * GET /people_groups.json?pc_independent=3.45-90.1
-     * test page no longer supports percentage of Independents
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnUnsupportedPercentageOfIndependents(): void
     {
         $response = $this->cachedRequest->get(
@@ -1064,14 +735,7 @@ class PeopleGroupsTest extends TestCase
             $decodedResponse['api']['error']['details']
         );
     }
-    /**
-     * GET /people_groups.json?pc_protestant=55.5-87.77
-     * test page no longer supports percentage of Protestants
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnUnsupportedPercentageOfProtestants(): void
     {
         $response = $this->cachedRequest->get(
@@ -1089,14 +753,7 @@ class PeopleGroupsTest extends TestCase
             $decodedResponse['api']['error']['details']
         );
     }
-    /**
-     * GET /people_groups.json?pc_orthodox=31.4-56.7
-     * test page no longer supports percentage of Orthodox
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnUnsupportedPercentageOfOrthodox(): void
     {
         $response = $this->cachedRequest->get(
@@ -1114,14 +771,7 @@ class PeopleGroupsTest extends TestCase
             $decodedResponse['api']['error']['details']
         );
     }
-    /**
-     * GET /people_groups.json?pc_rcatholic=2.34-56.7
-     * test page no longer supports percentage of Roman Catholic
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnUnsupportedPercentageOfRomanCatholic(): void
     {
         $response = $this->cachedRequest->get(
@@ -1139,14 +789,7 @@ class PeopleGroupsTest extends TestCase
             $decodedResponse['api']['error']['details']
         );
     }
-    /**
-     * GET /people_groups.json?pc_other_christian=1.1-27.2
-     * test page no longer supports percentage of Other Christians
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnUnsupportedPercentageOfOtherChristian(): void
     {
         $expectedPercentMin = 1.1;
@@ -1166,14 +809,7 @@ class PeopleGroupsTest extends TestCase
             $decodedResponse['api']['error']['details']
         );
     }
-    /**
-     * GET /people_groups.json?jpscale=1.1|2.2|3.1
-     * test page filters by JPScale
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByJPScale(): void
     {
         $expectedJPScales = "1|2|3";
@@ -1190,14 +826,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(in_array(floatval($peopleGroup['JPScale']), $expectedJPScalesArray));
         }
     }
-    /**
-     * GET /people_groups.json?indigenous=y
-     * test page filters out non indigenous people groups
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByIndigenousStatus(): void
     {
         $expectedIndigenousStatus = 'y';
@@ -1213,14 +842,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertEquals($expectedIndigenousStatus, strtolower($peopleGroup['IndigenousCode']));
         }
     }
-    /**
-     * GET /people_groups.json?least_reached=y
-     * test page filters out non least reached people groups
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByLeastReached(): void
     {
         $expectedLeastReachedStatus = 'y';
@@ -1236,14 +858,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertEquals($expectedLeastReachedStatus, strtolower($peopleGroup['LeastReached']));
         }
     }
-    /**
-     * GET /people_groups.json?unengaged=y
-     * test page filters out non unengaged people groups
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldReturnUnsupportedUnengaged(): void
     {
         $expectedUnengagedStatus = 'y';
@@ -1329,13 +944,6 @@ class PeopleGroupsTest extends TestCase
         }
     }
 
-    /**
-     * GET: /people_groups/daily_unreached.json
-     * test page no longer provides removed outdated fields
-     *
-     * @access public
-     * @author Johnathan Pulos
-     */
     public function testDailyUnreachedShouldNotProvideRemovedFields(): void
     {
         $response = $this->cachedRequest->get(
@@ -1366,14 +974,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertFalse(array_key_exists('ROL3OfficialLanguage', $decoded[0]));
         $this->assertFalse(array_key_exists('ROL4', $decoded[0]));
     }
-    /**
-     * GET /people_groups/[ID].json
-     * test page no longer provides removed outdated fields
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testShowRequestsShouldNotProvideRemovedFields(): void
     {
         $response = $this->cachedRequest->get(
@@ -1404,14 +1005,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertFalse(array_key_exists('ROL3OfficialLanguage', $decoded[0]));
         $this->assertFalse(array_key_exists('ROL4', $decoded[0]));
     }
-    /**
-     * GET /people_groups.json?unengaged=y
-     * test page no longer provides removed outdated fields
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldNotProvideRemovedFields(): void
     {
         $response = $this->cachedRequest->get(
@@ -1442,13 +1036,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertFalse(array_key_exists('ROL3OfficialLanguage', $decoded[0]));
         $this->assertFalse(array_key_exists('ROL4', $decoded[0]));
     }
-    /**
-     * GET: /people_groups/daily_unreached.json
-     * test page provides newly added fields
-     *
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testDailyUnreachedShouldProvideNewFields(): void
     {
         $expectedPop = 265000;
@@ -1494,14 +1082,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals($expectedMapCCVersionText, $decoded[0]['MapCCVersionText']);
         $this->assertEquals($expectedMapCCVersionURL, $decoded[0]['MapCCVersionURL']);
     }
-    /**
-     * GET /people_groups/[ID].json
-     * test page provides newly added fields
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testShowRequestsShouldProvideNewFields(): void
     {
         $expectedPop = 1948100;
@@ -1550,14 +1131,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals($expectedMapCCVersionText, $decoded[0]['MapCCVersionText']);
         $this->assertEquals($expectedMapCCVersionURL, $decoded[0]['MapCCVersionURL']);
     }
-    /**
-     * GET /people_groups.json?unengaged=y
-     * test page provides newly added fields
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testIndexRequestsShouldProvideNewFields(): void
     {
         $response = $this->cachedRequest->get(
@@ -1581,14 +1155,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertTrue(array_key_exists('MapCCVersionText', $decoded[0]));
         $this->assertTrue(array_key_exists('MapCCVersionURL', $decoded[0]));
     }
-    /**
-     * GET /people_groups/[ID].json
-     * test if map address is blank it does not send a bad url
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testMapAddressShouldSendEmptyURL(): void
     {
         $response = $this->cachedRequest->get(
@@ -1607,14 +1174,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals('', $decoded[0]['PeopleGroupMapURL']);
         $this->assertEquals('', $decoded[0]['PeopleGroupMapExpandedURL']);
     }
-    /**
-     * GET /people_groups/[ID].json
-     * test if map address is blank it does not send a bad url
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testPeopleGroupPhotoURLShouldSendAnEmptyURLWhenPhotoAddressEmptyOrNull(): void
     {
         $response = $this->cachedRequest->get(

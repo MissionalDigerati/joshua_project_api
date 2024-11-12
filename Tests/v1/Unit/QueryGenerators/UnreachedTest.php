@@ -24,40 +24,17 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Test the Query Generator for the People Group Data
- *
- * @author Johnathan Pulos
- */
 class UnreachedTest extends TestCase
 {
-    /**
-     * The PDO database connection object
-     *
-     * @var PDODatabaseConnect
-     */
     private $db;
-    /**
-     * Setup the test methods
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function setUp(): void
     {
         $this->db = getDatabaseInstance();
     }
-    /**
-     * Test that we get back the right query for unreached of the day
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testDailyUnreachedRequestsShouldReturnCorrectResults(): void
     {
         $expected = array('month' => 1, 'day' => 11);
@@ -69,15 +46,7 @@ class UnreachedTest extends TestCase
         $this->assertEquals($expected['month'], $data[0]['LRofTheDayMonth']);
         $this->assertEquals($expected['day'], $data[0]['LRofTheDayDay']);
     }
-    /**
-     * We should throw an InvalidArgumentException if I do not send the month to dailyUnreached
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     *
-     * @expectedException InvalidArgumentException
-     */
+
     public function testDailyUnreachedRequestsShouldThrowErrorIfMissingMonth(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -85,15 +54,7 @@ class UnreachedTest extends TestCase
         $unreached = new \QueryGenerators\Unreached($getVars);
         $unreached->daily();
     }
-    /**
-     * We should throw an InvalidArgumentException if I do not send the day to dailyUnreached
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     *
-     * @expectedException InvalidArgumentException
-     */
+
     public function testDailyUnreachedRequestsShouldThrowErrorIfMissingDay(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -101,15 +62,7 @@ class UnreachedTest extends TestCase
         $unreached = new \QueryGenerators\Unreached($getVars);
         $unreached->daily();
     }
-    /**
-     * We should throw an InvalidArgumentException if I do not send a month in range
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     *
-     * @expectedException InvalidArgumentException
-     */
+
     public function testDailyUnreachedRequestsShouldThrowErrorIfMonthIsOutOfRange(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -117,20 +70,27 @@ class UnreachedTest extends TestCase
         $unreached = new \QueryGenerators\Unreached($getVars);
         $unreached->daily();
     }
-    /**
-     * We should throw an InvalidArgumentException if I do not send a day in range
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     *
-     * @expectedException InvalidArgumentException
-     */
+
     public function testDailyUnreachedRequestsShouldThrowErrorIfDayIsOutOfRange(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $getVars = array('month' => 12, 'day' => 32);
         $unreached = new \QueryGenerators\Unreached($getVars);
         $unreached->daily();
+    }
+
+    public function testDailyUnreachedRequestsShouldContainPeopleID3ROG3Field(): void
+    {
+        $expected = array('month' => 1, 'day' => 11);
+        $unreached = new \QueryGenerators\Unreached($expected);
+        $unreached->daily();
+        $statement = $this->db->prepare($unreached->preparedStatement);
+        $statement->execute($unreached->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertArrayHasKey('PeopleID3', $data[0]);
+        $this->assertArrayHasKey('ROG3', $data[0]);
+        $expected = $data[0]['PeopleID3'] . $data[0]['ROG3'];
+        $this->assertArrayHasKey('PeopleID3ROG3', $data[0]);
+        $this->assertEquals($expected, $data[0]['PeopleID3ROG3']);
     }
 }
