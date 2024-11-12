@@ -123,7 +123,7 @@ class PeopleGroupGlobal extends QueryGenerator
     {
         $this->validator->providedRequiredParams($this->providedParams, ['id']);
         $id = intval($this->providedParams['id']);
-        $this->preparedStatement = "SELECT {$this->selectFieldsStatement} FROM {$this->tableName} WHERE PeopleID3 = :id";
+        $this->preparedStatement = "SELECT $this->selectFieldsStatement FROM $this->tableName WHERE PeopleID3 = :id";
         $this->preparedVariables = ['id' => $id];
     }
 }
