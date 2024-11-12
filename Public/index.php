@@ -25,17 +25,11 @@ declare(strict_types=1);
 
 use DI\ContainerBuilder;
 use Dotenv\Dotenv;
-use Middleware\APIAuthMiddleware;
-use Middleware\APIStandardsMiddleware;
-use Middleware\CachingMiddleware;
-use Middleware\GoogleAnalyticsMiddleware;
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use Slim\Factory\AppFactory;
-use Tuupola\Middleware\HttpBasicAuthentication;
-use Slim\Views\PhpRenderer;
 use Utilities\APIErrorResponder;
-use Utilities\Mailer;
-use Psr\Container\ContainerInterface;
+use Slim\Exception\HttpNotFoundException;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 
 $DS = DIRECTORY_SEPARATOR;
 $ROOT_DIRECTORY = dirname(__DIR__);
