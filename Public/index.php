@@ -26,10 +26,6 @@ declare(strict_types=1);
 use DI\ContainerBuilder;
 use Dotenv\Dotenv;
 use Slim\Factory\AppFactory;
-use Utilities\APIErrorResponder;
-use Slim\Exception\HttpNotFoundException;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 
 $DS = DIRECTORY_SEPARATOR;
 $ROOT_DIRECTORY = dirname(__DIR__);
