@@ -27,69 +27,64 @@ declare(strict_types=1);
 use QueryGenerators\Total;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Swagger\Annotations as SWG;
+use OpenApi\Attributes as OA;
 
 // phpcs:disable Generic.Files.LineLength
 /**
- * @SWG\Resource(
- *     apiVersion="1",
- *     swaggerVersion="1.1",
- *     resourcePath="/totals.{format}",
- *     basePath="/v1"
+ *
+ * @OA\Get(
+ *     tags={"Totals"},
+ *     path="/v1/totals/{id}.{format}",
+ *     summary="Retrieve the global total for a specific id (case insensitive) in various formats. (JSON or XML)",
+ *     description="Retrieve the global total for a specific id (case insensitive). Look at the [column descriptions](/v1/docs/column_descriptions/totals) for Totals to see all the provided information.",
+ *     @OA\Parameter(
+ *         name="id",
+ *         description="The unique total id (case insensitive).",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
+ *     @OA\Response(
+ *         response="200",
+ *         description="The requested totals.",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(type="object")
+ *         ),
+ *         @OA\MediaType(
+ *             mediaType="application/xml",
+ *             @OA\Schema(type="object")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="400",
+ *         ref="#/components/responses/400ApiResponse"
+ *     ),
+ *     @OA\Response(
+ *         response="401",
+ *         ref="#/components/responses/401ApiResponse"
+ *     ),
+ *     @OA\Response(
+ *         response="404",
+ *         ref="#/components/responses/404ApiResponse"
+ *     ),
+ *     @OA\Response(
+ *         response="500",
+ *         ref="#/components/responses/500ApiResponse"
+ *     )
  * )
  */
-/**
-  *
-  * @SWG\API(
-  *  path="/totals.{format}",
-  *  description="Retrieve various global totals including total Christian people groups, continents, reagions and many more. Look at the column descriptions for Totals to see all the provided information.",
-  *  @SWG\Operations(
-  *      @SWG\Operation(
-  *          httpMethod="GET",
-  *          nickname="totalsIndex",
-  *          summary="Retrieve global totals in various formats. (JSON or XML)",
-  *          notes="Retrieve various global totals including total Christian people groups, continents, reagions and many more. Look at the <a href='/v1/docs/column_descriptions/totals' target='_blank'>column descriptions</a> for Totals to see all the provided information.",
-  *          @SWG\Parameters(
-  *              @SWG\Parameter(
-  *                  name="api_key",
-  *                  description="Your Joshua Project API key.",
-  *                  paramType="query",
-  *                  required="true",
-  *                  allowMultiple="false",
-  *                  dataType="string"
-  *              )
-  *          ),
-  *          @SWG\ErrorResponses(
-  *              @SWG\ErrorResponse(
-  *                  code="400",
-  *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
-  *              ),
-  *              @SWG\ErrorResponse(
-  *                  code="401",
-  *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
-  *              ),
-  *              @SWG\ErrorResponse(
-  *                  code="404",
-  *                  reason="Not found.  The requested route was not found."
-  *              ),
-  *              @SWG\ErrorResponse(
-  *                  code="500",
-  *                  reason="Internal server error.  Please try again later."
-  *              )
-  *          )
-  *      )
-  *  )
-  * )
-  *
-  */
 // phpcs:enable Generic.Files.LineLength
 $app->get(
-    '/{version}/totals.{format}',
+    '/{version}/totals/{id}.{format}',
     function (Request $request, Response $response, $args = []): Response {
         $data = [];
+        $id = strip_tags($args['id']);
         try {
-            $total = new Total([]);
-            $total->all();
+            $total = new Total(['id' => $id]);
+            $total->findById();
             $statement = $this->get('db')->prepare($total->preparedStatement);
             $statement->execute($total->preparedVariables);
             $data = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -119,74 +114,52 @@ $app->get(
 
 // phpcs:disable Generic.Files.LineLength
 /**
- * @SWG\Resource(
- *     apiVersion="1",
- *     swaggerVersion="1.1",
- *     resourcePath="/totals/{id}.{format}",
- *     basePath="/v1"
+ *
+ * @OA\Get(
+ *     tags={"Totals"},
+ *     path="/v1/totals.{format}",
+ *     summary="Retrieve global totals in various formats. (JSON or XML)",
+ *     description="Retrieve various global totals including total Christian people groups, continents, reagions and many more. Look at the [column descriptions](/v1/docs/column_descriptions/totals) for Totals to see all the provided information.",
+ *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
+ *     @OA\Response(
+ *         response="200",
+ *         description="The totals.",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(type="object")
+ *         ),
+ *         @OA\MediaType(
+ *             mediaType="application/xml",
+ *             @OA\Schema(type="object")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="400",
+ *         ref="#/components/responses/400ApiResponse"
+ *     ),
+ *     @OA\Response(
+ *         response="401",
+ *         ref="#/components/responses/401ApiResponse"
+ *     ),
+ *     @OA\Response(
+ *         response="404",
+ *         ref="#/components/responses/404ApiResponse"
+ *     ),
+ *     @OA\Response(
+ *         response="500",
+ *         ref="#/components/responses/500ApiResponse"
+ *     )
  * )
  */
-/**
-  *
-  * @SWG\API(
-  *  path="/totals/{id}.{format}",
-  *  description="Retrieve the global totals based on the provided id (case insensitive). Look at the column descriptions for Totals to see all the provided information.",
-  *  @SWG\Operations(
-  *      @SWG\Operation(
-  *          httpMethod="GET",
-  *          nickname="totalsIndex",
-  *          summary="Retrieve the global total for a specific id (case insensitive) in various formats. (JSON or XML)",
-  *          notes="Retrieve the global total for a specific id (case insensitive). Look at the <a href='/v1/docs/column_descriptions/totals' target='_blank'>column descriptions</a> for Totals to see all the provided information.",
-  *          @SWG\Parameters(
-  *              @SWG\Parameter(
-  *                  name="api_key",
-  *                  description="Your Joshua Project API key.",
-  *                  paramType="query",
-  *                  required="true",
-  *                  allowMultiple="false",
-  *                  dataType="string"
-  *              ),
-    *            @SWG\Parameter(
-  *                  name="id",
-  *                  description="The unique total id (case insensitive).",
-  *                  paramType="path",
-  *                  required="true",
-  *                  allowMultiple="false",
-  *                  dataType="string"
-  *              )
-  *          ),
-  *          @SWG\ErrorResponses(
-  *              @SWG\ErrorResponse(
-  *                  code="400",
-  *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
-  *              ),
-  *              @SWG\ErrorResponse(
-  *                  code="401",
-  *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
-  *              ),
-  *              @SWG\ErrorResponse(
-  *                  code="404",
-  *                  reason="Not found.  The requested route was not found."
-  *              ),
-  *              @SWG\ErrorResponse(
-  *                  code="500",
-  *                  reason="Internal server error.  Please try again later."
-  *              )
-  *          )
-  *      )
-  *  )
-  * )
-  *
-  */
 // phpcs:enable Generic.Files.LineLength
 $app->get(
-    '/{version}/totals/{id}.{format}',
+    '/{version}/totals.{format}',
     function (Request $request, Response $response, $args = []): Response {
         $data = [];
-        $id = strip_tags($args['id']);
         try {
-            $total = new Total(['id' => $id]);
-            $total->findById();
+            $total = new Total([]);
+            $total->all();
             $statement = $this->get('db')->prepare($total->preparedStatement);
             $statement->execute($total->preparedVariables);
             $data = $statement->fetchAll(PDO::FETCH_ASSOC);

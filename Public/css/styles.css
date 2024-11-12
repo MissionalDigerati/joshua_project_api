@@ -102,3 +102,13 @@ h3 {
 	width: 304px;
     margin: 0 auto 15px;
 }
+/**
+ * Swagger UI
+ */
+.swagger-ui .info {
+	display: none;
+}
+.swagger-ui tr[data-code="200"] .model-example,
+.swagger-ui tr[data-code="200"] .response-controls {
+	display: none;
+}
