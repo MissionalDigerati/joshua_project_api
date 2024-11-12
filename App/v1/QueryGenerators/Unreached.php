@@ -159,10 +159,11 @@ class Unreached extends PeopleGroup
             'jpupgotd.ROG3',
             $this->countryURLSelect
         ) . " as CountryURL";
+
+        $scaleImageStatement = $this->getScaleImageURLStatement('jpupgotd.JPScale');
         $this->selectFieldsStatement .= ", " .
             str_replace('JPScale', 'jpupgotd.JPScale', $this->JPScaleTextSelectStatement) . " as JPScaleText";
-        $this->selectFieldsStatement .= ", " .
-            str_replace('JPScale', 'jpupgotd.JPScale', $this->JPScaleImageURLSelectStatement) . " as JPScaleImageURL";
+        $this->selectFieldsStatement .= ", $scaleImageStatement as JPScaleImageURL";
     }
     /**
      * Find the daily unreached People Group.

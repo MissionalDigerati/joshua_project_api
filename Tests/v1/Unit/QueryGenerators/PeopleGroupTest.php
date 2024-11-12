@@ -158,7 +158,7 @@ class PeopleGroupTest extends TestCase
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $expectedImageURL = "https://joshuaproject.net/images/scale".round(intval($data[0]['JPScale'])).".jpg";
+        $expectedImageURL = "https://joshuaproject.net/assets/img/gauge/gauge-".round(intval($data[0]['JPScale'])).".png";
         $this->assertEquals($expectedImageURL, $data[0]['JPScaleImageURL']);
     }
     /**

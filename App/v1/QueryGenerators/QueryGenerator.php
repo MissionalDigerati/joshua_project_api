@@ -135,14 +135,6 @@ class QueryGenerator
      */
     protected $JPScaleTextSelectStatement = "";
     /**
-     * The MySQL CONCAT statement for generating the JPScaleImageURL.
-     *
-     * @var     string
-     * @access  protected
-     */
-    protected $JPScaleImageURLSelectStatement =
-        "CONCAT('https://joshuaproject.net/assets/img/gauge/gauge-', ROUND(JPScale), '.png')";
-    /**
      * An array of table columns (key) and their alias (value).
      *
      * @var     array
@@ -348,5 +340,19 @@ class QueryGenerator
             $statementArray[] = $key . " AS " . $value;
         }
         return join(', ', $statementArray);
+    }
+
+    /**
+     * Get the select statement to generate the url for the jpscale.
+     *
+     * @param string $scaleField    The filed that contains the JPScale
+     *
+     * @return string   The statement
+     * @access protected
+     * @author Johnathan Pulos
+     */
+    protected function getScaleImageURLStatement(string $scaleField): string
+    {
+        return "CONCAT('https://joshuaproject.net/assets/img/gauge/gauge-', ROUND($scaleField), '.png')";
     }
 }

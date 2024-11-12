@@ -104,12 +104,12 @@ class Country extends QueryGenerator
     public function __construct(array $getParams)
     {
         parent::__construct($getParams);
+        $scaleImageStatement = $this->getScaleImageURLStatement('JPScaleCtry');
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) .
             ", " . $this->generateAliasSelectStatement();
         $this->selectFieldsStatement .= ", " .
             str_replace('JPScale', 'JPScaleCtry', $this->JPScaleTextSelectStatement) . " as JPScaleText";
-        $this->selectFieldsStatement .= ", " .
-            str_replace('JPScale', 'JPScaleCtry', $this->JPScaleImageURLSelectStatement) . " as JPScaleImageURL";
+        $this->selectFieldsStatement .= ", $scaleImageStatement as JPScaleImageURL";
     }
     /**
      * Find a country by it's id.
