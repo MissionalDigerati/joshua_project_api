@@ -159,13 +159,14 @@ class PeopleGroup extends QueryGenerator
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " .
         $this->generateAliasSelectStatement();
+        $scaleTextStatement = $this->getScaleTextStatement('JPScale');
         $scaleImageStatement = $this->getScaleImageURLStatement('JPScale');
-        $this->selectFieldsStatement .= ", " . $this->peopleGroupMapURLSelect . " as PeopleGroupMapURL";
-        $this->selectFieldsStatement .= ", " . $this->peopleGroupMapExpandedURLSelect . " as PeopleGroupMapExpandedURL";
-        $this->selectFieldsStatement .= ", " . $this->peopleGroupURLSelect . " as PeopleGroupURL";
-        $this->selectFieldsStatement .= ", " . $this->peopleGroupPhotoURLSelect . " as PeopleGroupPhotoURL";
-        $this->selectFieldsStatement .= ", " . $this->countryURLSelect . " as CountryURL";
-        $this->selectFieldsStatement .= ", " . $this->JPScaleTextSelectStatement . " as JPScaleText";
+        $this->selectFieldsStatement .= ", $this->peopleGroupMapURLSelect as PeopleGroupMapURL";
+        $this->selectFieldsStatement .= ", $this->peopleGroupMapExpandedURLSelect as PeopleGroupMapExpandedURL";
+        $this->selectFieldsStatement .= ", $this->peopleGroupURLSelect as PeopleGroupURL";
+        $this->selectFieldsStatement .= ", $this->peopleGroupPhotoURLSelect as PeopleGroupPhotoURL";
+        $this->selectFieldsStatement .= ", $this->countryURLSelect as CountryURL";
+        $this->selectFieldsStatement .= ", $scaleTextStatement as JPScaleText";
         $this->selectFieldsStatement .= ", $scaleImageStatement as JPScaleImageURL";
     }
     /**
