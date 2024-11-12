@@ -104,7 +104,11 @@ class PeopleGroupGlobal extends QueryGenerator
     public function __construct(array $getParams)
     {
         parent::__construct($getParams);
+        $scaleTextStatement = $this->getScaleTextStatement('JPScalePGAC');
+        $scaleImageStatement = $this->getScaleImageURLStatement('JPScalePGAC');
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
+        $this->selectFieldsStatement .= ", $scaleTextStatement as JPScaleText";
+        $this->selectFieldsStatement .= ", $scaleImageStatement as JPScaleImageURL";
     }
 
     /**

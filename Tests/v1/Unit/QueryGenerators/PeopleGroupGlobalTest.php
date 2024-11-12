@@ -88,6 +88,8 @@ class PeopleGroupGlobalTest extends TestCase
         $this->assertEquals('Islam', $data[0]['PrimaryReligionPGAC']);
         $this->assertEquals(0.000, $data[0]['PercentChristianPGAC']);
         $this->assertEquals(0.000, $data[0]['PercentEvangelicalPGAC']);
+        $this->assertEquals('Unreached', $data[0]['JPScaleText']);
+        $this->assertEquals('https://joshuaproject.net/assets/img/gauge/gauge-1.png', $data[0]['JPScaleImageURL']);
     }
 
     public function testFindByIdShouldThrowExceptionIfIdIsNotProvided(): void
