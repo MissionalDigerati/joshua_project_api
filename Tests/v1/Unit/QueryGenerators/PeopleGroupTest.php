@@ -1039,4 +1039,31 @@ class PeopleGroupTest extends TestCase
             $this->assertTrue(in_array((int) $peopleGroup['BibleStatus'], $expected));
         }
     }
+
+    public function testFindAllWithFiltersShouldAddPeopleId3Rog3Field(): void
+    {
+        $queryOne = new \QueryGenerators\PeopleGroup(['people_id3' => 11722, 'countries' => 'YM']);
+        $queryOne->findAllWithFilters();
+        $statement = $this->db->prepare($queryOne->preparedStatement);
+        $statement->execute($queryOne->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(isset($peopleGroup['PeopleID3ROG3']));
+            $this->assertEquals('11722YM', $peopleGroup['PeopleID3ROG3']);
+        }
+    }
+
+    public function testFindByIdAndCountryShouldAddPeopleID3Rog3Field(): void
+    {
+        $params = array('id' => 11722, 'country' => 'AE');
+        $peopleGroup = new \QueryGenerators\PeopleGroup($params);
+        $peopleGroup->findByIdAndCountry();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        $this->assertTrue(isset($data[0]['PeopleID3ROG3']));
+        $this->assertEquals('11722AE', $data[0]['PeopleID3ROG3']);
+    }
 }

@@ -283,6 +283,10 @@
                     <td>People-Group-Across-Countries ID number</td>
                 </tr>
                 <tr>
+                    <td>PeopleID3ROG3</td>
+                    <td>An ID created by concatenating the PeopleID3 (People code) and ROG3 (Country code). This provides an ID for a specific people group in a specific country.</td>
+                </tr>
+                <tr>
                     <td>PeopleGroupMapURL</td>
                     <td>The full URL for the people group's map</td>
                 </tr>
