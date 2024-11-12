@@ -141,7 +141,7 @@ class QueryGenerator
      * @access  protected
      */
     protected $JPScaleImageURLSelectStatement =
-        "CONCAT('https://joshuaproject.net/images/scale', ROUND(JPScale), '.jpg')";
+        "CONCAT('https://joshuaproject.net/assets/img/gauge/gauge-', ROUND(JPScale), '.png')";
     /**
      * An array of table columns (key) and their alias (value).
      *
