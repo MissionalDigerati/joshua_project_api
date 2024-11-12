@@ -33,7 +33,8 @@ use OpenApi\Attributes as OA;
 /**
  *
  * @OA\Get(
- *     path="/regions/{id}.{format}",
+ *     tags={"Regions"},
+ *     path="/v1/regions/{id}.{format}",
  *     summary="Retrieve the details of a specific Region (JSON or XML)",
  *     description="Retrieve the details of a specific Region by supplying a unique id for the region.  Use the following numbers:
  * **1** = South Pacific

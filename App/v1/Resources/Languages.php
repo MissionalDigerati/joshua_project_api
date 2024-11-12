@@ -33,7 +33,8 @@ use OpenApi\Attributes as OA;
 /**
  *
  * @OA\Get(
- *     path="/languages/{id}.{format}",
+ *     tags={"Languages"},
+ *     path="/v1/languages/{id}.{format}",
  *     summary="Retrieve the details of a specific language.",
  *     description="Retrieve the details of a specific Language by supplying the language's [3 letter ISO 639-2 Code](http://goo.gl/gbkgo4).",
  *     @OA\Parameter(
@@ -139,7 +140,8 @@ $app->get(
 /**
  *
  * @OA\Get(
- *     path="/languages.{format}",
+ *     tags={"Languages"},
+ *     path="/v1/languages.{format}",
  *     summary="Retrieve the details of a set of languages.",
  *     description="Find all languages that match your filter criteria.",
  *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),

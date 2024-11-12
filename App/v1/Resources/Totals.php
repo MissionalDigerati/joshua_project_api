@@ -33,7 +33,8 @@ use OpenApi\Attributes as OA;
 /**
  *
  * @OA\Get(
- *     path="/totals.{format}",
+ *     tags={"Totals"},
+ *     path="/v1/totals.{format}",
  *     summary="Retrieve global totals in various formats. (JSON or XML)",
  *     description="Retrieve various global totals including total Christian people groups, continents, reagions and many more. Look at the [column descriptions](/v1/docs/column_descriptions/totals) for Totals to see all the provided information.",
  *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
@@ -107,7 +108,8 @@ $app->get(
 /**
  *
  * @OA\Get(
- *     path="/totals/{id}.{format}",
+ *     tags={"Totals"},
+ *     path="/v1/totals/{id}.{format}",
  *     summary="Retrieve the global total for a specific id (case insensitive) in various formats. (JSON or XML)",
  *     description="Retrieve the global total for a specific id (case insensitive). Look at the [column descriptions](/v1/docs/column_descriptions/totals) for Totals to see all the provided information.",
  *     @OA\Parameter(

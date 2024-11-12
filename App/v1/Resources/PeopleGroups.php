@@ -37,7 +37,8 @@ use Utilities\StringHelper;
 /**
  *
  * @OA\Get(
- *     path="/people_groups/daily_unreached.{format}",
+ *     tags={"People Groups"},
+ *     path="/v1/people_groups/daily_unreached.{format}",
  *     summary="Retrieve the Unreached of the Day information (JSON or XML)",
  *     description="Retrieve the daily Unreached of the Day people group information. You have two options when retrieving the Unreached of the Day:
  * Get today's Unreached of the Day. This is the default if you do not send parameters.
@@ -193,7 +194,8 @@ $app->get(
 /**
  *
  * @OA\Get(
- *     path="/people_groups/{id}.{format}",
+ *     tags={"People Groups"},
+ *     path="/v1/people_groups/{id}.{format}",
  *     summary="Retrieve the details of a specific People Group (JSON or XML)",
  *     description="Retrieve the details of a specific People Group around the world or in a specific country.  You can either:
  * Get a summary of all occurances of the People Group by supplying the PeopleGroup.id (PeopleID3) only, or
@@ -368,7 +370,8 @@ $app->get(
 /**
  *
  * @OA\Get(
- *     path="/people_groups.{format}",
+ *     tags={"People Groups"},
+ *     path="/v1/people_groups.{format}",
  *     summary="Search all People Groups with diverse filters (JSON or XML)",
  *     description="Find all People Groups that match your filter criteria.",
  *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),

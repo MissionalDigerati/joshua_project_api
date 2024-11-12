@@ -5,8 +5,11 @@
         "version": "1"
     },
     "paths": {
-        "/continents/{id}.{format}": {
+        "/v1/continents/{id}.{format}": {
             "get": {
+                "tags": [
+                    "Continents"
+                ],
                 "summary": "Get the details about a specific continent.",
                 "description": "Retrieve the details of a specific Continent by supplying a three letter ISO Continent code (id).  Use the following codes:\n * **AFR** = Africa\n * **ASI** = Asia\n * **AUS** = Australia\n * **EUR** = Europe\n * **NAR** = North America\n * **SOP** = Oceania (South Pacific)\n * **LAM** = South America",
                 "parameters": [
@@ -57,8 +60,11 @@
                 }
             }
         },
-        "/countries/{id}.{format}": {
+        "/v1/countries/{id}.{format}": {
             "get": {
+                "tags": [
+                    "Countries"
+                ],
                 "summary": "Retrieve the details of a specific country.",
                 "description": "Retrieve the details of a specific Country by supplying the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J) (id).",
                 "parameters": [
@@ -109,8 +115,11 @@
                 }
             }
         },
-        "/countries.{format}": {
+        "/v1/countries.{format}": {
             "get": {
+                "tags": [
+                    "Countries"
+                ],
                 "summary": "Find all countries that match your filter criteria.",
                 "description": "Retrieve a list of Countries that match your filter settings.",
                 "parameters": [
@@ -406,8 +415,11 @@
                 }
             }
         },
-        "/languages/{id}.{format}": {
+        "/v1/languages/{id}.{format}": {
             "get": {
+                "tags": [
+                    "Languages"
+                ],
                 "summary": "Retrieve the details of a specific language.",
                 "description": "Retrieve the details of a specific Language by supplying the language's [3 letter ISO 639-2 Code](http://goo.gl/gbkgo4).",
                 "parameters": [
@@ -458,8 +470,11 @@
                 }
             }
         },
-        "/languages.{format}": {
+        "/v1/languages.{format}": {
             "get": {
+                "tags": [
+                    "Languages"
+                ],
                 "summary": "Retrieve the details of a set of languages.",
                 "description": "Find all languages that match your filter criteria.",
                 "parameters": [
@@ -638,8 +653,11 @@
                 }
             }
         },
-        "/people_groups/daily_unreached.{format}": {
+        "/v1/people_groups/daily_unreached.{format}": {
             "get": {
+                "tags": [
+                    "People Groups"
+                ],
                 "summary": "Retrieve the Unreached of the Day information (JSON or XML)",
                 "description": "Retrieve the daily Unreached of the Day people group information. You have two options when retrieving the Unreached of the Day:\n * Get today's Unreached of the Day. This is the default if you do not send parameters.\n * You can specify the month and day parameter to get a specific day of the year. For example, `/daily_unreached.json?month=01&day=31` will get the people group for Jan. 31st. You must provide both parameters!",
                 "parameters": [
@@ -699,8 +717,11 @@
                 }
             }
         },
-        "/people_groups/{id}.{format}": {
+        "/v1/people_groups/{id}.{format}": {
             "get": {
+                "tags": [
+                    "People Groups"
+                ],
                 "summary": "Retrieve the details of a specific People Group (JSON or XML)",
                 "description": "Retrieve the details of a specific People Group around the world or in a specific country.  You can either:\n * Get a summary of all occurances of the People Group by supplying the PeopleGroup.id (PeopleID3) only, or\n * Get the details of a specific people group in a specific country by providing the PeopleGroup.id (PeopleID3) and the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J).",
                 "parameters": [
@@ -760,8 +781,11 @@
                 }
             }
         },
-        "/people_groups.{format}": {
+        "/v1/people_groups.{format}": {
             "get": {
+                "tags": [
+                    "People Groups"
+                ],
                 "summary": "Search all People Groups with diverse filters (JSON or XML)",
                 "description": "Find all People Groups that match your filter criteria.",
                 "parameters": [
@@ -774,7 +798,7 @@
                     {
                         "name": "bible_status",
                         "in": "query",
-                        "description": "A bar separated list of one or more BibleStatus levels. Only accepts the following codes: 0, 1, 2, 3, 4, 5.  The statuses are: \n * **0** = Unspecified\n * **1** = Translation needed\n * **2** = Translation started\n * **3** = Portions\n * **4** = New Testament\n * **5** = Complete Bible",
+                        "description": "A bar separated list of one or more BibleStatus levels. Only accepts the following codes: 0, 1, 2, 3, 4, 5.  The statuses are:\n * **0** = Unspecified\n * **1** = Translation needed\n * **2** = Translation started\n * **3** = Portions\n * **4** = New Testament\n * **5** = Complete Bible",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -1075,8 +1099,11 @@
                 }
             }
         },
-        "/regions/{id}.{format}": {
+        "/v1/regions/{id}.{format}": {
             "get": {
+                "tags": [
+                    "Regions"
+                ],
                 "summary": "Retrieve the details of a specific Region (JSON or XML)",
                 "description": "Retrieve the details of a specific Region by supplying a unique id for the region.  Use the following numbers:\n * **1** = South Pacific\n * **2** = Southeast Asia\n * **3** = Northeast Asia\n * **4** = South Asia\n * **5** = Central Asia\n * **6** = Middle East and North Africa\n * **7** = East and Southern Africa\n * **8** = West and Central Africa\n * **9** = Eastern Europe and Eurasia\n * **10** = Western Europe\n * **11** = Central and South America\n * **12** = North America and Caribbean",
                 "parameters": [
@@ -1127,8 +1154,11 @@
                 }
             }
         },
-        "/totals.{format}": {
+        "/v1/totals.{format}": {
             "get": {
+                "tags": [
+                    "Totals"
+                ],
                 "summary": "Retrieve global totals in various formats. (JSON or XML)",
                 "description": "Retrieve various global totals including total Christian people groups, continents, reagions and many more. Look at the [column descriptions](/v1/docs/column_descriptions/totals) for Totals to see all the provided information.",
                 "parameters": [
@@ -1170,8 +1200,11 @@
                 }
             }
         },
-        "/totals/{id}.{format}": {
+        "/v1/totals/{id}.{format}": {
             "get": {
+                "tags": [
+                    "Totals"
+                ],
                 "summary": "Retrieve the global total for a specific id (case insensitive) in various formats. (JSON or XML)",
                 "description": "Retrieve the global total for a specific id (case insensitive). Look at the [column descriptions](/v1/docs/column_descriptions/totals) for Totals to see all the provided information.",
                 "parameters": [

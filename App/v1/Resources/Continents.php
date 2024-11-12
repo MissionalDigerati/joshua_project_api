@@ -32,7 +32,8 @@ use OpenApi\Attributes as OA;
 // phpcs:disable Generic.Files.LineLength
 /**
  * @OA\Get(
- *     path="/continents/{id}.{format}",
+ *     tags={"Continents"},
+ *     path="/v1/continents/{id}.{format}",
  *     summary="Get the details about a specific continent.",
  *     description="Retrieve the details of a specific Continent by supplying a three letter ISO Continent code (id).  Use the following codes:
  * **AFR** = Africa

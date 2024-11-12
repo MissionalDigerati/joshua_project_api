@@ -32,7 +32,8 @@ use OpenApi\Attributes as OA;
 // phpcs:disable Generic.Files.LineLength
 /**
  * @OA\Get(
- *     path="/countries/{id}.{format}",
+ *     tags={"Countries"},
+ *     path="/v1/countries/{id}.{format}",
  *     summary="Retrieve the details of a specific country.",
  *     description="Retrieve the details of a specific Country by supplying the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J) (id).",
  *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
@@ -138,7 +139,8 @@ $app->get(
 // phpcs:disable Generic.Files.LineLength
 /**
  * @OA\Get(
- *     path="/countries.{format}",
+ *     tags={"Countries"},
+ *     path="/v1/countries.{format}",
  *     summary="Find all countries that match your filter criteria.",
  *     description="Retrieve a list of Countries that match your filter settings.",
  *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
