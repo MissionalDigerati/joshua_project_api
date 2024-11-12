@@ -36,19 +36,8 @@ use OpenApi\Attributes as OA;
  *     path="/totals.{format}",
  *     summary="Retrieve global totals in various formats. (JSON or XML)",
  *     description="Retrieve various global totals including total Christian people groups, continents, reagions and many more. Look at the [column descriptions](/v1/docs/column_descriptions/totals) for Totals to see all the provided information.",
- *     @OA\Parameter(
- *         name="api_key",
- *         description="Your Joshua Project API key.",
- *         in="query",
- *         required=true,
- *         @OA\Schema(type="string")
- *     ),
- *     @OA\Parameter(
- *         name="format",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="string", enum={"json", "xml"})
- *     ),
+ *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Response(
  *         response="200",
  *         description="The totals.",
@@ -63,51 +52,19 @@ use OpenApi\Attributes as OA;
  *     ),
  *     @OA\Response(
  *         response="400",
- *         description="Bad request. Your request is malformed in some way. Check your supplied parameters.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/400ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="401",
- *         description="Unauthorized. You are missing your API key, or it has been suspended.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/401ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="404",
- *         description="Not found. The requested route was not found.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/404ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="500",
- *         description="Internal server error. Please try again later.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/500ApiResponse"
  *     )
  * )
  */
@@ -154,25 +111,14 @@ $app->get(
  *     summary="Retrieve the global total for a specific id (case insensitive) in various formats. (JSON or XML)",
  *     description="Retrieve the global total for a specific id (case insensitive). Look at the [column descriptions](/v1/docs/column_descriptions/totals) for Totals to see all the provided information.",
  *     @OA\Parameter(
- *         name="api_key",
- *         description="Your Joshua Project API key.",
- *         in="query",
- *         required=true,
- *         @OA\Schema(type="string")
- *     ),
- *     @OA\Parameter(
  *         name="id",
  *         description="The unique total id (case insensitive).",
  *         in="path",
  *         required=true,
  *         @OA\Schema(type="string")
  *     ),
- *     @OA\Parameter(
- *         name="format",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="string", enum={"json", "xml"})
- *     ),
+ *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Response(
  *         response="200",
  *         description="The requested totals.",
@@ -187,51 +133,19 @@ $app->get(
  *     ),
  *     @OA\Response(
  *         response="400",
- *         description="Bad request. Your request is malformed in some way. Check your supplied parameters.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/400ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="401",
- *         description="Unauthorized. You are missing your API key, or it has been suspended.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/401ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="404",
- *         description="Not found. The requested route was not found.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/404ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="500",
- *         description="Internal server error. Please try again later.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/500ApiResponse"
  *     )
  * )
  */

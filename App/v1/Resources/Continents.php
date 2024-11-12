@@ -29,13 +29,6 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use OpenApi\Attributes as OA;
 
-/**
- * @OA\Info(
- *     title="Joshua Project API",
- *     version="1"
- * )
- */
-
 // phpcs:disable Generic.Files.LineLength
 /**
  * @OA\Get(
@@ -49,13 +42,7 @@ use OpenApi\Attributes as OA;
  * **NAR** = North America
  * **SOP** = Oceania (South Pacific)
  * **LAM** = South America",
- *     @OA\Parameter(
- *         name="api_key",
- *         description="Your Joshua Project API key.",
- *         in="query",
- *         required=true,
- *         @OA\Schema(type="string")
- *     ),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Parameter(
  *         name="id",
  *         description="The 3 letter ISO Continent Code for the Continent you want to view. Use the codes indicated above.",
@@ -63,12 +50,7 @@ use OpenApi\Attributes as OA;
  *         required=true,
  *         @OA\Schema(type="string")
  *     ),
- *     @OA\Parameter(
- *         name="format",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="string", enum={"json", "xml"})
- *     ),
+ *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
  *     @OA\Response(
  *         response="200",
  *         description="The details about the specific continent.",
@@ -83,51 +65,19 @@ use OpenApi\Attributes as OA;
  *     ),
  *     @OA\Response(
  *         response="400",
- *         description="Bad request. Your request is malformed in some way. Check your supplied parameters.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/400ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="401",
- *         description="Unauthorized. You are missing your API key, or it has been suspended.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/401ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="404",
- *         description="Not found. The requested route was not found.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/404ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="500",
- *         description="Internal server error. Please try again later.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/500ApiResponse"
  *     )
  * )
  */

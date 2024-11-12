@@ -42,13 +42,8 @@ use Utilities\StringHelper;
  *     description="Retrieve the daily Unreached of the Day people group information. You have two options when retrieving the Unreached of the Day:
  * Get today's Unreached of the Day. This is the default if you do not send parameters.
  * You can specify the month and day parameter to get a specific day of the year. For example, `/daily_unreached.json?month=01&day=31` will get the people group for Jan. 31st. You must provide both parameters!",
- *     @OA\Parameter(
- *         name="api_key",
- *         description="Your Joshua Project API key.",
- *         in="query",
- *         required=true,
- *         @OA\Schema(type="string")
- *     ),
+ *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Parameter(
  *         name="day",
  *         description="The two digit day that you want to receive the information from. Defaults to the current day.",
@@ -62,12 +57,6 @@ use Utilities\StringHelper;
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
- *     ),
- *     @OA\Parameter(
- *         name="format",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="string", enum={"json", "xml"})
  *     ),
  *     @OA\Response(
  *         response="200",
@@ -83,51 +72,19 @@ use Utilities\StringHelper;
  *     ),
  *     @OA\Response(
  *         response="400",
- *         description="Bad request. Your request is malformed in some way. Check your supplied parameters.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/400ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="401",
- *         description="Unauthorized. You are missing your API key, or it has been suspended.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/401ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="404",
- *         description="Not found. The requested route was not found.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/404ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="500",
- *         description="Internal server error. Please try again later.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/500ApiResponse"
  *     )
  * )
  */
@@ -242,31 +199,20 @@ $app->get(
  * Get a summary of all occurances of the People Group by supplying the PeopleGroup.id (PeopleID3) only, or
  * Get the details of a specific people group in a specific country by providing the PeopleGroup.id (PeopleID3) and the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J).",
  *     @OA\Parameter(
- *         name="api_key",
- *         description="Your Joshua Project API key.",
- *         in="query",
- *         required=true,
- *         @OA\Schema(type="string")
- *     ),
- *     @OA\Parameter(
- *         name="country",
- *         description="The country's 2 letter FIPS 10-4 Code specified at [https://goo.gl/yYWY4J](https://goo.gl/yYWY4J).",
- *         in="query",
- *         required=false,
- *         @OA\Schema(type="string")
- *     ),
- *     @OA\Parameter(
  *         name="id",
  *         description="Joshua Project's PeopleID3.",
  *         in="path",
  *         required=true,
  *         @OA\Schema(type="string")
  *     ),
+ *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Parameter(
- *         name="format",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="string", enum={"json", "xml"})
+ *         name="country",
+ *         description="The country's 2 letter FIPS 10-4 Code specified at [https://goo.gl/yYWY4J](https://goo.gl/yYWY4J).",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
  *     ),
  *     @OA\Response(
  *         response="200",
@@ -282,51 +228,19 @@ $app->get(
  *     ),
  *     @OA\Response(
  *         response="400",
- *         description="Bad request. Your request is malformed in some way. Check your supplied parameters.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/400ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="401",
- *         description="Unauthorized. You are missing your API key, or it has been suspended.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/401ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="404",
- *         description="Not found. The requested route was not found.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/404ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="500",
- *         description="Internal server error. Please try again later.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/500ApiResponse"
  *     )
  * )
  */
@@ -457,16 +371,11 @@ $app->get(
  *     path="/people_groups.{format}",
  *     summary="Search all People Groups with diverse filters (JSON or XML)",
  *     description="Find all People Groups that match your filter criteria.",
- *     @OA\Parameter(
- *         name="api_key",
- *         description="Your Joshua Project API key.",
- *         in="query",
- *         required=true,
- *         @OA\Schema(type="string")
- *     ),
+ *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Parameter(
  *         name="bible_status",
- *         description="A bar separated list of one or more BibleStatus levels. Only accepts the following codes: 0, 1, 2, 3, 4, 5.  The statuses are: 
+ *         description="A bar separated list of one or more BibleStatus levels. Only accepts the following codes: 0, 1, 2, 3, 4, 5.  The statuses are:
  * **0** = Unspecified
  * **1** = Translation needed
  * **2** = Translation started
@@ -713,12 +622,6 @@ $app->get(
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
- *     @OA\Parameter(
- *         name="format",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="string", enum={"json", "xml"})
- *     ),
  *     @OA\Response(
  *         response="200",
  *         description="The list of people groups based off your criteria.",
@@ -733,51 +636,19 @@ $app->get(
  *     ),
  *     @OA\Response(
  *         response="400",
- *         description="Bad request. Your request is malformed in some way. Check your supplied parameters.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/400ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="401",
- *         description="Unauthorized. You are missing your API key, or it has been suspended.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/401ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="404",
- *         description="Not found. The requested route was not found.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/404ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="500",
- *         description="Internal server error. Please try again later.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/500ApiResponse"
  *     )
  * )
  */

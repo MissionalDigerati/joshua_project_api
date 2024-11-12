@@ -37,25 +37,14 @@ use OpenApi\Attributes as OA;
  *     summary="Retrieve the details of a specific language.",
  *     description="Retrieve the details of a specific Language by supplying the language's [3 letter ISO 639-2 Code](http://goo.gl/gbkgo4).",
  *     @OA\Parameter(
- *         name="api_key",
- *         description="Your Joshua Project API key.",
- *         in="query",
- *         required=true,
- *         @OA\Schema(type="string")
- *     ),
- *     @OA\Parameter(
  *         name="id",
  *         description="The 3 letter ISO 639-2 Language Code for the Language you want to view. [View all Language Codes](http://goo.gl/gbkgo4)",
  *         in="path",
  *         required=true,
  *         @OA\Schema(type="string")
  *     ),
- *     @OA\Parameter(
- *         name="format",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="string", enum={"json", "xml"})
- *     ),
+ *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Response(
  *         response="200",
  *         description="The details about the specific language.",
@@ -70,51 +59,19 @@ use OpenApi\Attributes as OA;
  *     ),
  *     @OA\Response(
  *         response="400",
- *         description="Bad request. Your request is malformed in some way. Check your supplied parameters.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/400ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="401",
- *         description="Unauthorized. You are missing your API key, or it has been suspended.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/401ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="404",
- *         description="Not found. The requested route was not found.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/404ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="500",
- *         description="Internal server error. Please try again later.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/500ApiResponse"
  *     )
  * )
  */
@@ -185,19 +142,8 @@ $app->get(
  *     path="/languages.{format}",
  *     summary="Retrieve the details of a set of languages.",
  *     description="Find all languages that match your filter criteria.",
- *     @OA\Parameter(
- *         name="format",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="string", enum={"json", "xml"})
- *     ),
- *     @OA\Parameter(
- *         name="api_key",
- *         description="Your Joshua Project API key.",
- *         in="query",
- *         required=true,
- *         @OA\Schema(type="string")
- *     ),
+ *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Parameter(
  *         name="countries",
  *         description="A bar separated list of one or more countries to filter by. Use the 2 letter FIPS 10-4 code. [View all Country Codes](https://goo.gl/yYWY4J)",
@@ -317,7 +263,7 @@ $app->get(
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
-*     @OA\Response(
+ *     @OA\Response(
  *         response="200",
  *         description="The languages filtered by your query.",
  *         @OA\MediaType(
@@ -331,51 +277,19 @@ $app->get(
  *     ),
  *     @OA\Response(
  *         response="400",
- *         description="Bad request. Your request is malformed in some way. Check your supplied parameters.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/400ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="401",
- *         description="Unauthorized. You are missing your API key, or it has been suspended.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/401ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="404",
- *         description="Not found. The requested route was not found.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/404ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="500",
- *         description="Internal server error. Please try again later.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/500ApiResponse"
  *     )
  * )
  */

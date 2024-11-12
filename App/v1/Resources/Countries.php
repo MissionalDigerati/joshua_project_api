@@ -35,13 +35,7 @@ use OpenApi\Attributes as OA;
  *     path="/countries/{id}.{format}",
  *     summary="Retrieve the details of a specific country.",
  *     description="Retrieve the details of a specific Country by supplying the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J) (id).",
- *     @OA\Parameter(
- *         name="api_key",
- *         description="Your Joshua Project API key.",
- *         in="query",
- *         required=true,
- *         @OA\Schema(type="string")
- *     ),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Parameter(
  *         name="id",
  *         description="The 2 letter FIPS 10-4 Country Code for the Country you want to view. [View all Country Codes](https://goo.gl/yYWY4J)",
@@ -49,12 +43,7 @@ use OpenApi\Attributes as OA;
  *         required=true,
  *         @OA\Schema(type="string")
  *     ),
- *     @OA\Parameter(
- *         name="format",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="string", enum={"json", "xml"})
- *     ),
+ *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
  *     @OA\Response(
  *         response="200",
  *         description="The details about the specific country.",
@@ -69,51 +58,19 @@ use OpenApi\Attributes as OA;
  *     ),
  *     @OA\Response(
  *         response="400",
- *         description="Bad request. Your request is malformed in some way. Check your supplied parameters.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/400ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="401",
- *         description="Unauthorized. You are missing your API key, or it has been suspended.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/401ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="404",
- *         description="Not found. The requested route was not found.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/404ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="500",
- *         description="Internal server error. Please try again later.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/500ApiResponse"
  *     )
  * )
  */
@@ -184,13 +141,8 @@ $app->get(
  *     path="/countries.{format}",
  *     summary="Find all countries that match your filter criteria.",
  *     description="Retrieve a list of Countries that match your filter settings.",
- *     @OA\Parameter(
- *         name="api_key",
- *         description="Your Joshua Project API key.",
- *         in="query",
- *         required=true,
- *         @OA\Schema(type="string")
- *     ),
+ *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Parameter(
  *         name="bible_complete",
  *         description="A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Complete Bible</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
@@ -420,12 +372,6 @@ $app->get(
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
- *     @OA\Parameter(
- *         name="format",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="string", enum={"json", "xml"})
- *     ),
  *     @OA\Response(
  *         response="200",
  *         description="The results of your filtered countries.",
@@ -440,51 +386,19 @@ $app->get(
  *     ),
  *     @OA\Response(
  *         response="400",
- *         description="Bad request. Your request is malformed in some way. Check your supplied parameters.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/400ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="401",
- *         description="Unauthorized. You are missing your API key, or it has been suspended.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/401ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="404",
- *         description="Not found. The requested route was not found.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/404ApiResponse"
  *     ),
  *     @OA\Response(
  *         response="500",
- *         description="Internal server error. Please try again later.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(type="object")
- *         ),
- *         @OA\MediaType(
- *             mediaType="application/xml",
- *             @OA\Schema(type="object")
- *         )
+ *         ref="#/components/responses/500ApiResponse"
  *     )
  * )
  */

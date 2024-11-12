@@ -31,7 +31,7 @@
         "phpunit/phpunit": "^10.4"
     },
     "scripts": {
-        "docs": "openapi ./App/v1/Resources/ -o ./Public/api-docs.json",
+        "docs": "openapi -o ./Public/api-docs.json ./App/v1/OpenAPI/Components.php ./App/v1/OpenAPI/Schemas/ ./App/v1/Resources/",
         "lint": "phpcs",
         "test": "phpunit Tests/"
     },
