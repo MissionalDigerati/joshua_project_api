@@ -167,4 +167,44 @@ class PeopleGroupGlobalTest extends TestCase
             $this->assertTrue(in_array($row['PeopleID2'], $ids));
         }
     }
+
+    public function testFindAllWithFiltersShouldReturnFilteredByROP3(): void
+    {
+        $ropIds = [111012, 100246];
+        $params = ['rop3' => implode('|', $ropIds)];
+        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE ROP3 IN (111012, 100246)");
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $count = $result['count'];
+        $params['limit'] = $count + 100;
+        $peopleGroup = new PeopleGroupGlobal($params);
+        // Let's bypass the limit of 250 to verify we get all the results
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($count, count($data));
+        foreach ($data as $row) {
+            $this->assertTrue(in_array($row['ROP3'], $ropIds));
+        }
+    }
+
+    public function testFindAllWithFiltersShouldReturnFilteredByROP25(): void
+    {
+        $ropIds = [307527];
+        $params = ['rop25' => implode('|', $ropIds)];
+        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE ROP25 IN (307527)");
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $count = $result['count'];
+        $params['limit'] = $count + 100;
+        $peopleGroup = new PeopleGroupGlobal($params);
+        // Let's bypass the limit of 250 to verify we get all the results
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($count, count($data));
+        foreach ($data as $row) {
+            $this->assertTrue(in_array($row['ROP25'], $ropIds));
+        }
+    }
 }
