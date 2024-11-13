@@ -432,4 +432,31 @@ class PeopleGroupGlobalTest extends TestCase
         $peopleGroup = new PeopleGroupGlobal(['languages' => 'language|kqp']);
         $peopleGroup->findAllWithFilters();
     }
+
+    public function testFindAllWithFiltersShouldFilterByThePrimaryReligions(): void
+    {
+        $params = ['primary_religions' => '7|9'];
+        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE RLG3PGAC IN (7, 9)");
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $count = $result['count'];
+        $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
+        // Let's bypass the limit of 250 to verify we get all the results
+        $params['limit'] = $count + 100;
+        $peopleGroup = new PeopleGroupGlobal($params);
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($count, count($data));
+        foreach ($data as $row) {
+            $this->assertTrue(in_array($row['RLG3PGAC'], [7, 9]));
+        }
+    }
+
+    public function testFindAllWithFiltersShouldThrowErrorIfIncorrectReligionCode(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $peopleGroup = new PeopleGroupGlobal(['primary_religions' => '15|1']);
+        $peopleGroup->findAllWithFilters();
+    }
 }

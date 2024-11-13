@@ -256,6 +256,20 @@ class PeopleGroupGlobal extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('primary_religions')) {
+            $religions = explode('|', $this->providedParams['primary_religions']);
+            foreach ($religions as $religion) {
+                $this->validator->integerInRange(intval($religion), 1, 9, [3]);
+            }
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString(
+                $this->providedParams['primary_religions'],
+                'RLG3PGAC'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('rop3')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
