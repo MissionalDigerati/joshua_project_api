@@ -103,8 +103,9 @@ class PeopleGroupGlobalTest extends TestCase
     {
         $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal");
         $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = ($result['count'] < 250) ? $result['count'] : 250;
-        $peopleGroup = new PeopleGroupGlobal([]);
+        $count = $result['count'];
+        // Let's bypass the limit of 250 to verify we get all the results
+        $peopleGroup = new PeopleGroupGlobal(['limit' => $count + 100]);
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -121,9 +122,49 @@ class PeopleGroupGlobalTest extends TestCase
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertEquals(4, count($data));
+        $this->assertEquals(count($ids), count($data));
         foreach ($data as $row) {
             $this->assertTrue(in_array($row['PeopleID3'], $ids));
+        }
+    }
+
+    public function testFindAllWithFiltersShouldReturnFilteredByPeopleID1(): void
+    {
+        $ids = [16, 23];
+        $params = ['people_id1' => implode('|', $ids)];
+        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE PeopleID1 IN (16, 23)");
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $count = $result['count'];
+        $params['limit'] = $count + 100;
+        $peopleGroup = new PeopleGroupGlobal($params);
+        // Let's bypass the limit of 250 to verify we get all the results
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($count, count($data));
+        foreach ($data as $row) {
+            $this->assertTrue(in_array($row['PeopleID1'], $ids));
+        }
+    }
+
+    public function testFindAllWithFiltersShouldReturnFilteredByPeopleID2(): void
+    {
+        $ids = [298, 273, 133];
+        $params = ['people_id2' => implode('|', $ids)];
+        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE PeopleID2 IN (298, 273, 133)");
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $count = $result['count'];
+        $params['limit'] = $count + 100;
+        $peopleGroup = new PeopleGroupGlobal($params);
+        // Let's bypass the limit of 250 to verify we get all the results
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($count, count($data));
+        foreach ($data as $row) {
+            $this->assertTrue(in_array($row['PeopleID2'], $ids));
         }
     }
 }

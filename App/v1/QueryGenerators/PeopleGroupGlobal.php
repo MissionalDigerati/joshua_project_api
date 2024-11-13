@@ -140,6 +140,20 @@ class PeopleGroupGlobal extends QueryGenerator
         $where = "";
         $appendAndOnWhere = false;
         $this->preparedStatement = "SELECT $this->selectFieldsStatement FROM $this->tableName";
+        if ($this->paramExists('people_id1')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id1'], 'PeopleID1');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('people_id2')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id2'], 'PeopleID2');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('people_id3')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
