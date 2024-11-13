@@ -172,6 +172,17 @@ class PeopleGroupGlobal extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id3'], 'PeopleID3');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('population')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['population'],
+                'PopulationPGAC',
+                'pop'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('rop3')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
