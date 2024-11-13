@@ -140,6 +140,18 @@ class PeopleGroupGlobal extends QueryGenerator
         $where = "";
         $appendAndOnWhere = false;
         $this->preparedStatement = "SELECT $this->selectFieldsStatement FROM $this->tableName";
+        if ($this->paramExists('is_frontier')) {
+            $this->validator->stringLength($this->providedParams['is_frontier'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['is_frontier'],
+                'FrontierPGAC',
+                'is_frontier'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('jpscale')) {
             $this->validator->barSeperatedStringProvidesAcceptableValues(
                 $this->providedParams['jpscale'],
