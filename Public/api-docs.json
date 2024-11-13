@@ -1099,6 +1099,71 @@
                 }
             }
         },
+        "/v1/people_groups_global/{id}.{format}": {
+            "get": {
+                "tags": [
+                    "People Groups Global"
+                ],
+                "summary": "Retrieve the details of a specific People Group across countries. (JSON or XML)",
+                "description": "Retrieve the details of a specific People Group across the countries they reside.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Joshua Project's PeopleID3.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
+                    },
+                    {
+                        "name": "include_country_list",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want to include a list of countries that they reside in. (Default: Y)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "Y"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The details of the specified people group.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400ApiResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401ApiResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404ApiResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500ApiResponse"
+                    }
+                }
+            }
+        },
         "/v1/regions/{id}.{format}": {
             "get": {
                 "tags": [

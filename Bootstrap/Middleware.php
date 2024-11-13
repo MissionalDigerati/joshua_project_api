@@ -49,6 +49,7 @@ return function(App $app) {
             '/v\d+/countries',
             '/v\d+/languages',
             '/v\d+/people_groups',
+            '/v\d+/people_groups_global',
             '/v\d+/regions',
             '/v\d+/totals',
         ]
