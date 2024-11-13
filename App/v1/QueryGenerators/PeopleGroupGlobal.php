@@ -140,6 +140,17 @@ class PeopleGroupGlobal extends QueryGenerator
         $where = "";
         $appendAndOnWhere = false;
         $this->preparedStatement = "SELECT $this->selectFieldsStatement FROM $this->tableName";
+        if ($this->paramExists('jpscale')) {
+            $this->validator->barSeperatedStringProvidesAcceptableValues(
+                $this->providedParams['jpscale'],
+                ['1', '2', '3', '4', '5']
+            );
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['jpscale'], 'JPScalePGAC');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('people_id1')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";

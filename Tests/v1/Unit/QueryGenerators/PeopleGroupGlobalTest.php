@@ -175,9 +175,9 @@ class PeopleGroupGlobalTest extends TestCase
         $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE ROP3 IN (111012, 100246)");
         $result = $query->fetch(\PDO::FETCH_ASSOC);
         $count = $result['count'];
+        // Let's bypass the limit of 250 to verify we get all the results
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
-        // Let's bypass the limit of 250 to verify we get all the results
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -195,9 +195,9 @@ class PeopleGroupGlobalTest extends TestCase
         $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE ROP25 IN (307527)");
         $result = $query->fetch(\PDO::FETCH_ASSOC);
         $count = $result['count'];
+        // Let's bypass the limit of 250 to verify we get all the results
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
-        // Let's bypass the limit of 250 to verify we get all the results
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -206,5 +206,32 @@ class PeopleGroupGlobalTest extends TestCase
         foreach ($data as $row) {
             $this->assertTrue(in_array($row['ROP25'], $ropIds));
         }
+    }
+
+    public function testFindAllWithFiltersShouldReturnResultsFilteredByJPScale(): void
+    {
+        $scales = [1, 2];
+        $params = ['jpscale' => implode('|', $scales)];
+        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE JPScalePGAC IN (1, 2)");
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $count = $result['count'];
+        // Let's bypass the limit of 250 to verify we get all the results
+        $params['limit'] = $count + 100;
+        $peopleGroup = new PeopleGroupGlobal($params);
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($count, count($data));
+        foreach ($data as $row) {
+            $this->assertTrue(in_array($row['JPScalePGAC'], $scales));
+        }
+    }
+
+    public function testFindAllWithFiltersShouldThrowErrorIfIncorrectJPScaleValue(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $peopleGroup = new PeopleGroupGlobal(['jpscale' => '2|10']);
+        $peopleGroup->findAllWithFilters();
     }
 }
