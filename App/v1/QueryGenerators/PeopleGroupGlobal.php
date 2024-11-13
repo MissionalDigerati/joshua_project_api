@@ -171,6 +171,14 @@ class PeopleGroupGlobal extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['jpscale'], 'JPScalePGAC');
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('languages')) {
+            $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['languages'], 3);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['languages'], 'ROL3PGAC');
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('least_reached')) {
             $this->validator->stringLength($this->providedParams['least_reached'], 1);
             if ($appendAndOnWhere === true) {
