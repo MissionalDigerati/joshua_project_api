@@ -378,4 +378,31 @@ class PeopleGroupGlobalTest extends TestCase
             $this->assertLessThanOrEqual(6, $row['CntFPG']);
         }
     }
+
+    public function testFindAllWithFiltersShouldFilterByTheCountriesTheLargestPopulationReside(): void
+    {
+        $params = ['countries' => 'AJ|CF'];
+        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE ROG3Largest IN ('AJ', 'CF')");
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $count = $result['count'];
+        $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
+        // Let's bypass the limit of 250 to verify we get all the results
+        $params['limit'] = $count + 100;
+        $peopleGroup = new PeopleGroupGlobal($params);
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($count, count($data));
+        foreach ($data as $row) {
+            $this->assertTrue(in_array(strtoupper($row['ROG3Largest']), ['AJ', 'CF']));
+        }
+    }
+
+    public function testFindWithFiltersShouldThrowErrorIfIncorrectCountryCode(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $peopleGroup = new PeopleGroupGlobal(['countries' => 'AJ|CFA']);
+        $peopleGroup->findAllWithFilters();
+    }
 }
