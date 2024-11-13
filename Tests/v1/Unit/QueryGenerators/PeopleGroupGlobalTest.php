@@ -315,4 +315,25 @@ class PeopleGroupGlobalTest extends TestCase
         $peopleGroup = new PeopleGroupGlobal(['is_frontier' => 'NO']);
         $peopleGroup->findAllWithFilters();
     }
+
+    public function testFindAllWithFiltersShouldFilterByNumberOfCountriesRange(): void
+    {
+        $params = ['number_of_countries' => '4-5'];
+        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE CntPGIC BETWEEN 4 AND 5");
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $count = $result['count'];
+        $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
+        // Let's bypass the limit of 250 to verify we get all the results
+        $params['limit'] = $count + 100;
+        $peopleGroup = new PeopleGroupGlobal($params);
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($count, count($data));
+        foreach ($data as $row) {
+            $this->assertGreaterThanOrEqual(4, $row['CntPGIC']);
+            $this->assertLessThanOrEqual(5, $row['CntPGIC']);
+        }
+    }
 }

@@ -175,6 +175,17 @@ class PeopleGroupGlobal extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('number_of_countries')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['number_of_countries'],
+                'CntPGIC',
+                'num_countries'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('people_id1')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
