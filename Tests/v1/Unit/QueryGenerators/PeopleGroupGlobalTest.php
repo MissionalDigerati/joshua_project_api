@@ -98,4 +98,32 @@ class PeopleGroupGlobalTest extends TestCase
         $peopleGroup = new PeopleGroupGlobal([]);
         $peopleGroup->findById();
     }
+
+    public function testFindAllWithFiltersShouldReturnAllResultsWithoutFilters(): void
+    {
+        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal");
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $count = ($result['count'] < 250) ? $result['count'] : 250;
+        $peopleGroup = new PeopleGroupGlobal([]);
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals($count, count($data));
+    }
+
+    public function testFindAllWithFiltersShouldReturnFilteredByPeopleID3(): void
+    {
+        $ids = [10122, 10121, 21337, 15625];
+        $params = ['people_id3' => implode('|', $ids)];
+        $peopleGroup = new PeopleGroupGlobal($params);
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertEquals(4, count($data));
+        foreach ($data as $row) {
+            $this->assertTrue(in_array($row['PeopleID3'], $ids));
+        }
+    }
 }

@@ -126,4 +126,31 @@ class PeopleGroupGlobal extends QueryGenerator
         $this->preparedStatement = "SELECT $this->selectFieldsStatement FROM $this->tableName WHERE PeopleID3 = :id";
         $this->preparedVariables = ['id' => $id];
     }
+
+    /**
+     * Find all the people groups globally with provided filters. To see the filters
+     * check out the API documentation.
+     *
+     * @return void
+     * @access  public
+     * @throws  \InvalidArgumentException   When you set a filter, but fail to provide a valid parameter
+     */
+    public function findAllWithFilters(): void
+    {
+        $where = "";
+        $appendAndOnWhere = false;
+        $this->preparedStatement = "SELECT $this->selectFieldsStatement FROM $this->tableName";
+        if ($this->paramExists('people_id3')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateInStatementFromPipedString($this->providedParams['people_id3'], 'PeopleID3');
+            $appendAndOnWhere = true;
+        }
+        if ($where != "") {
+            $this->preparedStatement .= " WHERE $where";
+        }
+        $this->preparedStatement .= " $this->defaultOrderByStatement ";
+        $this->addLimitFilter();
+    }
 }
