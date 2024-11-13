@@ -186,6 +186,17 @@ class PeopleGroupGlobal extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('number_of_frontier')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['number_of_frontier'],
+                'CntFPG',
+                'num_frontier'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('number_of_unreached')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
