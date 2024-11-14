@@ -224,6 +224,17 @@ class PeopleGroupGlobal extends QueryGenerator
             );
             $appendAndOnWhere = true;
         }
+        if ($this->paramExists('pc_christian')) {
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateBetweenStatementFromDashSeperatedString(
+                $this->providedParams['pc_christian'],
+                'PercentChristianPGAC',
+                'pc_christian'
+            );
+            $appendAndOnWhere = true;
+        }
         if ($this->paramExists('people_id1')) {
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
