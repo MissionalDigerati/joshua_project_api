@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace Tests\v1\Integration;
 
+use QueryGenerators\PeopleGroupGlobal;
 use PHPToolbox\CachedRequest\CachedRequest;
 use PHPUnit\Framework\TestCase;
 
@@ -33,6 +34,7 @@ class PeopleGroupsGlobalTest extends TestCase
     private $db;
     private $APIKey = '';
     private $APIVersion;
+    private $limit;
     private $siteURL;
 
     public function setUp(): void
@@ -49,6 +51,8 @@ class PeopleGroupsGlobalTest extends TestCase
             DIRECTORY_SEPARATOR;
         $this->db = getDatabaseInstance();
         $this->APIKey = createApiKey([]);
+        $generator = new PeopleGroupGlobal([]);
+        $this->limit = $generator->limit;
     }
 
     public function tearDown(): void
@@ -210,5 +214,128 @@ class PeopleGroupsGlobalTest extends TestCase
         $this->assertTrue(!empty($decoded));
         $this->assertEquals(10960, $decoded[0]['PeopleID3']);
         $this->assertFalse(isset($decoded[0]['Countries']));
+    }
+
+    public function testIndexShouldRefuseAccessWithoutAnAPIKey(): void
+    {
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [],
+            "index_refuse_no_key_json"
+        );
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+    }
+
+    public function testIndexShouldRefuseAccessWithoutActiveAPIKey(): void
+    {
+        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '$this->APIKey'");
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            ['api_key' => $this->APIKey],
+            "index_inactive_key_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
+    }
+
+    public function testIndexShouldRefuseAccessWithSuspendedAPIKey(): void
+    {
+        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '$this->APIKey'");
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            ['api_key' => $this->APIKey],
+            "index_suspended_key_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
+    }
+
+    public function testIndexShouldRefuseAccessWithABadAPIKey(): void
+    {
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            ['api_key' => 'BOGUS-KEY'],
+            "index_bogus_key_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded['api']));
+        $this->assertTrue(!empty($decoded['api']['error']));
+        $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided API key is invalid.', $decoded['api']['error']['details']);
+    }
+
+    public function testIndexShouldReturnPeopleGroupsAsJSON(): void
+    {
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            ['api_key' => $this->APIKey],
+            "index_format_success_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+    }
+
+    public function testIndexShouldReturnPeopleGroupsAsXML(): void
+    {
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.xml",
+            ['api_key' => $this->APIKey],
+            "index_format_success_xml"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isXML($response));
+    }
+
+    public function testIndexShouldReturnTheGroupsWithDefaultLimit(): void
+    {
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            ['api_key' => $this->APIKey],
+            "index_people_groups_success"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        $this->assertEquals($this->limit, count($decoded));
+    }
+
+    public function testIndexShouldNotReturnTheCountryListByDefault(): void
+    {
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            ['api_key' => $this->APIKey, 'limit' => 4],
+            "index_pg_no_countries_success"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        foreach ($decoded as $group) {
+            $this->assertFalse(isset($group['Countries']));
+        }
+    }
+
+    public function testIndexShouldReturnTheCountryListIfRequested(): void
+    {
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            ['api_key' => $this->APIKey, 'limit' => 4, 'include_country_list' => 'Y'],
+            "index_pg_with_countries_success"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        foreach ($decoded as $group) {
+            $this->assertTrue(isset($group['Countries']));
+            $this->assertGreaterThan(0, count($group['Countries']));
+        }
     }
 }

@@ -155,3 +155,50 @@ $app->get(
         }
     }
 );
+
+$app->get(
+    "/{version}/people_groups_global.{format}",
+    function (Request $request, Response $response, $args = []): Response {
+        $data = [];
+        $params = $request->getQueryParams();
+        $includeCountryList = (isset($params['include_country_list'])) ? $params['include_country_list'] : 'N';
+        try {
+            $generator = new PeopleGroupGlobal($params);
+            $generator->findAllWithFilters();
+            $statement = $this->get('db')->prepare($generator->preparedStatement);
+            $statement->execute($generator->preparedVariables);
+            $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            if (strtoupper($includeCountryList) === 'Y') {
+                $pgGenerator = new PeopleGroup([]);
+                foreach ($data as $key => $value) {
+                    $pgGenerator->findCountryList($data[$key]['PeopleID3']);
+                    $statementTwo = $this->get('db')->prepare($pgGenerator->preparedStatement);
+                    $statementTwo->execute($pgGenerator->preparedVariables);
+                    $data[$key]['Countries'] = $statementTwo->fetchAll(\PDO::FETCH_ASSOC);
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->get('errorResponder')->get(
+                500,
+                $e->getMessage(),
+                $args['format'],
+                'Internal Server Error',
+                $response
+            );
+        }
+        /**
+         * Render the final data
+         *
+         * @author Johnathan Pulos
+         */
+        if ($args['format'] == 'json') {
+            return $response
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($data));
+        } else {
+            return $response
+                ->withHeader('Content-type', 'text/xml')
+                ->write(arrayToXML($data, "people_groups", "people_group"));
+        }
+    }
+);
