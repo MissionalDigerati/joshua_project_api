@@ -128,21 +128,6 @@ class QueryGenerator
      */
     protected $defaultOrderByStatement = '';
     /**
-     * The MySQL CASE statement for generating the JPScaleText.
-     *
-     * @var     string
-     * @access  protected
-     */
-    protected $JPScaleTextSelectStatement = "";
-    /**
-     * The MySQL CONCAT statement for generating the JPScaleImageURL.
-     *
-     * @var     string
-     * @access  protected
-     */
-    protected $JPScaleImageURLSelectStatement =
-        "CONCAT('https://joshuaproject.net/images/scale', ROUND(JPScale), '.jpg')";
-    /**
      * An array of table columns (key) and their alias (value).
      *
      * @var     array
@@ -163,9 +148,6 @@ class QueryGenerator
      */
     public function __construct(array $getParams)
     {
-        $this->JPScaleTextSelectStatement = "CASE  WHEN JPScale = 1 THEN 'Unreached' WHEN JPScale = 2 THEN" .
-        " 'Minimally Reached' WHEN JPScale = 3 THEN 'Superficially Reached' WHEN JPScale = 4 THEN" .
-        " 'Partially Reached' ELSE 'Significantly Reached' END";
         $this->validator = new \Utilities\Validator();
         $this->sanitizer = new \Utilities\Sanitizer();
         $this->providedParams = $this->sanitizer->cleanArrayValues($getParams);
@@ -348,5 +330,35 @@ class QueryGenerator
             $statementArray[] = $key . " AS " . $value;
         }
         return join(', ', $statementArray);
+    }
+
+    /**
+     * Get the select statement to generate the text for the jpscale.
+     *
+     * @param string $scaleField    The filed that contains the JPScale
+     *
+     * @return string   The statement
+     * @access protected
+     * @author Johnathan Pulos
+     */
+    protected function getScaleTextStatement(string $scaleField): string
+    {
+        return "CASE  WHEN $scaleField = 1 THEN 'Unreached' WHEN $scaleField = 2 THEN" .
+        " 'Minimally Reached' WHEN $scaleField = 3 THEN 'Superficially Reached' WHEN $scaleField = 4 THEN" .
+        " 'Partially Reached' ELSE 'Significantly Reached' END";
+    }
+
+    /**
+     * Get the select statement to generate the url for the jpscale.
+     *
+     * @param string $scaleField    The filed that contains the JPScale
+     *
+     * @return string   The statement
+     * @access protected
+     * @author Johnathan Pulos
+     */
+    protected function getScaleImageURLStatement(string $scaleField): string
+    {
+        return "CONCAT('https://joshuaproject.net/assets/img/gauge/gauge-', ROUND($scaleField), '.png')";
     }
 }

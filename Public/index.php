@@ -108,6 +108,7 @@ if (file_exists($APP_FILES_DIRECTORY)) {
     require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}Docs.php");
     require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}APIKeys.php");
     require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}PeopleGroups.php");
+    require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}PeopleGroupsGlobal.php");
     require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}Countries.php");
     require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}Languages.php");
     require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}Continents.php");

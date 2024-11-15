@@ -298,7 +298,7 @@ class CountryTest extends TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
-            $expectedImageURL = "https://joshuaproject.net/images/scale".round(intval($countryData['JPScaleCtry'])).".jpg";
+            $expectedImageURL = "https://joshuaproject.net/assets/img/gauge/gauge-".round(intval($countryData['JPScaleCtry'])).".png";
             $this->assertEquals(strtolower($countryData['JPScaleImageURL']), $expectedImageURL);
         }
     }
