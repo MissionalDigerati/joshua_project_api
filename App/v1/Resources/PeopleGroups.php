@@ -37,7 +37,7 @@ use Utilities\StringHelper;
 /**
  *
  * @OA\Get(
- *     tags={"People Groups"},
+ *     tags={"People Groups in Country (PGIC)"},
  *     path="/v1/people_groups/daily_unreached.{format}",
  *     summary="Retrieve the Unreached of the Day information (JSON or XML)",
  *     description="Retrieve the daily Unreached of the Day people group information. You have two options when retrieving the Unreached of the Day:
@@ -140,7 +140,7 @@ $app->get(
             );
         }
         /**
-         * Get the ProfileText (Summary) for each of the People Group
+         * Get the ProfileText (Summary) for each of the people group
          *
          * @return void
          * @author Johnathan Pulos
@@ -194,11 +194,11 @@ $app->get(
 /**
  *
  * @OA\Get(
- *     tags={"People Groups"},
+ *     tags={"People Groups in Country (PGIC)"},
  *     path="/v1/people_groups/{id}.{format}",
- *     summary="Retrieve the details of a specific People Group (JSON or XML)",
- *     description="Retrieve the details of a specific People Group around the world or in a specific country.  You can either:
- * Get a summary of all occurances of the People Group by supplying the PeopleGroup.id (PeopleID3) only, or
+ *     summary="Retrieve the details of a specific people group (JSON or XML)",
+ *     description="Retrieve the details of a specific people group around the world or in a specific country.  You can either:
+ * Get a summary of all occurances of the people group by supplying the PeopleGroup.id (PeopleID3) only, or
  * Get the details of a specific people group in a specific country by providing the PeopleGroup.id (PeopleID3) and the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J).",
  *     @OA\Parameter(
  *         name="id",
@@ -307,7 +307,7 @@ $app->get(
             );
         }
         /**
-         * Get the ProfileText for each of the People Group
+         * Get the ProfileText for each of the people group
          *
          * @return void
          * @author Johnathan Pulos
@@ -370,10 +370,10 @@ $app->get(
 /**
  *
  * @OA\Get(
- *     tags={"People Groups"},
+ *     tags={"People Groups in Country (PGIC)"},
  *     path="/v1/people_groups.{format}",
- *     summary="Search all People Groups with diverse filters (JSON or XML)",
- *     description="Find all People Groups that match your filter criteria.",
+ *     summary="Search all people groups with diverse filters (JSON or XML)",
+ *     description="Find all people groups that match your filter criteria.",
  *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
  *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Parameter(
@@ -412,14 +412,14 @@ $app->get(
  *     ),
  *     @OA\Parameter(
  *         name="indigenous",
- *         description="A boolean (represented as a string Y or N) that states whether you want People Groups that are indigenous.",
+ *         description="A boolean (represented as a string Y or N) that states whether you want people groups that are indigenous.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="is_frontier",
- *         description="A boolean (represented as a string Y or N) that states whether you want People Groups that are frontier people groups.",
+ *         description="A boolean (represented as a string Y or N) that states whether you want people groups that are frontier people groups.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
@@ -440,7 +440,7 @@ $app->get(
  *     ),
  *     @OA\Parameter(
  *         name="least_reached",
- *         description="A boolean (represented as a string Y or N) that states whether you want People Groups that are least reached.",
+ *         description="A boolean (represented as a string Y or N) that states whether you want people groups that are least reached.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
@@ -467,63 +467,63 @@ $app->get(
  *     ),
  *     @OA\Parameter(
  *         name="pc_adherent",
- *         description="A dashed seperated range specifying the minimum and maximum percentage of Adherents.(min-max) You can supply just the minimum to get People Groups matching that percentage.",
+ *         description="A dashed seperated range specifying the minimum and maximum percentage of Adherents.(min-max) You can supply just the minimum to get people groups matching that percentage.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="pc_buddhist",
- *         description="A dashed seperated range specifying the minimum and maximum percentage of Buddhist.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *         description="A dashed seperated range specifying the minimum and maximum percentage of Buddhist.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="pc_ethnic_religion",
- *         description="A dashed seperated range specifying the minimum and maximum percentage of Ethnic Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *         description="A dashed seperated range specifying the minimum and maximum percentage of Ethnic Religions.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="pc_evangelical",
- *         description="A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *         description="A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="pc_hindu",
- *         description="A dashed seperated range specifying the minimum and maximum percentage of Hindus.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *         description="A dashed seperated range specifying the minimum and maximum percentage of Hindus.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="pc_islam",
- *         description="A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *         description="A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="pc_non_religious",
- *         description="A dashed seperated range specifying the minimum and maximum percentage of Non-Religious.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *         description="A dashed seperated range specifying the minimum and maximum percentage of Non-Religious.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="pc_other_religion",
- *         description="A dashed seperated range specifying the minimum and maximum percentage of Other Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *         description="A dashed seperated range specifying the minimum and maximum percentage of Other Religions.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="pc_unknown",
- *         description="A dashed seperated range specifying the minimum and maximum percentage of Unkown Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *         description="A dashed seperated range specifying the minimum and maximum percentage of Unkown Religions.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
@@ -551,14 +551,14 @@ $app->get(
  *     ),
  *     @OA\Parameter(
  *         name="population",
- *         description="A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get People Groups with a population matching that number.",
+ *         description="A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get people groups with a population matching that number.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="population_pgac",
- *         description="A dashed seperated range specifying the minimum and maximum population for the people group in all countries (PGAC).(min-max) You can supply just the minimum to get People Groups with a population matching that number.",
+ *         description="A dashed seperated range specifying the minimum and maximum population for the people group in all countries (PGAC).(min-max) You can supply just the minimum to get people groups with a population matching that number.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
@@ -620,7 +620,7 @@ $app->get(
  *     ),
  *     @OA\Parameter(
  *         name="window1040",
- *         description="A boolean (represented as a string Y or N) that states whether you want People Groups in the 1040 Window.",
+ *         description="A boolean (represented as a string Y or N) that states whether you want people groups in the 1040 Window.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
@@ -692,7 +692,7 @@ $app->get(
             );
         }
         /**
-         * Get the ProfileText for each of the People Group
+         * Get the ProfileText for each of the people group
          *
          * @return void
          * @author Johnathan Pulos

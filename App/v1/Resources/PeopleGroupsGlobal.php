@@ -35,10 +35,10 @@ use QueryGenerators\PeopleGroup;
 /**
  *
  * @OA\Get(
- *     tags={"People Groups Global"},
+ *     tags={"People Groups Across Countries (PGAC)"},
  *     path="/v1/people_groups_global/{id}.{format}",
- *     summary="Retrieve the details of a specific People Group across countries. (JSON or XML)",
- *     description="Retrieve the details of a specific People Group across the countries they reside.",
+ *     summary="Retrieve the details of a specific people group across countries. (JSON or XML)",
+ *     description="Retrieve the details of a specific people group across the countries they reside.",
  *     @OA\Parameter(
  *         name="id",
  *         description="Joshua Project's PeopleID3.",
@@ -156,6 +156,204 @@ $app->get(
     }
 );
 
+// phpcs:disable Generic.Files.LineLength
+/**
+ *
+ * @OA\Get(
+ *     tags={"People Groups Across Countries (PGAC)"},
+ *     path="/v1/people_groups_global.{format}",
+ *     summary="Search all people groups across countries based on provided filters. (JSON or XML)",
+ *     description="Search through all the various people groups across the countries they reside in.",
+ *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
+ *     @OA\Parameter(
+ *         name="countries",
+ *         description="A bar separated list of one or more countries to filter by. This is the country where the largest portion of the people group reside. Use the 2 letter FIPS 10-4 code. [View all Country Codes](https://goo.gl/yYWY4J).",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="include_country_list",
+ *         description="A boolean (represented as a string Y or N) that states whether you want to include a list of countries that they reside in. (Default: Y)",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(
+ *          type="string",
+ *          default="N",
+ *         )
+ *     ),
+ *     @OA\Parameter(
+ *         name="is_frontier",
+ *         description="A boolean (represented as a string Y or N) that states whether you want people groups that as a whole are considered frontier people groups.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="jpscale",
+ *         description="A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out [https://joshuaproject.net/global/progress](https://joshuaproject.net/global/progress).",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="languages",
+ *         description="A bar separated list of one or more language codes to filter by. Use the 3 letter ISO code.  See the [code list](http://www.loc.gov/standards/iso639-2/php/code_list.php) for the codes.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="least_reached",
+ *         description="A boolean (represented as a string Y or N) that states whether you want people groups that are as a whole considered least reached.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="limit",
+ *         description="The maximum results to return.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(
+ *             type="integer",
+ *             default=250
+ *        )
+ *     ),
+ *     @OA\Parameter(
+ *         name="number_of_countries",
+ *         description="A dashed seperated range specifying the minimum and maximum number of countries the people group resides in.(min-max) You can supply just the minimum to get people groups with that matching number of countries.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="number_of_unreached",
+ *         description="A dashed seperated range specifying the minimum and maximum number of people groups in country (PGIC) that are considered unreached.(min-max) You can supply just the minimum to get people groups that match that number.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="number_of_frontier",
+ *         description="A dashed seperated range specifying the minimum and maximum number of people groups in country (PGIC) that are considered a frontier people group.(min-max) You can supply just the minimum to get people groups that match that number.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="page",
+ *         description="The page of results to display.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(
+ *             type="integer",
+ *             default=1
+ *        )
+ *     ),
+ *     @OA\Parameter(
+ *         name="pc_christian",
+ *         description="A dashed seperated range specifying the minimum and maximum percentage of Christians among the people group.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="pc_evangelical",
+ *         description="A dashed seperated range specifying the minimum and maximum percentage of Evangelicals among the people group.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="people_id1",
+ *         description="A bar separated list of one or more Joshua Project affinity block codes to filter by. See [https://joshuaproject.net/help/definitions#affinity-bloc](https://joshuaproject.net/help/definitions#affinity-bloc).",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="people_id2",
+ *         description="A bar separated list of one or more Joshua Project people cluster codes to filter by. See [https://joshuaproject.net/help/definitions#people-cluster](https://joshuaproject.net/help/definitions#people-cluster).",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="people_id3",
+ *         description="A bar separated list of one or more ethnicity codes to filter by.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="population",
+ *         description="A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get people groups with a population matching that number.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="primary_religions",
+ *         description="A bar separated list of one or more primary religions to filter by. Use the following numbers:
+ * **1** = Christianity
+ * **2** = Buddhism
+ * **4** = Ethnic Religions
+ * **5** = Hinduism
+ * **6** = Islam
+ * **7** = Non-Religious
+ * **8** = Other/Small
+ * **9** = Unknown",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="rop25",
+ *         description="A bar separated list of one or more Ethnic Kinship codes to filter by.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="rop3",
+ *         description="A bar separated list of one or more Registry of People IDs to filter by.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Response(
+ *         response="200",
+ *         description="The details of the specified people group.",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(type="object")
+ *         ),
+ *         @OA\MediaType(
+ *             mediaType="application/xml",
+ *             @OA\Schema(type="object")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="400",
+ *         ref="#/components/responses/400ApiResponse"
+ *     ),
+ *     @OA\Response(
+ *         response="401",
+ *         ref="#/components/responses/401ApiResponse"
+ *     ),
+ *     @OA\Response(
+ *         response="404",
+ *         ref="#/components/responses/404ApiResponse"
+ *     ),
+ *     @OA\Response(
+ *         response="500",
+ *         ref="#/components/responses/500ApiResponse"
+ *     )
+ * )
+ */
+// phpcs:enable Generic.Files.LineLength
 $app->get(
     "/{version}/people_groups_global.{format}",
     function (Request $request, Response $response, $args = []): Response {

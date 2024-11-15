@@ -656,7 +656,7 @@
         "/v1/people_groups/daily_unreached.{format}": {
             "get": {
                 "tags": [
-                    "People Groups"
+                    "People Groups in Country (PGIC)"
                 ],
                 "summary": "Retrieve the Unreached of the Day information (JSON or XML)",
                 "description": "Retrieve the daily Unreached of the Day people group information. You have two options when retrieving the Unreached of the Day:\n * Get today's Unreached of the Day. This is the default if you do not send parameters.\n * You can specify the month and day parameter to get a specific day of the year. For example, `/daily_unreached.json?month=01&day=31` will get the people group for Jan. 31st. You must provide both parameters!",
@@ -720,10 +720,10 @@
         "/v1/people_groups/{id}.{format}": {
             "get": {
                 "tags": [
-                    "People Groups"
+                    "People Groups in Country (PGIC)"
                 ],
-                "summary": "Retrieve the details of a specific People Group (JSON or XML)",
-                "description": "Retrieve the details of a specific People Group around the world or in a specific country.  You can either:\n * Get a summary of all occurances of the People Group by supplying the PeopleGroup.id (PeopleID3) only, or\n * Get the details of a specific people group in a specific country by providing the PeopleGroup.id (PeopleID3) and the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J).",
+                "summary": "Retrieve the details of a specific people group (JSON or XML)",
+                "description": "Retrieve the details of a specific people group around the world or in a specific country.  You can either:\n * Get a summary of all occurances of the people group by supplying the PeopleGroup.id (PeopleID3) only, or\n * Get the details of a specific people group in a specific country by providing the PeopleGroup.id (PeopleID3) and the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J).",
                 "parameters": [
                     {
                         "name": "id",
@@ -784,10 +784,10 @@
         "/v1/people_groups.{format}": {
             "get": {
                 "tags": [
-                    "People Groups"
+                    "People Groups in Country (PGIC)"
                 ],
-                "summary": "Search all People Groups with diverse filters (JSON or XML)",
-                "description": "Find all People Groups that match your filter criteria.",
+                "summary": "Search all people groups with diverse filters (JSON or XML)",
+                "description": "Find all people groups that match your filter criteria.",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/APIFormatParameter"
@@ -825,7 +825,7 @@
                     {
                         "name": "indigenous",
                         "in": "query",
-                        "description": "A boolean (represented as a string Y or N) that states whether you want People Groups that are indigenous.",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups that are indigenous.",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -834,7 +834,7 @@
                     {
                         "name": "is_frontier",
                         "in": "query",
-                        "description": "A boolean (represented as a string Y or N) that states whether you want People Groups that are frontier people groups.",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups that are frontier people groups.",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -861,7 +861,7 @@
                     {
                         "name": "least_reached",
                         "in": "query",
-                        "description": "A boolean (represented as a string Y or N) that states whether you want People Groups that are least reached.",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups that are least reached.",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -890,7 +890,7 @@
                     {
                         "name": "pc_adherent",
                         "in": "query",
-                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Adherents.(min-max) You can supply just the minimum to get People Groups matching that percentage.",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Adherents.(min-max) You can supply just the minimum to get people groups matching that percentage.",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -899,7 +899,7 @@
                     {
                         "name": "pc_buddhist",
                         "in": "query",
-                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Buddhist.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Buddhist.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -908,7 +908,7 @@
                     {
                         "name": "pc_ethnic_religion",
                         "in": "query",
-                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Ethnic Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Ethnic Religions.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -917,7 +917,7 @@
                     {
                         "name": "pc_evangelical",
                         "in": "query",
-                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -926,7 +926,7 @@
                     {
                         "name": "pc_hindu",
                         "in": "query",
-                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Hindus.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Hindus.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -935,7 +935,7 @@
                     {
                         "name": "pc_islam",
                         "in": "query",
-                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -944,7 +944,7 @@
                     {
                         "name": "pc_non_religious",
                         "in": "query",
-                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Non-Religious.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Non-Religious.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -953,7 +953,7 @@
                     {
                         "name": "pc_other_religion",
                         "in": "query",
-                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Other Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Other Religions.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -962,7 +962,7 @@
                     {
                         "name": "pc_unknown",
                         "in": "query",
-                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Unkown Religions.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Unkown Religions.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -998,7 +998,7 @@
                     {
                         "name": "population",
                         "in": "query",
-                        "description": "A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get People Groups with a population matching that number.",
+                        "description": "A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get people groups with a population matching that number.",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -1007,7 +1007,7 @@
                     {
                         "name": "population_pgac",
                         "in": "query",
-                        "description": "A dashed seperated range specifying the minimum and maximum population for the people group in all countries (PGAC).(min-max) You can supply just the minimum to get People Groups with a population matching that number.",
+                        "description": "A dashed seperated range specifying the minimum and maximum population for the people group in all countries (PGAC).(min-max) You can supply just the minimum to get people groups with a population matching that number.",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -1061,7 +1061,7 @@
                     {
                         "name": "window1040",
                         "in": "query",
-                        "description": "A boolean (represented as a string Y or N) that states whether you want People Groups in the 1040 Window.",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups in the 1040 Window.",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -1102,10 +1102,10 @@
         "/v1/people_groups_global/{id}.{format}": {
             "get": {
                 "tags": [
-                    "People Groups Global"
+                    "People Groups Across Countries (PGAC)"
                 ],
-                "summary": "Retrieve the details of a specific People Group across countries. (JSON or XML)",
-                "description": "Retrieve the details of a specific People Group across the countries they reside.",
+                "summary": "Retrieve the details of a specific people group across countries. (JSON or XML)",
+                "description": "Retrieve the details of a specific people group across the countries they reside.",
                 "parameters": [
                     {
                         "name": "id",
@@ -1130,6 +1130,235 @@
                         "schema": {
                             "type": "string",
                             "default": "Y"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The details of the specified people group.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400ApiResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401ApiResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404ApiResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500ApiResponse"
+                    }
+                }
+            }
+        },
+        "/v1/people_groups_global.{format}": {
+            "get": {
+                "tags": [
+                    "People Groups Across Countries (PGAC)"
+                ],
+                "summary": "Search all people groups across countries based on provided filters. (JSON or XML)",
+                "description": "Search through all the various people groups across the countries they reside in.",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
+                    },
+                    {
+                        "name": "countries",
+                        "in": "query",
+                        "description": "A bar separated list of one or more countries to filter by. This is the country where the largest portion of the people group reside. Use the 2 letter FIPS 10-4 code. [View all Country Codes](https://goo.gl/yYWY4J).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "include_country_list",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want to include a list of countries that they reside in. (Default: Y)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "N"
+                        }
+                    },
+                    {
+                        "name": "is_frontier",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups that as a whole are considered frontier people groups.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "jpscale",
+                        "in": "query",
+                        "description": "A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out [https://joshuaproject.net/global/progress](https://joshuaproject.net/global/progress).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "A bar separated list of one or more language codes to filter by. Use the 3 letter ISO code.  See the [code list](http://www.loc.gov/standards/iso639-2/php/code_list.php) for the codes.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "least_reached",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups that are as a whole considered least reached.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum results to return.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 250
+                        }
+                    },
+                    {
+                        "name": "number_of_countries",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum number of countries the people group resides in.(min-max) You can supply just the minimum to get people groups with that matching number of countries.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "number_of_unreached",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum number of people groups in country (PGIC) that are considered unreached.(min-max) You can supply just the minimum to get people groups that match that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "number_of_frontier",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum number of people groups in country (PGIC) that are considered a frontier people group.(min-max) You can supply just the minimum to get people groups that match that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page of results to display.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "pc_christian",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Christians among the people group.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_evangelical",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Evangelicals among the people group.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "people_id1",
+                        "in": "query",
+                        "description": "A bar separated list of one or more Joshua Project affinity block codes to filter by. See [https://joshuaproject.net/help/definitions#affinity-bloc](https://joshuaproject.net/help/definitions#affinity-bloc).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "people_id2",
+                        "in": "query",
+                        "description": "A bar separated list of one or more Joshua Project people cluster codes to filter by. See [https://joshuaproject.net/help/definitions#people-cluster](https://joshuaproject.net/help/definitions#people-cluster).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "people_id3",
+                        "in": "query",
+                        "description": "A bar separated list of one or more ethnicity codes to filter by.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "population",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get people groups with a population matching that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "primary_religions",
+                        "in": "query",
+                        "description": "A bar separated list of one or more primary religions to filter by. Use the following numbers:\n * **1** = Christianity\n * **2** = Buddhism\n * **4** = Ethnic Religions\n * **5** = Hinduism\n * **6** = Islam\n * **7** = Non-Religious\n * **8** = Other/Small\n * **9** = Unknown",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "rop25",
+                        "in": "query",
+                        "description": "A bar separated list of one or more Ethnic Kinship codes to filter by.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "rop3",
+                        "in": "query",
+                        "description": "A bar separated list of one or more Registry of People IDs to filter by.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],
