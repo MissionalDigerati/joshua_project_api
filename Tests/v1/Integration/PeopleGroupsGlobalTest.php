@@ -579,4 +579,353 @@ class PeopleGroupsGlobalTest extends TestCase
             $this->assertTrue((is_null($group['LeastReachedPGAC']) || (strtoupper($group['LeastReachedPGAC']) === 'N')));
         }
     }
+
+    public function testIndexShouldReturnPGFilteredByIsFrontier(): void
+    {
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'is_frontier' => 'y'
+            ],
+            "index_pg_filtered_by_frontier"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertNotNull($group['FrontierPGAC']);
+            $this->assertEquals('Y', strtoupper($group['FrontierPGAC']));
+        }
+    }
+
+    public function testIndexShouldReturnPGFilteredByNotIsFrontier(): void
+    {
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'is_frontier' => 'n'
+            ],
+            "index_pg_filtered_by_not_frontier"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertTrue((is_null($group['FrontierPGAC']) || (strtoupper($group['FrontierPGAC']) === 'N')));
+        }
+    }
+
+    public function testIndexShouldReturnPGFilteredByNumberOfCountriesSingle(): void
+    {
+        $count = 1;
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'number_of_countries' => $count
+            ],
+            "index_pg_filtered_by_num_countries_single"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertEquals($count, $group['CntPGIC']);
+        }
+    }
+
+    public function testIndexShouldReturnPGFilteredByNumberOfCountriesRange(): void
+    {
+        $min = 2;
+        $max = 4;
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'number_of_countries' => "$min-$max"
+            ],
+            "index_pg_filtered_by_num_countries_range"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertGreaterThanOrEqual($min, $group['CntPGIC']);
+            $this->assertLessThanOrEqual($max, $group['CntPGIC']);
+        }
+    }
+
+    public function testIndexShouldReturnPGFilteredByNumberOfUnreachedSingle(): void
+    {
+        $count = 1;
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'number_of_unreached' => $count
+            ],
+            "index_pg_filtered_by_num_unreached_single"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertEquals($count, $group['CntUPG']);
+        }
+    }
+
+    public function testIndexShouldReturnPGFilteredByNumberOfUnreachedRange(): void
+    {
+        $min = 2;
+        $max = 4;
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'number_of_unreached' => "$min-$max"
+            ],
+            "index_pg_filtered_by_num_unreached_range"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertGreaterThanOrEqual($min, $group['CntUPG']);
+            $this->assertLessThanOrEqual($max, $group['CntUPG']);
+        }
+    }
+
+    public function testIndexShouldReturnPGFilteredByNumberOfFrontierSingle(): void
+    {
+        $count = 1;
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'number_of_frontier' => $count
+            ],
+            "index_pg_filtered_by_num_frontier_single"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertEquals($count, $group['CntFPG']);
+        }
+    }
+
+    public function testIndexShouldReturnPGFilteredByNumberOfFrontierRange(): void
+    {
+        $min = 2;
+        $max = 4;
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'number_of_frontier' => "$min-$max"
+            ],
+            "index_pg_filtered_by_num_frontier_range"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertGreaterThanOrEqual($min, $group['CntFPG']);
+            $this->assertLessThanOrEqual($max, $group['CntFPG']);
+        }
+    }
+
+    public function testIndexShouldReturnPGFitleredBySingleCountry(): void
+    {
+        $country = 'PP';
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'countries' => $country
+            ],
+            "index_pg_filtered_by_country_single"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertEquals($country, $group['ROG3Largest']);
+        }
+    }
+
+    public function testIndexShouldReturnPGFilteredByAListOfCountries(): void
+    {
+        $countries = ['PP', 'NG'];
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'countries' => implode('|', $countries)
+            ],
+            "index_pg_filtered_by_countries_list"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertTrue(in_array($group['ROG3Largest'], $countries));
+        }
+    }
+
+    public function testIndexShouldReturnPGFilterByASingleLanguage(): void
+    {
+        $language = 'fuq';
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'languages' => $language
+            ],
+            "index_pg_filtered_by_language_single"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertEquals($language, $group['ROL3PGAC']);
+        }
+    }
+
+    public function testIndexShouldReturnPGFilteredByMultipleLanguages(): void
+    {
+        $languages = ['fuq', 'eng'];
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'languages' => implode('|', $languages)
+            ],
+            "index_pg_filtered_by_language_list"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertTrue(in_array($group['ROL3PGAC'], $languages));
+        }
+    }
+
+    public function testIndexShouldReturnPGFilteredBySingleReligion(): void
+    {
+        $religion = 4;
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'primary_religions' => $religion
+            ],
+            "index_pg_filtered_by_religion_single"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertEquals($religion, $group['RLG3PGAC']);
+        }
+    }
+
+    public function testIndexShouldReturnPGFilteredByMultipleReligions(): void
+    {
+        $religions = [4, 5];
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'primary_religions' => implode('|', $religions)
+            ],
+            "index_pg_filtered_by_religion_list"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(!empty($decoded));
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertTrue(in_array($group['RLG3PGAC'], $religions));
+        }
+    }
+
+    public function testIndexShouldReturnPGFilteredByPercentChristianRange(): void
+    {
+        $min = 73;
+        $max = 76;
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'pc_christian' => "$min-$max"
+            ],
+            "index_pg_filtered_by_pc_christian_range"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertGreaterThanOrEqual($min, $group['PercentChristianPGAC']);
+            $this->assertLessThanOrEqual($max, $group['PercentChristianPGAC']);
+        }
+    }
+
+    public function testIndexShouldReturnPGFilteredByPercentEvangelicalRange(): void
+    {
+        $min = 35;
+        $max = 38;
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            [
+                'api_key' => $this->APIKey,
+                'pc_evangelical' => "$min-$max"
+            ],
+            "index_pg_filtered_by_pc_evangelical_range"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertGreaterThanOrEqual($min, $group['PercentEvangelicalPGAC']);
+            $this->assertLessThanOrEqual($max, $group['PercentEvangelicalPGAC']);
+        }
+    }
+
+    public function testIndexShouldReturnPGFilteredByMultipleFilters(): void
+    {
+        $filters = [
+            'pc_christian' => '73-76',
+            'pc_evangelical' => '35-38'
+        ];
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            array_merge(['api_key' => $this->APIKey], $filters),
+            "index_pg_filtered_by_multiple_filters"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertGreaterThan(0, count($decoded));
+        foreach ($decoded as $group) {
+            $this->assertGreaterThanOrEqual(73, $group['PercentChristianPGAC']);
+            $this->assertLessThanOrEqual(76, $group['PercentChristianPGAC']);
+            $this->assertGreaterThanOrEqual(35, $group['PercentEvangelicalPGAC']);
+            $this->assertLessThanOrEqual(38, $group['PercentEvangelicalPGAC']);
+        }
+    }
 }
