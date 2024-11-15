@@ -37,7 +37,7 @@ use Utilities\StringHelper;
 /**
  *
  * @OA\Get(
- *     tags={"People Groups in Country (PGIC)"},
+ *     tags={"People Groups in Countries (PGIC)"},
  *     path="/v1/people_groups/daily_unreached.{format}",
  *     summary="Retrieve the Unreached of the Day information (JSON or XML)",
  *     description="Retrieve the daily Unreached of the Day people group information. You have two options when retrieving the Unreached of the Day:
@@ -194,7 +194,7 @@ $app->get(
 /**
  *
  * @OA\Get(
- *     tags={"People Groups in Country (PGIC)"},
+ *     tags={"People Groups in Countries (PGIC)"},
  *     path="/v1/people_groups/{id}.{format}",
  *     summary="Retrieve the details of a specific people group (JSON or XML)",
  *     description="Retrieve the details of a specific people group around the world or in a specific country.  You can either:
@@ -370,7 +370,7 @@ $app->get(
 /**
  *
  * @OA\Get(
- *     tags={"People Groups in Country (PGIC)"},
+ *     tags={"People Groups in Countries (PGIC)"},
  *     path="/v1/people_groups.{format}",
  *     summary="Search all people groups with diverse filters (JSON or XML)",
  *     description="Find all people groups that match your filter criteria.",

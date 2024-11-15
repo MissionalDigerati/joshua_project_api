@@ -656,7 +656,7 @@
         "/v1/people_groups/daily_unreached.{format}": {
             "get": {
                 "tags": [
-                    "People Groups in Country (PGIC)"
+                    "People Groups in Countries (PGIC)"
                 ],
                 "summary": "Retrieve the Unreached of the Day information (JSON or XML)",
                 "description": "Retrieve the daily Unreached of the Day people group information. You have two options when retrieving the Unreached of the Day:\n * Get today's Unreached of the Day. This is the default if you do not send parameters.\n * You can specify the month and day parameter to get a specific day of the year. For example, `/daily_unreached.json?month=01&day=31` will get the people group for Jan. 31st. You must provide both parameters!",
@@ -720,7 +720,7 @@
         "/v1/people_groups/{id}.{format}": {
             "get": {
                 "tags": [
-                    "People Groups in Country (PGIC)"
+                    "People Groups in Countries (PGIC)"
                 ],
                 "summary": "Retrieve the details of a specific people group (JSON or XML)",
                 "description": "Retrieve the details of a specific people group around the world or in a specific country.  You can either:\n * Get a summary of all occurances of the people group by supplying the PeopleGroup.id (PeopleID3) only, or\n * Get the details of a specific people group in a specific country by providing the PeopleGroup.id (PeopleID3) and the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J).",
@@ -784,7 +784,7 @@
         "/v1/people_groups.{format}": {
             "get": {
                 "tags": [
-                    "People Groups in Country (PGIC)"
+                    "People Groups in Countries (PGIC)"
                 ],
                 "summary": "Search all people groups with diverse filters (JSON or XML)",
                 "description": "Find all people groups that match your filter criteria.",

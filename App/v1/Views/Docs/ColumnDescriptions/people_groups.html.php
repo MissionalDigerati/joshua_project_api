@@ -12,7 +12,8 @@
 ?>
   <div class="container">
     <div class="page-header">
-      <h2>People Group Column Descriptions <span class="label label-primary pull-right">Version 1</span></h2>
+      <h2>People Group In Countries (PGIC) Column Descriptions <span class="label label-primary pull-right">Version 1</span></h2>
+      <p>To learn more about People Groups Across Countries (PGAC) and People Groups in Countries (PGIC), please read <a href="https://joshuaproject.net/people_groups/counts" target="_blank">the following article</a>.</p>
     </div>
     <div id="table-column-descriptions" class="table-responsive">
         <table  class='table table-hover table-bordered'>
