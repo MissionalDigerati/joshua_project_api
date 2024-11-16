@@ -1216,9 +1216,9 @@
                         }
                     },
                     {
-                        "name": "least_reached",
+                        "name": "unreached",
                         "in": "query",
-                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups that are as a whole considered least reached.",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups that are as a whole considered unreached.",
                         "required": false,
                         "schema": {
                             "type": "string"

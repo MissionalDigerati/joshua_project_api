@@ -262,9 +262,9 @@ class PeopleGroupGlobalTest extends TestCase
         }
     }
 
-    public function testFindAllWithFiltersShouldFilterByLeastReachedBoolean(): void
+    public function testFindAllWithFiltersShouldFilterByUneachedBoolean(): void
     {
-        $params = ['least_reached' => 'N'];
+        $params = ['unreached' => 'N'];
         $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE LeastReachedPGAC = 'N' OR LeastReachedPGAC IS NULL");
         $result = $query->fetch(\PDO::FETCH_ASSOC);
         $count = $result['count'];
@@ -282,10 +282,10 @@ class PeopleGroupGlobalTest extends TestCase
         }
     }
 
-    public function testFindAllWithFilterShouldThrowErrorIfIncorrectLeastReachedValue(): void
+    public function testFindAllWithFilterShouldThrowErrorIfIncorrectUnreachedValue(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $peopleGroup = new PeopleGroupGlobal(['least_reached' => 'YES']);
+        $peopleGroup = new PeopleGroupGlobal(['unreached' => 'YES']);
         $peopleGroup->findAllWithFilters();
     }
 

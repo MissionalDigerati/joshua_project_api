@@ -171,15 +171,15 @@ class PeopleGroupGlobal extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['languages'], 'ROL3PGAC');
             $appendAndOnWhere = true;
         }
-        if ($this->paramExists('least_reached')) {
-            $this->validator->stringLength($this->providedParams['least_reached'], 1);
+        if ($this->paramExists('unreached')) {
+            $this->validator->stringLength($this->providedParams['unreached'], 1);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
             $where .= $this->generateWhereStatementForBoolean(
-                $this->providedParams['least_reached'],
+                $this->providedParams['unreached'],
                 'LeastReachedPGAC',
-                'least_reached'
+                'unreached'
             );
             $appendAndOnWhere = true;
         }

@@ -541,15 +541,15 @@ class PeopleGroupsGlobalTest extends TestCase
         }
     }
 
-    public function testIndexShouldReturnPGFilteredByLeastReached(): void
+    public function testIndexShouldReturnPGFilteredByUnreached(): void
     {
         $response = $this->cachedRequest->get(
             "$this->siteURL/$this->APIVersion/people_groups_global.json",
             [
                 'api_key' => $this->APIKey,
-                'least_reached' => 'y'
+                'unreached' => 'y'
             ],
-            "index_pg_filtered_by_least_reached"
+            "unreached"
         );
         $decoded = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
@@ -561,15 +561,15 @@ class PeopleGroupsGlobalTest extends TestCase
         }
     }
 
-    public function testIndexShouldReturnPGFilteredByNonLeastReached(): void
+    public function testIndexShouldReturnPGFilteredByNonUnreached(): void
     {
         $response = $this->cachedRequest->get(
             "$this->siteURL/$this->APIVersion/people_groups_global.json",
             [
                 'api_key' => $this->APIKey,
-                'least_reached' => 'n'
+                'unreached' => 'n'
             ],
-            "index_pg_filtered_by_non_least_reached"
+            "index_pg_filtered_by_non_unreached"
         );
         $decoded = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);

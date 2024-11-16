@@ -198,8 +198,8 @@ $app->get(
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
- *         name="least_reached",
- *         description="A boolean (represented as a string Y or N) that states whether you want people groups that are as a whole considered least reached.",
+ *         name="unreached",
+ *         description="A boolean (represented as a string Y or N) that states whether you want people groups that are as a whole considered unreached.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
