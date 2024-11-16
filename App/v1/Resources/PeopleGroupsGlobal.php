@@ -296,13 +296,6 @@ $app->get(
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
- *         name="rop25",
- *         description="A bar separated list of one or more Ethnic Kinship codes to filter by.",
- *         in="query",
- *         required=false,
- *         @OA\Schema(type="string")
- *     ),
- *     @OA\Parameter(
  *         name="rop3",
  *         description="A bar separated list of one or more Registry of People IDs to filter by.",
  *         in="query",

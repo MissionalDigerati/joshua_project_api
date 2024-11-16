@@ -1326,15 +1326,6 @@
                         }
                     },
                     {
-                        "name": "rop25",
-                        "in": "query",
-                        "description": "A bar separated list of one or more Ethnic Kinship codes to filter by.",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "rop3",
                         "in": "query",
                         "description": "A bar separated list of one or more Registry of People IDs to filter by.",
