@@ -1216,15 +1216,6 @@
                         }
                     },
                     {
-                        "name": "unreached",
-                        "in": "query",
-                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups that are as a whole considered unreached.",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "limit",
                         "in": "query",
                         "description": "The maximum results to return.",
@@ -1347,6 +1338,15 @@
                         "name": "rop3",
                         "in": "query",
                         "description": "A bar separated list of one or more Registry of People IDs to filter by.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "unreached",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups that are as a whole considered unreached.",
                         "required": false,
                         "schema": {
                             "type": "string"

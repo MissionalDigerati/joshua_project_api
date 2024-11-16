@@ -198,13 +198,6 @@ $app->get(
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
- *         name="unreached",
- *         description="A boolean (represented as a string Y or N) that states whether you want people groups that are as a whole considered unreached.",
- *         in="query",
- *         required=false,
- *         @OA\Schema(type="string")
- *     ),
- *     @OA\Parameter(
  *         name="limit",
  *         description="The maximum results to return.",
  *         in="query",
@@ -312,6 +305,13 @@ $app->get(
  *     @OA\Parameter(
  *         name="rop3",
  *         description="A bar separated list of one or more Registry of People IDs to filter by.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="unreached",
+ *         description="A boolean (represented as a string Y or N) that states whether you want people groups that are as a whole considered unreached.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
