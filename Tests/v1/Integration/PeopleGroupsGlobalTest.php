@@ -439,46 +439,6 @@ class PeopleGroupsGlobalTest extends TestCase
         }
     }
 
-    public function testIndexShouldReturnPGFilteredByASingleROP25(): void
-    {
-        $rop25 = 301408;
-        $response = $this->cachedRequest->get(
-            "$this->siteURL/$this->APIVersion/people_groups_global.json",
-            [
-                'api_key' => $this->APIKey,
-                'rop25' => $rop25
-            ],
-            "index_pg_filtered_by_rop25_single"
-        );
-        $decoded = json_decode($response, true);
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
-        $this->assertTrue(!empty($decoded));
-        $this->assertGreaterThan(0, count($decoded));
-        foreach ($decoded as $group) {
-            $this->assertEquals($rop25, $group['ROP25']);
-        }
-    }
-
-    public function testIndexShouldReturnPGFilteredByMultipleROP25(): void
-    {
-        $rop25s = [306871, 300002, 303123, 308987];
-        $response = $this->cachedRequest->get(
-            "$this->siteURL/$this->APIVersion/people_groups_global.json",
-            [
-                'api_key' => $this->APIKey,
-                'rop25' => implode('|', $rop25s)
-            ],
-            "index_pg_filtered_by_rop25_multiple"
-        );
-        $decoded = json_decode($response, true);
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
-        $this->assertTrue(!empty($decoded));
-        $this->assertGreaterThan(0, count($decoded));
-        foreach ($decoded as $group) {
-            $this->assertTrue(in_array($group['ROP25'], $rop25s));
-        }
-    }
-
     public function testIndexShouldReturnPGFilteredByASingleJPScale(): void
     {
         $jpScale = 4;
@@ -541,15 +501,15 @@ class PeopleGroupsGlobalTest extends TestCase
         }
     }
 
-    public function testIndexShouldReturnPGFilteredByLeastReached(): void
+    public function testIndexShouldReturnPGFilteredByUnreached(): void
     {
         $response = $this->cachedRequest->get(
             "$this->siteURL/$this->APIVersion/people_groups_global.json",
             [
                 'api_key' => $this->APIKey,
-                'least_reached' => 'y'
+                'unreached' => 'y'
             ],
-            "index_pg_filtered_by_least_reached"
+            "unreached"
         );
         $decoded = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
@@ -561,15 +521,15 @@ class PeopleGroupsGlobalTest extends TestCase
         }
     }
 
-    public function testIndexShouldReturnPGFilteredByNonLeastReached(): void
+    public function testIndexShouldReturnPGFilteredByNonUnreached(): void
     {
         $response = $this->cachedRequest->get(
             "$this->siteURL/$this->APIVersion/people_groups_global.json",
             [
                 'api_key' => $this->APIKey,
-                'least_reached' => 'n'
+                'unreached' => 'n'
             ],
-            "index_pg_filtered_by_non_least_reached"
+            "index_pg_filtered_by_non_unreached"
         );
         $decoded = json_decode($response, true);
         $this->assertEquals(200, $this->cachedRequest->responseCode);
@@ -742,46 +702,6 @@ class PeopleGroupsGlobalTest extends TestCase
         foreach ($decoded as $group) {
             $this->assertGreaterThanOrEqual($min, $group['CntFPG']);
             $this->assertLessThanOrEqual($max, $group['CntFPG']);
-        }
-    }
-
-    public function testIndexShouldReturnPGFitleredBySingleCountry(): void
-    {
-        $country = 'PP';
-        $response = $this->cachedRequest->get(
-            "$this->siteURL/$this->APIVersion/people_groups_global.json",
-            [
-                'api_key' => $this->APIKey,
-                'countries' => $country
-            ],
-            "index_pg_filtered_by_country_single"
-        );
-        $decoded = json_decode($response, true);
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
-        $this->assertTrue(!empty($decoded));
-        $this->assertGreaterThan(0, count($decoded));
-        foreach ($decoded as $group) {
-            $this->assertEquals($country, $group['ROG3Largest']);
-        }
-    }
-
-    public function testIndexShouldReturnPGFilteredByAListOfCountries(): void
-    {
-        $countries = ['PP', 'NG'];
-        $response = $this->cachedRequest->get(
-            "$this->siteURL/$this->APIVersion/people_groups_global.json",
-            [
-                'api_key' => $this->APIKey,
-                'countries' => implode('|', $countries)
-            ],
-            "index_pg_filtered_by_countries_list"
-        );
-        $decoded = json_decode($response, true);
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
-        $this->assertTrue(!empty($decoded));
-        $this->assertGreaterThan(0, count($decoded));
-        foreach ($decoded as $group) {
-            $this->assertTrue(in_array($group['ROG3Largest'], $countries));
         }
     }
 

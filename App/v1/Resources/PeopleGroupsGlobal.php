@@ -167,13 +167,6 @@ $app->get(
  *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
  *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Parameter(
- *         name="countries",
- *         description="A bar separated list of one or more countries to filter by. This is the country where the largest portion of the people group reside. Use the 2 letter FIPS 10-4 code. [View all Country Codes](https://goo.gl/yYWY4J).",
- *         in="query",
- *         required=false,
- *         @OA\Schema(type="string")
- *     ),
- *     @OA\Parameter(
  *         name="include_country_list",
  *         description="A boolean (represented as a string Y or N) that states whether you want to include a list of countries that they reside in. (Default: Y)",
  *         in="query",
@@ -200,13 +193,6 @@ $app->get(
  *     @OA\Parameter(
  *         name="languages",
  *         description="A bar separated list of one or more language codes to filter by. Use the 3 letter ISO code.  See the [code list](http://www.loc.gov/standards/iso639-2/php/code_list.php) for the codes.",
- *         in="query",
- *         required=false,
- *         @OA\Schema(type="string")
- *     ),
- *     @OA\Parameter(
- *         name="least_reached",
- *         description="A boolean (represented as a string Y or N) that states whether you want people groups that are as a whole considered least reached.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
@@ -310,15 +296,15 @@ $app->get(
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
- *         name="rop25",
- *         description="A bar separated list of one or more Ethnic Kinship codes to filter by.",
+ *         name="rop3",
+ *         description="A bar separated list of one or more Registry of People IDs to filter by.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
- *         name="rop3",
- *         description="A bar separated list of one or more Registry of People IDs to filter by.",
+ *         name="unreached",
+ *         description="A boolean (represented as a string Y or N) that states whether you want people groups that are as a whole considered unreached.",
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")

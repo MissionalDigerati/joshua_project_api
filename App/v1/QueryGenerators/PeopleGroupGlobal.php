@@ -140,14 +140,6 @@ class PeopleGroupGlobal extends QueryGenerator
         $where = "";
         $appendAndOnWhere = false;
         $this->preparedStatement = "SELECT $this->selectFieldsStatement FROM $this->tableName";
-        if ($this->paramExists('countries')) {
-            $this->validator->stringLengthValuesBarSeperatedString($this->providedParams['countries'], 2);
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateInStatementFromPipedString($this->providedParams['countries'], 'ROG3Largest');
-            $appendAndOnWhere = true;
-        }
         if ($this->paramExists('is_frontier')) {
             $this->validator->stringLength($this->providedParams['is_frontier'], 1);
             if ($appendAndOnWhere === true) {
@@ -179,15 +171,15 @@ class PeopleGroupGlobal extends QueryGenerator
             $where .= $this->generateInStatementFromPipedString($this->providedParams['languages'], 'ROL3PGAC');
             $appendAndOnWhere = true;
         }
-        if ($this->paramExists('least_reached')) {
-            $this->validator->stringLength($this->providedParams['least_reached'], 1);
+        if ($this->paramExists('unreached')) {
+            $this->validator->stringLength($this->providedParams['unreached'], 1);
             if ($appendAndOnWhere === true) {
                 $where .= " AND ";
             }
             $where .= $this->generateWhereStatementForBoolean(
-                $this->providedParams['least_reached'],
+                $this->providedParams['unreached'],
                 'LeastReachedPGAC',
-                'least_reached'
+                'unreached'
             );
             $appendAndOnWhere = true;
         }
@@ -297,13 +289,6 @@ class PeopleGroupGlobal extends QueryGenerator
                 $where .= " AND ";
             }
             $where .= $this->generateInStatementFromPipedString($this->providedParams['rop3'], 'ROP3');
-            $appendAndOnWhere = true;
-        }
-        if ($this->paramExists('rop25')) {
-            if ($appendAndOnWhere === true) {
-                $where .= " AND ";
-            }
-            $where .= $this->generateInStatementFromPipedString($this->providedParams['rop25'], 'ROP25');
             $appendAndOnWhere = true;
         }
         if ($where != "") {
