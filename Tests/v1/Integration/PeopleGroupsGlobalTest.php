@@ -745,46 +745,6 @@ class PeopleGroupsGlobalTest extends TestCase
         }
     }
 
-    public function testIndexShouldReturnPGFitleredBySingleCountry(): void
-    {
-        $country = 'PP';
-        $response = $this->cachedRequest->get(
-            "$this->siteURL/$this->APIVersion/people_groups_global.json",
-            [
-                'api_key' => $this->APIKey,
-                'countries' => $country
-            ],
-            "index_pg_filtered_by_country_single"
-        );
-        $decoded = json_decode($response, true);
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
-        $this->assertTrue(!empty($decoded));
-        $this->assertGreaterThan(0, count($decoded));
-        foreach ($decoded as $group) {
-            $this->assertEquals($country, $group['ROG3Largest']);
-        }
-    }
-
-    public function testIndexShouldReturnPGFilteredByAListOfCountries(): void
-    {
-        $countries = ['PP', 'NG'];
-        $response = $this->cachedRequest->get(
-            "$this->siteURL/$this->APIVersion/people_groups_global.json",
-            [
-                'api_key' => $this->APIKey,
-                'countries' => implode('|', $countries)
-            ],
-            "index_pg_filtered_by_countries_list"
-        );
-        $decoded = json_decode($response, true);
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
-        $this->assertTrue(!empty($decoded));
-        $this->assertGreaterThan(0, count($decoded));
-        foreach ($decoded as $group) {
-            $this->assertTrue(in_array($group['ROG3Largest'], $countries));
-        }
-    }
-
     public function testIndexShouldReturnPGFilterByASingleLanguage(): void
     {
         $language = 'fuq';

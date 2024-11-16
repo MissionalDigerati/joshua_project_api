@@ -167,13 +167,6 @@ $app->get(
  *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
  *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
  *     @OA\Parameter(
- *         name="countries",
- *         description="A bar separated list of one or more countries to filter by. This is the country where the largest portion of the people group reside. Use the 2 letter FIPS 10-4 code. [View all Country Codes](https://goo.gl/yYWY4J).",
- *         in="query",
- *         required=false,
- *         @OA\Schema(type="string")
- *     ),
- *     @OA\Parameter(
  *         name="include_country_list",
  *         description="A boolean (represented as a string Y or N) that states whether you want to include a list of countries that they reside in. (Default: Y)",
  *         in="query",
