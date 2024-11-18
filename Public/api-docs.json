@@ -1,30 +1,1909 @@
 {
-    "apiVersion": "1",
-    "swaggerVersion": "1.1",
-    "apis": [
-        {
-            "path": "/resources/continents.{format}",
-            "description": "Retrieve the details of a specific Continent."
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Joshua Project API",
+        "version": "1"
+    },
+    "paths": {
+        "/v1/continents/{id}.{format}": {
+            "get": {
+                "tags": [
+                    "Continents"
+                ],
+                "summary": "Get the details about a specific continent.",
+                "description": "Retrieve the details of a specific Continent by supplying a three letter ISO Continent code (id).  Use the following codes:\n * **AFR** = Africa\n * **ASI** = Asia\n * **AUS** = Australia\n * **EUR** = Europe\n * **NAR** = North America\n * **SOP** = Oceania (South Pacific)\n * **LAM** = South America",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The 3 letter ISO Continent Code for the Continent you want to view. Use the codes indicated above.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The details about the specific continent.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400ApiResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401ApiResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404ApiResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500ApiResponse"
+                    }
+                }
+            }
         },
-        {
-            "path": "/resources/countries.{format}",
-            "description": "Find all Countries that match your filter criteria."
+        "/v1/countries/{id}.{format}": {
+            "get": {
+                "tags": [
+                    "Countries"
+                ],
+                "summary": "Retrieve the details of a specific country.",
+                "description": "Retrieve the details of a specific Country by supplying the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J) (id).",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The 2 letter FIPS 10-4 Country Code for the Country you want to view. [View all Country Codes](https://goo.gl/yYWY4J)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The details about the specific country.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400ApiResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401ApiResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404ApiResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500ApiResponse"
+                    }
+                }
+            }
         },
-        {
-            "path": "/resources/languages.{format}",
-            "description": "Find all Languages that match your filter criteria."
+        "/v1/countries.{format}": {
+            "get": {
+                "tags": [
+                    "Countries"
+                ],
+                "summary": "Find all countries that match your filter criteria.",
+                "description": "Retrieve a list of Countries that match your filter settings.",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
+                    },
+                    {
+                        "name": "bible_complete",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Complete Bible</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "bible_new_testament",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>New Testament</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "bible_portions",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of <strong>Portions</strong>.(min-max) You can supply just the minimum to get a total matching that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "continents",
+                        "in": "query",
+                        "description": "A bar separated list of one or more continents to filter by.Use the following codes:\n * **AFR** = Africa\n * **ASI** = Asia\n * **AUS** = Australia\n * **EUR** = Europe\n * **NAR** = North America\n * **SOP** = Oceania (South Pacific)\n * **LAM** = South America",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cnt_primary_languages",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum total number of primary languages.(min-max) You can supply just the minimum to get countries with a total number of primary languages matching that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ids",
+                        "in": "query",
+                        "description": "A bar separated list of one or more FIPS 10-4 Letter Country Codes to filter by. See [https://goo.gl/yYWY4J](https://goo.gl/yYWY4J).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "jpscale",
+                        "in": "query",
+                        "description": "A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out [https://joshuaproject.net/global/progress](https://joshuaproject.net/global/progress).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum results to return.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 250
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page of results to display",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "pc_buddhist",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Buddhist.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_christianity",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Christians.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_ethnic_religion",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Ethnic Religions.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_evangelical",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_hindu",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Hindus.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_islam",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_non_religious",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Non-Religious.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_other_religion",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Other Religions.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_unknown",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Unkown Religions.(min-max) You can supply just the minimum to get Countries matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "population",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get Countries matching that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pop_in_frontier",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum population living among frontier people groups.(min-max) You can supply just the minimum to get Countries matching that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pop_in_unreached",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum population living among the unreached.(min-max) You can supply just the minimum to get Countries matching that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "primary_languages",
+                        "in": "query",
+                        "description": "A bar seperated list of ISO 3 Letter Codes.  For more information check out this [code list](http://www.loc.gov/standards/iso639-2/php/code_list.php).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "primary_religions",
+                        "in": "query",
+                        "description": "A bar separated list of one or more primary religions to filter by. Use the following numbers:\n * **1** = Christianity\n * **2** = Buddhism\n * **4** = Ethnic Religions\n * **5** = Hinduism\n * **6** = Islam\n * **7** = Non-Religious\n * **8** = Other/Small\n * **9** = Unknown",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "regions",
+                        "in": "query",
+                        "description": "A bar separated list of one or more regions to filter by. Use the following numbers:\n * **1** = South Pacific\n * **2** = Southeast Asia\n * **3** = Northeast Asia\n * **4** = South Asia\n * **5** = Central Asia\n * **6** = Middle East and North Africa\n * **7** = East and Southern Africa\n * **8** = West and Central Africa\n * **9** = Eastern Europe and Eurasia\n * **10** = Western Europe\n * **11** = Central and South America\n * **12** = North America and Caribbean",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "translation_needed",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of **Translation Needed**.(min-max) You can supply just the minimum to get a total matching that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "translation_started",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of **Translation Started**.(min-max) You can supply just the minimum to get a total matching that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "translation_unspecified",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of **Unspecified**.(min-max) You can supply just the minimum to get a total matching that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "window1040",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want countries in the 1040 Window.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The results of your filtered countries.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400ApiResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401ApiResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404ApiResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500ApiResponse"
+                    }
+                }
+            }
         },
-        {
-            "path": "/resources/people_groups.{format}",
-            "description": "Find all People Groups that match your filter criteria."
+        "/v1/languages/{id}.{format}": {
+            "get": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Retrieve the details of a specific language.",
+                "description": "Retrieve the details of a specific Language by supplying the language's [3 letter ISO 639-2 Code](http://goo.gl/gbkgo4).",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The 3 letter ISO 639-2 Language Code for the Language you want to view. [View all Language Codes](http://goo.gl/gbkgo4)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The details about the specific language.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400ApiResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401ApiResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404ApiResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500ApiResponse"
+                    }
+                }
+            }
         },
-        {
-            "path": "/resources/regions.{format}",
-            "description": "Retrieve the details of a specific Region."
+        "/v1/languages.{format}": {
+            "get": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Retrieve the details of a set of languages.",
+                "description": "Find all languages that match your filter criteria.",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
+                    },
+                    {
+                        "name": "countries",
+                        "in": "query",
+                        "description": "A bar separated list of one or more countries to filter by. Use the 2 letter FIPS 10-4 code. [View all Country Codes](https://goo.gl/yYWY4J)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "has_audio",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want languages who have access to audio Bibles.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "has_completed_bible",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want languages who have access to a completed Bible.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "has_jesus_film",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want languages who have access to the Jesus Film.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "has_new_testament",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want languages who have access to the New Testament.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "has_portions",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want languages who have access to the portions of the Bible.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ids",
+                        "in": "query",
+                        "description": "A bar separated list of one or more language codes to filter by. Use the 3 letter ISO code.  See <a href='http://goo.gl/EQn1RL' target='_blank'>this chart</a> for the codes.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "jpscale",
+                        "in": "query",
+                        "description": "A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out [https://joshuaproject.net/global/progress](https://joshuaproject.net/global/progress).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "least_reached",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want languages that are least reached.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum results to return.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 250
+                        }
+                    },
+                    {
+                        "name": "needs_translation_questionable",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want Languages whose need for Bible translation is questionable.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page of results to display.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "pc_adherent",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Adherents.(min-max) You can supply just the minimum to get Languages matching that percentage.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_evangelical",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "primary_religions",
+                        "in": "query",
+                        "description": "A bar separated list of one or more primary religions to filter by. Use the following numbers:\n * **1** = Christianity\n * **2** = Buddhism\n * **4** = Ethnic Religions\n * **5** = Hinduism\n * **6** = Islam\n * **7** = Non-Religious\n * **8** = Other/Small\n * **9** = Unknown",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The languages filtered by your query.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400ApiResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401ApiResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404ApiResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500ApiResponse"
+                    }
+                }
+            }
         },
-        {
-            "path": "/resources/totals.{format}",
-            "description": "Retrieve global totals in various formats."
+        "/v1/people_groups/daily_unreached.{format}": {
+            "get": {
+                "tags": [
+                    "People Groups in Countries (PGIC)"
+                ],
+                "summary": "Retrieve the Unreached of the Day information (JSON or XML)",
+                "description": "Retrieve the daily Unreached of the Day people group information. You have two options when retrieving the Unreached of the Day:\n * Get today's Unreached of the Day. This is the default if you do not send parameters.\n * You can specify the month and day parameter to get a specific day of the year. For example, `/daily_unreached.json?month=01&day=31` will get the people group for Jan. 31st. You must provide both parameters!",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
+                    },
+                    {
+                        "name": "day",
+                        "in": "query",
+                        "description": "The two digit day that you want to receive the information from. Defaults to the current day.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "month",
+                        "in": "query",
+                        "description": "The two digit month that you want to receive the information from. Defaults to the current month.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The unreached people group based on your request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400ApiResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401ApiResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404ApiResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500ApiResponse"
+                    }
+                }
+            }
+        },
+        "/v1/people_groups/{id}.{format}": {
+            "get": {
+                "tags": [
+                    "People Groups in Countries (PGIC)"
+                ],
+                "summary": "Retrieve the details of a specific people group (JSON or XML)",
+                "description": "Retrieve the details of a specific people group around the world or in a specific country.  You can either:\n * Get a summary of all occurances of the people group by supplying the PeopleGroup.id (PeopleID3) only, or\n * Get the details of a specific people group in a specific country by providing the PeopleGroup.id (PeopleID3) and the country's [2 letter FIPS 10-4 Code](https://goo.gl/yYWY4J).",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Joshua Project's PeopleID3.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
+                    },
+                    {
+                        "name": "country",
+                        "in": "query",
+                        "description": "The country's 2 letter FIPS 10-4 Code specified at [https://goo.gl/yYWY4J](https://goo.gl/yYWY4J).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The details of the specified people group.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400ApiResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401ApiResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404ApiResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500ApiResponse"
+                    }
+                }
+            }
+        },
+        "/v1/people_groups.{format}": {
+            "get": {
+                "tags": [
+                    "People Groups in Countries (PGIC)"
+                ],
+                "summary": "Search all people groups with diverse filters (JSON or XML)",
+                "description": "Find all people groups that match your filter criteria.",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
+                    },
+                    {
+                        "name": "bible_status",
+                        "in": "query",
+                        "description": "A bar separated list of one or more BibleStatus levels. Only accepts the following codes: 0, 1, 2, 3, 4, 5.  The statuses are:\n * **0** = Unspecified\n * **1** = Translation needed\n * **2** = Translation started\n * **3** = Portions\n * **4** = New Testament\n * **5** = Complete Bible",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "continents",
+                        "in": "query",
+                        "description": "A bar separated list of one or more continents to filter by. Use the following codes:\n * **AFR** = Africa\n * **ASI** = Asia\n * **AUS** = Australia\n * **EUR** = Europe\n * **NAR** = North America\n * **SOP** = Oceania (South Pacific)\n * **LAM** = South America",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "countries",
+                        "in": "query",
+                        "description": "A bar separated list of one or more countries to filter by. Use the 2 letter FIPS 10-4 code. [View all Country Codes](https://goo.gl/yYWY4J).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "indigenous",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups that are indigenous.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "is_frontier",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups that are frontier people groups.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "jpscale",
+                        "in": "query",
+                        "description": "A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out [https://joshuaproject.net/global/progress](https://joshuaproject.net/global/progress).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "A bar separated list of one or more language codes to filter by. Use the 3 letter ISO code.  See the [code list](http://www.loc.gov/standards/iso639-2/php/code_list.php) for the codes.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "least_reached",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups that are least reached.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum results to return.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 250
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page of results to display.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "pc_adherent",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Adherents.(min-max) You can supply just the minimum to get people groups matching that percentage.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_buddhist",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Buddhist.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_ethnic_religion",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Ethnic Religions.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_evangelical",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_hindu",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Hindus.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_islam",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Islam.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_non_religious",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Non-Religious.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_other_religion",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Other Religions.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_unknown",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Unkown Religions.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "people_id1",
+                        "in": "query",
+                        "description": "A bar separated list of one or more Joshua Project affinity block codes to filter by. See [https://joshuaproject.net/help/definitions#affinity-bloc](https://joshuaproject.net/help/definitions#affinity-bloc).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "people_id2",
+                        "in": "query",
+                        "description": "A bar separated list of one or more Joshua Project people cluster codes to filter by. See [https://joshuaproject.net/help/definitions#people-cluster](https://joshuaproject.net/help/definitions#people-cluster).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "people_id3",
+                        "in": "query",
+                        "description": "A bar separated list of one or more Joshua Project people group codes to filter by.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "population",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get people groups with a population matching that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "population_pgac",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum population for the people group in all countries (PGAC).(min-max) You can supply just the minimum to get people groups with a population matching that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "primary_religions",
+                        "in": "query",
+                        "description": "A bar separated list of one or more primary religions to filter by. Use the following numbers:\n * **1** = Christianity\n * **2** = Buddhism\n * **4** = Ethnic Religions\n * **5** = Hinduism\n * **6** = Islam\n * **7** = Non-Religious\n * **8** = Other/Small\n * **9** = Unknown",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "regions",
+                        "in": "query",
+                        "description": "A bar separated list of one or more regions to filter by. Use the following numbers:\n * **1** = South Pacific\n * **2** = Southeast Asia\n * **3** = Northeast Asia\n * **4** = South Asia\n * **5** = Central Asia\n * **6** = Middle East and North Africa\n * **7** = East and Southern Africa\n * **8** = West and Central Africa\n * **9** = Eastern Europe and Eurasia\n * **10** = Western Europe\n * **11** = Central and South America\n * **12** = North America and Caribbean",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "rop1",
+                        "in": "query",
+                        "description": "A bar separated list of one or more Registry of People affinity block codes to filter by.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "rop2",
+                        "in": "query",
+                        "description": "A bar separated list of one or more Registry of People people cluster codes to filter by.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "rop3",
+                        "in": "query",
+                        "description": "A bar separated list of one or more Registry of People people group codes to filter by.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "window1040",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups in the 1040 Window.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The list of people groups based off your criteria.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400ApiResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401ApiResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404ApiResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500ApiResponse"
+                    }
+                }
+            }
+        },
+        "/v1/people_groups_global/{id}.{format}": {
+            "get": {
+                "tags": [
+                    "People Groups Across Countries (PGAC)"
+                ],
+                "summary": "Retrieve the details of a specific people group across countries. (JSON or XML)",
+                "description": "Retrieve the details of a specific people group across the countries they reside.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Joshua Project's PeopleID3.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
+                    },
+                    {
+                        "name": "include_country_list",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want to include a list of countries that they reside in. (Default: Y)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "Y"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The details of the specified people group.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400ApiResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401ApiResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404ApiResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500ApiResponse"
+                    }
+                }
+            }
+        },
+        "/v1/people_groups_global.{format}": {
+            "get": {
+                "tags": [
+                    "People Groups Across Countries (PGAC)"
+                ],
+                "summary": "Search all people groups across countries based on provided filters. (JSON or XML)",
+                "description": "Search through all the various people groups across the countries they reside in.",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
+                    },
+                    {
+                        "name": "include_country_list",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want to include a list of countries that they reside in. (Default: Y)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "N"
+                        }
+                    },
+                    {
+                        "name": "is_frontier",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups that as a whole are considered frontier people groups.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "jpscale",
+                        "in": "query",
+                        "description": "A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out [https://joshuaproject.net/global/progress](https://joshuaproject.net/global/progress).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "A bar separated list of one or more language codes to filter by. Use the 3 letter ISO code.  See the [code list](http://www.loc.gov/standards/iso639-2/php/code_list.php) for the codes.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum results to return.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 250
+                        }
+                    },
+                    {
+                        "name": "number_of_countries",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum number of countries the people group resides in.(min-max) You can supply just the minimum to get people groups with that matching number of countries.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "number_of_unreached",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum number of people groups in country (PGIC) that are considered unreached.(min-max) You can supply just the minimum to get people groups that match that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "number_of_frontier",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum number of people groups in country (PGIC) that are considered a frontier people group.(min-max) You can supply just the minimum to get people groups that match that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page of results to display.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "pc_christian",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Christians among the people group.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pc_evangelical",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum percentage of Evangelicals among the people group.(min-max) You can supply just the minimum to get people groups matching that percentage. Decimals accepted!",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "people_id1",
+                        "in": "query",
+                        "description": "A bar separated list of one or more Joshua Project affinity block codes to filter by. See [https://joshuaproject.net/help/definitions#affinity-bloc](https://joshuaproject.net/help/definitions#affinity-bloc).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "people_id2",
+                        "in": "query",
+                        "description": "A bar separated list of one or more Joshua Project people cluster codes to filter by. See [https://joshuaproject.net/help/definitions#people-cluster](https://joshuaproject.net/help/definitions#people-cluster).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "people_id3",
+                        "in": "query",
+                        "description": "A bar separated list of one or more ethnicity codes to filter by.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "population",
+                        "in": "query",
+                        "description": "A dashed seperated range specifying the minimum and maximum population.(min-max) You can supply just the minimum to get people groups with a population matching that number.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "primary_religions",
+                        "in": "query",
+                        "description": "A bar separated list of one or more primary religions to filter by. Use the following numbers:\n * **1** = Christianity\n * **2** = Buddhism\n * **4** = Ethnic Religions\n * **5** = Hinduism\n * **6** = Islam\n * **7** = Non-Religious\n * **8** = Other/Small\n * **9** = Unknown",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "rop3",
+                        "in": "query",
+                        "description": "A bar separated list of one or more Registry of People IDs to filter by.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "unreached",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups that are as a whole considered unreached.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The details of the specified people group.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400ApiResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401ApiResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404ApiResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500ApiResponse"
+                    }
+                }
+            }
+        },
+        "/v1/regions/{id}.{format}": {
+            "get": {
+                "tags": [
+                    "Regions"
+                ],
+                "summary": "Retrieve the details of a specific Region (JSON or XML)",
+                "description": "Retrieve the details of a specific Region by supplying a unique id for the region.  Use the following numbers:\n * **1** = South Pacific\n * **2** = Southeast Asia\n * **3** = Northeast Asia\n * **4** = South Asia\n * **5** = Central Asia\n * **6** = Middle East and North Africa\n * **7** = East and Southern Africa\n * **8** = West and Central Africa\n * **9** = Eastern Europe and Eurasia\n * **10** = Western Europe\n * **11** = Central and South America\n * **12** = North America and Caribbean",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The unique id for the region. Use the codes indicated above.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The details about the specific region.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400ApiResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401ApiResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404ApiResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500ApiResponse"
+                    }
+                }
+            }
+        },
+        "/v1/totals/{id}.{format}": {
+            "get": {
+                "tags": [
+                    "Totals"
+                ],
+                "summary": "Retrieve the global total for a specific id (case insensitive) in various formats. (JSON or XML)",
+                "description": "Retrieve the global total for a specific id (case insensitive). Look at the [column descriptions](/v1/docs/column_descriptions/totals) for Totals to see all the provided information.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The unique total id (case insensitive).",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The requested totals.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400ApiResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401ApiResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404ApiResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500ApiResponse"
+                    }
+                }
+            }
+        },
+        "/v1/totals.{format}": {
+            "get": {
+                "tags": [
+                    "Totals"
+                ],
+                "summary": "Retrieve global totals in various formats. (JSON or XML)",
+                "description": "Retrieve various global totals including total Christian people groups, continents, reagions and many more. Look at the [column descriptions](/v1/docs/column_descriptions/totals) for Totals to see all the provided information.",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/APIFormatParameter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/APIKeyParameter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The totals.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400ApiResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401ApiResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404ApiResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500ApiResponse"
+                    }
+                }
+            }
         }
-    ]
+    },
+    "components": {
+        "schemas": {
+            "400JSONResponse": {
+                "properties": {
+                    "api": {
+                        "properties": {
+                            "status": {
+                                "type": "string",
+                                "example": "error"
+                            },
+                            "error": {
+                                "properties": {
+                                    "code": {
+                                        "type": "integer",
+                                        "example": 400
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Bad Request"
+                                    },
+                                    "details": {
+                                        "type": "string",
+                                        "example": "You provided an invalid id."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "api": {
+                        "status": "error",
+                        "error": {
+                            "code": 400,
+                            "message": "Bad Request",
+                            "details": "You provided an invalid id."
+                        }
+                    }
+                }
+            },
+            "400XMLResponse": {
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "example": "error"
+                    },
+                    "error": {
+                        "properties": {
+                            "code": {
+                                "type": "integer",
+                                "example": 400
+                            },
+                            "message": {
+                                "type": "string",
+                                "example": "Bad Request"
+                            },
+                            "details": {
+                                "type": "string",
+                                "example": "You provided an invalid id."
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "api"
+                },
+                "example": "<api><status>error</status><error><code>400</code><message>Bad Request</message><details>You provided an invalid id.</details></error></api>"
+            },
+            "401JSONResponse": {
+                "properties": {
+                    "api": {
+                        "properties": {
+                            "status": {
+                                "type": "string",
+                                "example": "error"
+                            },
+                            "error": {
+                                "properties": {
+                                    "code": {
+                                        "type": "integer",
+                                        "example": 401
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Unauthorized"
+                                    },
+                                    "details": {
+                                        "type": "string",
+                                        "example": "You are missing your API key."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "api": {
+                        "status": "error",
+                        "error": {
+                            "code": 401,
+                            "message": "Unauthorized",
+                            "details": "You are missing your API key."
+                        }
+                    }
+                }
+            },
+            "401XMLResponse": {
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "example": "error"
+                    },
+                    "error": {
+                        "properties": {
+                            "code": {
+                                "type": "integer",
+                                "example": 401
+                            },
+                            "message": {
+                                "type": "string",
+                                "example": "Unauthorized"
+                            },
+                            "details": {
+                                "type": "string",
+                                "example": "You are missing your API key."
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "api"
+                },
+                "example": "<api><status>error</status><error><code>401</code><message>Unauthorized</message><details>You are missing your API key.</details></error></api>"
+            },
+            "404JSONResponse": {
+                "properties": {
+                    "api": {
+                        "properties": {
+                            "status": {
+                                "type": "string",
+                                "example": "error"
+                            },
+                            "error": {
+                                "properties": {
+                                    "code": {
+                                        "type": "integer",
+                                        "example": 404
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Not Found"
+                                    },
+                                    "details": {
+                                        "type": "string",
+                                        "example": "The requested resource could not be found."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "api": {
+                        "status": "error",
+                        "error": {
+                            "code": 404,
+                            "message": "Not Found",
+                            "details": "The requested resource could not be found."
+                        }
+                    }
+                }
+            },
+            "404XMLResponse": {
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "example": "error"
+                    },
+                    "error": {
+                        "properties": {
+                            "code": {
+                                "type": "integer",
+                                "example": 404
+                            },
+                            "message": {
+                                "type": "string",
+                                "example": "Not Found"
+                            },
+                            "details": {
+                                "type": "string",
+                                "example": "The requested resource could not be found."
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "api"
+                },
+                "example": "<api><status>error</status><error><code>404</code><message>Not Found</message><details>The requested resource could not be found.</details></error></api>"
+            },
+            "500JSONResponse": {
+                "properties": {
+                    "api": {
+                        "properties": {
+                            "status": {
+                                "type": "string",
+                                "example": "error"
+                            },
+                            "error": {
+                                "properties": {
+                                    "code": {
+                                        "type": "integer",
+                                        "example": 500
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Internal Server Error"
+                                    },
+                                    "details": {
+                                        "type": "string",
+                                        "example": "Not implemented."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "api": {
+                        "status": "error",
+                        "error": {
+                            "code": 500,
+                            "message": "Internal Server Error",
+                            "details": "Not implemented."
+                        }
+                    }
+                }
+            },
+            "500XMLResponse": {
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "example": "error"
+                    },
+                    "error": {
+                        "properties": {
+                            "code": {
+                                "type": "integer",
+                                "example": 500
+                            },
+                            "message": {
+                                "type": "string",
+                                "example": "Internal Server Error"
+                            },
+                            "details": {
+                                "type": "string",
+                                "example": "Not implemented."
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "api"
+                },
+                "example": "<api><status>error</status><error><code>500</code><message>Internal Server Error</message><details>Not implemented.</details></error></api>"
+            }
+        },
+        "responses": {
+            "400ApiResponse": {
+                "description": "Bad request. Your request is malformed in some way. Check your supplied parameters.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/400JSONResponse"
+                        }
+                    },
+                    "application/xml": {
+                        "schema": {
+                            "$ref": "#/components/schemas/400XMLResponse"
+                        }
+                    }
+                }
+            },
+            "401ApiResponse": {
+                "description": "Unauthorized. You are missing your API key, or it has been suspended.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/401JSONResponse"
+                        }
+                    },
+                    "application/xml": {
+                        "schema": {
+                            "$ref": "#/components/schemas/401XMLResponse"
+                        }
+                    }
+                }
+            },
+            "404ApiResponse": {
+                "description": "Not found. The requested route was not found.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/404JSONResponse"
+                        }
+                    },
+                    "application/xml": {
+                        "schema": {
+                            "$ref": "#/components/schemas/401XMLResponse"
+                        }
+                    }
+                }
+            },
+            "500ApiResponse": {
+                "description": "Internal server error. Please try again later.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/500JSONResponse"
+                        }
+                    },
+                    "application/xml": {
+                        "schema": {
+                            "$ref": "#/components/schemas/500XMLResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "APIKeyParameter": {
+                "name": "api_key",
+                "in": "query",
+                "description": "Your Joshua Project API key.",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "APIFormatParameter": {
+                "name": "format",
+                "in": "path",
+                "description": "The format of the response, either 'json' or 'xml'.",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "json",
+                        "xml"
+                    ]
+                }
+            }
+        }
+    }
 }

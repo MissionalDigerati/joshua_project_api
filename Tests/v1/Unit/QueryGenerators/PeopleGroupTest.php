@@ -24,8 +24,8 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use PHPUnit\Framework\TestCase;
+use QueryGenerators\PeopleGroup;
 
 /**
  * Test the Query Generator for the People Group Data
@@ -34,52 +34,29 @@ use PHPUnit\Framework\TestCase;
  */
 class PeopleGroupTest extends TestCase
 {
-    /**
-     * The PDO database connection object
-     *
-     * @var PDODatabaseConnect
-     */
     private $db;
-    /**
-     * Setup the test methods
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function setUp(): void
     {
         $this->db = getDatabaseInstance();
     }
-    /**
-     * Test that the provided params are sanitized upon intializing the class
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
         $data = array('country' => 'AZX#%', 'state' => 'AZ%$');
         $expected = array('country' => 'AZX', 'state' => 'AZ');
-        $reflectionOfPeopleGroup = new \ReflectionClass('\QueryGenerators\PeopleGroup');
+        $reflectionOfPeopleGroup = new \ReflectionClass('QueryGenerators\PeopleGroup');
         $providedParams = $reflectionOfPeopleGroup->getProperty('providedParams');
         $providedParams->setAccessible(true);
-        $result = $providedParams->getValue(new \QueryGenerators\PeopleGroup($data));
+        $result = $providedParams->getValue(new PeopleGroup($data));
         $this->assertEquals($expected, $result);
     }
-    /**
-     * findByIdAndCountry() should return the correct people group, based on the supplied ID, and country.
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindByIdAndCountryShouldReturnTheCorrectPeopleGroup(): void
     {
         $expected = array('id' => '12662', 'country' => 'CB');
         $expectedName = "Khmer";
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -88,36 +65,24 @@ class PeopleGroupTest extends TestCase
         $this->assertEquals($expected['country'], $data[0]['ROG3']);
         $this->assertEquals($expectedName, $data[0]['PeopNameInCountry']);
     }
-    /**
-     * Should return the correct PeopleGroup URL
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupURL(): void
     {
         $expected = array('id' => '12662', 'country' => 'CB');
         $expectedURL = "https://joshuaproject.net/people_groups/12662/cb";
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertEquals($expectedURL, strtolower($data[0]['PeopleGroupURL']));
     }
-    /**
-     * Should return the correct PeopleGroup Photo URL
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupPhotoURL(): void
     {
         $expected = array('id' => '12662', 'country' => 'CB');
         $expectedURL = "https://joshuaproject.net/assets/media/profiles/photos/";
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -125,86 +90,52 @@ class PeopleGroupTest extends TestCase
         $expectedURL .= strtolower($data[0]['PhotoAddress']);
         $this->assertEquals($expectedURL, strtolower($data[0]['PeopleGroupPhotoURL']));
     }
-    /**
-     * Should return the correct Country URL
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectCountryURL(): void
     {
         $expected = array('id' => '12662', 'country' => 'CB');
         $expectedURL = "https://joshuaproject.net/countries/cb";
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertEquals($expectedURL, strtolower($data[0]['CountryURL']));
     }
-    /**
-     * Should return the correct JPScaleImageURL
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectJPScaleImageURL(): void
     {
         $paramData = array('id' => '10350', 'country' => 'AA');
-        $peopleGroup = new \QueryGenerators\PeopleGroup($paramData);
+        $peopleGroup = new PeopleGroup($paramData);
         $peopleGroup->findByIdAndCountry();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $expectedImageURL = "https://joshuaproject.net/images/scale".round(intval($data[0]['JPScale'])).".jpg";
+        $expectedImageURL = "https://joshuaproject.net/assets/img/gauge/gauge-".round(intval($data[0]['JPScale'])).".png";
         $this->assertEquals($expectedImageURL, $data[0]['JPScaleImageURL']);
     }
-    /**
-     * findByIdAndCountry() should require an ID
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     *
-     * @expectedException InvalidArgumentException
-     */
+
     public function testFindByIdAndCountryShouldErrorIfNoIdProvided(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $expected = array('country' => 'CB');
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
     }
-    /**
-     * findByIdAndCountry() should require an country
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     *
-     * @expectedException InvalidArgumentException
-     */
+
     public function testFindByIdAndCountryShouldErrorIfNoCountryProvided(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $expected = array('id' => '12662');
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
     }
-    /**
-     * findById() should return the correct people group, from many countries
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindByIdShouldReturnTheCorrectPeopleGroups(): void
     {
         $expected = array('id' => '12662');
         $expectedPeopleGroups = 13;
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findById();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -212,50 +143,30 @@ class PeopleGroupTest extends TestCase
         $this->assertEquals($expected['id'], $data[0]['PeopleID3']);
         $this->assertEquals($expectedPeopleGroups, count($data));
     }
-    /**
-     * findById() should require an id
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     *
-     * @expectedException InvalidArgumentException
-     */
+
     public function testFindByIdShouldErrorIfNoIDProvided(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $expected = array();
-        $peopleGroup = new \QueryGenerators\PeopleGroup($expected);
+        $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findById();
     }
-    /**
-     * findAllWithFilters() query should return 250 people groups by default
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersReturnsLimitedResultsWithNoFiltersByDefault(): void
     {
         $expectedNumberOfResults = 250;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array());
+        $peopleGroup = new PeopleGroup(array());
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertEquals($expectedNumberOfResults, count($data));
     }
-    /**
-     * findAllWithFilters() query should filter by PeopleID1
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByPeopleID1(): void
     {
         $expectedPeopleIds = array(17, 23);
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('people_id1' => join("|", $expectedPeopleIds)));
+        $peopleGroup = new PeopleGroup(array('people_id1' => join("|", $expectedPeopleIds)));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -265,17 +176,11 @@ class PeopleGroupTest extends TestCase
             $this->assertTrue(in_array(intval($peopleGroup['PeopleID1']), $expectedPeopleIds));
         }
     }
-    /**
-     * findAllWithFilters() query should filter by ROP1
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByROP1(): void
     {
         $expectedROP = array('A014', 'A010');
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('rop1' => join("|", $expectedROP)));
+        $peopleGroup = new PeopleGroup(array('rop1' => join("|", $expectedROP)));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -285,18 +190,12 @@ class PeopleGroupTest extends TestCase
             $this->assertTrue(in_array($peopleGroup['ROP1'], $expectedROP));
         }
     }
-    /**
-     * findAllWithFilters() query should filter by ROP1 and PeopleID1
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByROP1AndPeopleID1(): void
     {
         $expectedROP = 'A014';
         $expectedPeopleID = 23;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
+        $peopleGroup = new PeopleGroup(
             array(
                 'rop1' => $expectedROP, 'people_id1' => $expectedPeopleID
             )
@@ -311,17 +210,11 @@ class PeopleGroupTest extends TestCase
             $this->assertEquals($expectedPeopleID, intval($peopleGroup['PeopleID1']));
         }
     }
-    /**
-     * findAllWithFilters() query should filter by PeopleID2
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByPeopleID2(): void
     {
         $expectedPeopleIDs = array(117, 115);
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('people_id2' => join("|", $expectedPeopleIDs)));
+        $peopleGroup = new PeopleGroup(array('people_id2' => join("|", $expectedPeopleIDs)));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -331,17 +224,11 @@ class PeopleGroupTest extends TestCase
             $this->assertTrue(in_array(intval($peopleGroup['PeopleID2']), $expectedPeopleIDs));
         }
     }
-    /**
-     * findAllWithFilters() query should filter by ROP2
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByROP2(): void
     {
         $expectedROP = array('C0013', 'C0067');
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('rop2' => join("|", $expectedROP)));
+        $peopleGroup = new PeopleGroup(array('rop2' => join("|", $expectedROP)));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -351,17 +238,11 @@ class PeopleGroupTest extends TestCase
             $this->assertTrue(in_array($peopleGroup['ROP2'], $expectedROP));
         }
     }
-    /**
-     * findAllWithFilters() query should filter by PeopleID3
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByPeopleID3(): void
     {
         $expectedPeopleIDs = array(11722, 19204);
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('people_id3' => join("|", $expectedPeopleIDs)));
+        $peopleGroup = new PeopleGroup(array('people_id3' => join("|", $expectedPeopleIDs)));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -371,17 +252,11 @@ class PeopleGroupTest extends TestCase
             $this->assertTrue(in_array(intval($peopleGroup['PeopleID3']), $expectedPeopleIDs));
         }
     }
-    /**
-     * findAllWithFilters() query should filter by ROP3
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByROP3(): void
     {
         $expectedROP = array(115485, 115409);
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('rop3' => join("|", $expectedROP)));
+        $peopleGroup = new PeopleGroup(array('rop3' => join("|", $expectedROP)));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -391,17 +266,11 @@ class PeopleGroupTest extends TestCase
             $this->assertTrue(in_array(intval($peopleGroup['ROP3']), $expectedROP));
         }
     }
-    /**
-     * findAllWithFilters() query should filter by continents
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByContinents(): void
     {
         $expectedContinents = array('AFR', 'NAR');
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('continents' => join("|", $expectedContinents)));
+        $peopleGroup = new PeopleGroup(array('continents' => join("|", $expectedContinents)));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -411,17 +280,11 @@ class PeopleGroupTest extends TestCase
             $this->assertTrue(in_array($peopleGroup['ROG2'], $expectedContinents));
         }
     }
-    /**
-     * findAllWithFilters() query should filter by countries
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByCountries(): void
     {
         $expectedCountries = array('AN', 'BG');
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('countries' => join("|", $expectedCountries)));
+        $peopleGroup = new PeopleGroup(array('countries' => join("|", $expectedCountries)));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -431,49 +294,27 @@ class PeopleGroupTest extends TestCase
             $this->assertTrue(in_array($peopleGroup['ROG3'], $expectedCountries));
         }
     }
-    /**
-      * Tests that findAllWithFilters() throws the correct error if a the continent is not a correct continent
-      *
-      * @return void
-      * @access public
-      * @author Johnathan Pulos
-      *
-      * @expectedException InvalidArgumentException
-      */
+
     public function testFindAllWithFilterShouldErrorIfIncorrectContinent(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $expectedCountries = array('BBC', 'DED');
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('continents' => join("|", $expectedCountries)));
+        $peopleGroup = new PeopleGroup(array('continents' => join("|", $expectedCountries)));
         $peopleGroup->findAllWithFilters();
     }
-    /**
-      * Tests that findAllWithFilters() throws the correct error if a the regions are not in the correct range
-      *
-      * @return void
-      * @access public
-      * @author Johnathan Pulos
-      *
-      * @expectedException InvalidArgumentException
-      */
+
     public function testFindAllWithFilterShouldErrorIfIncorrectRegionCode(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $regionCodes = array(0, 13);
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('regions' => join("|", $regionCodes)));
+        $peopleGroup = new PeopleGroup(array('regions' => join("|", $regionCodes)));
         $peopleGroup->findAllWithFilters();
     }
-    /**
-     * Tests that findAllWithFilters() filters by the given region codes
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByRegions(): void
     {
         $expectedRegions = array(3 => 'asia, northeast', 4 => 'asia, south');
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('regions' => join("|", array_keys($expectedRegions))));
+        $peopleGroup = new PeopleGroup(array('regions' => join("|", array_keys($expectedRegions))));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -484,17 +325,11 @@ class PeopleGroupTest extends TestCase
             $this->assertTrue(in_array(strtolower($peopleGroup['RegionName']), array_values($expectedRegions)));
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters by the given window1040
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterBy1040Window(): void
     {
         $expected1040Window = 'N';
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('window1040' => $expected1040Window));
+        $peopleGroup = new PeopleGroup(array('window1040' => $expected1040Window));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -504,17 +339,11 @@ class PeopleGroupTest extends TestCase
             $this->assertEquals('N', $peopleGroup['Window1040']);
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters by the given languages
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByLanguages(): void
     {
         $expectedLanguages = array('AKA', 'ALE');
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('languages' => join("|", $expectedLanguages)));
+        $peopleGroup = new PeopleGroup(array('languages' => join("|", $expectedLanguages)));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -524,18 +353,12 @@ class PeopleGroupTest extends TestCase
             $this->assertTrue(in_array(strtoupper($peopleGroup['ROL3']), $expectedLanguages));
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters by a population range
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByPopulationRange(): void
     {
         $expectedMin = 10000;
         $expectedMax = 20000;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population' => $expectedMin."-".$expectedMax));
+        $peopleGroup = new PeopleGroup(array('population' => $expectedMin."-".$expectedMax));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -546,17 +369,11 @@ class PeopleGroupTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedMin, intval($peopleGroup['Population']));
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters by primary religions
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByPrimaryReligions(): void
     {
         $expectedReligions = array(2 => 'buddhism', 6 => 'islam');
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
+        $peopleGroup = new PeopleGroup(
             array(
                 'primary_religions' => join('|', array_keys($expectedReligions))
             )
@@ -571,17 +388,11 @@ class PeopleGroupTest extends TestCase
             $this->assertEquals(6, $peopleGroup['RLG3']);
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters by a single population
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterBySinglePopulation(): void
     {
         $expectedPop = 3900;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population' => $expectedPop));
+        $peopleGroup = new PeopleGroup(array('population' => $expectedPop));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -591,48 +402,26 @@ class PeopleGroupTest extends TestCase
             $this->assertEquals($expectedPop, intval($peopleGroup['Population']));
         }
     }
-    /**
-     * Tests that findAllWithFilters() throws error if incorrect population sent
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     *
-     * @expectedException InvalidArgumentException
-     */
+
     public function testFindAllWithFiltersShouldThrowErrorWithIncorrectPopulation(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population' => '1900-23000-3400'));
+        $peopleGroup = new PeopleGroup(array('population' => '1900-23000-3400'));
         $peopleGroup->findAllWithFilters();
     }
-    /**
-     * Tests that findAllWithFilters() throws error if min is greater then max population
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     *
-     * @expectedException InvalidArgumentException
-     */
+
     public function testFindAllWithFiltersShouldThrowErrorWithMinPopulationGreaterThanMaxPopulation(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population' => '30000-1000'));
+        $peopleGroup = new PeopleGroup(array('population' => '30000-1000'));
         $peopleGroup->findAllWithFilters();
     }
-    /**
-     * Tests that findAllWithFilters() filters by a percent of adherents
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByPercentOfAdherents(): void
     {
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
+        $peopleGroup = new PeopleGroup(
             array(
                 'pc_adherent' => $expectedPercentMin."-".$expectedPercentMax
             )
@@ -647,17 +436,11 @@ class PeopleGroupTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PercentAdherents']));
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters by a percent of adherents with only 1 decimal value
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByPercentOfAdherentsWithOnlyOneDecimalParameter(): void
     {
         $expectedPercent = 1.6;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('pc_adherent' => $expectedPercent));
+        $peopleGroup = new PeopleGroup(array('pc_adherent' => $expectedPercent));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -667,18 +450,12 @@ class PeopleGroupTest extends TestCase
             $this->assertEquals($expectedPercent, floatval($peopleGroup['PercentAdherents']));
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters by a percent of evangelicals
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByPercentOfEvangelicals(): void
     {
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
+        $peopleGroup = new PeopleGroup(
             array(
                 'pc_evangelical' => $expectedPercentMin."-".$expectedPercentMax
             )
@@ -693,18 +470,12 @@ class PeopleGroupTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PercentEvangelical']));
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters by a percent of buddhists
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByPercentOfBuddhists(): void
     {
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
+        $peopleGroup = new PeopleGroup(
             array(
                 'pc_buddhist' => $expectedPercentMin."-".$expectedPercentMax
             )
@@ -719,18 +490,12 @@ class PeopleGroupTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCBuddhism']));
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters by a percent of ethnic religions
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByPercentOfEthnicReligions(): void
     {
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
+        $peopleGroup = new PeopleGroup(
             array(
                 'pc_ethnic_religion' => $expectedPercentMin."-".$expectedPercentMax
             )
@@ -745,18 +510,12 @@ class PeopleGroupTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCEthnicReligions']));
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters by a percent of hindus
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByPercentOfHindus(): void
     {
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
+        $peopleGroup = new PeopleGroup(
             array(
                 'pc_hindu' => $expectedPercentMin."-".$expectedPercentMax
             )
@@ -771,18 +530,12 @@ class PeopleGroupTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCHinduism']));
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters by a percent of islam
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByPercentOfIslam(): void
     {
         $expectedPercentMin = 20.0;
         $expectedPercentMax = 30.1;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
+        $peopleGroup = new PeopleGroup(
             array(
                 'pc_islam' => $expectedPercentMin."-".$expectedPercentMax
             )
@@ -797,18 +550,12 @@ class PeopleGroupTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCIslam']));
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters by a percent of non-religious
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByPercentOfNonReligious(): void
     {
         $expectedPercentMin = 22.0;
         $expectedPercentMax = 40.1;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
+        $peopleGroup = new PeopleGroup(
             array(
                 'pc_non_religious' => $expectedPercentMin."-".$expectedPercentMax
             )
@@ -823,18 +570,12 @@ class PeopleGroupTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCNonReligious']));
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters by a percent of Other Religions
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByPercentOfOtherReligions(): void
     {
         $expectedPercentMin = 2.0;
         $expectedPercentMax = 10.3;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
+        $peopleGroup = new PeopleGroup(
             array(
                 'pc_other_religion' => $expectedPercentMin."-".$expectedPercentMax
             )
@@ -849,18 +590,12 @@ class PeopleGroupTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCOtherSmall']));
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters by a percent of Unknown Religions
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterByPercentOfUnknownReligions(): void
     {
         $expectedPercentMin = 2.0;
         $expectedPercentMax = 10.3;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(
+        $peopleGroup = new PeopleGroup(
             array(
                 'pc_unknown' => $expectedPercentMin."-".$expectedPercentMax
             )
@@ -875,17 +610,11 @@ class PeopleGroupTest extends TestCase
             $this->assertGreaterThanOrEqual($expectedPercentMin, floatval($peopleGroup['PCUnknown']));
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters out Indigenous Groups
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterOutIndigenousPeopleGroups(): void
     {
         $expectedIndigenousStatus = 'n';
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('indigenous' => $expectedIndigenousStatus));
+        $peopleGroup = new PeopleGroup(array('indigenous' => $expectedIndigenousStatus));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -895,17 +624,11 @@ class PeopleGroupTest extends TestCase
             $this->assertEquals('N', $peopleGroup['IndigenousCode']);
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters out Least Reached Groups
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFilterOutLeastReachedPeopleGroups(): void
     {
         $expectedLeastReachedStatus = 'n';
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('least_reached' => $expectedLeastReachedStatus));
+        $peopleGroup = new PeopleGroup(array('least_reached' => $expectedLeastReachedStatus));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -915,18 +638,12 @@ class PeopleGroupTest extends TestCase
             $this->assertEquals('N', $peopleGroup['LeastReached']);
         }
     }
-    /**
-     * Tests that findAllWithFilters() filters by JPScale
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
+
     public function testFindAllWithFiltersShouldFiltersByJPScale(): void
     {
         $expectedJPScales = "1|2";
         $expectedJPScalesArray = array(1, 2);
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('jpscale' => $expectedJPScales));
+        $peopleGroup = new PeopleGroup(array('jpscale' => $expectedJPScales));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -936,42 +653,25 @@ class PeopleGroupTest extends TestCase
             $this->assertTrue(in_array(floatval($peopleGroup['JPScale']), $expectedJPScalesArray));
         }
     }
-    /**
-      * Tests that findAllWithFilters() throws the correct error if one of the jpscale parameters is not a
-      * required numbers
-      *
-      * @return void
-      * @access public
-      * @author Johnathan Pulos
-      *
-      * @expectedException InvalidArgumentException
-      */
+
     public function testFindAllWithFilterShouldErrorIfIncorrectJPScale(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $expectedJPScales = "1.5|2.6";
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('jpscale' => $expectedJPScales));
+        $peopleGroup = new PeopleGroup(array('jpscale' => $expectedJPScales));
         $peopleGroup->findAllWithFilters();
     }
-    /**
-      * Tests that findAllWithFilters() throws the correct error if the window1040 is set to anything else but Y & N
-      *
-      * @return void
-      * @access public
-      * @author Johnathan Pulos
-      *
-      * @expectedException InvalidArgumentException
-      */
+
     public function testFindAllWithFilterShouldErrorIfIncorrectWindow1040(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('window1040' => 'b'));
+        $peopleGroup = new PeopleGroup(array('window1040' => 'b'));
         $peopleGroup->findAllWithFilters();
     }
 
     public function testFindAllWithFilterShouldFilterByFrontier(): void
     {
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('is_frontier' => 'N'));
+        $peopleGroup = new PeopleGroup(array('is_frontier' => 'N'));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -986,7 +686,7 @@ class PeopleGroupTest extends TestCase
     {
         $min = 10000;
         $max = 11000;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population_pgac' => $min . '-' . $max));
+        $peopleGroup = new PeopleGroup(array('population_pgac' => $min . '-' . $max));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -1001,7 +701,7 @@ class PeopleGroupTest extends TestCase
     public function testFindAllWithFilterShouldFilterByAllCountryPopulationSingleValue(): void
     {
         $expected = 12000;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('population_pgac' => $expected));
+        $peopleGroup = new PeopleGroup(array('population_pgac' => $expected));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -1015,7 +715,7 @@ class PeopleGroupTest extends TestCase
     public function testFindAllWithFliterShouldFilterByBibleStatus(): void
     {
         $expected = 2;
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('bible_status' => $expected));
+        $peopleGroup = new PeopleGroup(array('bible_status' => $expected));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -1029,7 +729,7 @@ class PeopleGroupTest extends TestCase
     public function testFindAllWithFliterShouldFilterByMultipleBibleStatus(): void
     {
         $expected = [2, 3];
-        $peopleGroup = new \QueryGenerators\PeopleGroup(array('bible_status' => join('|', $expected)));
+        $peopleGroup = new PeopleGroup(array('bible_status' => join('|', $expected)));
         $peopleGroup->findAllWithFilters();
         $statement = $this->db->prepare($peopleGroup->preparedStatement);
         $statement->execute($peopleGroup->preparedVariables);
@@ -1038,5 +738,49 @@ class PeopleGroupTest extends TestCase
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array((int) $peopleGroup['BibleStatus'], $expected));
         }
+    }
+
+    public function testFindAllWithFiltersShouldAddPeopleId3Rog3Field(): void
+    {
+        $queryOne = new PeopleGroup(['people_id3' => 11722, 'countries' => 'YM']);
+        $queryOne->findAllWithFilters();
+        $statement = $this->db->prepare($queryOne->preparedStatement);
+        $statement->execute($queryOne->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertTrue(isset($peopleGroup['PeopleID3ROG3']));
+            $this->assertEquals('11722YM', $peopleGroup['PeopleID3ROG3']);
+        }
+    }
+
+    public function testFindByIdAndCountryShouldAddPeopleID3Rog3Field(): void
+    {
+        $params = array('id' => 11722, 'country' => 'AE');
+        $peopleGroup = new PeopleGroup($params);
+        $peopleGroup->findByIdAndCountry();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        $this->assertTrue(isset($data[0]['PeopleID3ROG3']));
+        $this->assertEquals('11722AE', $data[0]['PeopleID3ROG3']);
+    }
+
+    public function testFindCountryListShouldReturnCountryList(): void
+    {
+        $expected = [
+            ['ROG3' => 'CB', 'Ctry' => 'Cambodia', 'Population' => 11000, 'JPScale' => 4],
+            ['ROG3' => 'LA', 'Ctry' => 'Laos', 'Population' => 28000, 'JPScale' => 1],
+            ['ROG3' => 'VM', 'Ctry' => 'Vietnam', 'Population' => 500, 'JPScale' => 2]
+        ];
+        $peopleGroup = new PeopleGroup([]);
+        $peopleGroup->findCountryList(10960);
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        $this->assertEquals(3, count($data));
+        $this->assertEqualsCanonicalizing($expected, $data);
     }
 }

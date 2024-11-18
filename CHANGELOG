@@ -1,3 +1,14 @@
+Version 1.9.0
+
+ADDED PeopleID3ROG3 field to all /people_groups endpoints.
+UPDATED the API documentation uses the latest Swagger UI.
+ADDED two new endpoints for retrieving data associated with People Groups Across Countries (PGAC). These endpoints are:
+
+/people_groups_global/{id}.{format} - Get information about a specific people group. This information looks at the people group across all the countries they reside in.
+/people_groups_global.{format} - Find and filter all the People Groups Across Countries (PGAC).
+
+See the API documentation for more details.
+
 Version 1.8.0
 
 Added two new endpoints for retrieving global statistical data.

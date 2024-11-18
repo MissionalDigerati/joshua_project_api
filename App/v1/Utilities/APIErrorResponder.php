@@ -26,7 +26,7 @@ declare(strict_types=1);
 
 namespace Utilities;
 
-use Slim\Http\Response;
+use Psr\Http\Message\ResponseInterface as Response;
 
 /**
  * Send back an error response from the API

@@ -25,17 +25,7 @@ declare(strict_types=1);
 
 use DI\ContainerBuilder;
 use Dotenv\Dotenv;
-use Middleware\APIAuthMiddleware;
-use Middleware\APIStandardsMiddleware;
-use Middleware\CachingMiddleware;
-use Middleware\GoogleAnalyticsMiddleware;
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use Slim\Factory\AppFactory;
-use Tuupola\Middleware\HttpBasicAuthentication;
-use Slim\Views\PhpRenderer;
-use Utilities\APIErrorResponder;
-use Utilities\Mailer;
-use Psr\Container\ContainerInterface;
 
 $DS = DIRECTORY_SEPARATOR;
 $ROOT_DIRECTORY = dirname(__DIR__);
@@ -118,6 +108,7 @@ if (file_exists($APP_FILES_DIRECTORY)) {
     require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}Docs.php");
     require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}APIKeys.php");
     require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}PeopleGroups.php");
+    require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}PeopleGroupsGlobal.php");
     require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}Countries.php");
     require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}Languages.php");
     require("{$APP_FILES_DIRECTORY}{$DS}Resources{$DS}Continents.php");

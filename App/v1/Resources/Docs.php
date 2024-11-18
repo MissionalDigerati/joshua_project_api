@@ -76,7 +76,8 @@ $app->get(
     function (Request $request, Response $response): Response {
         $resourceType = $request->getAttribute('type');
         $allowed = [
-            'continents', 'countries', 'languages', 'people_groups', 'regions', 'totals'
+            'continents', 'countries', 'languages', 'people_groups',
+            'people_groups_global', 'regions', 'totals'
         ];
         if (!in_array($resourceType, $allowed)) {
             return $response->withStatus(404)

@@ -27,6 +27,9 @@ use Tuupola\Middleware\HttpBasicAuthentication;
 use Middleware\APIAuthMiddleware;
 use Middleware\APIStandardsMiddleware;
 use Slim\Middleware\MethodOverrideMiddleware;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Exception\HttpNotFoundException;
 
 /**
  * Add all the required middleware
@@ -46,6 +49,7 @@ return function(App $app) {
             '/v\d+/countries',
             '/v\d+/languages',
             '/v\d+/people_groups',
+            '/v\d+/people_groups_global',
             '/v\d+/regions',
             '/v\d+/totals',
         ]
@@ -79,4 +83,34 @@ return function(App $app) {
     $standardSettings['versions'] = [1];
     $app->add(new APIAuthMiddleware($container->get('db'), $pathSettings));
     $app->add(new APIStandardsMiddleware($standardSettings));
+
+    $errorMiddleware = $app->addErrorMiddleware(true, true, true);
+    /**
+     * Handle 404 errors
+     */
+    $errorMiddleware->setErrorHandler(
+        HttpNotFoundException::class,
+        function(
+            Request $request,
+            Throwable $exception,
+            bool $displayErrorDetails,
+            bool $logErrors,
+            bool $logErrorDetails
+        ) use ($app): Response {
+            $response = $app->getResponseFactory()->createResponse();
+            $path = $request->getUri()->getPath();
+
+            // Extract the format from the path using a regular expression
+            $format = 'json'; // Default format
+            if (preg_match('/\.(json|xml)$/', $path, $matches)) {
+                $format = $matches[1];
+            }
+            return $this->get('errorResponder')->get(
+                404,
+                'The requested resource could not be found.',
+                $format,
+                'Not Found',
+                $response
+            );
+    });
 };

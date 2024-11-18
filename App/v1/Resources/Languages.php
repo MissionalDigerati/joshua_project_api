@@ -27,69 +27,55 @@ declare(strict_types=1);
 use QueryGenerators\Language;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Swagger\Annotations as SWG;
+use OpenApi\Attributes as OA;
 
 // phpcs:disable Generic.Files.LineLength
 /**
- * @SWG\Resource(
- *     apiVersion="1",
- *     swaggerVersion="1.1",
- *     resourcePath="/languages",
- *     basePath="/v1"
+ *
+ * @OA\Get(
+ *     tags={"Languages"},
+ *     path="/v1/languages/{id}.{format}",
+ *     summary="Retrieve the details of a specific language.",
+ *     description="Retrieve the details of a specific Language by supplying the language's [3 letter ISO 639-2 Code](http://goo.gl/gbkgo4).",
+ *     @OA\Parameter(
+ *         name="id",
+ *         description="The 3 letter ISO 639-2 Language Code for the Language you want to view. [View all Language Codes](http://goo.gl/gbkgo4)",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
+ *     @OA\Response(
+ *         response="200",
+ *         description="The details about the specific language.",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(type="object")
+ *         ),
+ *         @OA\MediaType(
+ *             mediaType="application/xml",
+ *             @OA\Schema(type="object")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="400",
+ *         ref="#/components/responses/400ApiResponse"
+ *     ),
+ *     @OA\Response(
+ *         response="401",
+ *         ref="#/components/responses/401ApiResponse"
+ *     ),
+ *     @OA\Response(
+ *         response="404",
+ *         ref="#/components/responses/404ApiResponse"
+ *     ),
+ *     @OA\Response(
+ *         response="500",
+ *         ref="#/components/responses/500ApiResponse"
+ *     )
  * )
  */
-/**
-  *
-  * @SWG\API(
-  *  path="/languages/{id}.{format}",
-  *  description="Retrieve the details of a specific Language.",
-  *  @SWG\Operations(
-  *      @SWG\Operation(
-  *          httpMethod="GET",
-  *          nickname="languageShow",
-  *          summary="Retrieve the details of a specific Language (JSON or XML)",
-  *          notes="Retrieve the details of a specific Language by supplying the language's <a href='http://goo.gl/gbkgo4' target='_blank'>3 letter ISO 639-2 Code</a> (id).",
-  *          @SWG\Parameters(
-  *              @SWG\Parameter(
-  *                  name="api_key",
-  *                  description="Your Joshua Project API key.",
-  *                  paramType="query",
-  *                  required="true",
-  *                  allowMultiple="false",
-  *                  dataType="string"
-  *              ),
-  *              @SWG\Parameter(
-  *                  name="id",
-  *                  description="The 3 letter ISO 639-2 Language Code for the Language you want to view. [<a href='http://goo.gl/gbkgo4' target='_blank'>View all Language Codes</a>]",
-  *                  paramType="path",
-  *                  required="true",
-  *                  allowMultiple="false",
-  *                  dataType="string"
-  *              )
-  *          ),
-  *          @SWG\ErrorResponses(
-  *              @SWG\ErrorResponse(
-  *                  code="400",
-  *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
-  *              ),
-  *              @SWG\ErrorResponse(
-  *                  code="401",
-  *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
-  *              ),
-  *              @SWG\ErrorResponse(
-  *                  code="404",
-  *                  reason="Not found.  The requested route was not found."
-  *              ),
-  *              @SWG\ErrorResponse(
-  *                  code="500",
-  *                  reason="Internal server error.  Please try again later."
-  *              )
-  *          )
-  *      )
-  *  )
-  * )
-  *
-  */
 // phpcs:enable Generic.Files.LineLength
 $app->get(
     "/{version}/languages/{id}.{format}",
@@ -153,167 +139,161 @@ $app->get(
 // phpcs:disable Generic.Files.LineLength
 /**
  *
- * @SWG\API(
- *  path="/languages.{format}",
- *  description="Find all Languages that match your filter criteria.",
- *  @SWG\Operations(
- *      @SWG\Operation(
- *          httpMethod="GET",
- *          nickname="getAllLanguageWithFilters",
- *          summary="Search all Languages with diverse filters (JSON or XML)",
- *          notes="Retrieve a list of Languages that match your filter settings.",
- *          @SWG\Parameters(
- *              @SWG\Parameter(
- *                  name="api_key",
- *                  description="Your Joshua Project API key.",
- *                  paramType="query",
- *                  required="true",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="countries",
- *                  description="A bar separated list of one or more countries to filter by. Use the 2 letter FIPS 10-4 code. [<a href='https://goo.gl/yYWY4J' target='_blank'>View all Country Codes</a>]",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="has_audio",
- *                  description="A boolean that states whether you want Languages who have access to audio Bibles. (y or n)",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="has_completed_bible",
- *                  description="A boolean that states whether you want Languages who have access to a completed Bible. (y or n)",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="has_jesus_film",
- *                  description="A boolean that states whether you want Languages who have access to the Jesus Film. (y or n)",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="has_new_testament",
- *                  description="A boolean that states whether you want Languages who have access to the New Testament. (y or n)",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="has_portions",
- *                  description="A boolean that states whether you want Languages who have access to the portions of the Bible. (y or n)",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="ids",
- *                  description="A bar separated list of one or more language codes to filter by. Use the 3 letter ISO code.  See <a href='http://goo.gl/EQn1RL' target='_blank'>this chart</a> for the codes.",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="jpscale",
- *                  description="A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out <a href='https://joshuaproject.net/global_list/progress' target='_blank'>https://joshuaproject.net/global_list/progress</a>.",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="least_reached",
- *                  description="A boolean that states whether you want Languages that are least reached. (y or n)",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="limit",
- *                  description="The maximum results to return. (Defaults to 250)",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="needs_translation_questionable",
- *                  description="A boolean that states whether you want Languages whose need for Bible translation is questionable. (y or n)",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="page",
- *                  description="The page of results to display  (Defaults to 1)",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="pc_adherent",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Adherents.(min-max) You can supply just the minimum to get Languages matching that percentage.",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="pc_evangelical",
- *                  description="A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              ),
- *              @SWG\Parameter(
- *                  name="primary_religions",
- *                  description="A bar separated list of one or more primary religions to filter by. Use the following numbers:<br><ul><li>1 - Christianity</li><li>2 - Buddhism</li><li>4 - Ethnic Religions</li><li>5 - Hinduism</li><li>6 - Islam</li><li>7 - Non-Religious</li><li>8 - Other/Small</li><li>9 - Unknown</li></ul>",
- *                  paramType="query",
- *                  required="false",
- *                  allowMultiple="false",
- *                  dataType="string"
- *              )
- *          ),
- *          @SWG\ErrorResponses(
- *              @SWG\ErrorResponse(
- *                  code="400",
- *                  reason="Bad request.  Your request is malformed in some way.  Check your supplied parameters."
- *              ),
- *              @SWG\ErrorResponse(
- *                  code="401",
- *                  reason="Unauthorized.  Your missing your API key, or it has been suspended."
- *              ),
- *              @SWG\ErrorResponse(
- *                  code="404",
- *                  reason="Not found.  The requested route was not found."
- *              ),
- *              @SWG\ErrorResponse(
- *                  code="500",
- *                  reason="Internal server error.  Please try again later."
- *              )
- *          )
- *      )
- *  )
+ * @OA\Get(
+ *     tags={"Languages"},
+ *     path="/v1/languages.{format}",
+ *     summary="Retrieve the details of a set of languages.",
+ *     description="Find all languages that match your filter criteria.",
+ *     @OA\Parameter(ref="#/components/parameters/APIFormatParameter"),
+ *     @OA\Parameter(ref="#/components/parameters/APIKeyParameter"),
+ *     @OA\Parameter(
+ *         name="countries",
+ *         description="A bar separated list of one or more countries to filter by. Use the 2 letter FIPS 10-4 code. [View all Country Codes](https://goo.gl/yYWY4J)",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="has_audio",
+ *         description="A boolean (represented as a string Y or N) that states whether you want languages who have access to audio Bibles.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="has_completed_bible",
+ *         description="A boolean (represented as a string Y or N) that states whether you want languages who have access to a completed Bible.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="has_jesus_film",
+ *         description="A boolean (represented as a string Y or N) that states whether you want languages who have access to the Jesus Film.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="has_new_testament",
+ *         description="A boolean (represented as a string Y or N) that states whether you want languages who have access to the New Testament.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="has_portions",
+ *         description="A boolean (represented as a string Y or N) that states whether you want languages who have access to the portions of the Bible.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="ids",
+ *         description="A bar separated list of one or more language codes to filter by. Use the 3 letter ISO code.  See <a href='http://goo.gl/EQn1RL' target='_blank'>this chart</a> for the codes.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="jpscale",
+ *         description="A bar separated list of one or more JPScale codes to filter by. Only accepts the following codes: 1, 2, 3, 4, 5.  For more information check out [https://joshuaproject.net/global/progress](https://joshuaproject.net/global/progress).",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="least_reached",
+ *         description="A boolean (represented as a string Y or N) that states whether you want languages that are least reached.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="limit",
+ *         description="The maximum results to return.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(
+ *             type="integer",
+ *             default=250
+ *        )
+ *     ),
+ *     @OA\Parameter(
+ *         name="needs_translation_questionable",
+ *         description="A boolean (represented as a string Y or N) that states whether you want Languages whose need for Bible translation is questionable.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="page",
+ *         description="The page of results to display.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(
+ *             type="integer",
+ *             default=1
+ *        )
+ *     ),
+ *     @OA\Parameter(
+ *         name="pc_adherent",
+ *         description="A dashed seperated range specifying the minimum and maximum percentage of Adherents.(min-max) You can supply just the minimum to get Languages matching that percentage.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="pc_evangelical",
+ *         description="A dashed seperated range specifying the minimum and maximum percentage of Evangelicals.(min-max) You can supply just the minimum to get People Groups matching that percentage. Decimals accepted!",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="primary_religions",
+ *         description="A bar separated list of one or more primary religions to filter by. Use the following numbers:
+ * **1** = Christianity
+ * **2** = Buddhism
+ * **4** = Ethnic Religions
+ * **5** = Hinduism
+ * **6** = Islam
+ * **7** = Non-Religious
+ * **8** = Other/Small
+ * **9** = Unknown",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Response(
+ *         response="200",
+ *         description="The languages filtered by your query.",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(type="object")
+ *         ),
+ *         @OA\MediaType(
+ *             mediaType="application/xml",
+ *             @OA\Schema(type="object")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="400",
+ *         ref="#/components/responses/400ApiResponse"
+ *     ),
+ *     @OA\Response(
+ *         response="401",
+ *         ref="#/components/responses/401ApiResponse"
+ *     ),
+ *     @OA\Response(
+ *         response="404",
+ *         ref="#/components/responses/404ApiResponse"
+ *     ),
+ *     @OA\Response(
+ *         response="500",
+ *         ref="#/components/responses/500ApiResponse"
+ *     )
  * )
- *
  */
 // phpcs:enable Generic.Files.LineLength
 $app->get(

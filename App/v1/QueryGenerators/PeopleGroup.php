@@ -61,7 +61,7 @@ class PeopleGroup extends QueryGenerator
      * @access  protected
      */
     protected $fieldsToSelectArray = [
-        'ROG3', 'PeopleID3', 'ROP3', 'PeopNameInCountry', 'ROG2', 'Continent', 'RegionName', 'ISO3',
+        'PeopleID3ROG3', 'ROG3', 'PeopleID3', 'ROP3', 'PeopNameInCountry', 'ROG2', 'Continent', 'RegionName', 'ISO3',
         'LocationInCountry', 'PeopleID1', 'ROP1', 'AffinityBloc', 'PeopleID2', 'ROP2', 'PeopleCluster',
         'PeopNameAcrossCountries', 'Population', 'Category', 'ROL3', 'PrimaryLanguageName',
         'PrimaryLanguageDialect', 'NumberLanguagesSpoken', 'OfficialLang', 'SpeakNationalLang',
@@ -159,13 +159,15 @@ class PeopleGroup extends QueryGenerator
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) . ", " .
         $this->generateAliasSelectStatement();
-        $this->selectFieldsStatement .= ", " . $this->peopleGroupMapURLSelect . " as PeopleGroupMapURL";
-        $this->selectFieldsStatement .= ", " . $this->peopleGroupMapExpandedURLSelect . " as PeopleGroupMapExpandedURL";
-        $this->selectFieldsStatement .= ", " . $this->peopleGroupURLSelect . " as PeopleGroupURL";
-        $this->selectFieldsStatement .= ", " . $this->peopleGroupPhotoURLSelect . " as PeopleGroupPhotoURL";
-        $this->selectFieldsStatement .= ", " . $this->countryURLSelect . " as CountryURL";
-        $this->selectFieldsStatement .= ", " . $this->JPScaleTextSelectStatement . " as JPScaleText";
-        $this->selectFieldsStatement .= ", " . $this->JPScaleImageURLSelectStatement . " as JPScaleImageURL";
+        $scaleTextStatement = $this->getScaleTextStatement('JPScale');
+        $scaleImageStatement = $this->getScaleImageURLStatement('JPScale');
+        $this->selectFieldsStatement .= ", $this->peopleGroupMapURLSelect as PeopleGroupMapURL";
+        $this->selectFieldsStatement .= ", $this->peopleGroupMapExpandedURLSelect as PeopleGroupMapExpandedURL";
+        $this->selectFieldsStatement .= ", $this->peopleGroupURLSelect as PeopleGroupURL";
+        $this->selectFieldsStatement .= ", $this->peopleGroupPhotoURLSelect as PeopleGroupPhotoURL";
+        $this->selectFieldsStatement .= ", $this->countryURLSelect as CountryURL";
+        $this->selectFieldsStatement .= ", $scaleTextStatement as JPScaleText";
+        $this->selectFieldsStatement .= ", $scaleImageStatement as JPScaleImageURL";
     }
     /**
      * Find the People Group by id (PeopleID3), and refine search by the country (ROG3).
@@ -517,5 +519,21 @@ class PeopleGroup extends QueryGenerator
         }
         $this->preparedStatement .= " " . $this->defaultOrderByStatement . " ";
         $this->addLimitFilter();
+    }
+
+    /**
+     * Find a list of countries where a specific People Group is located. This is an internal function
+     * and does not provide access through the API directly. It does not use the providedParams.
+     *
+     * @param int $id   The PeopleID3 of the People Group.
+     *
+     * @return void
+     * @access public
+     */
+    public function findCountryList(int $id): void
+    {
+        $this->preparedStatement = "SELECT ROG3, Ctry, Population, JPScale FROM " . $this->tableName .
+        " WHERE PeopleID3 = :id";
+        $this->preparedVariables = ['id' => $id];
     }
 }

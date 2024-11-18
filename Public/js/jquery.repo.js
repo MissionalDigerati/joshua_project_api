@@ -191,7 +191,7 @@
                     });
 
                     // Append file to DOM
-                    output.find('ul').append($('<li class="file"><a href="#" data-path="' + path + '" data-id="' + id + '">' + file +'</a></li>'));
+                    output.find('ul').append($('<li class="file"><a href="#" data-path="/v1' + path + '" data-id="' + id + '">' + file +'</a></li>'));
 
                     // Add file to the repo object
                     ctx.files.push(file);

@@ -112,7 +112,7 @@ trait ReturnsErrorsTrait
         $xml = new \SimpleXMLElement('<api/>');
         $xml->addChild('status', $error['api']['status']);
         $errorNode = $xml->addChild('error');
-        $errorNode->addChild('code', $error['api']['error']['code']);
+        $errorNode->addChild('code', (string) $error['api']['error']['code']);
         $errorNode->addChild('message', $error['api']['error']['message']);
         $errorNode->addChild('details', $error['api']['error']['details']);
         return $xml->asXML();

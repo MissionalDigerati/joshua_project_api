@@ -61,13 +61,14 @@ class Unreached extends PeopleGroup
      * @access  protected
      */
     protected $fieldsToSelectArray = [
-        'jpupgotd.ROG3', 'jpupgotd.PeopleID3', 'jpupgotd.PeopNameInCountry', 'jpupgotd.ROG2', 'jpupgotd.Continent',
-        'jpupgotd.RegionName', 'jpupgotd.PeopleID1', 'jpupgotd.AffinityBloc', 'jpupgotd.PeopleID2',
-        'jpupgotd.PeopleCluster', 'jpupgotd.PeopNameAcrossCountries', 'jpupgotd.Population', 'jpupgotd.ROL3',
-        'jpupgotd.PrimaryLanguageName', 'jpupgotd.BibleYear', 'jpupgotd.NTYear', 'jpupgotd.PortionsYear',
-        'jpupgotd.JPScale', 'jpupgotd.LeastReached', 'jpupgotd.JF', 'jpupgotd.AudioRecordings', 'jpupgotd.NTOnline',
-        'jpupgotd.RLG3', 'jpupgotd.PrimaryReligion', 'jpupgotd.LRofTheDayMonth', 'jpupgotd.LRofTheDaySet',
-        'jpupgotd.LRofTheDayDay', 'jpupgotd.PhotoAddress', 'jpupgotd.PhotoCredits', 'jpupgotd.PhotoCreditURL',
+        'jpupgotd.PeopleID3ROG3', 'jpupgotd.ROG3', 'jpupgotd.PeopleID3', 'jpupgotd.PeopNameInCountry', 'jpupgotd.ROG2',
+        'jpupgotd.Continent', 'jpupgotd.RegionName', 'jpupgotd.PeopleID1', 'jpupgotd.AffinityBloc',
+        'jpupgotd.PeopleID2', 'jpupgotd.PeopleCluster', 'jpupgotd.PeopNameAcrossCountries', 'jpupgotd.Population',
+        'jpupgotd.ROL3', 'jpupgotd.PrimaryLanguageName', 'jpupgotd.BibleYear', 'jpupgotd.NTYear',
+        'jpupgotd.PortionsYear', 'jpupgotd.JPScale', 'jpupgotd.LeastReached', 'jpupgotd.JF',
+        'jpupgotd.AudioRecordings', 'jpupgotd.NTOnline', 'jpupgotd.RLG3', 'jpupgotd.PrimaryReligion',
+        'jpupgotd.LRofTheDayMonth', 'jpupgotd.LRofTheDaySet', 'jpupgotd.LRofTheDayDay',
+        'jpupgotd.PhotoAddress', 'jpupgotd.PhotoCredits', 'jpupgotd.PhotoCreditURL',
         'jpupgotd.PhotoCreativeCommons', 'jpupgotd.PhotoCopyright', 'jpupgotd.PhotoPermission',
         'jpupgotd.CountOfCountries', 'jpupgotd.Longitude', 'jpupgotd.Latitude', 'jpupgotd.Ctry', 'jpupgotd.ROL3',
         'jpupgotd.PercentAdherents', 'jpupgotd.PercentEvangelical', 'jpupgotd.RegionCode', 'jppeoples.ROP3',
@@ -158,10 +159,10 @@ class Unreached extends PeopleGroup
             'jpupgotd.ROG3',
             $this->countryURLSelect
         ) . " as CountryURL";
-        $this->selectFieldsStatement .= ", " .
-            str_replace('JPScale', 'jpupgotd.JPScale', $this->JPScaleTextSelectStatement) . " as JPScaleText";
-        $this->selectFieldsStatement .= ", " .
-            str_replace('JPScale', 'jpupgotd.JPScale', $this->JPScaleImageURLSelectStatement) . " as JPScaleImageURL";
+        $scaleTextStatement = $this->getScaleTextStatement('jpupgotd.JPScale');
+        $scaleImageStatement = $this->getScaleImageURLStatement('jpupgotd.JPScale');
+        $this->selectFieldsStatement .= ", $scaleTextStatement as JPScaleText";
+        $this->selectFieldsStatement .= ", $scaleImageStatement as JPScaleImageURL";
     }
     /**
      * Find the daily unreached People Group.
