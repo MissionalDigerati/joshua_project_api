@@ -1,5 +1,3 @@
-version: '3'
-
 networks:
   jp_api_v1:
 
