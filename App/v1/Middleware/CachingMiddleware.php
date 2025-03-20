@@ -114,7 +114,7 @@ class CachingMiddleware implements MiddlewareInterface
         }
         $cacheKey = $this->getCacheKey($request);
         $cached = $this->cache->get($cacheKey);
-        if ((!empty($cached)) && ($cached !== false)) {
+        if (($cached !== false) && (!empty($cached))) {
             switch ($format) {
                 case 'json':
                     $contentType = 'application/json; charset=UTF-8';
