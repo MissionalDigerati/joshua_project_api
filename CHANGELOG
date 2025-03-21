@@ -10,7 +10,8 @@ CHANGED JF to HasJesusFilm on all /languages endpoints.
 ADDED Ability to filter by has_jesus_film on the /people_groups index endpoint.
 ADDED Ability to filter by has_audio on the /people_groups index endpoint.
 ADDED utility options on /people_groups index endpoint:
-    - include_profile_text: Do you want to include the profile text. Defaults to 'Y' (HowReach, Obstacles, PrayForChurch, PrayForPG, Summary)
+    - include_profile_text: Do you want to include the profile text? Defaults to 'Y' (HowReach, Obstacles, PrayForChurch, PrayForPG, Summary)
+    - include_resources: Do you want to include the resources? Defaults to 'Y'
 
 Version 1.9.2
 

@@ -1107,6 +1107,37 @@ class PeopleGroupsTest extends TestCase
         }
     }
 
+    public function testIndexShouldAddResourcesByDefault(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            ['api_key' => $this->APIKey, 'limit' => 20],
+            "index_default_resources_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $peopleGroup) {
+            $this->assertTrue(array_key_exists('Resources', $peopleGroup));
+            $this->assertTrue(is_array($peopleGroup['Resources']));
+        }
+    }
+
+    public function testIndexShouldNotAddResourcesWhenRequested(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            ['api_key' => $this->APIKey, 'limit' => 20, 'include_resources' => 'N'],
+            "index_no_resources_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $peopleGroup) {
+            $this->assertFalse(array_key_exists('Resources', $peopleGroup));
+        }
+    }
+
     public function testDailyUnreachedShouldProvideNewFields(): void
     {
         $expectedPop = 265000;
