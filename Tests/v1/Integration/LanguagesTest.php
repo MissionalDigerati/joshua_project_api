@@ -483,7 +483,7 @@ class LanguagesTest extends TestCase
         $this->assertTrue(isJSON($response));
         $decodedResponse = json_decode($response, true);
         foreach ($decodedResponse as $lang) {
-            $this->assertEquals('Y', $lang['JF']);
+            $this->assertEquals('Y', $lang['HasJesusFilm']);
         }
     }
 

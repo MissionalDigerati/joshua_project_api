@@ -65,7 +65,7 @@ class Unreached extends PeopleGroup
         'jpupgotd.Continent', 'jpupgotd.RegionName', 'jpupgotd.PeopleID1', 'jpupgotd.AffinityBloc',
         'jpupgotd.PeopleID2', 'jpupgotd.PeopleCluster', 'jpupgotd.PeopNameAcrossCountries', 'jpupgotd.Population',
         'jpupgotd.ROL3', 'jpupgotd.PrimaryLanguageName', 'jpupgotd.BibleYear', 'jpupgotd.NTYear',
-        'jpupgotd.PortionsYear', 'jpupgotd.JPScale', 'jpupgotd.LeastReached', 'jpupgotd.JF',
+        'jpupgotd.PortionsYear', 'jpupgotd.JPScale', 'jpupgotd.LeastReached', 'jpupgotd.JF AS HasJesusFilm',
         'jpupgotd.AudioRecordings', 'jpupgotd.NTOnline', 'jpupgotd.RLG3', 'jpupgotd.PrimaryReligion',
         'jpupgotd.LRofTheDayMonth', 'jpupgotd.LRofTheDaySet', 'jpupgotd.LRofTheDayDay',
         'jpupgotd.PhotoAddress', 'jpupgotd.PhotoCredits', 'jpupgotd.PhotoCreditURL',

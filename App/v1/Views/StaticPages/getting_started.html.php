@@ -233,7 +233,7 @@
         "PortionsYear": "1893-1929",
         "JPScale": "1",
         "LeastReached": "Y",
-        "JF": "Y",
+        "HasJesusFilm": "Y",
         "AudioRecordings": "Y",
         "NTOnline": "AFRLPF",
         "RLG3": 6,
@@ -340,7 +340,7 @@
             &lt;PortionsYear&gt;1893-1929&lt;/PortionsYear&gt;
             &lt;JPScale&gt;1&lt;/JPScale&gt;
             &lt;LeastReached&gt;Y&lt;/LeastReached&gt;
-            &lt;JF&gt;Y&lt;/JF&gt;
+            &lt;HasJesusFilm&gt;Y&lt;/HasJesusFilm&gt;
             &lt;AudioRecordings&gt;Y&lt;/AudioRecordings&gt;
             &lt;NTOnline&gt;AFRLPF&lt;/NTOnline&gt;
             &lt;RLG3&gt;6&lt;/RLG3&gt;

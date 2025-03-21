@@ -1,6 +1,7 @@
 Version 1.10.0
 
-CHANGED JF on HasJesusFilm on all /people_groups endpoints.
+CHANGED JF to HasJesusFilm on all /people_groups endpoints.
+CHANGED JF to HasJesusFilm on all /languages endpoints.
 ADDED Ability to filter by has_jesus_film on the /people_groups endpoint.
 
 Version 1.9.2

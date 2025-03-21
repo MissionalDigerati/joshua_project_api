@@ -38,7 +38,7 @@
                     <td>The main concentration of this language.</td>
                 </tr>
                 <tr>
-                    <td>JF</td>
+                    <td>HasJesusFilm</td>
                     <td>Is the Jesus Film available in this language?</td>
                 </tr>
                 <tr>
