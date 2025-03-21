@@ -1,3 +1,7 @@
+Version 1.9.2
+
+REMOVED caching on the /people_groups/daily_unreached endpoint since it gets called daily.
+
 Version 1.9.1
 
 ADDED a middleware for logging the time it takes to make an API request.
