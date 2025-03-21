@@ -127,7 +127,10 @@ class CachingMiddleware implements MiddlewareInterface
                     break;
             }
             $response = new Response();
+            $content = json_decode($cached, true);
+            $status = $content['api']['error']['code'] ?? 200;
             $response->getBody()->write($cached);
+            $response = $response->withStatus($status);
             return $response->withHeader('Content-Type', $contentType);
         }
         /**
