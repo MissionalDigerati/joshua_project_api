@@ -45,9 +45,7 @@ return function(App $app) {
      */
     $pathSettings = [
         'passthrough' => [
-            '/v\d+/docs/column_descriptions',
-            '/v\d+/people_groups/daily_unreached.json',
-            '/v\d+/people_groups/daily_unreached.xml'
+            '/v\d+/docs/column_descriptions'
         ],
         'paths'  =>  [
             '/v\d+/continents',
@@ -60,6 +58,8 @@ return function(App $app) {
         ]
     ];
     $cacheSettings = $pathSettings;
+    $cacheSettings['passthrough'][] = '/v\d+/people_groups/daily_unreached.json';
+    $cacheSettings['passthrough'][] = '/v\d+/people_groups/daily_unreached.xml';
     $useCaching = ((isset($_ENV['USE_CACHE'])) && ($_ENV['USE_CACHE'] === 'true'));
     $cacheSettings['host'] = (isset($_ENV['CACHE_HOST'])) ? $_ENV['CACHE_HOST'] : '127.0.0.1';
     $cacheSettings['port'] = (isset($_ENV['CACHE_PORT'])) ? $_ENV['CACHE_PORT'] : '11211';
