@@ -1037,6 +1037,22 @@ class PeopleGroupsTest extends TestCase
         $this->assertFalse(array_key_exists('ROL4', $decoded[0]));
     }
 
+    public function testIndexShouldFilterByHasJesusFilm(): void
+    {
+        $expected = 'N';
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array('api_key' => $this->APIKey, 'has_jesus_film' => $expected),
+            "filter_by_has_jesus_film_on_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $peopleGroup) {
+            $this->assertEquals($expected, $peopleGroup['HasJesusFilm']);
+        }
+    }
+
     public function testDailyUnreachedShouldProvideNewFields(): void
     {
         $expectedPop = 265000;
@@ -1315,4 +1331,5 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(array_key_exists('PrayForPG', $pg));
         }
     }
+
 }

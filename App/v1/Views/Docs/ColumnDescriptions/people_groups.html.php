@@ -76,6 +76,10 @@
                     <td>Global Status of Evangelical Christianity, see https://joshuaproject.net/definitions.php</td>
                 </tr>
                 <tr>
+                    <td>HasJesusFilm</td>
+                    <td>Does the people group have access to the Jesus Film?</td>
+                </tr>
+                <tr>
                     <td>HowReach</td>
                     <td>Some suggestions on how to reach this people group with the Gospel.</td>
                 </tr>
@@ -86,10 +90,6 @@
                 <tr>
                     <td>ISO3</td>
                     <td>International Standards Organization country code</td>
-                </tr>
-                <tr>
-                    <td>JF</td>
-                    <td>Does the Jesus film exists in this language?</td>
                 </tr>
                 <tr>
                     <td>JPScale</td>

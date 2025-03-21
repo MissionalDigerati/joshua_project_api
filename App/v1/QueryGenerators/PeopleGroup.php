@@ -66,7 +66,7 @@ class PeopleGroup extends QueryGenerator
         'PeopNameAcrossCountries', 'Population', 'Category', 'ROL3', 'PrimaryLanguageName',
         'PrimaryLanguageDialect', 'NumberLanguagesSpoken', 'OfficialLang', 'SpeakNationalLang',
         'BibleStatus', 'BibleYear', 'NTYear', 'PortionsYear', 'TranslationNeedQuestionable', 'JPScale',
-        'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedPC', 'LeastReachedPGAC', 'GSEC', 'JF',
+        'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedPC', 'LeastReachedPGAC', 'GSEC',
         'AudioRecordings', 'NTOnline', 'RLG3', 'RLG3PC', 'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC',
         'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision', 'PCIslam', 'PCNonReligious', 'PCUnknown', 'SecurityLevel',
         'LRTop100', 'PhotoAddress', 'PhotoCredits', 'PhotoCreditURL', 'PhotoCreativeCommons', 'PhotoCopyright',
@@ -74,7 +74,7 @@ class PeopleGroup extends QueryGenerator
         'Ctry', 'IndigenousCode', 'ROL3', 'PercentAdherents', 'PercentChristianPC', 'NaturalName',
         'NaturalPronunciation', 'PercentChristianPGAC', 'PercentEvangelical', 'PercentEvangelicalPC',
         'PercentEvangelicalPGAC', 'PCBuddhism', 'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'RegionCode',
-        'PopulationPGAC', 'Frontier', 'MapAddress',
+        'PopulationPGAC', 'Frontier', 'MapAddress', 'JF as HasJesusFilm',
         'COALESCE(PhotoCCVersionText, "") AS PhotoCCVersionText',
         'COALESCE(PhotoCCVersionURL, "") AS PhotoCCVersionURL',
         'COALESCE(MapCredits, "") AS MapCredits', 'COALESCE(MapCreditURL, "") AS MapCreditURL',
@@ -269,6 +269,18 @@ class PeopleGroup extends QueryGenerator
                 $where .= " AND ";
             }
             $where .= $this->generateInStatementFromPipedString($this->providedParams['countries'], 'ROG3');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('has_jesus_film')) {
+            $this->validator->stringLength($this->providedParams['has_jesus_film'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['has_jesus_film'],
+                'JF',
+                'has_jesus_film'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('indigenous')) {

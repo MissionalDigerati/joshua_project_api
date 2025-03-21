@@ -1,3 +1,8 @@
+Version 1.10.0
+
+CHANGED JF on HasJesusFilm on all /people_groups endpoints.
+ADDED Ability to filter by has_jesus_film on the /people_groups endpoint.
+
 Version 1.9.2
 
 REMOVED caching on the /people_groups/daily_unreached endpoint since it gets called daily.
