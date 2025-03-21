@@ -1,3 +1,8 @@
+Version 1.9.1
+
+ADDED a middleware for logging the time it takes to make an API request.
+FIXED the caching middleware was sending the wrong HTTP status when it was an error.
+
 Version 1.9.0
 
 ADDED PeopleID3ROG3 field to all /people_groups endpoints.
