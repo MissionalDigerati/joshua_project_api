@@ -232,3 +232,24 @@ function generateRandomKey($length = 10)
     $usec = preg_replace('[\.]', '', $usec);
     return substr(md5(date('ymd') . $usec . $sec), 0, $length);
 }
+/**
+ * Checks if the supplied parameter exists. If it doesn't, it returns the default value. If it does, it returns the value as a boolean.
+ * Expects the value to be 'y' or 'n'.
+ *
+ * @param array $parameters The array of parameters to check.
+ * @param string $key   The key of the array to check.
+ * @param bool $default The default value to return if the key does not exist.
+ * 
+ * @return bool The value of the key as a boolean.
+ */
+function suppliedParamAsBoolean(array $parameters, string $key, bool $default): bool
+{
+    if (!array_key_exists($key, $parameters)) {
+        return $default;
+    }
+    $value = strtoupper($parameters[$key]);
+    if (!in_array($value, ['Y', 'N'])) {
+        return $default;
+    }
+    return ($value === 'Y') ? true : false;
+}

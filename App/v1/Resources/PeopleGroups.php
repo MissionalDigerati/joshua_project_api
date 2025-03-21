@@ -425,6 +425,16 @@ $app->get(
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
+ *         name="include_profile_text",
+ *         description="A boolean (represented as a string Y or N) that states whether you want to include the people group's profile text. (HowReach, Obstacles, PrayForChurch, PrayForPG, Summary) By setting to false, it could speed up the request.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(
+ *             type="string",
+ *             default="Y"
+ *        )
+ *     ),
+ *     @OA\Parameter(
  *         name="indigenous",
  *         description="A boolean (represented as a string Y or N) that states whether you want people groups that are indigenous.",
  *         in="query",
@@ -711,33 +721,36 @@ $app->get(
          * @return void
          * @author Johnathan Pulos
          */
+        $includeProfileText = suppliedParamAsBoolean($params, 'include_profile_text', true);
         foreach ($data as $key => $peopleGroupData) {
-            try {
-                $profileText = new ProfileText(
-                    [
-                        'id' => $peopleGroupData['PeopleID3'],
-                        'country' => $peopleGroupData['ROG3'],
-                        'format'    => 'M'
-                    ]
-                );
-                $profileText->findAllByIdAndCountry();
-                $statement = $this->get('db')->prepare($profileText->preparedStatement);
-                $statement->execute($profileText->preparedVariables);
-                $profileData = $statement->fetch(PDO::FETCH_ASSOC);
-                if (!$profileData) {
-                    throw new Exception('No profile data available.');
+            if ($includeProfileText) {
+                try {
+                    $profileText = new ProfileText(
+                        [
+                            'id' => $peopleGroupData['PeopleID3'],
+                            'country' => $peopleGroupData['ROG3'],
+                            'format'    => 'M'
+                        ]
+                    );
+                    $profileText->findAllByIdAndCountry();
+                    $statement = $this->get('db')->prepare($profileText->preparedStatement);
+                    $statement->execute($profileText->preparedVariables);
+                    $profileData = $statement->fetch(PDO::FETCH_ASSOC);
+                    if (!$profileData) {
+                        throw new Exception('No profile data available.');
+                    }
+                    $data[$key]['Summary'] = StringHelper::nullToEmpty($profileData['Summary']);
+                    $data[$key]['Obstacles'] = StringHelper::nullToEmpty($profileData['Obstacles']);
+                    $data[$key]['HowReach'] = StringHelper::nullToEmpty($profileData['HowReach']);
+                    $data[$key]['PrayForChurch'] = StringHelper::nullToEmpty($profileData['PrayForChurch']);
+                    $data[$key]['PrayForPG'] = StringHelper::nullToEmpty($profileData['PrayForPG']);
+                } catch (Exception $e) {
+                    $data[$key]['Summary'] = '';
+                    $data[$key]['Obstacles'] = '';
+                    $data[$key]['HowReach'] = '';
+                    $data[$key]['PrayForChurch'] = '';
+                    $data[$key]['PrayForPG'] = '';
                 }
-                $data[$key]['Summary'] = StringHelper::nullToEmpty($profileData['Summary']);
-                $data[$key]['Obstacles'] = StringHelper::nullToEmpty($profileData['Obstacles']);
-                $data[$key]['HowReach'] = StringHelper::nullToEmpty($profileData['HowReach']);
-                $data[$key]['PrayForChurch'] = StringHelper::nullToEmpty($profileData['PrayForChurch']);
-                $data[$key]['PrayForPG'] = StringHelper::nullToEmpty($profileData['PrayForPG']);
-            } catch (Exception $e) {
-                $data[$key]['Summary'] = '';
-                $data[$key]['Obstacles'] = '';
-                $data[$key]['HowReach'] = '';
-                $data[$key]['PrayForChurch'] = '';
-                $data[$key]['PrayForPG'] = '';
             }
             try {
                 $resource = new Resource(['id' => $peopleGroupData['ROL3']]);

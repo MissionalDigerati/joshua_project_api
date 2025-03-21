@@ -1042,7 +1042,7 @@ class PeopleGroupsTest extends TestCase
         $expected = 'N';
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'has_jesus_film' => $expected),
+            ['api_key' => $this->APIKey, 'has_jesus_film' => $expected],
             "filter_by_has_jesus_film_on_index_json"
         );
         $decoded = json_decode($response, true);
@@ -1058,7 +1058,7 @@ class PeopleGroupsTest extends TestCase
         $expected = 'N';
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'has_audio' => $expected),
+            ['api_key' => $this->APIKey, 'has_audio' => $expected],
             "filter_by_has_audio_recordings_on_index_json"
         );
         $decoded = json_decode($response, true);
@@ -1066,6 +1066,44 @@ class PeopleGroupsTest extends TestCase
         $this->assertFalse(empty($decoded));
         foreach ($decoded as $peopleGroup) {
             $this->assertEquals($expected, $peopleGroup['HasAudioRecordings']);
+        }
+    }
+
+    public function testIndexShouldAddProfileTextByDefault(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            ['api_key' => $this->APIKey, 'limit' => 20],
+            "index_default_profile_text_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $peopleGroup) {
+            $this->assertTrue(array_key_exists('Summary', $peopleGroup));
+            $this->assertTrue(array_key_exists('Obstacles', $peopleGroup));
+            $this->assertTrue(array_key_exists('HowReach', $peopleGroup));
+            $this->assertTrue(array_key_exists('PrayForChurch', $peopleGroup));
+            $this->assertTrue(array_key_exists('PrayForPG', $peopleGroup));
+        }
+    }
+
+    public function testIndexShouldNotAddProfileTextWhenRequested(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            ['api_key' => $this->APIKey, 'limit' => 20, 'include_profile_text' => 'N'],
+            "index_no_profile_text_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $peopleGroup) { 
+            $this->assertFalse(array_key_exists('Summary', $peopleGroup));
+            $this->assertFalse(array_key_exists('Obstacles', $peopleGroup));
+            $this->assertFalse(array_key_exists('HowReach', $peopleGroup));
+            $this->assertFalse(array_key_exists('PrayForChurch', $peopleGroup));
+            $this->assertFalse(array_key_exists('PrayForPG', $peopleGroup));
         }
     }
 

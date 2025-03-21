@@ -27,7 +27,7 @@ namespace Tests\v1\Unit;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test the common functions file
+ * Test the common functions file. This is included in the bootstrap file.
  *
  * @author Johnathan Pulos
  */
@@ -241,5 +241,33 @@ class CommonFunctionsTest extends TestCase
     {
         $result = generateRandomKey(6);
         $this->assertTrue(strlen($result) == 6);
+    }
+
+    public function testSuppliedParamAsBooleanShouldReturnTrue(): void
+    {
+        $data = ['include_audio' => 'Y'];
+        $actual = suppliedParamAsBoolean($data, 'include_audio', false);
+        $this->assertTrue($actual);
+    }
+
+    public function testSuppliedParamAsBooleanShouldReturnFalse(): void
+    {
+        $data = ['include_audio' => 'N'];
+        $actual = suppliedParamAsBoolean($data, 'include_audio', true);
+        $this->assertFalse($actual);
+    }
+
+    public function testSuppliedParamAsBooleanShouldReturnDefault(): void
+    {
+        $data = ['include_audio' => ''];
+        $actual = suppliedParamAsBoolean($data, 'include_audio', true);
+        $this->assertTrue($actual);
+    }
+
+    public function testSuppliedParamAsBooleanShouldReturnDefaultIfNotInArray(): void
+    {
+        $data = ['include_audio' => ''];
+        $actual = suppliedParamAsBoolean($data, 'include_video', true);
+        $this->assertTrue($actual);
     }
 }
