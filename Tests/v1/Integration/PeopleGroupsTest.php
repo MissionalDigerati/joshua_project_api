@@ -1053,6 +1053,22 @@ class PeopleGroupsTest extends TestCase
         }
     }
 
+    public function testIndexShouldFilterByHasAudioRecordings(): void
+    {
+        $expected = 'N';
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            array('api_key' => $this->APIKey, 'has_audio' => $expected),
+            "filter_by_has_audio_recordings_on_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $peopleGroup) {
+            $this->assertEquals($expected, $peopleGroup['HasAudioRecordings']);
+        }
+    }
+
     public function testDailyUnreachedShouldProvideNewFields(): void
     {
         $expectedPop = 265000;

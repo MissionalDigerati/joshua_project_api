@@ -411,6 +411,13 @@ $app->get(
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
+ *         name="has_audio",
+ *         description="A boolean (represented as a string Y or N) that states whether you want people groups that have access to an audio recorded Bible.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
  *         name="has_jesus_film",
  *         description="A boolean (represented as a string Y or N) that states whether you want people groups that have access to the Jesus Film.",
  *         in="query",

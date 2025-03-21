@@ -768,6 +768,20 @@ class PeopleGroupTest extends TestCase
         }
     }
 
+    public function testFindAllWithFiltersShouldFilterByHasAudioRecordings(): void
+    {
+        $expected = 'Y';
+        $peopleGroup = new PeopleGroup(['has_audio' => $expected]);
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals($expected, $peopleGroup['HasAudioRecordings']);
+        }
+    }
+
     public function testFindByIdAndCountryShouldAddPeopleID3Rog3Field(): void
     {
         $params = array('id' => 11722, 'country' => 'AE');
