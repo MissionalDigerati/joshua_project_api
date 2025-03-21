@@ -843,7 +843,17 @@
                     {
                         "name": "include_profile_text",
                         "in": "query",
-                        "description": "A boolean (represented as a string Y or N) that states whether you want to include the people group's profile text. (HowReach, Obstacles, PrayForChurch, PrayForPG, Summary) By setting to false, it could speed up the request.",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want to include the people group's profile text. (HowReach, Obstacles, PrayForChurch, PrayForPG, Summary) By setting to 'N', it could speed up the request.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "Y"
+                        }
+                    },
+                    {
+                        "name": "include_resources",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want to include the people group's resources. By setting to 'N', it could speed up the request.",
                         "required": false,
                         "schema": {
                             "type": "string",
