@@ -36,11 +36,10 @@ use Psr\Http\Message\ResponseInterface;
  */
 class RequestTimeLoggerMiddleware implements MiddlewareInterface
 {
-
     /**
      * The file where request times are logged
      *
-     * @var string 
+     * @var string
      */
     private $logFile;
 
