@@ -18,7 +18,7 @@
         <table class='table table-hover table-bordered'>
             <tbody>
                 <tr>
-                    <td>AudioRecordings</td>
+                    <td>HasAudioRecordings</td>
                     <td>Does this language have access to an audio recorded Bible?</td>
                 </tr>
                 <tr>

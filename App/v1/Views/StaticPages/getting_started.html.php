@@ -234,7 +234,7 @@
         "JPScale": "1",
         "LeastReached": "Y",
         "HasJesusFilm": "Y",
-        "AudioRecordings": "Y",
+        "HasAudioRecordings": "Y",
         "NTOnline": "AFRLPF",
         "RLG3": 6,
         "PrimaryReligion": "Islam",
@@ -341,7 +341,7 @@
             &lt;JPScale&gt;1&lt;/JPScale&gt;
             &lt;LeastReached&gt;Y&lt;/LeastReached&gt;
             &lt;HasJesusFilm&gt;Y&lt;/HasJesusFilm&gt;
-            &lt;AudioRecordings&gt;Y&lt;/AudioRecordings&gt;
+            &lt;HasAudioRecordings&gt;Y&lt;/HasAudioRecordings&gt;
             &lt;NTOnline&gt;AFRLPF&lt;/NTOnline&gt;
             &lt;RLG3&gt;6&lt;/RLG3&gt;
             &lt;PrimaryReligion&gt;Islam&lt;/PrimaryReligion&gt;

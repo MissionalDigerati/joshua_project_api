@@ -23,7 +23,7 @@
                     <td>Affinity Bloc</td>
                 </tr>
                 <tr>
-                    <td>AudioRecordings</td>
+                    <td>HasAudioRecordings</td>
                     <td>Gospel audio recordings exist in this language?</td>
                 </tr>
                 <tr>

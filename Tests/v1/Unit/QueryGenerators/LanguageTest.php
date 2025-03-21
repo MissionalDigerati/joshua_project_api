@@ -173,7 +173,7 @@ class LanguageTest extends TestCase
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
-            $this->assertEquals('N', $lang['AudioRecordings']);
+            $this->assertEquals('N', $lang['HasAudioRecordings']);
         }
     }
 

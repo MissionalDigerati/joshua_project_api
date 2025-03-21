@@ -1,5 +1,7 @@
 Version 1.10.0
 
+CHANGED AudioRecordings to HasAudioRecordings on all /people_groups endpoints.
+CHANGED AudioRecordings to HasAudioRecordings on all /languages endpoints.
 CHANGED JF to HasJesusFilm on all /people_groups endpoints.
 CHANGED JF to HasJesusFilm on all /languages endpoints.
 ADDED Ability to filter by has_jesus_film on the /people_groups endpoint.
