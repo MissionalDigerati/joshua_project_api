@@ -66,20 +66,22 @@ class PeopleGroup extends QueryGenerator
         'PeopNameAcrossCountries', 'Population', 'Category', 'ROL3', 'PrimaryLanguageName',
         'PrimaryLanguageDialect', 'NumberLanguagesSpoken', 'OfficialLang', 'SpeakNationalLang',
         'BibleStatus', 'BibleYear', 'NTYear', 'PortionsYear', 'TranslationNeedQuestionable', 'JPScale',
-        'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedPC', 'LeastReachedPGAC', 'GSEC', 'JF',
-        'AudioRecordings', 'NTOnline', 'RLG3', 'RLG3PC', 'RLG3PGAC', 'PrimaryReligion', 'PrimaryReligionPC',
-        'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision', 'PCIslam', 'PCNonReligious', 'PCUnknown', 'SecurityLevel',
-        'LRTop100', 'PhotoAddress', 'PhotoCredits', 'PhotoCreditURL', 'PhotoCreativeCommons', 'PhotoCopyright',
-        'PhotoPermission', 'ProfileTextExists', 'CountOfCountries', 'CountOfProvinces', 'Longitude', 'Latitude',
-        'Ctry', 'IndigenousCode', 'ROL3', 'PercentAdherents', 'PercentChristianPC', 'NaturalName',
-        'NaturalPronunciation', 'PercentChristianPGAC', 'PercentEvangelical', 'PercentEvangelicalPC',
-        'PercentEvangelicalPGAC', 'PCBuddhism', 'PCEthnicReligions', 'PCHinduism', 'PCOtherSmall', 'RegionCode',
-        'PopulationPGAC', 'Frontier', 'MapAddress',
+        'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedPC', 'LeastReachedPGAC', 'GSEC',
+        'AudioRecordings as HasAudioRecordings', 'NTOnline', 'RLG3', 'RLG3PC', 'RLG3PGAC', 'PrimaryReligion',
+        'PrimaryReligionPC', 'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision', 'PCIslam', 'PCNonReligious',
+        'PCUnknown', 'SecurityLevel', 'LRTop100', 'PhotoAddress', 'PhotoCredits', 'PhotoCreditURL',
+        'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission', 'ProfileTextExists', 'CountOfCountries',
+        'CountOfProvinces', 'Longitude', 'Latitude', 'Ctry', 'IndigenousCode', 'ROL3', 'PercentAdherents',
+        'PercentChristianPC', 'NaturalName', 'NaturalPronunciation', 'PercentChristianPGAC', 'PercentEvangelical',
+        'PercentEvangelicalPC', 'PercentEvangelicalPGAC', 'PCBuddhism', 'PCEthnicReligions', 'PCHinduism',
+        'PCOtherSmall', 'RegionCode', 'PopulationPGAC', 'Frontier', 'MapAddress', 'JF as HasJesusFilm',
         'COALESCE(PhotoCCVersionText, "") AS PhotoCCVersionText',
         'COALESCE(PhotoCCVersionURL, "") AS PhotoCCVersionURL',
         'COALESCE(MapCredits, "") AS MapCredits', 'COALESCE(MapCreditURL, "") AS MapCreditURL',
         'COALESCE(MapCopyright, "") AS MapCopyright', 'COALESCE(MapCCVersionText, "") AS MapCCVersionText',
-        'COALESCE(MapCCVersionURL, "") AS MapCCVersionURL'
+        'COALESCE(MapCCVersionURL, "") AS MapCCVersionURL',
+        // @deprecated These fields have been replaced by the above fields.
+        'JF', 'AudioRecordings',
     ];
     /**
      * The database table to pull the data from.
@@ -269,6 +271,30 @@ class PeopleGroup extends QueryGenerator
                 $where .= " AND ";
             }
             $where .= $this->generateInStatementFromPipedString($this->providedParams['countries'], 'ROG3');
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('has_audio')) {
+            $this->validator->stringLength($this->providedParams['has_audio'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['has_audio'],
+                'AudioRecordings',
+                'has_audio'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('has_jesus_film')) {
+            $this->validator->stringLength($this->providedParams['has_jesus_film'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['has_jesus_film'],
+                'JF',
+                'has_jesus_film'
+            );
             $appendAndOnWhere = true;
         }
         if ($this->paramExists('indigenous')) {

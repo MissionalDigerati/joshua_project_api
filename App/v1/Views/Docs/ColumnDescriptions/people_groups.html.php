@@ -24,6 +24,10 @@
                 </tr>
                 <tr>
                     <td>AudioRecordings</td>
+                    <td><strong>DEPRECATED</strong> You can use HasAudioRecordings field. Will be removed June 16, 2025.</td>
+                </tr>
+                <tr>
+                    <td>HasAudioRecordings</td>
                     <td>Gospel audio recordings exist in this language?</td>
                 </tr>
                 <tr>
@@ -76,6 +80,10 @@
                     <td>Global Status of Evangelical Christianity, see https://joshuaproject.net/definitions.php</td>
                 </tr>
                 <tr>
+                    <td>HasJesusFilm</td>
+                    <td>Does the people group have access to the Jesus Film?</td>
+                </tr>
+                <tr>
                     <td>HowReach</td>
                     <td>Some suggestions on how to reach this people group with the Gospel.</td>
                 </tr>
@@ -89,7 +97,7 @@
                 </tr>
                 <tr>
                     <td>JF</td>
-                    <td>Does the Jesus film exists in this language?</td>
+                    <td><strong>DEPRECATED</strong> You can use HasJesusFilm field. Will be removed June 16, 2025.</td>
                 </tr>
                 <tr>
                     <td>JPScale</td>
