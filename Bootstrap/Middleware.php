@@ -76,8 +76,10 @@ return function(App $app) {
         '/v1/regions',
         '/v1/totals',
     ];
-    $app->add(new RequestTimeLoggerMiddleware($logFile, $loggedPaths));
-
+    $logRequestTimes = ((isset($_ENV['LOG_REQUEST_TIMES'])) && ($_ENV['LOG_REQUEST_TIMES'] === 'true'));
+    if ($logRequestTimes) {
+        $app->add(new RequestTimeLoggerMiddleware($logFile, $loggedPaths));
+    }
     $analyticsSettings = $pathSettings;
     $isTracking = ((isset($_ENV['GA_TRACK_REQUESTS'])) && ($_ENV['GA_TRACK_REQUESTS'] === 'true'));
     $analyticsSettings['measurement_id'] = (isset($_ENV['GA_MEASUREMENT_ID'])) ? $_ENV['GA_MEASUREMENT_ID'] : '';
