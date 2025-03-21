@@ -44,7 +44,11 @@ return function(App $app) {
      * IMPORTANT: Last one added is first executed.
      */
     $pathSettings = [
-        'passthrough' => ['/v\d+/docs/column_descriptions'],
+        'passthrough' => [
+            '/v\d+/docs/column_descriptions',
+            '/v\d+/people_groups/daily_unreached.json',
+            '/v\d+/people_groups/daily_unreached.xml'
+        ],
         'paths'  =>  [
             '/v\d+/continents',
             '/v\d+/countries',
