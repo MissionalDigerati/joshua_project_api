@@ -1,5 +1,8 @@
 Version 1.10.0
 
+DEPRECATION WARNING:  These fields (AudioRecordings, JF) will be removed June 16, 2025. Please transition your
+code to use the new fields. (HasJesusFilm, HasAudioRecordings)
+
 CHANGED AudioRecordings to HasAudioRecordings on all /people_groups endpoints.
 CHANGED AudioRecordings to HasAudioRecordings on all /languages endpoints.
 CHANGED JF to HasJesusFilm on all /people_groups endpoints.

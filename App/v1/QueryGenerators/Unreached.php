@@ -89,7 +89,9 @@ class Unreached extends PeopleGroup
         'COALESCE(jppeoples.MapCCVersionText, "") AS MapCCVersionText',
         'COALESCE(jppeoples.MapCCVersionURL, "") AS MapCCVersionURL',
         'COALESCE(jppeoples.PhotoCCVersionText, "") AS PhotoCCVersionText',
-        'COALESCE(jppeoples.PhotoCCVersionURL, "") AS PhotoCCVersionURL'
+        'COALESCE(jppeoples.PhotoCCVersionURL, "") AS PhotoCCVersionURL',
+        // @deprecated These fields have been replaced by the above fields.
+        'jpupgotd.JF', 'jpupgotd.AudioRecordings',
     ];
     /**
      * The database table to pull the data from.

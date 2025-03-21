@@ -65,7 +65,9 @@ class Language extends QueryGenerator
         'GRN_URL', 'TranslationNeedQuestionable', 'BibleYear', 'NTYear', 'PortionsYear',
         'PercentAdherents', 'PercentEvangelical', 'JF AS HasJesusFilm', 'JF_URL',
         'AudioRecordings AS HasAudioRecordings', 'JPScale', 'LeastReached', 'RLG3',
-        'PrimaryReligion', 'FCBH_URL', 'NbrPGICs', 'NbrCountries'
+        'PrimaryReligion', 'FCBH_URL', 'NbrPGICs', 'NbrCountries',
+        // @deprecated These fields have been replaced by the above fields.
+        'JF', 'AudioRecordings',
     ];
     /**
      * The Database table to pull the data from.

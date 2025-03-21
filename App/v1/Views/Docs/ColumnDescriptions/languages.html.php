@@ -18,8 +18,8 @@
         <table class='table table-hover table-bordered'>
             <tbody>
                 <tr>
-                    <td>HasAudioRecordings</td>
-                    <td>Does this language have access to an audio recorded Bible?</td>
+                    <td>AudioRecordings</td>
+                    <td><strong>DEPRECATED</strong> You can use HasAudioRecordings field. Will be removed June 16, 2025.</td>
                 </tr>
                 <tr>
                     <td>BibleStatus</td>
@@ -34,12 +34,20 @@
                     <td>Global Recording Network's URL for resources in this language.</td>
                 </tr>
                 <tr>
-                    <td>HubCountry</td>
-                    <td>The main concentration of this language.</td>
+                    <td>HasAudioRecordings</td>
+                    <td>Does this language have access to an audio recorded Bible?</td>
                 </tr>
                 <tr>
                     <td>HasJesusFilm</td>
                     <td>Is the Jesus Film available in this language?</td>
+                </tr>
+                <tr>
+                    <td>HubCountry</td>
+                    <td>The main concentration of this language.</td>
+                </tr>
+                <tr>
+                    <td>JF</td>
+                    <td><strong>DEPRECATED</strong> You can use HasJesusFilm field. Will be removed June 16, 2025.</td>
                 </tr>
                 <tr>
                     <td>JF_URL</td>

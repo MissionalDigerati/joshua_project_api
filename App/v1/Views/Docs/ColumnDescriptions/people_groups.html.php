@@ -23,6 +23,10 @@
                     <td>Affinity Bloc</td>
                 </tr>
                 <tr>
+                    <td>AudioRecordings</td>
+                    <td><strong>DEPRECATED</strong> You can use HasAudioRecordings field. Will be removed June 16, 2025.</td>
+                </tr>
+                <tr>
                     <td>HasAudioRecordings</td>
                     <td>Gospel audio recordings exist in this language?</td>
                 </tr>
@@ -90,6 +94,10 @@
                 <tr>
                     <td>ISO3</td>
                     <td>International Standards Organization country code</td>
+                </tr>
+                <tr>
+                    <td>JF</td>
+                    <td><strong>DEPRECATED</strong> You can use HasJesusFilm field. Will be removed June 16, 2025.</td>
                 </tr>
                 <tr>
                     <td>JPScale</td>

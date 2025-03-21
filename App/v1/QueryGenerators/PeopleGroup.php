@@ -79,7 +79,9 @@ class PeopleGroup extends QueryGenerator
         'COALESCE(PhotoCCVersionURL, "") AS PhotoCCVersionURL',
         'COALESCE(MapCredits, "") AS MapCredits', 'COALESCE(MapCreditURL, "") AS MapCreditURL',
         'COALESCE(MapCopyright, "") AS MapCopyright', 'COALESCE(MapCCVersionText, "") AS MapCCVersionText',
-        'COALESCE(MapCCVersionURL, "") AS MapCCVersionURL'
+        'COALESCE(MapCCVersionURL, "") AS MapCCVersionURL',
+        // @deprecated These fields have been replaced by the above fields.
+        'JF', 'AudioRecordings',
     ];
     /**
      * The database table to pull the data from.
