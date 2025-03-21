@@ -65,9 +65,9 @@ class Unreached extends PeopleGroup
         'jpupgotd.Continent', 'jpupgotd.RegionName', 'jpupgotd.PeopleID1', 'jpupgotd.AffinityBloc',
         'jpupgotd.PeopleID2', 'jpupgotd.PeopleCluster', 'jpupgotd.PeopNameAcrossCountries', 'jpupgotd.Population',
         'jpupgotd.ROL3', 'jpupgotd.PrimaryLanguageName', 'jpupgotd.BibleYear', 'jpupgotd.NTYear',
-        'jpupgotd.PortionsYear', 'jpupgotd.JPScale', 'jpupgotd.LeastReached', 'jpupgotd.JF',
-        'jpupgotd.AudioRecordings', 'jpupgotd.NTOnline', 'jpupgotd.RLG3', 'jpupgotd.PrimaryReligion',
-        'jpupgotd.LRofTheDayMonth', 'jpupgotd.LRofTheDaySet', 'jpupgotd.LRofTheDayDay',
+        'jpupgotd.PortionsYear', 'jpupgotd.JPScale', 'jpupgotd.LeastReached', 'jpupgotd.JF AS HasJesusFilm',
+        'jpupgotd.AudioRecordings AS HasAudioRecordings', 'jpupgotd.NTOnline', 'jpupgotd.RLG3',
+        'jpupgotd.PrimaryReligion', 'jpupgotd.LRofTheDayMonth', 'jpupgotd.LRofTheDaySet', 'jpupgotd.LRofTheDayDay',
         'jpupgotd.PhotoAddress', 'jpupgotd.PhotoCredits', 'jpupgotd.PhotoCreditURL',
         'jpupgotd.PhotoCreativeCommons', 'jpupgotd.PhotoCopyright', 'jpupgotd.PhotoPermission',
         'jpupgotd.CountOfCountries', 'jpupgotd.Longitude', 'jpupgotd.Latitude', 'jpupgotd.Ctry', 'jpupgotd.ROL3',
@@ -89,7 +89,9 @@ class Unreached extends PeopleGroup
         'COALESCE(jppeoples.MapCCVersionText, "") AS MapCCVersionText',
         'COALESCE(jppeoples.MapCCVersionURL, "") AS MapCCVersionURL',
         'COALESCE(jppeoples.PhotoCCVersionText, "") AS PhotoCCVersionText',
-        'COALESCE(jppeoples.PhotoCCVersionURL, "") AS PhotoCCVersionURL'
+        'COALESCE(jppeoples.PhotoCCVersionURL, "") AS PhotoCCVersionURL',
+        // @deprecated These fields have been replaced by the above fields.
+        'jpupgotd.JF', 'jpupgotd.AudioRecordings',
     ];
     /**
      * The database table to pull the data from.
