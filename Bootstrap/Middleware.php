@@ -26,6 +26,7 @@ use Middleware\GoogleAnalyticsMiddleware;
 use Tuupola\Middleware\HttpBasicAuthentication;
 use Middleware\APIAuthMiddleware;
 use Middleware\APIStandardsMiddleware;
+use Middleware\RequestTimeLoggerMiddleware;
 use Slim\Middleware\MethodOverrideMiddleware;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -60,6 +61,22 @@ return function(App $app) {
     $cacheSettings['port'] = (isset($_ENV['CACHE_PORT'])) ? $_ENV['CACHE_PORT'] : '11211';
     $cacheSettings['expire_cache'] = (isset($_ENV['CACHE_SECONDS'])) ? intval($_ENV['CACHE_SECONDS']) : 86400;
     $app->add(new CachingMiddleware($useCaching, $cacheSettings));
+
+    /**
+     * Add the RequestTimeLoggerMiddleware second so it wraps the entire process. We also
+     * want to log cached requests, so that is why we are adding it here.
+     */
+    $logFile = __DIR__ . '/../Logs/request.log';
+    $loggedPaths = [
+        '/v1/continents',
+        '/v1/countries',
+        '/v1/languages',
+        '/v1/people_groups',
+        '/v1/people_groups_global',
+        '/v1/regions',
+        '/v1/totals',
+    ];
+    $app->add(new RequestTimeLoggerMiddleware($logFile, $loggedPaths));
 
     $analyticsSettings = $pathSettings;
     $isTracking = ((isset($_ENV['GA_TRACK_REQUESTS'])) && ($_ENV['GA_TRACK_REQUESTS'] === 'true'));
