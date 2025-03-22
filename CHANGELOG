@@ -1,3 +1,7 @@
+Version 1.11.0
+
+ADDED sort_field and sort_direction to the /countries index endpoint to allow sorting by specific column and direction.
+
 Version 1.10.0
 
 DEPRECATION WARNING:  These fields (AudioRecordings, JF) will be removed June 16, 2025. Please transition your

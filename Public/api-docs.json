@@ -348,6 +348,24 @@
                         }
                     },
                     {
+                        "name": "sort_field",
+                        "in": "query",
+                        "description": "The field to sort by.  You can sort by any field <a href='/v1/docs/column_descriptions/countries' target='_blank'>listed here</a>. <strong>You must also provide a sort_direction.</strong>",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_direction",
+                        "in": "query",
+                        "description": "The direction to sort by. (ASC or DESC)  <strong>You must also provide a sort_field.</strong>",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "translation_needed",
                         "in": "query",
                         "description": "A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of **Translation Needed**.(min-max) You can supply just the minimum to get a total matching that number.",
