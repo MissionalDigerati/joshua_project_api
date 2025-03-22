@@ -237,4 +237,18 @@ class ValidatorTest extends TestCase
         $exceptions = array(3, 5);
         $this->validator->integerInRange($testInteger, $rangeStart, $rangeEnd, $exceptions);
     }
+
+    public function testIsValidSQLDirectionShouldThrowErrorIfNotValidDirection(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $direction = 'UP';
+        $this->validator->isValidSQLDirection($direction);
+    }
+
+    public function testIsValidSQLDirectionShouldNotThrowErrorIfValidDirection(): void
+    {
+        $this->expectNotToPerformAssertions();
+        $direction = 'ASC';
+        $this->validator->isValidSQLDirection($direction);
+    }
 }

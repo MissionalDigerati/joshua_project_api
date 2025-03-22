@@ -149,7 +149,19 @@ class Validator
             throw new \InvalidArgumentException("One of the provided integers is not allowed.");
         }
     }
-
+    /**
+     * Is the provided string a valid SQL direction?
+     *
+     * @param string $direction The direction to sort by.
+     * 
+     * @return void
+     * @throws \InvalidArgumentException If the direction is not 'ASC' or 'DESC'.
+     */
+    public function isValidSQLDirection(string $direction): void {
+        if (!in_array(strtoupper($direction), ['ASC', 'DESC'], true)) {
+            throw new \InvalidArgumentException("Invalid sort direction: $direction. Allowed values are 'ASC' or 'DESC'.");
+        }
+    }
     /**
      * Validate the recaptcha response
      *
