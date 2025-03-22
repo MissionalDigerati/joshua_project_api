@@ -38,6 +38,7 @@
     "autoload": {
         "psr-4": {
             "JPAPI\\": "Config/JPAPI",
+            "DataObjects\\": "App/v1/DataObjects",
             "Utilities\\": "App/v1/Utilities",
             "Middleware\\": "App/v1/Middleware",
             "QueryGenerators\\": "App/v1/QueryGenerators",

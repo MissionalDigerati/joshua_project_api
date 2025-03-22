@@ -24,6 +24,7 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
+use \QueryGenerators\Country;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -47,7 +48,7 @@ class CountryTest extends TestCase
         $reflectionOfCountry = new \ReflectionClass('\QueryGenerators\Country');
         $providedParams = $reflectionOfCountry->getProperty('providedParams');
         $providedParams->setAccessible(true);
-        $result = $providedParams->getValue(new \QueryGenerators\Country($data));
+        $result = $providedParams->getValue(new Country($data));
         $this->assertEquals($expected, $result);
     }
 
@@ -55,7 +56,7 @@ class CountryTest extends TestCase
     {
         $expected = array('id'  =>  'BE');
         $expectedCountryName = 'Belgium';
-        $country = new \QueryGenerators\Country($expected);
+        $country = new Country($expected);
         $country->findById();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -69,7 +70,7 @@ class CountryTest extends TestCase
         // Limit is 250, but there is only 238 countries
         $expectedCount = 238;
         $expectedFirstCountry = 'Afghanistan';
-        $country = new \QueryGenerators\Country(array());
+        $country = new Country(array());
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -81,7 +82,7 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldLimitedResults(): void
     {
         $expectedCount = 10;
-        $country = new \QueryGenerators\Country(array('limit' => $expectedCount));
+        $country = new Country(array('limit' => $expectedCount));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -92,7 +93,7 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByIds(): void
     {
         $expectedIDs = array('re', 'qa', 'qo');
-        $country = new \QueryGenerators\Country(array('ids' => join('|', $expectedIDs)));
+        $country = new Country(array('ids' => join('|', $expectedIDs)));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -105,7 +106,7 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByContinents(): void
     {
         $expectedContinents = array('lam', 'sop');
-        $country = new \QueryGenerators\Country(array('continents' => join('|', $expectedContinents)));
+        $country = new Country(array('continents' => join('|', $expectedContinents)));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -118,7 +119,7 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByRegions(): void
     {
         $expectedRegions = array(1, 2);
-        $country = new \QueryGenerators\Country(array('regions' => join('|', $expectedRegions)));
+        $country = new Country(array('regions' => join('|', $expectedRegions)));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -131,7 +132,7 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByWindow1040(): void
     {
         $expectedWindow1040 = 'y';
-        $country = new \QueryGenerators\Country(array('window1040' => $expectedWindow1040));
+        $country = new Country(array('window1040' => $expectedWindow1040));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -144,7 +145,7 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByPrimaryLanguages(): void
     {
         $expectedPrimaryLanguages = array('por', 'eng');
-        $country = new \QueryGenerators\Country(array('primary_languages' => join('|', $expectedPrimaryLanguages)));
+        $country = new Country(array('primary_languages' => join('|', $expectedPrimaryLanguages)));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -158,7 +159,7 @@ class CountryTest extends TestCase
     {
         $expectedMin = 0;
         $expectedMax = 1000;
-        $country = new \QueryGenerators\Country(array('population' => $expectedMin."-".$expectedMax));
+        $country = new Country(array('population' => $expectedMin."-".$expectedMax));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -173,7 +174,7 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByExactPopulation(): void
     {
         $expectedPopulation = 44000;
-        $country = new \QueryGenerators\Country(array('population' => $expectedPopulation));
+        $country = new Country(array('population' => $expectedPopulation));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -187,7 +188,7 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByPrimaryReligions(): void
     {
         $expectedReligions = array(2 => 'buddhism', 6 => 'islam');
-        $country = new \QueryGenerators\Country(
+        $country = new Country(
             array(
                 'primary_religions' => join('|', array_keys($expectedReligions))
             )
@@ -207,7 +208,7 @@ class CountryTest extends TestCase
     {
         $expectedJPScales = "1|2";
         $expectedJPScalesArray = array(1, 2);
-        $country = new \QueryGenerators\Country(array('jpscale' => $expectedJPScales));
+        $country = new Country(array('jpscale' => $expectedJPScales));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -221,7 +222,7 @@ class CountryTest extends TestCase
     public function testCountryQueryGeneratorShouldSetJPScaleTextToUnreached(): void
     {
         $expectedJPScaleText = "unreached";
-        $country = new \QueryGenerators\Country(array('jpscale' => '1'));
+        $country = new Country(array('jpscale' => '1'));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -235,7 +236,7 @@ class CountryTest extends TestCase
     public function testCountryQueryGeneratorShouldSetJPScaleTextToMinimallyReached(): void
     {
         $expectedJPScaleText = "minimally reached";
-        $country = new \QueryGenerators\Country(array('jpscale' => '2'));
+        $country = new Country(array('jpscale' => '2'));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -249,7 +250,7 @@ class CountryTest extends TestCase
     public function testCountryQueryGeneratorShouldSetJPScaleTextToSuperficiallyReached(): void
     {
         $expectedJPScaleText = "superficially reached";
-        $country = new \QueryGenerators\Country(array('jpscale' => '3'));
+        $country = new Country(array('jpscale' => '3'));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -263,7 +264,7 @@ class CountryTest extends TestCase
     public function testCountryQueryGeneratorShouldSetJPScaleTextToPartiallyReached(): void
     {
         $expectedJPScaleText = "partially reached";
-        $country = new \QueryGenerators\Country(array('jpscale' => '4'));
+        $country = new Country(array('jpscale' => '4'));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -277,7 +278,7 @@ class CountryTest extends TestCase
     public function testCountryQueryGeneratorShouldSetJPScaleTextToSignificantlyReached(): void
     {
         $expectedJPScaleText = "significantly reached";
-        $country = new \QueryGenerators\Country(array('jpscale' => '5'));
+        $country = new Country(array('jpscale' => '5'));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -291,7 +292,7 @@ class CountryTest extends TestCase
     public function testCountryQueryGeneratorShouldSetJPScaleImageURLCorrectly(): void
     {
         $expectedJPScaleText = "established church";
-        $country = new \QueryGenerators\Country(array('jpscale' => '4'));
+        $country = new Country(array('jpscale' => '4'));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -307,7 +308,7 @@ class CountryTest extends TestCase
     {
         $min = 2;
         $max = 3;
-        $country = new \QueryGenerators\Country(array(
+        $country = new Country(array(
             'cnt_primary_languages' => $min . '-' . $max,
             'limit' =>  5
         ));
@@ -325,7 +326,7 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByCntPrimaryLanguagesAtValue(): void
     {
         $value = 4;
-        $country = new \QueryGenerators\Country(array(
+        $country = new Country(array(
             'cnt_primary_languages' => $value,
             'limit' =>  5
         ));
@@ -343,7 +344,7 @@ class CountryTest extends TestCase
     {
         $min = 1;
         $max = 2;
-        $country = new \QueryGenerators\Country(array(
+        $country = new Country(array(
             'translation_unspecified' => $min . '-' . $max,
             'limit' =>  5
         ));
@@ -361,7 +362,7 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByTranslationUnspecifiedAtValue(): void
     {
         $value = 1;
-        $country = new \QueryGenerators\Country(array(
+        $country = new Country(array(
             'translation_unspecified' => $value,
             'limit' =>  5
         ));
@@ -379,7 +380,7 @@ class CountryTest extends TestCase
     {
         $min = 1;
         $max = 2;
-        $country = new \QueryGenerators\Country(array(
+        $country = new Country(array(
             'translation_needed' => $min . '-' . $max,
             'limit' =>  5
         ));
@@ -397,7 +398,7 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByTranslationNeededAtValue(): void
     {
         $value = 1;
-        $country = new \QueryGenerators\Country(array(
+        $country = new Country(array(
             'translation_needed' => $value,
             'limit' =>  5
         ));
@@ -415,7 +416,7 @@ class CountryTest extends TestCase
     {
         $min = 3;
         $max = 4;
-        $country = new \QueryGenerators\Country(array(
+        $country = new Country(array(
             'translation_started' => $min . '-' . $max,
             'limit' =>  5
         ));
@@ -433,7 +434,7 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByTranslationStartedAtValue(): void
     {
         $value = 1;
-        $country = new \QueryGenerators\Country(array(
+        $country = new Country(array(
             'translation_started' => $value,
             'limit' =>  5
         ));
@@ -451,7 +452,7 @@ class CountryTest extends TestCase
     {
         $min = 2;
         $max = 3;
-        $country = new \QueryGenerators\Country(array(
+        $country = new Country(array(
             'bible_portions' => $min . '-' . $max,
             'limit' =>  5
         ));
@@ -469,7 +470,7 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByBiblePortionsAtValue(): void
     {
         $value = 0;
-        $country = new \QueryGenerators\Country(array(
+        $country = new Country(array(
             'bible_portions' => $value,
             'limit' =>  5
         ));
@@ -487,7 +488,7 @@ class CountryTest extends TestCase
     {
         $min = 3;
         $max = 4;
-        $country = new \QueryGenerators\Country(array(
+        $country = new Country(array(
             'bible_new_testament' => $min . '-' . $max,
             'limit' =>  5
         ));
@@ -505,7 +506,7 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByBibleNewTestamentAtValue(): void
     {
         $value = 1;
-        $country = new \QueryGenerators\Country(array(
+        $country = new Country(array(
             'bible_new_testament' => $value,
             'limit' =>  5
         ));
@@ -523,7 +524,7 @@ class CountryTest extends TestCase
     {
         $min = 3;
         $max = 4;
-        $country = new \QueryGenerators\Country(array(
+        $country = new Country(array(
             'bible_complete' => $min . '-' . $max,
             'limit' =>  5
         ));
@@ -541,7 +542,7 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByBibleCompleteAtValue(): void
     {
         $value = 18;
-        $country = new \QueryGenerators\Country(array(
+        $country = new Country(array(
             'bible_complete' => $value,
             'limit' =>  5
         ));
@@ -559,7 +560,7 @@ class CountryTest extends TestCase
     {
         $expectedMin = 0;
         $expectedMax = 1000;
-        $country = new \QueryGenerators\Country(array('pop_in_unreached' => $expectedMin."-".$expectedMax));
+        $country = new Country(array('pop_in_unreached' => $expectedMin."-".$expectedMax));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -575,7 +576,7 @@ class CountryTest extends TestCase
     {
         $expectedMin = 1000;
         $expectedMax = 3000;
-        $country = new \QueryGenerators\Country(array('pop_in_frontier' => $expectedMin."-".$expectedMax));
+        $country = new Country(array('pop_in_frontier' => $expectedMin."-".$expectedMax));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -591,7 +592,7 @@ class CountryTest extends TestCase
     {
         $expectedMin = 15;
         $expectedMax = 45;
-        $country = new \QueryGenerators\Country(array('pc_buddhist' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(array('pc_buddhist' => $expectedMin . '-' . $expectedMax));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -608,7 +609,7 @@ class CountryTest extends TestCase
     {
         $expectedMin = 30;
         $expectedMax = 40;
-        $country = new \QueryGenerators\Country(array('pc_christianity' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(array('pc_christianity' => $expectedMin . '-' . $expectedMax));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -625,7 +626,7 @@ class CountryTest extends TestCase
     {
         $expectedMin = 10;
         $expectedMax = 45;
-        $country = new \QueryGenerators\Country(array('pc_ethnic_religion' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(array('pc_ethnic_religion' => $expectedMin . '-' . $expectedMax));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -642,7 +643,7 @@ class CountryTest extends TestCase
     {
         $expectedMin = 20;
         $expectedMax = 50;
-        $country = new \QueryGenerators\Country(array('pc_evangelical' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(array('pc_evangelical' => $expectedMin . '-' . $expectedMax));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -659,7 +660,7 @@ class CountryTest extends TestCase
     {
         $expectedMin = 50;
         $expectedMax = 90;
-        $country = new \QueryGenerators\Country(array('pc_hindu' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(array('pc_hindu' => $expectedMin . '-' . $expectedMax));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -676,7 +677,7 @@ class CountryTest extends TestCase
     {
         $expectedMin = 50;
         $expectedMax = 90;
-        $country = new \QueryGenerators\Country(array('pc_islam' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(array('pc_islam' => $expectedMin . '-' . $expectedMax));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -693,7 +694,7 @@ class CountryTest extends TestCase
     {
         $expectedMin = 43;
         $expectedMax = 69;
-        $country = new \QueryGenerators\Country(array('pc_non_religious' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(array('pc_non_religious' => $expectedMin . '-' . $expectedMax));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -710,7 +711,7 @@ class CountryTest extends TestCase
     {
         $expectedMin = 3;
         $expectedMax = 5;
-        $country = new \QueryGenerators\Country(array('pc_other_religion' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(array('pc_other_religion' => $expectedMin . '-' . $expectedMax));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -727,7 +728,7 @@ class CountryTest extends TestCase
     {
         $expectedMin = 0;
         $expectedMax = 0.004;
-        $country = new \QueryGenerators\Country(array('pc_unknown' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(array('pc_unknown' => $expectedMin . '-' . $expectedMax));
         $country->findAllWithFilters();
         $statement = $this->db->prepare($country->preparedStatement);
         $statement->execute($country->preparedVariables);
@@ -738,6 +739,44 @@ class CountryTest extends TestCase
             $this->assertLessThanOrEqual($expectedMax, floatval($countryData['PercentUnknown']));
             $this->assertGreaterThanOrEqual($expectedMin, floatval($countryData['PercentUnknown']));
         }
+    }
+
+    public function testFindAllWithFiltersShouldAllowSettingSortOrder(): void
+    {
+        $country = new Country(['sort_field' => 'Ctry', 'sort_direction' => 'DESC', 'limit' => 10]);
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $sorted = $data;
+        usort($sorted, fn ($a, $b) => strcmp($b['Ctry'], $a['Ctry']));
+        $this->assertEquals($sorted, $data);
+    }
+
+    public function testFindAllWithFiltersShouldSortByDefault(): void
+    {
+        $country = new Country(['limit' => 10]);
+        $country->findAllWithFilters();
+        $statement = $this->db->prepare($country->preparedStatement);
+        $statement->execute($country->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $sorted = $data;
+        usort($sorted, fn ($a, $b) => strcmp($a['Ctry'], $b['Ctry']));
+        $this->assertEquals($sorted, $data);
+    }
+
+    public function testFindAllWithFilterWillThrowErrorIfWrongDirectionProvided(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $country = new Country(['sort_field' => 'RegionName', 'sort_direction' => 'WRONG', 'limit' => 10]);
+        $country->findAllWithFilters();
+    }
+
+    public function testFindAllWithFilterWillThrowErrorIfNonWhitelistedFieldProvided(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $country = new Country(['sort_field' => 'WRONG', 'sort_direction' => 'ASC', 'limit' => 10]);
+        $country->findAllWithFilters();
     }
 
 }

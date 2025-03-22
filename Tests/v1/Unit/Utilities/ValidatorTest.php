@@ -251,4 +251,28 @@ class ValidatorTest extends TestCase
         $direction = 'ASC';
         $this->validator->isValidSQLDirection($direction);
     }
+
+    public function testIsWhitelistedValueShouldThrowErrorIfNotWhitelisted(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $value = 'LEFT';
+        $whitelist = ['UP', 'DOWN'];
+        $this->validator->isWhitelistedValue($value, $whitelist);
+    }
+
+    public function testIsWhitelistedValueShouldNotThrowErrorIfWhitelisted(): void
+    {
+        $this->expectNotToPerformAssertions();
+        $value = 'UP';
+        $whitelist = ['UP', 'DOWN'];
+        $this->validator->isWhitelistedValue($value, $whitelist);
+    }
+
+    public function testIsWhitelistedValueShouldThrowErrorIfEmptyString(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $value = '';
+        $whitelist = ['UP', 'DOWN'];
+        $this->validator->isWhitelistedValue($value, $whitelist);
+    }
 }

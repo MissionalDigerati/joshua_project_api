@@ -26,6 +26,11 @@ declare(strict_types=1);
 
 namespace QueryGenerators;
 
+use Utilities\Sanitizer;
+use Utilities\StringHelper;
+use Utilities\Validator;
+use DataObjects\SortData;
+
 /**
  * The parent class for all Query Generators.  This class holds common functionality between all Query Generators.
  *
@@ -78,26 +83,12 @@ class QueryGenerator
      */
     public $preparedVariables = [];
     /**
-     * The Sanitizer class for sanitizing incoming GET data.
-     *
-     * @var     \Utilities\Sanitizer
-     * @access  protected
-     */
-    protected $sanitizer;
-    /**
-     * The Validator class for validating the incoming GET data.
-     *
-     * @var     \Utilities\Validator
-     * @access  protected
-     */
-    protected $validator;
-    /**
-     * The provided parameters ($getParams) passed into each child's __construct() method.
+     * An array of table columns (key) and their alias (value).
      *
      * @var     array
      * @access  protected
-     */
-    protected $providedParams = [];
+     **/
+    protected $aliasFields = [];
     /**
      * An array of column names for this database table that we want to select in searches.
      * Simply remove fields you do not want to expose.
@@ -107,12 +98,38 @@ class QueryGenerator
      */
     protected $fieldsToSelectArray = [];
     /**
+     * The provided parameters ($getParams) passed into each child's __construct() method.
+     *
+     * @var     array
+     * @access  protected
+     */
+    protected $providedParams = [];
+    /**
+     * The Sanitizer class for sanitizing incoming GET data.
+     *
+     * @var     Sanitizer
+     * @access  protected
+     */
+    protected $sanitizer;
+    /**
      * A string that will hold the fields for the Select statement.
      *
      * @var     string
      * @access  protected
      */
     protected $selectFieldsStatement = '';
+    /**
+     * The query sort data.
+     *
+     * @var SortData
+     */
+    protected SortData $sortData;
+    /**
+     * The fields that are allowed to be sorted on.
+     *
+     * @var array
+     */
+    protected $sortingFieldWhitelist = [];
     /**
      * The database table to pull the data from.
      *
@@ -121,19 +138,19 @@ class QueryGenerator
      */
     protected $tableName = '';
     /**
+     * The Validator class for validating the incoming GET data.
+     *
+     * @var     Validator
+     * @access  protected
+     */
+    protected $validator;
+    /**
      * A string that will hold the default MySQL ORDER BY for the Select statement.
      *
      * @var     string
      * @access  protected
      */
     protected $defaultOrderByStatement = '';
-    /**
-     * An array of table columns (key) and their alias (value).
-     *
-     * @var     array
-     * @access  protected
-     **/
-    protected $aliasFields = [];
     /**
      * Construct the QueryGenerator class.
      *
@@ -148,8 +165,8 @@ class QueryGenerator
      */
     public function __construct(array $getParams)
     {
-        $this->validator = new \Utilities\Validator();
-        $this->sanitizer = new \Utilities\Sanitizer();
+        $this->validator = new Validator();
+        $this->sanitizer = new Sanitizer();
         $this->providedParams = $this->sanitizer->cleanArrayValues($getParams);
     }
     /**
@@ -192,9 +209,34 @@ class QueryGenerator
         } else {
             $this->preparedVariables['starting'] = 0;
         }
-        // print_r($this->preparedVariables);
-        // exit;
+        $this->preparedStatement = StringHelper::ensureTrailingSpace($this->preparedStatement);
         $this->preparedStatement .= "LIMIT :starting, :limit";
+    }
+    /**
+     * Add the order statement to the prepared statement.
+     *
+     * @return void
+     * @access protected
+     */
+    protected function addOrderStatement(): void
+    {
+        if (
+            $this->paramExists('sort_field') &&
+            $this->paramExists('sort_direction')
+        ) {
+            $field = $this->providedParams['sort_field'];
+            $direction = $this->providedParams['sort_direction'];
+            // Throws an exception if the direction is not ASC or DESC
+            $this->validator->isValidSQLDirection($direction);
+            // Throws an exception if the field is not in the whitelist
+            $this->validator->isWhitelistedValue($field, $this->sortingFieldWhitelist);
+            $sortData = new SortData($field, $direction);
+            $this->preparedStatement = StringHelper::ensureTrailingSpace($this->preparedStatement);
+            $this->preparedStatement .= "ORDER BY {$sortData->field} {$sortData->direction}";
+        } elseif (isset($this->sortData)) {
+            $this->preparedStatement = StringHelper::ensureTrailingSpace($this->preparedStatement);
+            $this->preparedStatement .= "ORDER BY {$this->sortData->field} {$this->sortData->direction}";
+        }
     }
     /**
      * Generates an IN () statement from a piped string.

@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace QueryGenerators;
 
+use DataObjects\SortData;
+
 /**
  * Generates the PDO prepared statements and variables for Countries.
  *
@@ -54,6 +56,13 @@ namespace QueryGenerators;
 class Country extends QueryGenerator
 {
     /**
+     * An array of table columns (key) and their alias (value).
+     *
+     * @var     array
+     * @access  protected
+     **/
+    protected $aliasFields = ['10_40Window'    =>  'Window1040'];
+    /**
      * An array of column names for this database table that we want to select in searches.
      * Simply remove fields you do not want to expose.
      *
@@ -69,26 +78,19 @@ class Country extends QueryGenerator
         'BibleComplete', 'PoplPeoplesLR', 'PoplPeoplesFPG'
     ];
     /**
+     * An array of fields that are allowed to be sorted by.
+     *
+     * @var     array
+     * @access  protected
+     */
+    protected $sortingFieldWhitelist = [];
+    /**
      * The Database table to pull the data from.
      *
      * @var     string
      * @access  protected
      */
     protected $tableName = "jpcountries";
-    /**
-     * A string that will hold the default MySQL ORDER BY for the Select statement.
-     *
-     * @var     string
-     * @access  protected
-     */
-    protected $defaultOrderByStatement = "ORDER BY Ctry ASC";
-    /**
-     * An array of table columns (key) and their alias (value).
-     *
-     * @var     array
-     * @access  protected
-     **/
-    protected $aliasFields = ['10_40Window'    =>  'Window1040'];
     /**
      * Construct the Country class.
      *
@@ -104,12 +106,14 @@ class Country extends QueryGenerator
     public function __construct(array $getParams)
     {
         parent::__construct($getParams);
+        $this->sortingFieldWhitelist = $this->fieldsToSelectArray;
         $scaleTextStatement = $this->getScaleTextStatement('JPScaleCtry');
         $scaleImageStatement = $this->getScaleImageURLStatement('JPScaleCtry');
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray) .
             ", " . $this->generateAliasSelectStatement();
         $this->selectFieldsStatement .= ", $scaleTextStatement as JPScaleText";
         $this->selectFieldsStatement .= ", $scaleImageStatement as JPScaleImageURL";
+        $this->sortData = new SortData('Ctry', 'ASC');
     }
     /**
      * Find a country by it's id.
@@ -438,7 +442,7 @@ class Country extends QueryGenerator
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }
-        $this->preparedStatement .= " " . $this->defaultOrderByStatement . " ";
+        $this->addOrderStatement();
         $this->addLimitFilter();
     }
 }
