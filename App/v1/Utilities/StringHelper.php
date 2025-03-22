@@ -32,6 +32,16 @@ namespace Utilities;
 class StringHelper
 {
     /**
+     * Appends a space on the given string if it does not already have one.
+     *
+     * @param string $string    The string to check for a space.
+     * @return string   The string with a space appended if it did not already have one.
+     */
+    public static function ensureTrailingSpace(string $string): string
+    {
+        return (substr($string, -1) === ' ') ? $string :  "{$string} ";
+    }
+    /**
      * If a string is null, returns an empty string
      *
      * @param ?string   $string    The string to convert
