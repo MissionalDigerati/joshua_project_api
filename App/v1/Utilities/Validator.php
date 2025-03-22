@@ -200,7 +200,7 @@ class Validator
     public function isWhitelistedValue(string $value, array $whitelist): void
     {
         if (!in_array($value, $whitelist)) {
-            throw new \InvalidArgumentException("The provided value is not in the whitelist.");
+            throw new \InvalidArgumentException("The provided value: $value is not allowed.");
         }
     }
 }
