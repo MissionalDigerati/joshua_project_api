@@ -638,6 +638,24 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "sort_field",
+                        "in": "query",
+                        "description": "The field to sort by.  You can sort by any field <a href='/v1/docs/column_descriptions/languages' target='_blank'>listed here</a>. <strong>You must also provide a sort_direction.</strong>",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_direction",
+                        "in": "query",
+                        "description": "The direction to sort by. (ASC or DESC)  <strong>You must also provide a sort_field.</strong>",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {

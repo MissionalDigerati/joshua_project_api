@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace Tests\v1\Unit\QueryGenerators;
 
 use PHPUnit\Framework\TestCase;
+use QueryGenerators\Language;
 
 /**
  * Test the Query Generator for the Language Data
@@ -48,7 +49,7 @@ class LanguageTest extends TestCase
         $reflectionOfCountry = new \ReflectionClass('\QueryGenerators\Language');
         $providedParams = $reflectionOfCountry->getProperty('providedParams');
         $providedParams->setAccessible(true);
-        $result = $providedParams->getValue(new \QueryGenerators\Language($data));
+        $result = $providedParams->getValue(new Language($data));
         $this->assertEquals($expected, $result);
     }
 
@@ -57,7 +58,7 @@ class LanguageTest extends TestCase
         $expected = array('id'  =>  'amx');
         $expectedLanguage = 'anmatyerr';
         $expectedHubCountry = 'australia';
-        $language = new \QueryGenerators\Language($expected);
+        $language = new Language($expected);
         $language->findById();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -71,7 +72,7 @@ class LanguageTest extends TestCase
     {
         $expectedCount = 250;
         $expectedFirstLanguage = "a'ou";
-        $language = new \QueryGenerators\Language(array());
+        $language = new Language(array());
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -84,7 +85,7 @@ class LanguageTest extends TestCase
     public function testFindAllWithFiltersShouldFilterTheResult(): void
     {
         $expected = array('limit'   =>  5);
-        $language = new \QueryGenerators\Language($expected);
+        $language = new Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -96,7 +97,7 @@ class LanguageTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByASetOfIds(): void
     {
         $expected = array('ids'   =>  'ace|boj|smf');
-        $language = new \QueryGenerators\Language($expected);
+        $language = new Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -110,7 +111,7 @@ class LanguageTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByNotHavingANewTestament(): void
     {
         $expected = array('has_new_testament'   =>  'N');
-        $language = new \QueryGenerators\Language($expected);
+        $language = new Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -124,7 +125,7 @@ class LanguageTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByNotHavingPortions(): void
     {
         $expected = array('has_portions'   =>  'N');
-        $language = new \QueryGenerators\Language($expected);
+        $language = new Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -138,7 +139,7 @@ class LanguageTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByNotHavingCompletedBible(): void
     {
         $expected = array('has_completed_bible'   =>  'N');
-        $language = new \QueryGenerators\Language($expected);
+        $language = new Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -152,7 +153,7 @@ class LanguageTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByNotHavingQuestionableTranslationNeed(): void
     {
         $expected = array('needs_translation_questionable'   =>  'N');
-        $language = new \QueryGenerators\Language($expected);
+        $language = new Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -166,7 +167,7 @@ class LanguageTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByNotHavingAudioResources(): void
     {
         $expected = array('has_audio'   =>  'N');
-        $language = new \QueryGenerators\Language($expected);
+        $language = new Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -180,7 +181,7 @@ class LanguageTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByNotHavingJesusFilm(): void
     {
         $expected = array('has_jesus_film'   =>  'N');
-        $language = new \QueryGenerators\Language($expected);
+        $language = new Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -194,7 +195,7 @@ class LanguageTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByCountry(): void
     {
         $expected = array('countries'   =>  'af|ni');
-        $language = new \QueryGenerators\Language($expected);
+        $language = new Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -209,7 +210,7 @@ class LanguageTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByPrimaryReligion(): void
     {
         $expected = array('primary_religions'   =>  '6');
-        $language = new \QueryGenerators\Language($expected);
+        $language = new Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -223,7 +224,7 @@ class LanguageTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByJPScale(): void
     {
         $expected = array('jpscale'   =>  '3');
-        $language = new \QueryGenerators\Language($expected);
+        $language = new Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -237,7 +238,7 @@ class LanguageTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByLeastReached(): void
     {
         $expected = array('least_reached'   =>  'y');
-        $language = new \QueryGenerators\Language($expected);
+        $language = new Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -251,7 +252,7 @@ class LanguageTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByAdherent(): void
     {
         $expected = array('pc_adherent'   =>  '60');
-        $language = new \QueryGenerators\Language($expected);
+        $language = new Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -265,7 +266,7 @@ class LanguageTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByEvangelical(): void
     {
         $expected = array('pc_evangelical'   =>  '10');
-        $language = new \QueryGenerators\Language($expected);
+        $language = new Language($expected);
         $language->findAllWithFilters();
         $statement = $this->db->prepare($language->preparedStatement);
         $statement->execute($language->preparedVariables);
@@ -276,4 +277,29 @@ class LanguageTest extends TestCase
         }
     }
 
+    public function testFindAllWithFiltersShouldSortByLanguageAscByDefault(): void
+    {
+        $expected = ['limit'   =>   5];
+        $language = new Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $sorted = $data;
+        usort($sorted, fn ($a, $b) => strcmp($a['Language'], $b['Language']));
+        $this->assertEquals($sorted, $data);
+    }
+
+    public function testFindAllWithFiltersShouldSortByCustomSort(): void
+    {
+        $expected = ['limit'   =>   5, 'sort_field' => 'ROL3', 'sort_direction' => 'DESC'];
+        $language = new Language($expected);
+        $language->findAllWithFilters();
+        $statement = $this->db->prepare($language->preparedStatement);
+        $statement->execute($language->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $sorted = $data;
+        usort($sorted, fn ($a, $b) => strcmp($b['ROL3'], $a['ROL3']));
+        $this->assertEquals($sorted, $data);
+    }
 }
