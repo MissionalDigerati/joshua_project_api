@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace QueryGenerators;
 
+use DataObjects\SortData;
+
 /**
  * Generates the PDO prepared statements and variables for People Groups.
  *
@@ -71,7 +73,7 @@ class PeopleGroup extends QueryGenerator
         'PrimaryReligionPC', 'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision', 'PCIslam', 'PCNonReligious',
         'PCUnknown', 'SecurityLevel', 'LRTop100', 'PhotoAddress', 'PhotoCredits', 'PhotoCreditURL',
         'PhotoCreativeCommons', 'PhotoCopyright', 'PhotoPermission', 'ProfileTextExists', 'CountOfCountries',
-        'CountOfProvinces', 'Longitude', 'Latitude', 'Ctry', 'IndigenousCode', 'ROL3', 'PercentAdherents',
+        'CountOfProvinces', 'Longitude', 'Latitude', 'Ctry', 'IndigenousCode', 'PercentAdherents',
         'PercentChristianPC', 'NaturalName', 'NaturalPronunciation', 'PercentChristianPGAC', 'PercentEvangelical',
         'PercentEvangelicalPC', 'PercentEvangelicalPGAC', 'PCBuddhism', 'PCEthnicReligions', 'PCHinduism',
         'PCOtherSmall', 'RegionCode', 'PopulationPGAC', 'Frontier', 'MapAddress', 'JF as HasJesusFilm',
@@ -84,19 +86,34 @@ class PeopleGroup extends QueryGenerator
         'JF', 'AudioRecordings',
     ];
     /**
+     * An array of fields that are allowed to be sorted by.
+     *
+     * @var     array
+     * @access  protected
+     */
+    protected $sortingFieldWhitelist = [
+        'PeopleID3ROG3', 'ROG3', 'PeopleID3', 'ROP3', 'PeopNameInCountry', 'ROG2', 'Continent', 'RegionName', 'ISO3',
+        'LocationInCountry', 'PeopleID1', 'ROP1', 'AffinityBloc', 'PeopleID2', 'ROP2', 'PeopleCluster',
+        'PeopNameAcrossCountries', 'Population', 'Category', 'ROL3', 'PrimaryLanguageName',
+        'PrimaryLanguageDialect', 'NumberLanguagesSpoken', 'OfficialLang', 'SpeakNationalLang',
+        'BibleStatus', 'BibleYear', 'NTYear', 'PortionsYear', 'TranslationNeedQuestionable', 'JPScale',
+        'JPScalePC', 'JPScalePGAC', 'LeastReached', 'LeastReachedPC', 'LeastReachedPGAC', 'GSEC',
+        'AudioRecordings', 'NTOnline', 'RLG3', 'RLG3PC', 'RLG3PGAC', 'PrimaryReligion',
+        'PrimaryReligionPC', 'PrimaryReligionPGAC', 'RLG4', 'ReligionSubdivision', 'PCIslam', 'PCNonReligious',
+        'PCUnknown', 'SecurityLevel', 'LRTop100', 'PhotoAddress', 'ProfileTextExists', 'CountOfCountries',
+        'CountOfProvinces', 'Longitude', 'Latitude', 'Ctry', 'IndigenousCode', 'PercentAdherents',
+        'PercentChristianPC', 'NaturalName', 'NaturalPronunciation', 'PercentChristianPGAC', 'PercentEvangelical',
+        'PercentEvangelicalPC', 'PercentEvangelicalPGAC', 'PCBuddhism', 'PCEthnicReligions', 'PCHinduism',
+        'PCOtherSmall', 'RegionCode', 'PopulationPGAC', 'Frontier', 'MapAddress', 'HasJesusFilm', 'MapAddress',
+        'MapAddressExpanded', 'PhotoAddress', 'JF', 'Window1040', 'HasAudioRecordings'
+    ];
+    /**
      * The database table to pull the data from.
      *
      * @var     string
      * @access  protected
      */
     protected $tableName = "jppeoples";
-    /**
-     * A string that will hold the default MySQL ORDER BY for the Select statement.
-     *
-     * @var     string
-     * @access  protected
-     */
-    protected $defaultOrderByStatement = "ORDER BY PeopleID1 ASC";
     /**
      * The MySQL CONCAT statement for generating the PeopleGroupMapURL.
      *
@@ -170,6 +187,7 @@ class PeopleGroup extends QueryGenerator
         $this->selectFieldsStatement .= ", $this->countryURLSelect as CountryURL";
         $this->selectFieldsStatement .= ", $scaleTextStatement as JPScaleText";
         $this->selectFieldsStatement .= ", $scaleImageStatement as JPScaleImageURL";
+        $this->sortData = new SortData('PeopleID1', 'ASC');
     }
     /**
      * Find the People Group by id (PeopleID3), and refine search by the country (ROG3).
@@ -543,7 +561,7 @@ class PeopleGroup extends QueryGenerator
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }
-        $this->preparedStatement .= " " . $this->defaultOrderByStatement . " ";
+        $this->addOrderStatement();
         $this->addLimitFilter();
     }
 

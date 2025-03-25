@@ -1138,6 +1138,66 @@ class PeopleGroupsTest extends TestCase
         }
     }
 
+    public function testIndexShouldReturnPGsOrderedInADefaultWay(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            ['api_key' => $this->APIKey, 'limit' => 10],
+            "index_default_order_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $sorted = $decoded;
+        usort($sorted, fn ($a, $b) => $a['PeopleID1'] - $b['PeopleID1']);
+        $this->assertEquals($sorted, $decoded);
+    }
+
+    public function testIndexShouldReturnPGsInASpecificSortOrder(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            ['api_key' => $this->APIKey, 'limit' => 10, 'sort_field' => 'Population', 'sort_direction' => 'desc'],
+            "index_specific_order_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $sorted = $decoded;
+        usort($sorted, fn ($a, $b) => $b['Population'] - $a['Population']);
+        $this->assertEquals($sorted, $decoded);
+    }
+
+    public function testIndexShouldThrowErrorIfSortingByNonWhitelistedField(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            ['api_key' => $this->APIKey, 'limit' => 10, 'sort_field' => 'PhotoCopyright', 'sort_direction' => 'desc'],
+            "index_sort_by_non_whitelisted_field_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertEquals('error', $decoded['api']['status']);
+        $this->assertEquals('Internal Server Error', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided value: PhotoCopyright is not allowed.', $decoded['api']['error']['details']);
+    }
+
+    public function testIndexShouldThrowErrorIfSortDirectionIsInvalid(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            ['api_key' => $this->APIKey, 'limit' => 10, 'sort_field' => 'Population', 'sort_direction' => 'ILLEGAL'],
+            "index_sort_by_invalid_direction_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertEquals('error', $decoded['api']['status']);
+        $this->assertEquals('Internal Server Error', $decoded['api']['error']['message']);
+        $this->assertEquals("Invalid sort direction: ILLEGAL. Allowed values are 'ASC' or 'DESC'.", $decoded['api']['error']['details']);
+    }
+
     public function testDailyUnreachedShouldProvideNewFields(): void
     {
         $expectedPop = 265000;
