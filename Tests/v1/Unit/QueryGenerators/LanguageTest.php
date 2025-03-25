@@ -302,4 +302,20 @@ class LanguageTest extends TestCase
         usort($sorted, fn ($a, $b) => strcmp($b['ROL3'], $a['ROL3']));
         $this->assertEquals($sorted, $data);
     }
+
+    public function testFindAllWithFiltersWillThrowErrorIfSortFieldIsInvalid(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $expected = ['limit'   =>   5, 'sort_field' => 'INVALID', 'sort_direction' => 'DESC'];
+        $language = new Language($expected);
+        $language->findAllWithFilters();
+    }
+
+    public function testFindAllWithFiltersWillThrowErrorIfSortDirectionIsInvalid(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $expected = ['limit'   =>   5, 'sort_field' => 'ROL3', 'sort_direction' => 'INVALID'];
+        $language = new Language($expected);
+        $language->findAllWithFilters();
+    }
 }
