@@ -221,26 +221,12 @@
                     <td>Percent of people in group who are Christian Adherents</td>
                 </tr>
                 <tr>
-                    <td>PercentAdherentsPC</td>
-                    <td>Percent of people in group who are Christian Adherents in this people cluster</td>
-                </tr>
-                <tr>
-                    <td>PercentAdherentsPGAC</td>
-                    <td>Percent of people in group who are Christian Adherents in all people groups across all
-                        countries</td>
-                </tr>
-                <tr>
                     <td>PCBuddhism</td>
                     <td>Percent of people in group who are Buddhist</td>
                 </tr>
                 <tr>
                     <td>PCEthnicReligions</td>
                     <td>Percent of people in group who practice Ethnic Religions</td>
-                </tr>
-                <tr>
-                    <td>PercentAdherentsPGAC</td>
-                    <td>Percent of people in group who are Christian Adherents in all people groups across all
-                        countries</td>
                 </tr>
                 <tr>
                     <td>PercentEvangelical</td>
@@ -314,14 +300,6 @@
                 <tr>
                     <td>PeopNameInCountry</td>
                     <td>Name of people group in this country</td>
-                </tr>
-                <tr>
-                    <td>PCEvangelicalPC</td>
-                    <td>Percent of people in group who are Evangelical in this people cluster</td>
-                </tr>
-                <tr>
-                    <td>PCEvangelicalPGAC</td>
-                    <td>Percent of people in group who are Evangelical in all people groups across all countries</td>
                 </tr>
                 <tr>
                     <td>PhotoAddress</td>
