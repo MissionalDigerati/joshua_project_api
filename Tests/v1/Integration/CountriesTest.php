@@ -567,6 +567,66 @@ class CountriesTest extends TestCase
         $this->assertTrue(array_key_exists('BibleComplete', $decoded[0]));
     }
 
+    public function testCountryIndexShouldReturnCountriesOrderedInDefaultWay(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'limit' => 5),
+            "should_return_country_index_default_sort_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        $sorted = $decodedResponse;
+        usort($sorted, fn ($a, $b) => strcmp($a['Ctry'], $b['Ctry']));
+        $this->assertEquals($decodedResponse, $sorted);
+    }
+
+    public function testCountryIndexShouldReturnCountriesOrderedByPopulationAscending(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'limit' => 5, 'sort_field' => 'Population', 'sort_direction' => 'ASC'),
+            "should_return_country_index_sort_by_population_asc_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        $sorted = $decodedResponse;
+        usort($sorted, fn ($a, $b) => $a['Population'] - $b['Population']);
+        $this->assertEquals($decodedResponse, $sorted);
+    }
+
+    public function testCountryIndexShouldThrowErrorIfSortingByNonWhitelistedColumn(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'limit' => 5, 'sort_field' => 'ILLEGAL', 'sort_direction' => 'ASC'),
+            "should_return_country_index_sort_by_non_whitelisted_column_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        $this->assertEquals('error', $decodedResponse['api']['status']);
+        $this->assertEquals('Internal Server Error', $decodedResponse['api']['error']['message']);
+        $this->assertEquals('The provided value: ILLEGAL is not allowed.', $decodedResponse['api']['error']['details']);
+    }
+
+    public function testCountryIndexShouldThrowErrorIFSortingDirectionIsIncorrect(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/countries.json",
+            array('api_key' => $this->APIKey, 'limit' => 5, 'sort_field' => 'Population', 'sort_direction' => 'ILLEGAL'),
+            "should_return_country_index_sort_by_illegal_direction_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        $this->assertEquals('error', $decodedResponse['api']['status']);
+        $this->assertEquals('Internal Server Error', $decodedResponse['api']['error']['message']);
+        $this->assertEquals("Invalid sort direction: ILLEGAL. Allowed values are 'ASC' or 'DESC'.", $decodedResponse['api']['error']['details']);
+    }
+
     public function testCountryShowRequestsShouldProvideNewFields(): void
     {
         $response = $this->cachedRequest->get(

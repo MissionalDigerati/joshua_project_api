@@ -782,6 +782,45 @@ class PeopleGroupTest extends TestCase
         }
     }
 
+    public function testFindAllWithFiltersShouldSortByDefault(): void
+    {
+        $peopleGroup = new PeopleGroup(['limit' => 5]);
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $sorted = $data;
+        usort($sorted, fn ($a, $b) => $a['PeopleID1'] - $b['PeopleID1']);
+        $this->assertEquals($sorted, $data);
+    }
+
+    public function testFindAllWithFiltersShouldAllowSettingSortOrder(): void
+    {
+        $peopleGroup = new PeopleGroup(['limit' => 5, 'sort_field' => 'Population', 'sort_direction' => 'DESC']);
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        $sorted = $data;
+        usort($sorted, fn ($a, $b) => $b['Population'] - $a['Population']);
+        $this->assertEquals($sorted, $data);
+    }
+
+    public function testFindAllWithFiltersWillThrowErrorIfWrongDirectionProvided(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $peopleGroup = new PeopleGroup(['limit' => 5, 'sort_field' => 'Population', 'sort_direction' => 'ILLEGAL']);
+        $peopleGroup->findAllWithFilters();
+    }
+
+    public function testFindAllWithFiltersShouldThrowErrorIfNonWhitelistedSortFieldProvided(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $peopleGroup = new PeopleGroup(['limit' => 5, 'sort_field' => 'MapCopyright', 'sort_direction' => 'ASC']);
+        $peopleGroup->findAllWithFilters();
+    }
+
     public function testFindByIdAndCountryShouldAddPeopleID3Rog3Field(): void
     {
         $params = array('id' => 11722, 'country' => 'AE');
@@ -811,4 +850,5 @@ class PeopleGroupTest extends TestCase
         $this->assertEquals(3, count($data));
         $this->assertEqualsCanonicalizing($expected, $data);
     }
+
 }

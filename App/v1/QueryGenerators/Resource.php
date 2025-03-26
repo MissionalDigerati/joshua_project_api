@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace QueryGenerators;
 
+use DataObjects\SortData;
+
 /**
  * Generates the PDO prepared statements and variables for Resources.
  *
@@ -61,13 +63,6 @@ class Resource extends QueryGenerator
      */
     protected $tableName = 'jpresources';
     /**
-     * A string that will hold the default MySQL ORDER BY for the Select statement.
-     *
-     * @var     string
-     * @access  protected
-     */
-    protected $defaultOrderByStatement = 'ORDER BY DisplaySeq ASC';
-    /**
      * An array of column names for this database table that we want to select in searches.
      * Simply remove fields you do not want to expose.
      *
@@ -75,6 +70,13 @@ class Resource extends QueryGenerator
      * @access  protected
      */
     protected $fieldsToSelectArray = ['ROL3', 'Category', 'WebText', 'URL'];
+    /**
+     * An array of fields that are allowed to be sorted by.
+     *
+     * @var     array
+     * @access  protected
+     */
+    protected $sortingFieldWhitelist = ['DisplaySeq'];
     /**
      * Construct the Resource class.
      *
@@ -91,6 +93,7 @@ class Resource extends QueryGenerator
     {
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
+        $this->sortData = new SortData('DisplaySeq', 'DESC');
     }
     /**
      * Find Resources for a specific Language.
@@ -109,7 +112,8 @@ class Resource extends QueryGenerator
         $this->validator->providedRequiredParams($this->providedParams, ['id']);
         $id = strtolower($this->providedParams['id']);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM " . $this->tableName .
-            " WHERE ROL3 = :id " . $this->defaultOrderByStatement;
+            " WHERE ROL3 = :id";
+        $this->addOrderStatement();
         $this->preparedVariables = ['id' => $id];
     }
 }

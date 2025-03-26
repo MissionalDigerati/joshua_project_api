@@ -653,6 +653,20 @@ $app->get(
  *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
+ *         name="sort_field",
+ *         description="The field to sort by.  You can sort by any field <a href='/v1/docs/column_descriptions/people_groups' target='_blank'>listed here</a> except: HowReach, LRWebProfile, LRofTheDayDay, LRofTheDayMonth, LRofTheDaySet, MapCCVersionText, MapCCVersionURL, MapCopyright, MapCreditURL, MapCredits, Obstacles, PeopleGroupMapExpandedURL, PeopleGroupMapURL, PeopleGroupPhotoURL, PhotoCCVersionText, PhotoCCVersionURL, PhotoCopyright, PhotoCreativeCommons, PhotoCredits, PhotoCreditURL, PhotoPermission, PrayForChurch, PrayForPG, Summary. <strong>You must also provide a sort_direction.</strong>",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="sort_direction",
+ *         description="The direction to sort by. (ASC or DESC)  <strong>You must also provide a sort_field.</strong>",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
  *         name="window1040",
  *         description="A boolean (represented as a string Y or N) that states whether you want people groups in the 1040 Window.",
  *         in="query",

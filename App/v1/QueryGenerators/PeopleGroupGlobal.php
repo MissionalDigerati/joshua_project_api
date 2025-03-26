@@ -26,7 +26,7 @@ declare(strict_types=1);
 
 namespace QueryGenerators;
 
-use SebastianBergmann\Type\VoidType;
+use DataObjects\SortData;
 
 /**
  * Generates the PDO prepared statements and variables for People Groups globally.
@@ -76,19 +76,19 @@ class PeopleGroupGlobal extends QueryGenerator
      */
     protected $tableName = "jppeoplesglobal";
     /**
-     * A string that will hold the default MySQL ORDER BY for the Select statement.
-     *
-     * @var     string
-     * @access  protected
-     */
-    protected $defaultOrderByStatement = "ORDER BY PeopleID3 ASC";
-    /**
      * An array of table columns (key) and their alias (value).
      *
      * @var     array
      * @access  protected
      **/
     protected $aliasFields = [];
+    /**
+     * An array of fields that are allowed to be sorted by.
+     *
+     * @var     array
+     * @access  protected
+     */
+    protected $sortingFieldWhitelist = [];
         /**
      * Construct the People Group Global class.
      *
@@ -104,11 +104,13 @@ class PeopleGroupGlobal extends QueryGenerator
     public function __construct(array $getParams)
     {
         parent::__construct($getParams);
+        $this->sortingFieldWhitelist = $this->fieldsToSelectArray;
         $scaleTextStatement = $this->getScaleTextStatement('JPScalePGAC');
         $scaleImageStatement = $this->getScaleImageURLStatement('JPScalePGAC');
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
         $this->selectFieldsStatement .= ", $scaleTextStatement as JPScaleText";
         $this->selectFieldsStatement .= ", $scaleImageStatement as JPScaleImageURL";
+        $this->sortData = new SortData('PeopleID3', 'ASC');
     }
 
     /**
@@ -294,7 +296,7 @@ class PeopleGroupGlobal extends QueryGenerator
         if ($where != "") {
             $this->preparedStatement .= " WHERE $where";
         }
-        $this->preparedStatement .= " $this->defaultOrderByStatement ";
+        $this->addOrderStatement();
         $this->addLimitFilter();
     }
 }
