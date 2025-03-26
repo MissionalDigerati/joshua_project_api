@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace QueryGenerators;
 
+use DataObjects\SortData;
+
 /**
  * Generates the PDO prepared statements and variables for Totals.
  *
@@ -54,19 +56,19 @@ namespace QueryGenerators;
 class Total extends QueryGenerator
 {
     /**
+     * An array of fields that are allowed to be sorted by.
+     *
+     * @var     array
+     * @access  protected
+     */
+    protected $sortingFieldWhitelist = ['ID'];
+    /**
      * The database table to pull the data from.
      *
      * @var     string
      * @access  protected
      */
     protected $tableName = 'jptotals';
-    /**
-     * A string that will hold the default MySQL ORDER BY for the Select statement.
-     *
-     * @var     string
-     * @access  protected
-     */
-    protected $defaultOrderByStatement = 'ORDER BY ID ASC';
     /**
      * An array of column names for this database table that we want to select in searches.
      * Simply remove fields you do not want to expose.
@@ -99,6 +101,7 @@ class Total extends QueryGenerator
     {
         parent::__construct($getParams);
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
+        $this->sortData = new SortData('id', 'ASC');
     }
 
     /**
@@ -111,7 +114,8 @@ class Total extends QueryGenerator
     {
         $where = $this->createWhereForRestrictedIds();
         $this->preparedStatement = "SELECT {$this->selectFieldsStatement} FROM {$this->tableName} " .
-                                   "WHERE {$where} {$this->defaultOrderByStatement}";
+                                   "WHERE {$where}";
+        $this->addOrderStatement();
         $this->preparedVariables = [];
     }
 

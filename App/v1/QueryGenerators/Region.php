@@ -72,13 +72,6 @@ class Region extends QueryGenerator
      */
     protected $tableName = "jpregionsum";
     /**
-     * A string that will hold the default MySQL ORDER BY for the Select statement.
-     *
-     * @var     string
-     * @access  protected
-     */
-    protected $defaultOrderByStatement = "ORDER BY RegionName ASC";
-    /**
      * An array of table columns (key) and their alias (value).
      *
      * @var     array

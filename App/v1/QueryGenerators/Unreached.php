@@ -101,13 +101,6 @@ class Unreached extends PeopleGroup
      */
     protected $tableName = '';
     /**
-     * A string that will hold the default MySQL ORDER BY for the Select statement.
-     *
-     * @var     string
-     * @access  protected
-     */
-    protected $defaultOrderByStatement = 'ORDER BY jpupgotd.PeopleID1 ASC';
-    /**
      * An array of table columns (key) and their alias (value).
      *
      * @var     array
