@@ -1,7 +1,7 @@
 {
     "name": "joshua-project/api-v1",
     "description": "An API for connecting to the Joshua Project data.",
-    "version": "1.10.0",
+    "version": "1.11.0",
     "config": {
         "vendor-dir": "Vendor",
         "platform": {
@@ -38,6 +38,7 @@
     "autoload": {
         "psr-4": {
             "JPAPI\\": "Config/JPAPI",
+            "DataObjects\\": "App/v1/DataObjects",
             "Utilities\\": "App/v1/Utilities",
             "Middleware\\": "App/v1/Middleware",
             "QueryGenerators\\": "App/v1/QueryGenerators",

@@ -24,32 +24,26 @@
 
 declare(strict_types=1);
 
-namespace Utilities;
+namespace DataObjects;
 
-/**
- * A class that provides string helper methods.
- */
-class StringHelper
+class SortData
 {
     /**
-     * Appends a space on the given string if it does not already have one.
+     * Build the data object
      *
-     * @param string $string    The string to check for a space.
-     * @return string   The string with a space appended if it did not already have one.
+     * @param string $field     The field to sort by
+     * @param string $direction The direction to sort by
+     *
+     * @throws \InvalidArgumentException
      */
-    public static function ensureTrailingSpace(string $string): string
-    {
-        return (substr($string, -1) === ' ') ? $string :  "{$string} ";
-    }
-    /**
-     * If a string is null, returns an empty string
-     *
-     * @param ?string   $string    The string to convert
-     *
-     * @return string           The string or an empty string if it was null
-     */
-    public static function nullToEmpty(?string $string): string
-    {
-        return (is_null($string)) ? '' : $string;
+    public function __construct(
+        public string $field,
+        public string $direction,
+    ) {
+        if (!in_array(strtoupper($direction), ['ASC', 'DESC'], true)) {
+            throw new \InvalidArgumentException(
+                "Invalid sort direction: $direction. Allowed values are 'ASC' or 'DESC'."
+            );
+        }
     }
 }

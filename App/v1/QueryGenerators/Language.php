@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace QueryGenerators;
 
+use DataObjects\SortData;
+
 /**
  * Generates the PDO prepared statements and variables for Languages.
  *
@@ -70,19 +72,19 @@ class Language extends QueryGenerator
         'JF', 'AudioRecordings',
     ];
     /**
+     * An array of fields that are allowed to be sorted by.
+     *
+     * @var     array
+     * @access  protected
+     */
+    protected $sortingFieldWhitelist = [];
+    /**
      * The Database table to pull the data from.
      *
      * @var     string
      * @access  protected
      */
     protected $tableName = "jplanguages";
-    /**
-     * A string that will hold the default MySQL ORDER BY for the Select statement.
-     *
-     * @var     string
-     * @access  protected
-     */
-    protected $defaultOrderByStatement = "ORDER BY Language ASC";
     /**
      * Construct the Language class.
      *
@@ -98,7 +100,9 @@ class Language extends QueryGenerator
     public function __construct(array $getParams)
     {
         parent::__construct($getParams);
+        $this->sortingFieldWhitelist = $this->fieldsToSelectArray;
         $this->selectFieldsStatement = join(', ', $this->fieldsToSelectArray);
+        $this->sortData = new SortData('Language', 'ASC');
     }
     /**
      * Find a Language by it's id.
@@ -289,7 +293,7 @@ class Language extends QueryGenerator
         if ($where != "") {
             $this->preparedStatement .= " WHERE " . $where;
         }
-        $this->preparedStatement .= " " . $this->defaultOrderByStatement . " ";
+        $this->addOrderStatement();
         $this->addLimitFilter();
     }
 }

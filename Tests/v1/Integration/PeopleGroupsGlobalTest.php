@@ -848,4 +848,63 @@ class PeopleGroupsGlobalTest extends TestCase
             $this->assertLessThanOrEqual(38, $group['PercentEvangelicalPGAC']);
         }
     }
+
+    public function testIndexShouldSortTheResultsByDefault(): void
+    {
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            ['api_key' => $this->APIKey, 'limit' => 10],
+            "index_sort_default"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $sorted = $decoded;
+        usort($sorted, fn ($a, $b) => $a['PeopleID3'] - $b['PeopleID3']);
+        $this->assertEquals($decoded, $sorted);
+    }
+
+    public function testIndexShouldSortByProvidedParameters(): void
+    {
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            ['api_key' => $this->APIKey, 'limit' => 10, 'sort_direction' => 'DESC', 'sort_field' => 'PeopleCluster'],
+            "index_sort_desc"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $sorted = $decoded;
+        usort($sorted, fn ($a, $b) => strcmp($b['PeopleCluster'], $a['PeopleCluster']));
+        $this->assertEquals($decoded, $sorted);
+    }
+
+    public function testIndexSHouldThrowErrorWithUnWhitelistedSortField(): void
+    {
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            ['api_key' => $this->APIKey, 'limit' => 10, 'sort_direction' => 'DESC', 'sort_field' => 'ILLEGAL'],
+            "index_sort_illegal_field_desc"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertEquals('error', $decoded['api']['status']);
+        $this->assertEquals('Internal Server Error', $decoded['api']['error']['message']);
+        $this->assertEquals('The provided value: ILLEGAL is not allowed.', $decoded['api']['error']['details']);
+    }
+
+    public function testIndexShouldThrowErrorWithIncorrectSortDirection(): void
+    {
+        $response = $this->cachedRequest->get(
+            "$this->siteURL/$this->APIVersion/people_groups_global.json",
+            ['api_key' => $this->APIKey, 'limit' => 10, 'sort_direction' => 'WRONG', 'sort_field' => 'PeopleCluster'],
+            "index_sort_wrong_direction_desc"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        $this->assertEquals('error', $decoded['api']['status']);
+        $this->assertEquals('Internal Server Error', $decoded['api']['error']['message']);
+        $this->assertEquals("Invalid sort direction: WRONG. Allowed values are 'ASC' or 'DESC'.", $decoded['api']['error']['details']);
+    }
+
 }

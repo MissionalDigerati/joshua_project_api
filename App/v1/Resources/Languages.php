@@ -265,6 +265,20 @@ $app->get(
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
+ *     @OA\Parameter(
+ *         name="sort_field",
+ *         description="The field to sort by.  You can sort by any field <a href='/v1/docs/column_descriptions/languages' target='_blank'>listed here</a>. <strong>You must also provide a sort_direction.</strong>",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="sort_direction",
+ *         description="The direction to sort by. (ASC or DESC)  <strong>You must also provide a sort_field.</strong>",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
  *     @OA\Response(
  *         response="200",
  *         description="The languages filtered by your query.",

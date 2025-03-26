@@ -38,5 +38,21 @@ class StringHelperTest extends TestCase
     {
         $this->assertEquals('I am a string.', StringHelper::nullToEmpty('I am a string.'));
     }
+
+    public function testEnsureTrailingSpaceShouldReturnStringWithSpace(): void
+    {
+        $string = 'Hello';
+        $expected = 'Hello ';
+        $actual = StringHelper::ensureTrailingSpace($string);
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testEnsureTrailingSpaceShouldReturnStringWithSpaceIfAlreadyPresent(): void
+    {
+        $string = 'Hello ';
+        $expected = 'Hello ';
+        $actual = StringHelper::ensureTrailingSpace($string);
+        $this->assertEquals($expected, $actual);
+    }
     
 }

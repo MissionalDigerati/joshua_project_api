@@ -348,6 +348,24 @@
                         }
                     },
                     {
+                        "name": "sort_field",
+                        "in": "query",
+                        "description": "The field to sort by.  You can sort by any field <a href='/v1/docs/column_descriptions/countries' target='_blank'>listed here</a>. <strong>You must also provide a sort_direction.</strong>",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_direction",
+                        "in": "query",
+                        "description": "The direction to sort by. (ASC or DESC)  <strong>You must also provide a sort_field.</strong>",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "translation_needed",
                         "in": "query",
                         "description": "A dashed seperated range specifying the minimum and maximum total number of Primary Languages (CntPrimaryLanguages) in the country that have a Bible Status of **Translation Needed**.(min-max) You can supply just the minimum to get a total matching that number.",
@@ -616,6 +634,24 @@
                         "name": "primary_religions",
                         "in": "query",
                         "description": "A bar separated list of one or more primary religions to filter by. Use the following numbers:\n * **1** = Christianity\n * **2** = Buddhism\n * **4** = Ethnic Religions\n * **5** = Hinduism\n * **6** = Islam\n * **7** = Non-Religious\n * **8** = Other/Small\n * **9** = Unknown",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_field",
+                        "in": "query",
+                        "description": "The field to sort by.  You can sort by any field <a href='/v1/docs/column_descriptions/languages' target='_blank'>listed here</a>. <strong>You must also provide a sort_direction.</strong>",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_direction",
+                        "in": "query",
+                        "description": "The direction to sort by. (ASC or DESC)  <strong>You must also provide a sort_field.</strong>",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -1097,6 +1133,24 @@
                         }
                     },
                     {
+                        "name": "sort_field",
+                        "in": "query",
+                        "description": "The field to sort by.  You can sort by any field <a href='/v1/docs/column_descriptions/people_groups' target='_blank'>listed here</a> except: HowReach, LRWebProfile, LRofTheDayDay, LRofTheDayMonth, LRofTheDaySet, MapCCVersionText, MapCCVersionURL, MapCopyright, MapCreditURL, MapCredits, Obstacles, PeopleGroupMapExpandedURL, PeopleGroupMapURL, PeopleGroupPhotoURL, PhotoCCVersionText, PhotoCCVersionURL, PhotoCopyright, PhotoCreativeCommons, PhotoCredits, PhotoCreditURL, PhotoPermission, PrayForChurch, PrayForPG, Summary. <strong>You must also provide a sort_direction.</strong>",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_direction",
+                        "in": "query",
+                        "description": "The direction to sort by. (ASC or DESC)  <strong>You must also provide a sort_field.</strong>",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "window1040",
                         "in": "query",
                         "description": "A boolean (represented as a string Y or N) that states whether you want people groups in the 1040 Window.",
@@ -1367,6 +1421,24 @@
                         "name": "rop3",
                         "in": "query",
                         "description": "A bar separated list of one or more Registry of People IDs to filter by.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_field",
+                        "in": "query",
+                        "description": "The field to sort by.  You can sort by any field <a href='/v1/docs/column_descriptions/people_groups_global' target='_blank'>listed here</a>. <strong>You must also provide a sort_direction.</strong>",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_direction",
+                        "in": "query",
+                        "description": "The direction to sort by. (ASC or DESC)  <strong>You must also provide a sort_field.</strong>",
                         "required": false,
                         "schema": {
                             "type": "string"

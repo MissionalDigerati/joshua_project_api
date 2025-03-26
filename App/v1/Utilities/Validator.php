@@ -149,7 +149,22 @@ class Validator
             throw new \InvalidArgumentException("One of the provided integers is not allowed.");
         }
     }
-
+    /**
+     * Is the provided string a valid SQL direction?
+     *
+     * @param string $direction The direction to sort by.
+     *
+     * @return void
+     * @throws \InvalidArgumentException If the direction is not 'ASC' or 'DESC'.
+     */
+    public function isValidSQLDirection(string $direction): void
+    {
+        if (!in_array(strtoupper($direction), ['ASC', 'DESC'], true)) {
+            throw new \InvalidArgumentException(
+                "Invalid sort direction: $direction. Allowed values are 'ASC' or 'DESC'."
+            );
+        }
+    }
     /**
      * Validate the recaptcha response
      *
@@ -172,5 +187,20 @@ class Validator
         );
         $data = json_decode($reply, true);
         return ($data['success'] === true);
+    }
+    /**
+     * Validate the provided value is in the whitelist
+     *
+     * @param string $value The value to check
+     * @param array $whitelist The whitelist to check against
+     *
+     * @return void
+     * @throws \InvalidArgumentException If the value is not in the whitelist
+     */
+    public function isWhitelistedValue(string $value, array $whitelist): void
+    {
+        if (!in_array($value, $whitelist)) {
+            throw new \InvalidArgumentException("The provided value: $value is not allowed.");
+        }
     }
 }

@@ -453,4 +453,42 @@ class PeopleGroupGlobalTest extends TestCase
             $this->assertLessThanOrEqual(0.003, $row['PercentEvangelicalPGAC']);
         }
     }
+
+    public function testFindAllWithFiltersShouldSortByDefault(): void
+    {
+        $pg = new PeopleGroupGlobal(['limit' => 10]);
+        $pg->findAllWithFilters();
+        $statement = $this->db->prepare($pg->preparedStatement);
+        $statement->execute($pg->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $sorted = $data;
+        usort($sorted, fn ($a, $b) => $a['PeopleID3'] - $b['PeopleID3']);
+        $this->assertEquals($sorted, $data);
+    }
+
+    public function testFindAllWithFiltersShouldBeSortedByProvidedParams(): void
+    {
+        $pg = new PeopleGroupGlobal(['limit' => 10, 'sort_field' => 'PopulationPGAC', 'sort_direction' => 'desc']);
+        $pg->findAllWithFilters();
+        $statement = $this->db->prepare($pg->preparedStatement);
+        $statement->execute($pg->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $sorted = $data;
+        usort($sorted, fn ($a, $b) => $b['PopulationPGAC'] - $a['PopulationPGAC']);
+        $this->assertEquals($sorted, $data);
+    }
+
+    public function testFindAllWithFiltersShouldThrowErrorIfUnWhitelistedSortField(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $pg = new PeopleGroupGlobal(['limit' => 10, 'sort_field' => 'WRONG', 'sort_direction' => 'DESC']);
+        $pg->findAllWithFilters();
+    }
+
+    public function testFindAllWithFiltersShouldThrowErrorIFWrongSortDirection(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $pg = new PeopleGroupGlobal(['limit' => 10, 'sort_field' => 'PopulationPGAC', 'sort_direction' => 'WRONG']);
+        $pg->findAllWithFilters();
+    }
 }

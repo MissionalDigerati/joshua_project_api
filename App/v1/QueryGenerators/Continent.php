@@ -61,13 +61,6 @@ class Continent extends QueryGenerator
      **/
     protected $aliasFields = [];
     /**
-     * A string that will hold the default ORDER BY for the Select statement.
-     *
-     * @var     string
-     * @access  protected
-     */
-    protected $defaultOrderByStatement = "ORDER BY Continent ASC";
-    /**
      * An array of column names for this database table that we want to select in searches.
      * Simply remove fields you do not want to expose.
      *

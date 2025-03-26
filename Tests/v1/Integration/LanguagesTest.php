@@ -665,4 +665,79 @@ class LanguagesTest extends TestCase
         }
     }
 
+    public function testIndexRequestsShouldReturnInDefaultSortedWay(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/languages.json",
+            ['api_key'  =>  $this->APIKey, 'limit'  =>  5],
+            "should_return_language_in_correct_order_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        $sorted = $decodedResponse;
+        usort($sorted, fn ($a, $b) => strcmp($a['Language'], $b['Language']));
+        $this->assertEquals($decodedResponse, $sorted);
+    }
+
+    public function testIndexRequestsShouldReturnInRequestedOrder(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/languages.json",
+            [
+                'api_key'  =>  $this->APIKey,
+                'limit'  =>  5,
+                'sort_field'  =>  'ROL3',
+                'sort_direction'  =>  'DESC'
+            ],
+            "should_return_language_in_requested_order_index_json"
+        );
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertTrue(isJSON($response));
+        $decodedResponse = json_decode($response, true);
+        $sorted = $decodedResponse;
+        usort($sorted, fn ($a, $b) => strcmp($b['ROL3'], $a['ROL3']));
+        $this->assertEquals($decodedResponse, $sorted);
+    }
+
+    public function testIndexRequestsShouldThrowErrorIfNonWhitelistedSortField(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/languages.json",
+            [
+                'api_key'  =>  $this->APIKey,
+                'limit'  =>  5,
+                'sort_field'  =>  'ILLEGAL',
+                'sort_direction'  =>  'DESC'
+            ],
+            "should_throw_error_wrong_sort_field_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        $this->assertEquals('error', $decodedResponse['api']['status']);
+        $this->assertEquals('Internal Server Error', $decodedResponse['api']['error']['message']);
+        $this->assertEquals('The provided value: ILLEGAL is not allowed.', $decodedResponse['api']['error']['details']);
+    }
+
+    public function testIndexRequestsShouldThrowErrorIfSortingDirectionIsIncorrect(): void
+    {
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/languages.json",
+            [
+                'api_key'  =>  $this->APIKey,
+                'limit'  =>  5,
+                'sort_field'  =>  'ROG3',
+                'sort_direction'  =>  'ILLEGAL'
+            ],
+            "should_throw_error_wrong_sort_direction_index_json"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(500, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decodedResponse));
+        $this->assertEquals('error', $decodedResponse['api']['status']);
+        $this->assertEquals('Internal Server Error', $decodedResponse['api']['error']['message']);
+        $this->assertEquals("Invalid sort direction: ILLEGAL. Allowed values are 'ASC' or 'DESC'.", $decodedResponse['api']['error']['details']);
+    }
+
 }
