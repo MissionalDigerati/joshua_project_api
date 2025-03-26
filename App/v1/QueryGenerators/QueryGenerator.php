@@ -145,13 +145,6 @@ class QueryGenerator
      */
     protected $validator;
     /**
-     * A string that will hold the default MySQL ORDER BY for the Select statement.
-     *
-     * @var     string
-     * @access  protected
-     */
-    protected $defaultOrderByStatement = '';
-    /**
      * Construct the QueryGenerator class.
      *
      * During construction,  the $getParams are checked and inserted in the $providedParams class variable.
