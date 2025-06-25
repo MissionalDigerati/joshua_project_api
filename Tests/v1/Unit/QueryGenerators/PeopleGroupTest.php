@@ -837,8 +837,8 @@ class PeopleGroupTest extends TestCase
     public function testFindCountryListShouldReturnCountryList(): void
     {
         $expected = [
-            ['ROG3' => 'CB', 'Ctry' => 'Cambodia', 'Population' => 11000, 'JPScale' => 4],
-            ['ROG3' => 'LA', 'Ctry' => 'Laos', 'Population' => 28000, 'JPScale' => 1],
+            ['ROG3' => 'CB', 'Ctry' => 'Cambodia', 'Population' => 12000, 'JPScale' => 4],
+            ['ROG3' => 'LA', 'Ctry' => 'Laos', 'Population' => 29000, 'JPScale' => 1],
             ['ROG3' => 'VM', 'Ctry' => 'Vietnam', 'Population' => 500, 'JPScale' => 2]
         ];
         $peopleGroup = new PeopleGroup([]);

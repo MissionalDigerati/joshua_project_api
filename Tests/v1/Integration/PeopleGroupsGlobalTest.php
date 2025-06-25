@@ -160,7 +160,7 @@ class PeopleGroupsGlobalTest extends TestCase
         $this->assertEquals(301408, $decoded[0]['ROP25']);
         $this->assertEquals('Brao', $decoded[0]['ROP25Name']);
         $this->assertEquals(4, $decoded[0]['JPScalePGAC']);
-        $this->assertEquals(39500, $decoded[0]['PopulationPGAC']);
+        $this->assertEquals(41500, $decoded[0]['PopulationPGAC']);
         $this->assertNull($decoded[0]['LeastReachedPGAC']);
         $this->assertNull($decoded[0]['FrontierPGAC']);
         $this->assertEquals(3, $decoded[0]['CntPGIC']);
@@ -172,16 +172,16 @@ class PeopleGroupsGlobalTest extends TestCase
         $this->assertEquals('Brao', $decoded[0]['PrimaryLanguagePGAC']);
         $this->assertEquals(4, $decoded[0]['RLG3PGAC']);
         $this->assertEquals('Ethnic Religions', $decoded[0]['PrimaryReligionPGAC']);
-        $this->assertEquals(3.651, $decoded[0]['PercentChristianPGAC']);
-        $this->assertEquals(2.788, $decoded[0]['PercentEvangelicalPGAC']);
+        $this->assertEquals(3.6940, $decoded[0]['PercentChristianPGAC']);
+        $this->assertEquals(2.8230, $decoded[0]['PercentEvangelicalPGAC']);
         $this->assertEquals('Partially Reached', $decoded[0]['JPScaleText']);
         $this->assertEquals('https://joshuaproject.net/assets/img/gauge/gauge-4.png', $decoded[0]['JPScaleImageURL']);
         /**
          * By default it should include the country list
          */
         $expected = [
-            ['ROG3' => 'CB', 'Ctry' => 'Cambodia', 'Population' => 11000, 'JPScale' => 4],
-            ['ROG3' => 'LA', 'Ctry' => 'Laos', 'Population' => 28000, 'JPScale' => 1],
+            ['ROG3' => 'CB', 'Ctry' => 'Cambodia', 'Population' => 12000, 'JPScale' => 4],
+            ['ROG3' => 'LA', 'Ctry' => 'Laos', 'Population' => 29000, 'JPScale' => 1],
             ['ROG3' => 'VM', 'Ctry' => 'Vietnam', 'Population' => 500, 'JPScale' => 2]
         ];
         $this->assertTrue(isset($decoded[0]['Countries']));

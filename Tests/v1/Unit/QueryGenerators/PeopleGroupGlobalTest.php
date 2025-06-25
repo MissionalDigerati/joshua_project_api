@@ -74,7 +74,7 @@ class PeopleGroupGlobalTest extends TestCase
         $this->assertEquals(306585, $data[0]['ROP25']);
         $this->assertEquals('Pashtun', $data[0]['ROP25Name']);
         $this->assertEquals(1, $data[0]['JPScalePGAC']);
-        $this->assertEquals(29000, $data[0]['PopulationPGAC']);
+        $this->assertEquals(31000, $data[0]['PopulationPGAC']);
         $this->assertEquals('Y', $data[0]['LeastReachedPGAC']);
         $this->assertEquals('Y', $data[0]['FrontierPGAC']);
         $this->assertEquals(1, $data[0]['CntPGIC']);
