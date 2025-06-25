@@ -165,8 +165,8 @@ class StaticPagesTest extends TestCase
         $authorizationToken = 'l543g3$4Ac';
         $expectedAPIKey = generateRandomKey(12);
         $this->db->query(
-            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, resource_used, status, created)" .
-            " VALUES ('testing', '" . $expectedAPIKey . "', '" . $authorizationToken . "', 'testing', 1, NOW())"
+            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created)" .
+            " VALUES ('testing', '" . $expectedAPIKey . "', '" . $authorizationToken . "', 1, NOW())"
         );
         $response = $this->cachedRequest->get(
             $this->siteURL . "/get_my_api_key",
@@ -188,8 +188,8 @@ class StaticPagesTest extends TestCase
         $authorizationToken = 'l543g3$4Ac';
         $expectedAPIKey = generateRandomKey(12);
         $this->db->query(
-            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, resource_used, status, created) " .
-            "VALUES ('testing', '" . $expectedAPIKey . "', '" . $authorizationToken . "', 'testing', 2, NOW())"
+            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) " .
+            "VALUES ('testing', '" . $expectedAPIKey . "', '" . $authorizationToken . "', 2, NOW())"
         );
         $response = $this->cachedRequest->get(
             $this->siteURL . "/get_my_api_key",
@@ -211,8 +211,8 @@ class StaticPagesTest extends TestCase
         $authorizationToken = 'l543g3$4Ac';
         $expectedAPIKey = 'AKey$43Ac';
         $this->db->query(
-            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, resource_used, status, created) " .
-            "VALUES ('testing', '" . $expectedAPIKey . "', '" . $authorizationToken . "', 'testing', 2, NOW())"
+            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) " .
+            "VALUES ('testing', '" . $expectedAPIKey . "', '" . $authorizationToken . "', 2, NOW())"
         );
         $response = $this->cachedRequest->get(
             $this->siteURL . "/get_my_api_key",

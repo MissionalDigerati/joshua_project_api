@@ -40,14 +40,13 @@ function createApiKey($data = [])
         $data = array(
             'name' => 'Test API',
             'email' => 'newby@testing.com',
-            'resource_used' =>  'testing',
             'api_usage' => 'pg-integration-testing',
             'status' => 1
         );
     }
     $data['api_key'] = generateRandomKey(12);
-    $query = "INSERT INTO `md_api_keys` (name, email, api_usage, api_key, resource_used, status)
-                VALUES (:name, :email, :api_usage, :api_key, :resource_used, :status)";
+    $query = "INSERT INTO `md_api_keys` (name, email, api_usage, api_key, status)
+                VALUES (:name, :email, :api_usage, :api_key, :status)";
     try {
         $statement = $db->prepare($query);
         $statement->execute($data);
