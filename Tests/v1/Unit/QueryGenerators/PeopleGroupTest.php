@@ -782,6 +782,34 @@ class PeopleGroupTest extends TestCase
         }
     }
 
+    public function testFindAllWithFiltersShouldFilterByNomadicTrue(): void
+    {
+        $expected = 'Y';
+        $peopleGroup = new PeopleGroup(['nomadic' => $expected]);
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals($expected, $peopleGroup['Nomadic']);
+        }
+    }
+
+    public function testFindAllWithFiltersShouldFilterByNomadicFalse(): void
+    {
+        $expected = 'N';
+        $peopleGroup = new PeopleGroup(['nomadic' => $expected]);
+        $peopleGroup->findAllWithFilters();
+        $statement = $this->db->prepare($peopleGroup->preparedStatement);
+        $statement->execute($peopleGroup->preparedVariables);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertFalse(empty($data));
+        foreach ($data as $peopleGroup) {
+            $this->assertEquals($expected, $peopleGroup['Nomadic']);
+        }
+    }
+
     public function testFindAllWithFiltersShouldSortByDefault(): void
     {
         $peopleGroup = new PeopleGroup(['limit' => 5]);

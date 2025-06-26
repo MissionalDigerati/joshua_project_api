@@ -1069,6 +1069,22 @@ class PeopleGroupsTest extends TestCase
         }
     }
 
+    public function testIndexShouldFilterByNomadic(): void
+    {
+        $expected = 'Y';
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            ['api_key' => $this->APIKey, 'nomadic' => $expected],
+            "filter_by_nomadic_on_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $peopleGroup) {
+            $this->assertEquals($expected, strtoupper($peopleGroup['Nomadic']));
+        }
+    }
+
     public function testIndexShouldAddProfileTextByDefault(): void
     {
         $response = $this->cachedRequest->get(
