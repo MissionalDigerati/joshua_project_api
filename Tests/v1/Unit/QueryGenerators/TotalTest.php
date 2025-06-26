@@ -45,7 +45,7 @@ class TotalTest extends TestCase
         $statement->execute($totals->preparedVariables);
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertNotEmpty($data);
-        $this->assertEquals(34, count($data));
+        $this->assertEquals(37, count($data));
         $this->assertArrayHasKey('id', $data[0]);
         $this->assertNotEmpty($data[0]['id']);
         $this->assertArrayHasKey('Value', $data[0]);

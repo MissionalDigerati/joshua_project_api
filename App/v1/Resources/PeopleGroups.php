@@ -490,6 +490,13 @@ $app->get(
  *        )
  *     ),
  *     @OA\Parameter(
+ *         name="nomadic",
+ *         description="A boolean (represented as a string Y or N) that states whether you want people groups that are nomadic.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
  *         name="page",
  *         description="The page of results to display.",
  *         in="query",

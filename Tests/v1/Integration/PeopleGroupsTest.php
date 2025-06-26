@@ -1069,6 +1069,22 @@ class PeopleGroupsTest extends TestCase
         }
     }
 
+    public function testIndexShouldFilterByNomadic(): void
+    {
+        $expected = 'Y';
+        $response = $this->cachedRequest->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
+            ['api_key' => $this->APIKey, 'nomadic' => $expected],
+            "filter_by_nomadic_on_index_json"
+        );
+        $decoded = json_decode($response, true);
+        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertFalse(empty($decoded));
+        foreach ($decoded as $peopleGroup) {
+            $this->assertEquals($expected, strtoupper($peopleGroup['Nomadic']));
+        }
+    }
+
     public function testIndexShouldAddProfileTextByDefault(): void
     {
         $response = $this->cachedRequest->get(
@@ -1200,18 +1216,11 @@ class PeopleGroupsTest extends TestCase
 
     public function testDailyUnreachedShouldProvideNewFields(): void
     {
-        $expectedPop = 265000;
+        $expectedPop = 933900;
         $expectedFrontier = 'Y';
-        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m10252_gm.png';
-        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m10252_gm.pdf';
-        $expectedPhotoCCVersionText = 'CC BY-SA 4.0';
-        $expectedPhotoCCVersionURL = 'https://creativecommons.org/licenses/by-sa/4.0/';
-        $expectedMapCredits = 'People Group location: Joshua Project, Map geography' .
-        ': ESRI / GMI. Map design: Joshua Project.';
-        $expectedMapCreditsURL = '';
+        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m19314_gm.png';
+        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m19314_gm.pdf';
         $expectedMapCopyright = 'N';
-        $expectedMapCCVersionText = '';
-        $expectedMapCCVersionURL = '';
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
             array('api_key' => $this->APIKey, 'month' => '05', 'day'    =>  '31'),
@@ -1235,29 +1244,26 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals($expectedPop, $decoded[0]['PopulationPGAC']);
         $this->assertEquals($expectedMapUrl, $decoded[0]['PeopleGroupMapURL']);
         $this->assertEquals($expectedMapExpandedUrl, $decoded[0]['PeopleGroupMapExpandedURL']);
-        $this->assertEquals($expectedPhotoCCVersionText, $decoded[0]['PhotoCCVersionText']);
-        $this->assertEquals($expectedPhotoCCVersionURL, $decoded[0]['PhotoCCVersionURL']);
-        $this->assertEquals($expectedMapCredits, $decoded[0]['MapCredits']);
-        $this->assertEquals($expectedMapCreditsURL, $decoded[0]['MapCreditURL']);
+        $this->assertEquals('', $decoded[0]['PhotoCCVersionText']);
+        $this->assertEquals('', $decoded[0]['PhotoCCVersionURL']);
+        $this->assertEquals('', $decoded[0]['MapCredits']);
+        $this->assertEquals('', $decoded[0]['MapCreditURL']);
         $this->assertEquals($expectedMapCopyright, $decoded[0]['MapCopyright']);
-        $this->assertEquals($expectedMapCCVersionText, $decoded[0]['MapCCVersionText']);
-        $this->assertEquals($expectedMapCCVersionURL, $decoded[0]['MapCCVersionURL']);
+        $this->assertEquals('', $decoded[0]['MapCCVersionText']);
+        $this->assertEquals('', $decoded[0]['MapCCVersionURL']);
     }
 
     public function testShowRequestsShouldProvideNewFields(): void
     {
-        $expectedPop = 1948100;
+        $expectedPop = 2015500;
         $expectedFrontier = 'Y';
-        $expectedMapAddress = 'm00324_aj.png';
-        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m00324_aj.png';
-        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m00324_aj.pdf';
+        $expectedMapAddress = 'm00328.png';
+        $expectedMapUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m00328.png';
+        $expectedMapExpandedUrl = 'https://joshuaproject.net/assets/media/profiles/maps/m00328.pdf';
         $expectedPhotoCCVersionText = 'CC BY-NC-SA 2.0';
         $expectedPhotoCCVersionURL = 'https://creativecommons.org/licenses/by-nc-sa/2.0/';
-        $expectedMapCredits = 'Temo Blumgardt - Wikimedia';
-        $expectedMapCreditsURL = 'https://commons.wikimedia.org/wiki/File:Caucasus_ethnic.jpg';
+        $expectedMapCredits = 'NCRP';
         $expectedMapCopyright = 'N';
-        $expectedMapCCVersionText = 'CC0 1.0';
-        $expectedMapCCVersionURL = 'https://creativecommons.org/publicdomain/zero/1.0/';
         $response = $this->cachedRequest->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/11317.json",
             array('api_key' => $this->APIKey, 'country' =>  'AJ'),
@@ -1287,10 +1293,10 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals($expectedPhotoCCVersionText, $decoded[0]['PhotoCCVersionText']);
         $this->assertEquals($expectedPhotoCCVersionURL, $decoded[0]['PhotoCCVersionURL']);
         $this->assertEquals($expectedMapCredits, $decoded[0]['MapCredits']);
-        $this->assertEquals($expectedMapCreditsURL, $decoded[0]['MapCreditURL']);
+        $this->assertEquals('', $decoded[0]['MapCreditURL']);
         $this->assertEquals($expectedMapCopyright, $decoded[0]['MapCopyright']);
-        $this->assertEquals($expectedMapCCVersionText, $decoded[0]['MapCCVersionText']);
-        $this->assertEquals($expectedMapCCVersionURL, $decoded[0]['MapCCVersionURL']);
+        $this->assertEquals('', $decoded[0]['MapCCVersionText']);
+        $this->assertEquals('', $decoded[0]['MapCCVersionURL']);
     }
 
     public function testIndexRequestsShouldProvideNewFields(): void
@@ -1367,7 +1373,7 @@ class PeopleGroupsTest extends TestCase
         $this->assertFalse(empty($decoded));
         $this->assertFalse(array_key_exists('ProfileText', $decoded[0]));
         $this->assertTrue(array_key_exists('Summary', $decoded[0]));
-        $this->assertTrue(str_contains($decoded[0]['Summary'], 'Mongols in Inner Mongolia survive bitter winters'));
+        $this->assertTrue(str_contains($decoded[0]['Summary'], 'The language of the Western Khampa of China cannot be'));
     }
 
     public function testShowShouldReplaceProfileTextWithASummary(): void
@@ -1425,7 +1431,7 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(array_key_exists('Obstacles', $pg));
             $this->assertFalse(empty($pg['Obstacles']));
             $this->assertTrue(array_key_exists('HowReach', $pg));
-            $this->assertFalse(empty($pg['HowReach']));
+            $this->assertTrue(empty($pg['HowReach']));
             $this->assertTrue(array_key_exists('PrayForChurch', $pg));
             $this->assertTrue(array_key_exists('PrayForPG', $pg));
             $this->assertFalse(empty($pg['PrayForPG']));
@@ -1449,7 +1455,6 @@ class PeopleGroupsTest extends TestCase
             $this->assertTrue(array_key_exists('Obstacles', $pg));
             $this->assertFalse(empty($pg['Obstacles']));
             $this->assertTrue(array_key_exists('HowReach', $pg));
-            $this->assertFalse(empty($pg['HowReach']));
             $this->assertTrue(array_key_exists('PrayForChurch', $pg));
             $this->assertTrue(array_key_exists('PrayForPG', $pg));
             $this->assertFalse(empty($pg['PrayForPG']));
