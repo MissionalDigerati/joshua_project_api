@@ -197,6 +197,14 @@
                     <td>The pronunciation of the natural name.</td>
                 </tr>
                 <tr>
+                    <td>Nomadic</td>
+                    <td>Is this group nomadic?</td>
+                </tr>
+                <tr>
+                    <td>NomadicTypeDescription</td>
+                    <td>Details about the people group's nomadic nature.</td>
+                </tr>
+                <tr>
                     <td>NTOnline</td>
                     <td>Does Bible.is have an online NT?</td>
                 </tr>

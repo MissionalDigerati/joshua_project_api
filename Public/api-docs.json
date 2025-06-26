@@ -952,6 +952,15 @@
                         }
                     },
                     {
+                        "name": "nomadic",
+                        "in": "query",
+                        "description": "A boolean (represented as a string Y or N) that states whether you want people groups that are nomadic.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "The page of results to display.",

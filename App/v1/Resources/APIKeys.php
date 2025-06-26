@@ -167,7 +167,6 @@ $app->post(
             'name' => $formData['name'],
             'email' => $formData['email'],
             'api_usage' => $usage,
-            'resource_used' =>  'API',
             'api_key' => $newAPIKey,
             'authorize_token' => $authorizeToken,
             'status' => 0,
@@ -176,9 +175,9 @@ $app->post(
             'apple_app_store' => $appleStoreUrl,
         ];
         $query = "INSERT INTO md_api_keys (name, email, api_usage, api_key, authorize_token, " .
-        "resource_used, status, website_url, google_play_store, apple_app_store, created) " .
+        "status, website_url, google_play_store, apple_app_store, created) " .
         "VALUES (:name, :email, :api_usage, :api_key, :authorize_token, " .
-        ":resource_used, :status, :website_url, :google_play_store, :apple_app_store, NOW())";
+        ":status, :website_url, :google_play_store, :apple_app_store, NOW())";
         try {
             $statement = $this->get('db')->prepare($query);
             $statement->execute($apiKeyValues);

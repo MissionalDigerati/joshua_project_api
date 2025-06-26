@@ -77,6 +77,7 @@ class PeopleGroup extends QueryGenerator
         'PercentChristianPC', 'NaturalName', 'NaturalPronunciation', 'PercentChristianPGAC', 'PercentEvangelical',
         'PercentEvangelicalPC', 'PercentEvangelicalPGAC', 'PCBuddhism', 'PCEthnicReligions', 'PCHinduism',
         'PCOtherSmall', 'RegionCode', 'PopulationPGAC', 'Frontier', 'MapAddress', 'JF as HasJesusFilm',
+        'COALESCE(Nomadic, "N") AS Nomadic', 'NomadicTypeDescription',
         'COALESCE(PhotoCCVersionText, "") AS PhotoCCVersionText',
         'COALESCE(PhotoCCVersionURL, "") AS PhotoCCVersionURL',
         'COALESCE(MapCredits, "") AS MapCredits', 'COALESCE(MapCreditURL, "") AS MapCreditURL',
@@ -105,7 +106,7 @@ class PeopleGroup extends QueryGenerator
         'PercentChristianPC', 'NaturalName', 'NaturalPronunciation', 'PercentChristianPGAC', 'PercentEvangelical',
         'PercentEvangelicalPC', 'PercentEvangelicalPGAC', 'PCBuddhism', 'PCEthnicReligions', 'PCHinduism',
         'PCOtherSmall', 'RegionCode', 'PopulationPGAC', 'Frontier', 'MapAddress', 'HasJesusFilm', 'MapAddress',
-        'MapAddressExpanded', 'PhotoAddress', 'JF', 'Window1040', 'HasAudioRecordings'
+        'MapAddressExpanded', 'PhotoAddress', 'JF', 'Window1040', 'HasAudioRecordings', 'Nomadic',
     ];
     /**
      * The database table to pull the data from.
@@ -355,6 +356,18 @@ class PeopleGroup extends QueryGenerator
                 $this->providedParams['least_reached'],
                 'LeastReached',
                 'least_reached'
+            );
+            $appendAndOnWhere = true;
+        }
+        if ($this->paramExists('nomadic')) {
+            $this->validator->stringLength($this->providedParams['nomadic'], 1);
+            if ($appendAndOnWhere === true) {
+                $where .= " AND ";
+            }
+            $where .= $this->generateWhereStatementForBoolean(
+                $this->providedParams['nomadic'],
+                'Nomadic',
+                'nomadic'
             );
             $appendAndOnWhere = true;
         }
