@@ -24,6 +24,7 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
+use Doctrine\DBAL\Connection;
 use \QueryGenerators\Country;
 use PHPUnit\Framework\TestCase;
 
@@ -34,7 +35,7 @@ use PHPUnit\Framework\TestCase;
  */
 class CountryTest extends TestCase
 {
-    private $db;
+    private Connection $db;
 
     public function setUp(): void
     {
@@ -43,8 +44,8 @@ class CountryTest extends TestCase
 
     public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
-        $data = array('country' => 'HORSE#%', 'state' => 'CA%$');
-        $expected = array('country' => 'HORSE', 'state' => 'CA');
+        $data = ['country' => 'HORSE#%', 'state' => 'CA%$'];
+        $expected = ['country' => 'HORSE', 'state' => 'CA'];
         $reflectionOfCountry = new \ReflectionClass('\QueryGenerators\Country');
         $providedParams = $reflectionOfCountry->getProperty('providedParams');
         $providedParams->setAccessible(true);
@@ -54,13 +55,15 @@ class CountryTest extends TestCase
 
     public function testFindByIdShouldReturnTheCorrectCountry(): void
     {
-        $expected = array('id'  =>  'BE');
+        $expected = ['id'  =>  'BE'];
         $expectedCountryName = 'Belgium';
         $country = new Country($expected);
         $country->findById();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertEquals($expected['id'], $data[0]['ROG3']);
         $this->assertEquals($expectedCountryName, $data[0]['Ctry']);
     }
@@ -70,11 +73,13 @@ class CountryTest extends TestCase
         // Limit is 250, but there is only 238 countries
         $expectedCount = 238;
         $expectedFirstCountry = 'Afghanistan';
-        $country = new Country(array());
+        $country = new Country([]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertEquals($expectedCount, count($data));
         $this->assertEquals($expectedFirstCountry, $data[0]['Ctry']);
     }
@@ -82,22 +87,26 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldLimitedResults(): void
     {
         $expectedCount = 10;
-        $country = new Country(array('limit' => $expectedCount));
+        $country = new Country(['limit' => $expectedCount]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertEquals($expectedCount, count($data));
     }
 
     public function testFindAllWithFiltersShouldFilterByIds(): void
     {
-        $expectedIDs = array('re', 'qa', 'qo');
-        $country = new Country(array('ids' => join('|', $expectedIDs)));
+        $expectedIDs = ['re', 'qa', 'qo'];
+        $country = new Country(['ids' => join('|', $expectedIDs)]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         foreach ($data as $countryData) {
             $this->assertTrue(in_array(strtolower($countryData['ROG3']), $expectedIDs));
         }
@@ -105,12 +114,14 @@ class CountryTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByContinents(): void
     {
-        $expectedContinents = array('lam', 'sop');
-        $country = new Country(array('continents' => join('|', $expectedContinents)));
+        $expectedContinents = ['lam', 'sop'];
+        $country = new Country(['continents' => join('|', $expectedContinents)]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         foreach ($data as $countryData) {
             $this->assertTrue(in_array(strtolower($countryData['ROG2']), $expectedContinents));
         }
@@ -118,12 +129,14 @@ class CountryTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByRegions(): void
     {
-        $expectedRegions = array(1, 2);
-        $country = new Country(array('regions' => join('|', $expectedRegions)));
+        $expectedRegions = [1, 2];
+        $country = new Country(['regions' => join('|', $expectedRegions)]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         foreach ($data as $countryData) {
             $this->assertTrue(in_array($countryData['RegionCode'], $expectedRegions));
         }
@@ -132,11 +145,13 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByWindow1040(): void
     {
         $expectedWindow1040 = 'y';
-        $country = new Country(array('window1040' => $expectedWindow1040));
+        $country = new Country(['window1040' => $expectedWindow1040]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         foreach ($data as $countryData) {
             $this->assertEquals(strtolower($countryData['Window1040']), $expectedWindow1040);
         }
@@ -144,12 +159,14 @@ class CountryTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByPrimaryLanguages(): void
     {
-        $expectedPrimaryLanguages = array('por', 'eng');
-        $country = new Country(array('primary_languages' => join('|', $expectedPrimaryLanguages)));
+        $expectedPrimaryLanguages = ['por', 'eng'];
+        $country = new Country(['primary_languages' => join('|', $expectedPrimaryLanguages)]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         foreach ($data as $countryData) {
             $this->assertTrue(in_array(strtolower($countryData['ROL3OfficialLanguage']), $expectedPrimaryLanguages));
         }
@@ -159,11 +176,13 @@ class CountryTest extends TestCase
     {
         $expectedMin = 0;
         $expectedMax = 1000;
-        $country = new Country(array('population' => $expectedMin."-".$expectedMax));
+        $country = new Country(['population' => $expectedMin."-".$expectedMax]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertLessThanOrEqual($expectedMax, intval($countryData['Population']));
@@ -174,11 +193,13 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByExactPopulation(): void
     {
         $expectedPopulation = 44000;
-        $country = new Country(array('population' => $expectedPopulation));
+        $country = new Country(['population' => $expectedPopulation]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertEquals($expectedPopulation, intval($countryData['Population']));
@@ -187,16 +208,18 @@ class CountryTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByPrimaryReligions(): void
     {
-        $expectedReligions = array(2 => 'buddhism', 6 => 'islam');
+        $expectedReligions = [2 => 'buddhism', 6 => 'islam'];
         $country = new Country(
-            array(
+            [
                 'primary_religions' => join('|', array_keys($expectedReligions))
-            )
+            ]
         );
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertTrue(in_array(strtolower($countryData['ReligionPrimary']), array_values($expectedReligions)));
@@ -207,12 +230,14 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByJPScale(): void
     {
         $expectedJPScales = "1|2";
-        $expectedJPScalesArray = array(1, 2);
-        $country = new Country(array('jpscale' => $expectedJPScales));
+        $expectedJPScalesArray = [1, 2];
+        $country = new Country(['jpscale' => $expectedJPScales]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertTrue(in_array(floatval($countryData['JPScaleCtry']), $expectedJPScalesArray));
@@ -222,11 +247,13 @@ class CountryTest extends TestCase
     public function testCountryQueryGeneratorShouldSetJPScaleTextToUnreached(): void
     {
         $expectedJPScaleText = "unreached";
-        $country = new Country(array('jpscale' => '1'));
+        $country = new Country(['jpscale' => '1']);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertEquals(strtolower($countryData['JPScaleText']), $expectedJPScaleText);
@@ -236,11 +263,13 @@ class CountryTest extends TestCase
     public function testCountryQueryGeneratorShouldSetJPScaleTextToMinimallyReached(): void
     {
         $expectedJPScaleText = "minimally reached";
-        $country = new Country(array('jpscale' => '2'));
+        $country = new Country(['jpscale' => '2']);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertEquals(strtolower($countryData['JPScaleText']), $expectedJPScaleText);
@@ -250,11 +279,13 @@ class CountryTest extends TestCase
     public function testCountryQueryGeneratorShouldSetJPScaleTextToSuperficiallyReached(): void
     {
         $expectedJPScaleText = "superficially reached";
-        $country = new Country(array('jpscale' => '3'));
+        $country = new Country(['jpscale' => '3']);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertEquals(strtolower($countryData['JPScaleText']), $expectedJPScaleText);
@@ -264,11 +295,13 @@ class CountryTest extends TestCase
     public function testCountryQueryGeneratorShouldSetJPScaleTextToPartiallyReached(): void
     {
         $expectedJPScaleText = "partially reached";
-        $country = new Country(array('jpscale' => '4'));
+        $country = new Country(['jpscale' => '4']);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertEquals(strtolower($countryData['JPScaleText']), $expectedJPScaleText);
@@ -278,11 +311,13 @@ class CountryTest extends TestCase
     public function testCountryQueryGeneratorShouldSetJPScaleTextToSignificantlyReached(): void
     {
         $expectedJPScaleText = "significantly reached";
-        $country = new Country(array('jpscale' => '5'));
+        $country = new Country(['jpscale' => '5']);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertEquals(strtolower($countryData['JPScaleText']), $expectedJPScaleText);
@@ -292,11 +327,13 @@ class CountryTest extends TestCase
     public function testCountryQueryGeneratorShouldSetJPScaleImageURLCorrectly(): void
     {
         $expectedJPScaleText = "established church";
-        $country = new Country(array('jpscale' => '4'));
+        $country = new Country(['jpscale' => '4']);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $expectedImageURL = "https://joshuaproject.net/assets/img/gauge/gauge-".round(intval($countryData['JPScaleCtry'])).".png";
@@ -308,14 +345,16 @@ class CountryTest extends TestCase
     {
         $min = 2;
         $max = 3;
-        $country = new Country(array(
+        $country = new Country([
             'cnt_primary_languages' => $min . '-' . $max,
             'limit' =>  5
-        ));
+        ]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertGreaterThanOrEqual($min, $countryData['CntPrimaryLanguages']);
@@ -326,14 +365,16 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByCntPrimaryLanguagesAtValue(): void
     {
         $value = 4;
-        $country = new Country(array(
+        $country = new Country([
             'cnt_primary_languages' => $value,
             'limit' =>  5
-        ));
+        ]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertEquals($value, $countryData['CntPrimaryLanguages']);
@@ -344,14 +385,16 @@ class CountryTest extends TestCase
     {
         $min = 1;
         $max = 2;
-        $country = new Country(array(
+        $country = new Country([
             'translation_unspecified' => $min . '-' . $max,
             'limit' =>  5
-        ));
+        ]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertGreaterThanOrEqual($min, $countryData['TranslationUnspecified']);
@@ -362,14 +405,16 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByTranslationUnspecifiedAtValue(): void
     {
         $value = 1;
-        $country = new Country(array(
+        $country = new Country([
             'translation_unspecified' => $value,
             'limit' =>  5
-        ));
+        ]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertEquals($value, $countryData['TranslationUnspecified']);
@@ -380,14 +425,16 @@ class CountryTest extends TestCase
     {
         $min = 1;
         $max = 2;
-        $country = new Country(array(
+        $country = new Country([
             'translation_needed' => $min . '-' . $max,
             'limit' =>  5
-        ));
+        ]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertGreaterThanOrEqual($min, $countryData['TranslationNeeded']);
@@ -398,14 +445,16 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByTranslationNeededAtValue(): void
     {
         $value = 1;
-        $country = new Country(array(
+        $country = new Country([
             'translation_needed' => $value,
             'limit' =>  5
-        ));
+        ]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertEquals($value, $countryData['TranslationNeeded']);
@@ -416,14 +465,16 @@ class CountryTest extends TestCase
     {
         $min = 3;
         $max = 4;
-        $country = new Country(array(
+        $country = new Country([
             'translation_started' => $min . '-' . $max,
             'limit' =>  5
-        ));
+        ]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertGreaterThanOrEqual($min, $countryData['TranslationStarted']);
@@ -434,14 +485,16 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByTranslationStartedAtValue(): void
     {
         $value = 1;
-        $country = new Country(array(
+        $country = new Country([
             'translation_started' => $value,
             'limit' =>  5
-        ));
+        ]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertEquals($value, $countryData['TranslationStarted']);
@@ -452,14 +505,16 @@ class CountryTest extends TestCase
     {
         $min = 2;
         $max = 3;
-        $country = new Country(array(
+        $country = new Country([
             'bible_portions' => $min . '-' . $max,
             'limit' =>  5
-        ));
+        ]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertGreaterThanOrEqual($min, $countryData['BiblePortions']);
@@ -470,14 +525,16 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByBiblePortionsAtValue(): void
     {
         $value = 0;
-        $country = new Country(array(
+        $country = new Country([
             'bible_portions' => $value,
             'limit' =>  5
-        ));
+        ]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertEquals($value, $countryData['BiblePortions']);
@@ -488,14 +545,16 @@ class CountryTest extends TestCase
     {
         $min = 3;
         $max = 4;
-        $country = new Country(array(
+        $country = new Country(getParams: [
             'bible_new_testament' => $min . '-' . $max,
             'limit' =>  5
-        ));
+        ]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertGreaterThanOrEqual($min, $countryData['BibleNewTestament']);
@@ -506,14 +565,16 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByBibleNewTestamentAtValue(): void
     {
         $value = 1;
-        $country = new Country(array(
+        $country = new Country([
             'bible_new_testament' => $value,
             'limit' =>  5
-        ));
+        ]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertEquals($value, $countryData['BibleNewTestament']);
@@ -524,14 +585,16 @@ class CountryTest extends TestCase
     {
         $min = 3;
         $max = 4;
-        $country = new Country(array(
+        $country = new Country([
             'bible_complete' => $min . '-' . $max,
             'limit' =>  5
-        ));
+        ]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertGreaterThanOrEqual($min, $countryData['BibleComplete']);
@@ -542,14 +605,16 @@ class CountryTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByBibleCompleteAtValue(): void
     {
         $value = 18;
-        $country = new Country(array(
+        $country = new Country([
             'bible_complete' => $value,
             'limit' =>  5
-        ));
+        ]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertEquals($value, $countryData['BibleComplete']);
@@ -560,11 +625,13 @@ class CountryTest extends TestCase
     {
         $expectedMin = 0;
         $expectedMax = 1000;
-        $country = new Country(array('pop_in_unreached' => $expectedMin."-".$expectedMax));
+        $country = new Country(['pop_in_unreached' => $expectedMin."-".$expectedMax]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertLessThanOrEqual($expectedMax, intval($countryData['PoplPeoplesLR']));
@@ -576,11 +643,13 @@ class CountryTest extends TestCase
     {
         $expectedMin = 1000;
         $expectedMax = 3000;
-        $country = new Country(array('pop_in_frontier' => $expectedMin."-".$expectedMax));
+        $country = new Country(['pop_in_frontier' => $expectedMin."-".$expectedMax]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertLessThanOrEqual($expectedMax, intval($countryData['PoplPeoplesFPG']));
@@ -592,11 +661,13 @@ class CountryTest extends TestCase
     {
         $expectedMin = 15;
         $expectedMax = 45;
-        $country = new Country(array('pc_buddhist' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(['pc_buddhist' => $expectedMin . '-' . $expectedMax]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertTrue(array_key_exists('PercentBuddhism', $countryData));
@@ -609,11 +680,13 @@ class CountryTest extends TestCase
     {
         $expectedMin = 30;
         $expectedMax = 40;
-        $country = new Country(array('pc_christianity' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(['pc_christianity' => $expectedMin . '-' . $expectedMax]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertTrue(array_key_exists('PercentChristianity', $countryData));
@@ -626,11 +699,13 @@ class CountryTest extends TestCase
     {
         $expectedMin = 10;
         $expectedMax = 45;
-        $country = new Country(array('pc_ethnic_religion' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(['pc_ethnic_religion' => $expectedMin . '-' . $expectedMax]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertTrue(array_key_exists('PercentEthnicReligions', $countryData));
@@ -643,11 +718,13 @@ class CountryTest extends TestCase
     {
         $expectedMin = 20;
         $expectedMax = 50;
-        $country = new Country(array('pc_evangelical' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(['pc_evangelical' => $expectedMin . '-' . $expectedMax]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertTrue(array_key_exists('PercentEvangelical', $countryData));
@@ -660,11 +737,13 @@ class CountryTest extends TestCase
     {
         $expectedMin = 50;
         $expectedMax = 90;
-        $country = new Country(array('pc_hindu' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(['pc_hindu' => $expectedMin . '-' . $expectedMax]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertTrue(array_key_exists('PercentHinduism', $countryData));
@@ -677,11 +756,13 @@ class CountryTest extends TestCase
     {
         $expectedMin = 50;
         $expectedMax = 90;
-        $country = new Country(array('pc_islam' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(['pc_islam' => $expectedMin . '-' . $expectedMax]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertTrue(array_key_exists('PercentIslam', $countryData));
@@ -694,11 +775,13 @@ class CountryTest extends TestCase
     {
         $expectedMin = 43;
         $expectedMax = 69;
-        $country = new Country(array('pc_non_religious' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(['pc_non_religious' => $expectedMin . '-' . $expectedMax]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertTrue(array_key_exists('PercentNonReligious', $countryData));
@@ -711,11 +794,13 @@ class CountryTest extends TestCase
     {
         $expectedMin = 3;
         $expectedMax = 5;
-        $country = new Country(array('pc_other_religion' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(['pc_other_religion' => $expectedMin . '-' . $expectedMax]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertTrue(array_key_exists('PercentOtherSmall', $countryData));
@@ -728,11 +813,13 @@ class CountryTest extends TestCase
     {
         $expectedMin = 0;
         $expectedMax = 0.004;
-        $country = new Country(array('pc_unknown' => $expectedMin . '-' . $expectedMax));
+        $country = new Country(['pc_unknown' => $expectedMin . '-' . $expectedMax]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $countryData) {
             $this->assertTrue(array_key_exists('PercentUnknown', $countryData));
@@ -745,9 +832,11 @@ class CountryTest extends TestCase
     {
         $country = new Country(['sort_field' => 'Ctry', 'sort_direction' => 'DESC', 'limit' => 10]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $sorted = $data;
         usort($sorted, fn ($a, $b) => strcmp($b['Ctry'], $a['Ctry']));
         $this->assertEquals($sorted, $data);
@@ -757,9 +846,11 @@ class CountryTest extends TestCase
     {
         $country = new Country(['limit' => 10]);
         $country->findAllWithFilters();
-        $statement = $this->db->prepare($country->preparedStatement);
-        $statement->execute($country->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $country->preparedStatement,
+            $country->preparedVariables,
+            $country->preparedVariableTypes
+        );
         $sorted = $data;
         usort($sorted, fn ($a, $b) => strcmp($a['Ctry'], $b['Ctry']));
         $this->assertEquals($sorted, $data);
