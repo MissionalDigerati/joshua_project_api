@@ -127,7 +127,7 @@ $app->get(
                     $response
                 );
             }
-        } catch (DBALException $e) {
+        } catch (DBALException | Exception $e) {
             error_log("Database error in Continents: " . $e->getMessage());
             return $this->get('errorResponder')->get(
                 500,

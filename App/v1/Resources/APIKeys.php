@@ -43,8 +43,8 @@ $app->get(
         $query = "SELECT * FROM md_api_keys ORDER BY created DESC";
         try {
             $api_keys = $this->get('db')->fetchAllAssociative($query);
-        } catch (DBALException $e) {
-            error_log("DBALException in /api_keys: " . $e->getMessage());
+        } catch (DBALException | Exception $e) {
+            error_log("Exception in /api_keys: " . $e->getMessage());
             exit;
         }
         return $this->get('view')->render(
@@ -85,8 +85,8 @@ $app->put(
                     'state' => $state
                 ]
             );
-        } catch (DBALException $e) {
-            error_log("DBALException in /api_keys/{id}: " . $e->getMessage());
+        } catch (DBALException | Exception $e) {
+            error_log("Exception in /api_keys/{id}: " . $e->getMessage());
             return $response
                 ->withHeader('Location', "/api_keys?saving_error=true")
                 ->withStatus(302);
@@ -180,8 +180,8 @@ $app->post(
         ":status, :website_url, :google_play_store, :apple_app_store, NOW())";
         try {
             $this->get('db')->executeStatement($query, $apiKeyValues);
-        } catch (DBALException $e) {
-            error_log("DBALException in /api_keys/new: " . $e->getMessage());
+        } catch (DBALException | Exception $e) {
+            error_log("Exception in /api_keys/new: " . $e->getMessage());
             return $response
                 ->withHeader('Location', "/?saving_error=true")
                 ->withStatus(302);
