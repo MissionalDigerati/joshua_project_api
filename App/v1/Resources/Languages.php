@@ -24,6 +24,7 @@
 
 declare(strict_types=1);
 
+use Doctrine\DBAL\Exception as DBALException;
 use QueryGenerators\Language;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -99,9 +100,11 @@ $app->get(
         try {
             $lang = new Language(['id' => $languageId]);
             $lang->findById();
-            $statement = $this->get('db')->prepare($lang->preparedStatement);
-            $statement->execute($lang->preparedVariables);
-            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $data = $this->get('db')->fetchAllAssociative(
+                $lang->preparedStatement,
+                $lang->preparedVariables,
+                $lang->preparedVariableTypes
+            );
             if (empty($data)) {
                 return $this->get('errorResponder')->get(
                     404,
@@ -111,7 +114,8 @@ $app->get(
                     $response
                 );
             }
-        } catch (Exception $e) {
+        } catch (DBALException | Exception $e) {
+            error_log("Database error fetching language by ID: {$e->getMessage()}");
             return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),
@@ -317,10 +321,13 @@ $app->get(
         try {
             $lang = new Language($params);
             $lang->findAllWithFilters();
-            $statement = $this->get('db')->prepare($lang->preparedStatement);
-            $statement->execute($lang->preparedVariables);
-            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
+            $data = $this->get('db')->fetchAllAssociative(
+                $lang->preparedStatement,
+                $lang->preparedVariables,
+                $lang->preparedVariableTypes
+            );
+        } catch (DBALException | Exception $e) {
+            error_log("Database error fetching languages with filters: {$e->getMessage()}");
             return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),

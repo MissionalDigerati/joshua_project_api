@@ -24,6 +24,7 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Integration;
 
+use Doctrine\DBAL\Connection;
 use Tests\Support\GuzzleHttpClient;
 use PHPUnit\Framework\TestCase;
 
@@ -36,15 +37,15 @@ use PHPUnit\Framework\TestCase;
 class LanguagesTest extends TestCase
 {
 
-    public $httpClient;
+    public GuzzleHttpClient $httpClient;
 
-    private $db;
+    private Connection $db;
 
-    private $APIKey = '';
+    private string $APIKey = '';
 
-    private $APIVersion;
+    private string $APIVersion;
 
-    private $siteURL;
+    private string $siteURL;
 
     public function setUp(): void
     {
@@ -65,7 +66,7 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages/aar.json",
-            array(),
+            [],
             "aar_up_json"
         );
         $this->assertEquals(401, $this->httpClient->responseCode);
@@ -73,7 +74,10 @@ class LanguagesTest extends TestCase
 
     public function testShowRequestsShouldRefuseAccessWithoutAnActiveAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages/aar.json",
             array('api_key' => $this->APIKey),
@@ -84,7 +88,10 @@ class LanguagesTest extends TestCase
 
     public function testShowRequestsShouldRefuseAccessWithSuspendedAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages/aar.json",
             array('api_key' => $this->APIKey),
@@ -97,7 +104,7 @@ class LanguagesTest extends TestCase
     {
         $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages/aar.json",
-            array('api_key' => 'BADKEY'),
+            ['api_key' => 'BADKEY'],
             "bad_key_json"
         );
         $this->assertEquals(401, $this->httpClient->responseCode);
@@ -107,7 +114,7 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages/aar.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_accessible_in_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -118,7 +125,7 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages/aar.xml",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_accessible_in_xml"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -129,7 +136,7 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages/1223.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_with_bad_id"
         );
         $decoded = json_decode($response, true);
@@ -146,7 +153,7 @@ class LanguagesTest extends TestCase
         $expectedHubCountry = 'ethiopia';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages/" . $expectedLanguageCode . ".json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_returns_appropriate_language"
         );
         $decodedResponse = json_decode($response, true);
@@ -160,7 +167,7 @@ class LanguagesTest extends TestCase
         $expectedLanguageCode = 'aar';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages/" . $expectedLanguageCode . ".json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_should_not_return_removed_show"
         );
         $decoded = json_decode($response, true);
@@ -179,7 +186,7 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(),
+            [],
             "index_lang_up_test_json"
         );
         $decoded = json_decode($response, true);
@@ -190,10 +197,13 @@ class LanguagesTest extends TestCase
 
     public function testIndexRequestsShouldRefuseAccessWithoutAnActiveAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "index_non_active_key_json"
         );
         $this->assertEquals(401, $this->httpClient->responseCode);
@@ -201,10 +211,13 @@ class LanguagesTest extends TestCase
 
     public function testIndexRequestsShouldRefuseAccessWithSuspendedAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "index_suspended_key_json"
         );
         $this->assertEquals(401, $this->httpClient->responseCode);
@@ -214,7 +227,7 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array('api_key' => 'BADKEY'),
+            ['api_key' => 'BADKEY'],
             "index_bad_key_json"
         );
         $this->assertEquals(401, $this->httpClient->responseCode);
@@ -226,7 +239,7 @@ class LanguagesTest extends TestCase
         $expectedFirstLanguage = "a'ou";
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "should_return_language_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -242,7 +255,7 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "should_not_return_removed_fields_index_json"
         );
         $decoded = json_decode($response, true);
@@ -262,10 +275,10 @@ class LanguagesTest extends TestCase
         $expectedLimit = 10;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'   =>  $this->APIKey,
                 'limit'     =>  $expectedLimit
-            ),
+            ],
             "should_return_language_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -279,10 +292,10 @@ class LanguagesTest extends TestCase
         $expectedIds = 'bzw|bjf';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'   =>  $this->APIKey,
                 'ids'     =>  $expectedIds
-            ),
+            ],
             "should_return_language_by_ids_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -298,10 +311,10 @@ class LanguagesTest extends TestCase
         $expectedIds = 'bzwp';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'   =>  $this->APIKey,
                 'ids'     =>  $expectedIds
-            ),
+            ],
             "should_return_language_by_wrong_ids_index_json"
         );
         $decoded = json_decode($response, true);
@@ -314,10 +327,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'               =>  $this->APIKey,
                 'has_new_testament'     =>  'Y'
-            ),
+            ],
             "should_return_language_by_ids_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -332,10 +345,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'               =>  $this->APIKey,
                 'has_new_testament'     =>  'NNN'
-            ),
+            ],
             "should_return_language_by_wrong_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -348,10 +361,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'           =>  $this->APIKey,
                 'has_portions'      =>  'Y'
-            ),
+            ],
             "should_return_language_with_portions_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -366,10 +379,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'               =>  $this->APIKey,
                 'has_portions'          =>  'NNN'
-            ),
+            ],
             "should_return_language_by_has_portions_wrong_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -382,10 +395,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'                   =>  $this->APIKey,
                 'has_completed_bible'      =>  'Y'
-            ),
+            ],
             "should_return_language_with_complete_bible_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -400,10 +413,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'               =>  $this->APIKey,
                 'has_completed_bible'   =>  'B'
-            ),
+            ],
             "should_return_language_by_has_completed_wrong_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -416,10 +429,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'               =>  $this->APIKey,
                 'needs_translation_questionable'   =>  'G'
-            ),
+            ],
             "should_return_language_by_has_questionable_wrong_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -432,10 +445,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'     =>  $this->APIKey,
                 'has_audio'   =>  'Y'
-            ),
+            ],
             "should_return_language_with_audio_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -450,10 +463,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'     =>  $this->APIKey,
                 'has_audio'   =>  'T'
-            ),
+            ],
             "should_return_language_by_has_audio_wrong_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -466,10 +479,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'           =>  $this->APIKey,
                 'has_jesus_film'    =>  'Y'
-            ),
+            ],
             "should_return_language_with_jesus_film_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -484,10 +497,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'           =>  $this->APIKey,
                 'has_jesus_film'    =>  'Q'
-            ),
+            ],
             "should_return_language_by_has_jesus_film_wrong_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -501,10 +514,10 @@ class LanguagesTest extends TestCase
         $expectedCountries = array('af', 'cn');
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'           =>  $this->APIKey,
                 'countries'         =>  implode("|", $expectedCountries)
-            ),
+            ],
             "should_return_language_based_on_country_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -519,10 +532,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'           =>  $this->APIKey,
                 'primary_religions' =>  '6|4'
-            ),
+            ],
             "should_return_language_based_on_primary_religion_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -537,10 +550,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'           =>  $this->APIKey,
                 'primary_religions' =>  '150'
-            ),
+            ],
             "should_return_language_by_primary_religions_wrong_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -553,10 +566,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'           =>  $this->APIKey,
                 'jpscale'           =>  '2|3'
-            ),
+            ],
             "should_return_language_based_on_jpscale_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -571,10 +584,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'           =>  $this->APIKey,
                 'jpscale'           =>  '150'
-            ),
+            ],
             "should_return_language_by_jpscale_wrong_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -590,10 +603,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'           =>  $this->APIKey,
                 'least_reached'     =>  'n'
-            ),
+            ],
             "should_return_language_based_on_least_reached_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -608,10 +621,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'           =>  $this->APIKey,
                 'least_reached'     =>  'G'
-            ),
+            ],
             "should_return_language_by_least_reached_wrong_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -624,10 +637,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'           =>  $this->APIKey,
                 'pc_adherent'    =>  '35-61'
-            ),
+            ],
             "should_return_language_based_on_pc_adherent_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -643,10 +656,10 @@ class LanguagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
-            array(
+            [
                 'api_key'           =>  $this->APIKey,
                 'pc_evangelical'    =>  '16-40'
-            ),
+            ],
             "should_return_language_based_on_pc_evangelical_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
