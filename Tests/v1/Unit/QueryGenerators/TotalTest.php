@@ -24,11 +24,12 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
 class TotalTest extends TestCase
 {
-    private $db;
+    private Connection $db;
 
     public function setUp(): void
     {
@@ -41,9 +42,11 @@ class TotalTest extends TestCase
         $totals->all();
         $this->assertNotEmpty($totals->preparedStatement);
         $this->assertEmpty($totals->preparedVariables);
-        $statement = $this->db->prepare($totals->preparedStatement);
-        $statement->execute($totals->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $totals->preparedStatement,
+            $totals->preparedVariables,
+            $totals->preparedVariableTypes
+        );
         $this->assertNotEmpty($data);
         $this->assertEquals(37, count($data));
         $this->assertArrayHasKey('id', $data[0]);
@@ -66,9 +69,11 @@ class TotalTest extends TestCase
         $totals->findById();
         $this->assertNotEmpty($totals->preparedStatement);
         $this->assertNotEmpty($totals->preparedVariables);
-        $statement = $this->db->prepare($totals->preparedStatement);
-        $statement->execute($totals->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $totals->preparedStatement,
+            $totals->preparedVariables,
+            $totals->preparedVariableTypes
+        );
         $this->assertNotEmpty($data);
         $this->assertEquals(1, count($data));
         $this->assertArrayHasKey('id', $data[0]);
@@ -85,9 +90,11 @@ class TotalTest extends TestCase
         $totals->all();
         $this->assertNotEmpty($totals->preparedStatement);
         $this->assertEmpty($totals->preparedVariables);
-        $statement = $this->db->prepare($totals->preparedStatement);
-        $statement->execute($totals->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $totals->preparedStatement,
+            $totals->preparedVariables,
+            $totals->preparedVariableTypes
+        );
         $this->assertNotEmpty($data);
         $ids = array_column($data, 'id');
         $this->assertNotContains('CntPeopCtryLess10K', $ids);
@@ -110,9 +117,11 @@ class TotalTest extends TestCase
             $totals->findById();
             $this->assertNotEmpty($totals->preparedStatement);
             $this->assertNotEmpty($totals->preparedVariables);
-            $statement = $this->db->prepare($totals->preparedStatement);
-            $statement->execute($totals->preparedVariables);
-            $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            $data = $this->db->fetchAllAssociative(
+                $totals->preparedStatement,
+                $totals->preparedVariables,
+                $totals->preparedVariableTypes
+            );
             $this->assertEmpty($data);
         }
     }
