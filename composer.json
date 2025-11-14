@@ -19,7 +19,7 @@
         "slim/slim": "4.*",
         "phpmailer/phpmailer": "^6.5",
         "slim/php-view": "^3.0",
-        "tuupola/slim-basic-auth": "3.3.1",
+        "tuupola/slim-basic-auth": "^3.3.1",
         "vlucas/phpdotenv": "^4.3",
         "slim/psr7": "^1.6",
         "slim/http": "^1.3",
