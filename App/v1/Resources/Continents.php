@@ -115,7 +115,8 @@ $app->get(
             $continent->findById();
             $data = $this->get('db')->fetchAllAssociative(
                 $continent->preparedStatement,
-                $continent->preparedVariables
+                $continent->preparedVariables,
+                $continent->preparedVariableTypes
             );
             if (empty($data)) {
                 return $this->get('errorResponder')->get(
