@@ -41,7 +41,7 @@ class ContinentsTest extends TestCase
      *
      * @var GuzzleHttpClient
      */
-    public $httpClient;
+    public GuzzleHttpClient $httpClient;
     /**
      * The DBAL database connection object
      *
@@ -54,21 +54,21 @@ class ContinentsTest extends TestCase
      * @var string
      * @access private
      **/
-    private $APIVersion;
+    private string $APIVersion;
     /**
      * The URL for the testing server
      *
      * @var string
      * @access private
      **/
-    private $siteURL;
+    private string $siteURL;
     /**
      * The APIKey to access the API
      *
      * @var string
      * @access private
      **/
-    private $APIKey = '';
+    private string $APIKey = '';
     /**
      * Set up the test class
      *
