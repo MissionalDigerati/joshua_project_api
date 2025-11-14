@@ -17,7 +17,7 @@
     "require": {
         "phptoolbox/phptoolbox": "^2.0",
         "slim/slim": "4.*",
-        "phpmailer/phpmailer": "^6.5",
+        "phpmailer/phpmailer": "^7.0",
         "slim/php-view": "^3.0",
         "tuupola/slim-basic-auth": "^3.3.1",
         "vlucas/phpdotenv": "^5.6.0",
