@@ -24,7 +24,7 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,9 +37,9 @@ class ContinentTest extends TestCase
     /**
      * The PDO database connection object
      *
-     * @var PDODatabaseConnect
+     * @var Connection
      */
-    private $db;
+    private Connection $db;
     /**
      * Setup the test methods
      *
@@ -60,8 +60,8 @@ class ContinentTest extends TestCase
      */
     public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
-        $data = array('continent' => 'HORSE#%', 'test' => 'CA%$');
-        $expected = array('continent' => 'HORSE', 'test' => 'CA');
+        $data = ['continent' => 'HORSE#%', 'test' => 'CA%$'];
+        $expected = ['continent' => 'HORSE', 'test' => 'CA'];
         $reflectionOfContinent = new \ReflectionClass('\QueryGenerators\Continent');
         $providedParams = $reflectionOfContinent->getProperty('providedParams');
         $providedParams->setAccessible(true);
@@ -77,13 +77,15 @@ class ContinentTest extends TestCase
      **/
     public function testFindByIdShouldReturnCorrectContinent(): void
     {
-        $expected = array('id'  =>  'lam');
+        $expected = ['id'  =>  'lam'];
         $expectedContinent = 'south america';
         $continent = new \QueryGenerators\Continent($expected);
         $continent->findById();
-        $statement = $this->db->prepare($continent->preparedStatement);
-        $statement->execute($continent->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $continent->preparedStatement,
+            $continent->preparedVariables,
+            $continent->preparedVariableTypes
+        );
         $this->assertEquals($expected['id'], strtolower($data[0]['ROG2']));
         $this->assertEquals($expectedContinent, strtolower($data[0]['Continent']));
     }
@@ -99,7 +101,7 @@ class ContinentTest extends TestCase
     public function testFindByIdShouldThrowErrorIfNoIdFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $expected = array();
+        $expected = [];
         $continent = new \QueryGenerators\Continent($expected);
         $continent->findById();
     }
@@ -115,7 +117,7 @@ class ContinentTest extends TestCase
     public function testFindByIdShouldThrowErrorIfIdInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $expected = array('id' => 'WWQQ');
+        $expected = ['id' => 'WWQQ'];
         $continent = new \QueryGenerators\Continent($expected);
         $continent->findById();
     }
@@ -131,7 +133,7 @@ class ContinentTest extends TestCase
     public function testFindByIdShouldThrowErrorIfIdNotAcceptable(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $expected = array('id' => 'ggi');
+        $expected = ['id' => 'ggi'];
         $continent = new \QueryGenerators\Continent($expected);
         $continent->findById();
     }
