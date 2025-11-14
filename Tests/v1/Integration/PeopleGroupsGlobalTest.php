@@ -24,18 +24,19 @@ declare(strict_types=1);
 
 namespace Tests\v1\Integration;
 
+use Doctrine\DBAL\Connection;
 use QueryGenerators\PeopleGroupGlobal;
 use Tests\Support\GuzzleHttpClient;
 use PHPUnit\Framework\TestCase;
 
 class PeopleGroupsGlobalTest extends TestCase
 {
-    public $httpClient;
-    private $db;
-    private $APIKey = '';
-    private $APIVersion;
-    private $limit;
-    private $siteURL;
+    public GuzzleHttpClient $httpClient;
+    private Connection $db;
+    private string $APIKey = '';
+    private string $APIVersion;
+    private int $limit;
+    private string $siteURL;
 
     public function setUp(): void
     {
@@ -45,7 +46,7 @@ class PeopleGroupsGlobalTest extends TestCase
         $this->db = getDatabaseInstance();
         $this->APIKey = createApiKey([]);
         $generator = new PeopleGroupGlobal([]);
-        $this->limit = $generator->limit;
+        $this->limit = (int) $generator->limit;
     }
 
     public function tearDown(): void
@@ -66,7 +67,10 @@ class PeopleGroupsGlobalTest extends TestCase
 
     public function testShowShouldRefuseAccessWithoutActiveAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '$this->APIKey'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             "$this->siteURL/$this->APIVersion/people_groups_global/10960.json",
             ['api_key' => $this->APIKey],
@@ -82,7 +86,10 @@ class PeopleGroupsGlobalTest extends TestCase
 
     public function testShowShouldRefuseAccessWithSuspendedAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '$this->APIKey'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             "$this->siteURL/$this->APIVersion/people_groups_global/10960.json",
             ['api_key' => $this->APIKey],
@@ -221,7 +228,10 @@ class PeopleGroupsGlobalTest extends TestCase
 
     public function testIndexShouldRefuseAccessWithoutActiveAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '$this->APIKey'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             "$this->siteURL/$this->APIVersion/people_groups_global.json",
             ['api_key' => $this->APIKey],
@@ -237,7 +247,10 @@ class PeopleGroupsGlobalTest extends TestCase
 
     public function testIndexShouldRefuseAccessWithSuspendedAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '$this->APIKey'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             "$this->siteURL/$this->APIVersion/people_groups_global.json",
             ['api_key' => $this->APIKey],
