@@ -24,6 +24,7 @@
 
 declare(strict_types=1);
 
+use Doctrine\DBAL\Exception as DBALException;
 use QueryGenerators\Country;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -85,6 +86,7 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
+        $format = $args['format'];
         $countryId = preg_replace("/\PL/u", "", strip_tags(strtoupper($args['id'])));
         if (empty($countryId)) {
             return $this->get('errorResponder')->get(
@@ -98,23 +100,26 @@ $app->get(
         try {
             $country = new Country(['id' => $countryId]);
             $country->findById();
-            $statement = $this->get('db')->prepare($country->preparedStatement);
-            $statement->execute($country->preparedVariables);
-            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $data = $this->get('db')->fetchAllAssociative(
+                $country->preparedStatement,
+                $country->preparedVariables,
+                $country->preparedVariableTypes
+            );
             if (empty($data)) {
                 return $this->get('errorResponder')->get(
                     404,
                     'The country does not exist for the given id.',
-                    $args['format'],
+                    $format,
                     'Not Found',
                     $response
                 );
             }
-        } catch (Exception $e) {
+        } catch (DBALException | Exception $e) {
+            error_log("Database error in Country.show: " . $e->getMessage());
             return $this->get('errorResponder')->get(
                 500,
-                $e->getMessage(),
-                $args['format'],
+                'An error occurred while retrieving the country.',
+                $format,
                 'Internal Server Error',
                 $response
             );
@@ -124,7 +129,7 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
-        if ($args['format'] === 'json') {
+        if ($format === 'json') {
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->write(json_encode($data));
@@ -422,6 +427,7 @@ $app->get(
 $app->get(
     "/{version}/countries.{format}",
     function (Request $request, Response $response, $args = []): Response {
+        $format = $args['format'];
         $noLongerSupportedParams = [
             'pc_anglican', 'pc_independent', 'pc_protestant', 'pc_orthodox', 'pc_rcatholic',
             'pc_other_christian'
@@ -442,14 +448,17 @@ $app->get(
         try {
             $country = new Country($params);
             $country->findAllWithFilters();
-            $statement = $this->get('db')->prepare($country->preparedStatement);
-            $statement->execute($country->preparedVariables);
-            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
+            $data = $this->get('db')->fetchAllAssociative(
+                $country->preparedStatement,
+                $country->preparedVariables,
+                $country->preparedVariableTypes
+            );
+        } catch (DBALException | Exception $e) {
+            error_log("Database error in Countries: " . $e->getMessage());
             return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),
-                $args['format'],
+                $format,
                 'Internal Server Error',
                 $response
             );
@@ -459,7 +468,7 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
-        if ($args['format'] === 'json') {
+        if ($format === 'json') {
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->write(json_encode($data));

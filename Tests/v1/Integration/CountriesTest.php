@@ -34,22 +34,19 @@ use PHPUnit\Framework\TestCase;
  */
 class CountriesTest extends TestCase
 {
-    public $httpClient;
+    public GuzzleHttpClient $httpClient;
 
-    private $db;
+    private string $APIKey = '';
 
-    private $APIKey = '';
+    private string $APIVersion;
 
-    private $APIVersion;
-
-    private $siteURL;
+    private string $siteURL;
 
     public function setUp(): void
     {
         $this->APIVersion = $_ENV['api_version'];
         $this->siteURL = $_ENV['site_url'];
         $this->httpClient = new GuzzleHttpClient();
-        $this->db = getDatabaseInstance();
         $this->APIKey = createApiKey();
     }
 
