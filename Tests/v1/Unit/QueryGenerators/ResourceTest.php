@@ -24,7 +24,7 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,9 +37,9 @@ class ResourceTest extends TestCase
     /**
      * The PDO database connection object
      *
-     * @var PDODatabaseConnect
+     * @var Connection
      */
-    private $db;
+    private Connection $db;
     /**
      * Setup the test methods
      *
@@ -60,8 +60,8 @@ class ResourceTest extends TestCase
      */
     public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
-        $data = array('country' => 'TYE#%', 'state' => 'YU%$');
-        $expected = array('country' => 'TYE', 'state' => 'YU');
+        $data = ['country' => 'TYE#%', 'state' => 'YU%$'];
+        $expected = ['country' => 'TYE', 'state' => 'YU'];
         $reflectionOfResource = new \ReflectionClass('\QueryGenerators\Resource');
         $providedParams = $reflectionOfResource->getProperty('providedParams');
         $providedParams->setAccessible(true);
@@ -80,7 +80,7 @@ class ResourceTest extends TestCase
     public function testFindAllByLanguageIdShouldThrowErrorIfMissingId(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $getVars = array();
+        $getVars = [];
         $resource = new \QueryGenerators\Resource($getVars);
         $resource->findAllByLanguageId();
     }
@@ -94,7 +94,7 @@ class ResourceTest extends TestCase
     public function testFindAllByLanguageIdShouldLowerCaseTheId(): void
     {
         $expectedId = 'abv';
-        $getVars = array('id' => $expectedId);
+        $getVars = ['id' => $expectedId];
         $resource = new \QueryGenerators\Resource($getVars);
         $resource->findAllByLanguageId();
         $this->assertEquals($resource->preparedVariables['id'], $expectedId);
@@ -110,12 +110,14 @@ class ResourceTest extends TestCase
     public function testFindAllByLanguageIdShouldReturnCorrectResources(): void
     {
         $expectedId = 'abv';
-        $getVars = array('id' => $expectedId);
+        $getVars = ['id' => $expectedId];
         $resource = new \QueryGenerators\Resource($getVars);
         $resource->findAllByLanguageId();
-        $statement = $this->db->prepare($resource->preparedStatement);
-        $statement->execute($resource->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $resource->preparedStatement,
+            $resource->preparedVariables,
+            $resource->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $resourceResult) {
             $this->assertEquals($resourceResult['ROL3'], $expectedId);
