@@ -24,7 +24,7 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,9 +37,9 @@ class RegionTest extends TestCase
     /**
      * The PDO database connection object
      *
-     * @var PDODatabaseConnect
+     * @var Connection
      */
-    private $db;
+    private Connection $db;
     /**
      * Setup the test methods
      *
@@ -60,8 +60,8 @@ class RegionTest extends TestCase
      */
     public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
-        $data = array('region' => 'HORSE#%', 'test' => 'CA%$');
-        $expected = array('region' => 'HORSE', 'test' => 'CA');
+        $data = ['region' => 'HORSE#%', 'test' => 'CA%$'];
+        $expected = ['region' => 'HORSE', 'test' => 'CA'];
         $reflectionOfContinent = new \ReflectionClass('\QueryGenerators\Region');
         $providedParams = $reflectionOfContinent->getProperty('providedParams');
         $providedParams->setAccessible(true);
@@ -77,13 +77,15 @@ class RegionTest extends TestCase
      **/
     public function testFindByIdShouldReturnTheCorrectRegion(): void
     {
-        $expected = array('id'  =>  9);
+        $expected = ['id'  =>  9];
         $expectedRegion = 'europe, eastern and eurasia';
         $region = new \QueryGenerators\Region($expected);
         $region->findById();
-        $statement = $this->db->prepare($region->preparedStatement);
-        $statement->execute($region->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $region->preparedStatement,
+            $region->preparedVariables,
+            $region->preparedVariableTypes
+        );
         $this->assertEquals($expected['id'], intval($data[0]['RegionCode']));
         $this->assertEquals($expectedRegion, strtolower($data[0]['RegionName']));
     }
@@ -99,7 +101,7 @@ class RegionTest extends TestCase
     public function testFindByIdShouldThrowErrorIfNoIdFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $expected = array();
+        $expected = [];
         $region = new \QueryGenerators\Region($expected);
         $region->findById();
     }
@@ -115,7 +117,7 @@ class RegionTest extends TestCase
     public function testFindByIdShouldThrowErrorIfNotValid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $expected = array('id'  =>  'aat');
+        $expected = ['id'  =>  'aat'];
         $region = new \QueryGenerators\Region($expected);
         $region->findById();
     }
@@ -131,7 +133,7 @@ class RegionTest extends TestCase
     public function testFindByIdShouldThrowErrorIfOutOfRange(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $expected = array('id'  =>  21);
+        $expected = ['id'  =>  21];
         $region = new \QueryGenerators\Region($expected);
         $region->findById();
     }
