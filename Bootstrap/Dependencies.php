@@ -24,7 +24,6 @@ use DI\ContainerBuilder;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 use Slim\Views\PhpRenderer;
-use PHPToolbox\CachedRequest\CurlUtility;
 use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use Utilities\Mailer;
 use Utilities\APIErrorResponder;
@@ -46,7 +45,6 @@ return function(ContainerBuilder $containerBuilder, string $viewDirectory) {
             $pdoDb->setDatabaseSettings($dbSettings);
             return $pdoDb->getDatabaseInstance();
         },
-        'curlUtility' => fn(ContainerInterface $interface) => new CurlUtility(),
         'errorResponder'    => fn(ContainerInterface $interface) => new APIErrorResponder(),
         'httpClient' => fn(ContainerInterface $interface) => new Client(),
         'mailer'    =>  function(ContainerInterface $interface) {
