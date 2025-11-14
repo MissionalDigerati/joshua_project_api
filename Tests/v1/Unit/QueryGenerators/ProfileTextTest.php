@@ -24,7 +24,7 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,9 +37,9 @@ class ProfileTextTest extends TestCase
     /**
      * The PDO database connection object
      *
-     * @var PDODatabaseConnect
+     * @var Connection
      */
-    private $db;
+    private Connection $db;
     /**
      * Setup the test methods
      *
@@ -60,8 +60,8 @@ class ProfileTextTest extends TestCase
      */
     public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
-        $data = array('country' => 'AZXTE#%', 'state' => 'MA%$');
-        $expected = array('country' => 'AZXTE', 'state' => 'MA');
+        $data = ['country' => 'AZXTE#%', 'state' => 'MA%$'];
+        $expected = ['country' => 'AZXTE', 'state' => 'MA'];
         $reflectionOfProfileText = new \ReflectionClass('\QueryGenerators\ProfileText');
         $providedParams = $reflectionOfProfileText->getProperty('providedParams');
         $providedParams->setAccessible(true);
@@ -80,7 +80,7 @@ class ProfileTextTest extends TestCase
     public function testFindAllByIdAndCountryShouldThrowErrorIfMissingId(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $getVars = array('country' => 'CB');
+        $getVars = ['country' => 'CB'];
         $profileText = new \QueryGenerators\ProfileText($getVars);
         $profileText->findAllByIdAndCountry();
     }
@@ -96,7 +96,7 @@ class ProfileTextTest extends TestCase
     public function testFindAllByIdAndCountryShouldThrowErrorIfMissingCountry(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $getVars = array('id' => '12662');
+        $getVars = ['id' => '12662'];
         $profileText = new \QueryGenerators\ProfileText($getVars);
         $profileText->findAllByIdAndCountry();
     }
@@ -109,13 +109,15 @@ class ProfileTextTest extends TestCase
      */
     public function testFindAllByIdAndCountryShouldReturnTheCorrectProfileText(): void
     {
-        $expectedProfileIDs = array('9584', '3550');
-        $getVars = array('id' => '12662', 'country' => 'CB');
+        $expectedProfileIDs = ['9584', '3550'];
+        $getVars = ['id' => '12662', 'country' => 'CB'];
         $profileText = new \QueryGenerators\ProfileText($getVars);
         $profileText->findAllByIdAndCountry();
-        $statement = $this->db->prepare($profileText->preparedStatement);
-        $statement->execute($profileText->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $profileText->preparedStatement,
+            $profileText->preparedVariables,
+            $profileText->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $profileTextResult) {
             $this->assertTrue(in_array($profileTextResult['ProfileID'], $expectedProfileIDs));
@@ -124,12 +126,14 @@ class ProfileTextTest extends TestCase
 
     public function testFindAllByIdAndCountryShouldReturnTheCorrectFields(): void
     {
-        $getVars = array('id' => '18432', 'country' => 'CH');
+        $getVars = ['id' => '18432', 'country' => 'CH'];
         $profileText = new \QueryGenerators\ProfileText($getVars);
         $profileText->findAllByIdAndCountry();
-        $statement = $this->db->prepare($profileText->preparedStatement);
-        $statement->execute($profileText->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $profileText->preparedStatement,
+            $profileText->preparedVariables,
+            $profileText->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         $this->assertTrue(array_key_exists('Summary', $data[0]));
         $this->assertTrue((strpos($data[0]['Summary'], 'when a Daizhan couple decided to marry') !== false));
