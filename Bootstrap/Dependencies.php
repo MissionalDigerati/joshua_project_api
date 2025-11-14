@@ -21,6 +21,7 @@ declare(strict_types=1);
  *
  */
 use DI\ContainerBuilder;
+use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 use Slim\Views\PhpRenderer;
 use PHPToolbox\PDODatabase\PDODatabaseConnect;
@@ -44,9 +45,8 @@ return function(ContainerBuilder $containerBuilder, string $viewDirectory) {
             $pdoDb->setDatabaseSettings($dbSettings);
             return $pdoDb->getDatabaseInstance();
         },
-        'errorResponder'    => function(ContainerInterface $interface) {
-            return new APIErrorResponder();
-        },
+        'errorResponder'    => fn(ContainerInterface $interface) => new APIErrorResponder(),
+        'httpClient' => fn(ContainerInterface $interface) => new Client(),
         'mailer'    =>  function(ContainerInterface $interface) {
             $useSMTP = ($_ENV['EMAIL_USE_SMTP'] === 'true');
             return new Mailer(
@@ -55,6 +55,14 @@ return function(ContainerBuilder $containerBuilder, string $viewDirectory) {
                 $_ENV['EMAIL_PASSWORD'],
                 $_ENV['EMAIL_PORT'],
                 $useSMTP
+            );
+        },
+        'recaptchaValidator' => function(ContainerInterface $interface) {
+            return new \Utilities\RecaptchaValidator(
+                $_ENV['RECAPTCHA_API_KEY'] ?? '',
+                $interface->get('httpClient'),
+                $_ENV['RECAPTCHA_PROJECT'] ?? '',
+                $_ENV['RECAPTCHA_SITE_KEY'] ?? ''
             );
         },
         'view'  =>  function(ContainerInterface $interface) use ($viewDirectory) {

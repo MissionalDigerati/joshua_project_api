@@ -24,13 +24,13 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Integration;
 
-use PHPToolbox\CachedRequest\CachedRequest;
+use Tests\Support\GuzzleHttpClient;
 use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use PHPUnit\Framework\TestCase;
 
 class TotalsTest extends TestCase
 {
-    private $cachedRequest;
+    private $httpClient;
     private $db;
     private $APIKey = '';
     private $APIVersion;
@@ -40,33 +40,26 @@ class TotalsTest extends TestCase
     {
         $this->APIVersion = $_ENV['api_version'];
         $this->siteURL = $_ENV['site_url'];
-        $this->cachedRequest = new CachedRequest();
-        $this->cachedRequest->cacheDirectory =
-            __DIR__ .
-            DIRECTORY_SEPARATOR . ".." .
-            DIRECTORY_SEPARATOR . ".." .
-            DIRECTORY_SEPARATOR . "Support" .
-            DIRECTORY_SEPARATOR . "cache" .
-            DIRECTORY_SEPARATOR;
+        $this->httpClient = new GuzzleHttpClient();
         $this->db = getDatabaseInstance();
         $this->APIKey = createApiKey();
     }
 
     public function tearDown(): void
     {
-        $this->cachedRequest->clearCache();
+        $this->httpClient->clearCache();
         deleteApiKey($this->APIKey);
     }
 
     public function testIndexShouldRefuseAccessWithoutAnAPIKey(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals.json",
             [],
             "totals_index_json"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
         $this->assertTrue(!empty($decoded['api']));
         $this->assertTrue(!empty($decoded['api']['error']));
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
@@ -76,13 +69,13 @@ class TotalsTest extends TestCase
     public function testIndexShouldRefuseAccessWithoutActiveAPIKey(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '{$this->APIKey}'");
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals.json",
             ['api_key' => $this->APIKey],
             "totals_non_active_key_json"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
         $this->assertTrue(!empty($decoded['api']));
         $this->assertTrue(!empty($decoded['api']['error']));
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
@@ -92,13 +85,13 @@ class TotalsTest extends TestCase
     public function testIndexShouldRefuseAccessWithSuspendedAPIKey(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '{$this->APIKey}'");
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals.json",
             ['api_key' => $this->APIKey],
             "totals_suspended_key_json"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
         $this->assertTrue(!empty($decoded['api']));
         $this->assertTrue(!empty($decoded['api']['error']));
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
@@ -107,13 +100,13 @@ class TotalsTest extends TestCase
 
     public function testIndexShouldRefuseAccessWithABadAPIKey(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals.json",
             ['api_key' => 'BADKEY'],
             "totals_bad_key_json"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
         $this->assertTrue(!empty($decoded['api']));
         $this->assertTrue(!empty($decoded['api']['error']));
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
@@ -122,35 +115,35 @@ class TotalsTest extends TestCase
 
     public function testIndexShouldReturnARegionInJSON(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals.json",
             ['api_key' => $this->APIKey],
             "totals_show_accessible_in_json"
         );
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertEquals(200, $this->httpClient->responseCode);
         $this->assertTrue(isJSON($response));
     }
 
     public function testIndexShouldReturnARegionInXML(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals.xml",
             ['api_key' => $this->APIKey],
             "totals_show_accessible_in_xml"
         );
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertEquals(200, $this->httpClient->responseCode);
         $this->assertTrue(isXML($response));
     }
 
     public function testIndexShouldReturnResults(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals.json",
             ['api_key' => $this->APIKey],
             "totals_show_returns_results"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertEquals(200, $this->httpClient->responseCode);
         $this->assertNotEmpty($decoded);
         $this->assertEquals(37, count($decoded));
         $this->assertArrayHasKey('id', $decoded[0]);
@@ -162,13 +155,13 @@ class TotalsTest extends TestCase
 
     public function testShowShouldRefuseAccessWithoutAnAPIKey(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals/CntContinents.json",
             [],
             "totals_show_json"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
         $this->assertTrue(!empty($decoded['api']));
         $this->assertTrue(!empty($decoded['api']['error']));
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
@@ -178,13 +171,13 @@ class TotalsTest extends TestCase
     public function testShowShouldRefuseAccessWithoutActiveAPIKey(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '{$this->APIKey}'");
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals/CntContinents.json",
             ['api_key' => $this->APIKey],
             "totals_show_non_active_key_json"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
         $this->assertTrue(!empty($decoded['api']));
         $this->assertTrue(!empty($decoded['api']['error']));
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
@@ -194,13 +187,13 @@ class TotalsTest extends TestCase
     public function testShowShouldRefuseAccessWithSuspendedAPIKey(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '{$this->APIKey}'");
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals/CntContinents.json",
             ['api_key' => $this->APIKey],
             "totals_show_suspended_key_json"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
         $this->assertTrue(!empty($decoded['api']));
         $this->assertTrue(!empty($decoded['api']['error']));
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
@@ -209,13 +202,13 @@ class TotalsTest extends TestCase
 
     public function testShowShouldRefuseAccessWithABadAPIKey(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals/CntContinents.json",
             ['api_key' => 'BADKEY'],
             "totals_show_bad_key_json"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
         $this->assertTrue(!empty($decoded['api']));
         $this->assertTrue(!empty($decoded['api']['error']));
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
@@ -224,35 +217,35 @@ class TotalsTest extends TestCase
 
     public function testShowShouldReturnARegionInJSON(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals/CntContinents.json",
             ['api_key' => $this->APIKey],
             "totals_show_accessible_in_json"
         );
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertEquals(200, $this->httpClient->responseCode);
         $this->assertTrue(isJSON($response));
     }
 
     public function testShowShouldReturnARegionInXML(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals/CntContinents.xml",
             ['api_key' => $this->APIKey],
             "totals_show_accessible_in_xml"
         );
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertEquals(200, $this->httpClient->responseCode);
         $this->assertTrue(isXML($response));
     }
 
     public function testShowShouldReturnResults(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals/CntContinents.json",
             ['api_key' => $this->APIKey],
             "totals_show_returns_results"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertEquals(200, $this->httpClient->responseCode);
         $this->assertNotEmpty($decoded);
         $this->assertEquals(1, count($decoded));
         $this->assertArrayHasKey('id', $decoded[0]);

@@ -23,7 +23,8 @@
         "vlucas/phpdotenv": "^5.6.0",
         "slim/psr7": "^1.6",
         "slim/http": "^1.3",
-        "php-di/php-di": "^7.0"
+        "php-di/php-di": "^7.0",
+        "guzzlehttp/guzzle": "^7.10"
     },
     "require-dev": {
         "zircote/swagger-php": "^3.0",
@@ -43,7 +44,8 @@
             "Middleware\\": "App/v1/Middleware",
             "QueryGenerators\\": "App/v1/QueryGenerators",
             "Resources\\": "App/v1/Resources",
-            "Views\\": "App/v1/Views"
+            "Views\\": "App/v1/Views",
+            "Tests\\": "Tests/"
         }
     }
 }

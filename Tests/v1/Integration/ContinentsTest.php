@@ -24,7 +24,7 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Integration;
 
-use PHPToolbox\CachedRequest\CachedRequest;
+use Tests\Support\GuzzleHttpClient;
 use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use PHPUnit\Framework\TestCase;
 
@@ -36,11 +36,11 @@ use PHPUnit\Framework\TestCase;
 class ContinentsTest extends TestCase
 {
     /**
-     * The CachedRequest Object
+     * The HTTP Client Object
      *
-     * @var CachedRequest
+     * @var GuzzleHttpClient
      */
-    public $cachedRequest;
+    public $httpClient;
     /**
      * The PDO database connection object
      *
@@ -79,14 +79,7 @@ class ContinentsTest extends TestCase
     {
         $this->APIVersion = $_ENV['api_version'];
         $this->siteURL = $_ENV['site_url'];
-        $this->cachedRequest = new CachedRequest();
-        $this->cachedRequest->cacheDirectory =
-            __DIR__ .
-            DIRECTORY_SEPARATOR . ".." .
-            DIRECTORY_SEPARATOR . ".." .
-            DIRECTORY_SEPARATOR . "Support" .
-            DIRECTORY_SEPARATOR . "cache" .
-            DIRECTORY_SEPARATOR;
+        $this->httpClient = new GuzzleHttpClient();
         $this->db = getDatabaseInstance();
         $this->APIKey = createApiKey();
     }
@@ -98,7 +91,7 @@ class ContinentsTest extends TestCase
      */
     public function tearDown(): void
     {
-        $this->cachedRequest->clearCache();
+        $this->httpClient->clearCache();
         deleteApiKey($this->APIKey);
     }
     /**
@@ -109,12 +102,12 @@ class ContinentsTest extends TestCase
      **/
     public function testShowRequestShouldRefuseAccessWithoutAnAPIKey(): void
     { 
-        $this->cachedRequest->get(
+        $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/4.json",
             array(),
             "continent_show_up_json"
         );
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
     }
     /**
      * Tests that you can not access page without an active API Key
@@ -125,13 +118,13 @@ class ContinentsTest extends TestCase
     public function testShowRequestShouldRefuseAccessWithoutActiveAPIKey(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/3.json",
             array('api_key' => $this->APIKey),
             "non_active_key_json"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
         $this->assertTrue(!empty($decoded['api']));
         $this->assertTrue(!empty($decoded['api']['error']));
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
@@ -146,13 +139,13 @@ class ContinentsTest extends TestCase
     public function testShowRequestShouldRefuseAccessToSuspendedAPIKeys(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/3.json",
             array('api_key' => $this->APIKey),
             "suspended_key_json"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
         $this->assertTrue(!empty($decoded['api']));
         $this->assertTrue(!empty($decoded['api']['error']));
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
@@ -166,13 +159,13 @@ class ContinentsTest extends TestCase
      **/
     public function testShowRequestShouldRefuseAccessWithABadAPIKeys(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/1.json",
             array('api_key' => 'BADKEY'),
             "bad_key_json"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
         $this->assertTrue(!empty($decoded['api']));
         $this->assertTrue(!empty($decoded['api']['error']));
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
@@ -187,12 +180,12 @@ class ContinentsTest extends TestCase
       */
     public function testShowRequestsShouldReturnContinentsInJSON(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/asi.json",
             array('api_key' => $this->APIKey),
             "show_accessible_in_json"
         );
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertEquals(200, $this->httpClient->responseCode);
         $this->assertTrue(isJSON($response));
     }
     /**
@@ -204,12 +197,12 @@ class ContinentsTest extends TestCase
       */
     public function testShowRequestsShouldReturnContinentsInXML(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/asi.xml",
             array('api_key' => $this->APIKey),
             "show_accessible_in_xml"
         );
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertEquals(200, $this->httpClient->responseCode);
         $this->assertTrue(isXML($response));
     }
     /**
@@ -222,12 +215,12 @@ class ContinentsTest extends TestCase
      **/
     public function testShowRequestsShouldThrowErrorIfIdIsBad(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/bad_id.json",
             array('api_key' => $this->APIKey),
             "show_with_bad_id"
         );
-        $this->assertEquals(400, $this->cachedRequest->responseCode);
+        $this->assertEquals(400, $this->httpClient->responseCode);
         $this->assertTrue(isJSON($response));
     }
     /**
@@ -242,7 +235,7 @@ class ContinentsTest extends TestCase
     {
         $continentId = 'asi';
         $expectedContinent = 'asia';
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/" . $continentId . ".json",
             array('api_key' => $this->APIKey),
             "show_returns_appropriate_continent"
@@ -261,7 +254,7 @@ class ContinentsTest extends TestCase
     public function testShowRequestsShouldNotHaveRemovedFields(): void
     {
         $continentId = 'asi';
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/" . $continentId . ".json",
             array('api_key' => $this->APIKey),
             "show_returns_appropriate_continent"
