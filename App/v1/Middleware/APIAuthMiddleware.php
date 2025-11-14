@@ -126,7 +126,7 @@ class APIAuthMiddleware implements MiddlewareInterface
     private function isValidKey(string $apiKey): bool
     {
         $query = "SELECT * FROM md_api_keys where api_key = :api_key LIMIT 1";
-        $data = $this->db->fetchAllAssociative($query, ['api_key' => $apiKey]);
+        $data = $this->db->fetchAssociative($query, ['api_key' => $apiKey]);
 
         if (empty($data)) {
             return false;
@@ -134,7 +134,7 @@ class APIAuthMiddleware implements MiddlewareInterface
         /**
          * Pending (0) or Suspended (2)
          */
-        if ((intval($data[0]['status']) === 0) || (intval($data[0]['status']) === 2)) {
+        if ((intval($data['status']) === 0) || (intval($data['status']) === 2)) {
             return false;
         }
         return true;
