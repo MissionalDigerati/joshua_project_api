@@ -24,17 +24,17 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Integration;
 
+use Doctrine\DBAL\Connection;
 use Tests\Support\GuzzleHttpClient;
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use PHPUnit\Framework\TestCase;
 
 class TotalsTest extends TestCase
 {
-    private $httpClient;
-    private $db;
-    private $APIKey = '';
-    private $APIVersion;
-    private $siteURL;
+    private GuzzleHttpClient $httpClient;
+    private Connection $db;
+    private string $APIKey = '';
+    private string $APIVersion;
+    private string $siteURL;
 
     public function setUp(): void
     {
@@ -68,7 +68,10 @@ class TotalsTest extends TestCase
 
     public function testIndexShouldRefuseAccessWithoutActiveAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '{$this->APIKey}'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals.json",
             ['api_key' => $this->APIKey],
@@ -84,7 +87,10 @@ class TotalsTest extends TestCase
 
     public function testIndexShouldRefuseAccessWithSuspendedAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '{$this->APIKey}'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals.json",
             ['api_key' => $this->APIKey],
@@ -170,7 +176,10 @@ class TotalsTest extends TestCase
 
     public function testShowShouldRefuseAccessWithoutActiveAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '{$this->APIKey}'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals/CntContinents.json",
             ['api_key' => $this->APIKey],
@@ -186,7 +195,10 @@ class TotalsTest extends TestCase
 
     public function testShowShouldRefuseAccessWithSuspendedAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '{$this->APIKey}'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             "{$this->siteURL}/{$this->APIVersion}/totals/CntContinents.json",
             ['api_key' => $this->APIKey],

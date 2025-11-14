@@ -24,6 +24,9 @@
 
 declare(strict_types=1);
 
+namespace App\v1\Resources;
+
+use Doctrine\DBAL\Exception as DBALException;
 use QueryGenerators\Total;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -85,10 +88,13 @@ $app->get(
         try {
             $total = new Total(['id' => $id]);
             $total->findById();
-            $statement = $this->get('db')->prepare($total->preparedStatement);
-            $statement->execute($total->preparedVariables);
-            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
+            $data = $this->get('db')->fetchAllAssociative(
+                $total->preparedStatement,
+                $total->preparedVariables,
+                $total->preparedVariableTypes
+            );
+        } catch (DBALException | \Exception $e) {
+            error_log("Error totals show: {$e->getMessage()}");
             return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),
@@ -160,10 +166,13 @@ $app->get(
         try {
             $total = new Total([]);
             $total->all();
-            $statement = $this->get('db')->prepare($total->preparedStatement);
-            $statement->execute($total->preparedVariables);
-            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
+            $data = $this->get('db')->fetchAllAssociative(
+                $total->preparedStatement,
+                $total->preparedVariables,
+                $total->preparedVariableTypes
+            );
+        } catch (DBALException | \Exception $e) {
+            error_log("Error totals index: {$e->getMessage()}");
             return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),
