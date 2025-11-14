@@ -21,10 +21,10 @@ declare(strict_types=1);
  *
  */
 use DI\ContainerBuilder;
+use Doctrine\DBAL\DriverManager;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 use Slim\Views\PhpRenderer;
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use Utilities\Mailer;
 use Utilities\APIErrorResponder;
 
@@ -34,16 +34,14 @@ use Utilities\APIErrorResponder;
 return function(ContainerBuilder $containerBuilder, string $viewDirectory) {
     $containerBuilder->addDefinitions([
         'db'    =>  function(ContainerInterface $interface) {
-            $dbSettings = new \stdClass();
-            $dbSettings->default = [
-                'host'      =>  $_ENV['DB_HOST'],
-                'name'      =>  $_ENV['DB_NAME'],
-                'username'  =>  $_ENV['DB_USERNAME'],
-                'password'  =>  $_ENV['DB_PASSWORD']
-            ];
-            $pdoDb = PDODatabaseConnect::getInstance();
-            $pdoDb->setDatabaseSettings($dbSettings);
-            return $pdoDb->getDatabaseInstance();
+            return DriverManager::getConnection([
+                'driver' => 'pdo_mysql',
+                'host' => $_ENV['DB_HOST'],
+                'dbname' => $_ENV['DB_NAME'],
+                'user' => $_ENV['DB_USERNAME'],
+                'password' => $_ENV['DB_PASSWORD'],
+                'charset' => 'utf8'
+            ]);
         },
         'errorResponder'    => fn(ContainerInterface $interface) => new APIErrorResponder(),
         'httpClient' => fn(ContainerInterface $interface) => new Client(),

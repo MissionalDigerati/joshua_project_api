@@ -20,7 +20,8 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Connection;
 
 /**
  * A list of functions useful for testing
@@ -33,23 +34,22 @@ use PHPToolbox\PDODatabase\PDODatabaseConnect;
  * @param  array  $data The data you want to use. (See the default data below)
  * @return string       The new API key
  */
-function createApiKey($data = [])
+function createApiKey(array $data = []): string
 {
     $db = getDatabaseInstance();
     if (count($data) === 0) {
-        $data = array(
+        $data = [
             'name' => 'Test API',
             'email' => 'newby@testing.com',
             'api_usage' => 'pg-integration-testing',
             'status' => 1
-        );
+        ];
     }
     $data['api_key'] = generateRandomKey(12);
     $query = "INSERT INTO `md_api_keys` (name, email, api_usage, api_key, status)
                 VALUES (:name, :email, :api_usage, :api_key, :status)";
     try {
-        $statement = $db->prepare($query);
-        $statement->execute($data);
+        $db->executeStatement($query, $data);
     } catch (PDOException $e) {
         echo "Unable to set the API Key!";
         die();
@@ -62,13 +62,12 @@ function createApiKey($data = [])
  * @param  string $apiKey The API key
  * @return void
  */
-function deleteApiKey($apiKey)
+function deleteApiKey(string $apiKey): void
 {
     $db = getDatabaseInstance();
     $query = "DELETE FROM `md_api_keys` WHERE `api_key` = :key";
     try {
-        $statement = $db->prepare($query);
-        $statement->execute(['key'   =>  $apiKey]);
+        $db->executeStatement($query, ['key'   =>  $apiKey]);
     } catch (PDOException $e) {
         echo "Unable to delete the API Key!";
         die();
@@ -76,28 +75,29 @@ function deleteApiKey($apiKey)
 }
 /**
  * Get an instance of the database.
+ * 
+ * @return Connection The database connection
  */
-function getDatabaseInstance()
+function getDatabaseInstance(): Connection
 {
-    $dbSettings = new \stdClass();
-    $dbSettings->default = array(
-        'host'      =>  $_ENV['DB_HOST'],
-        'name'      =>  $_ENV['DB_NAME'],
-        'username'  =>  $_ENV['DB_USERNAME'],
-        'password'  =>  $_ENV['DB_PASSWORD']
-    );
-    $pdoDb = PDODatabaseConnect::getInstance();
-    $pdoDb->setDatabaseSettings($dbSettings);
-    return $pdoDb->getDatabaseInstance();
+    return DriverManager::getConnection([
+            'driver' => 'pdo_mysql',
+            'host' => $_ENV['DB_HOST'],
+            'dbname' => $_ENV['DB_NAME'],
+            'user' => $_ENV['DB_USERNAME'],
+            'password' => $_ENV['DB_PASSWORD'],
+            'charset' => 'utf8',
+    ]);
 }
 /**
  * Checks if a string is JSON
  *
  * @param string $string the string to check
- * @return boolean
+ *
+ * @return boolean  Is it JSON?
  * @author Johnathan Pulos
  */
-function isJSON($string)
+function isJSON(string $string): bool
 {
     json_decode($string);
     return (json_last_error() === JSON_ERROR_NONE);
@@ -106,10 +106,11 @@ function isJSON($string)
  * Checks if a string is XML
  *
  * @param string $string the string to check
- * @return boolean
+ *
+ * @return boolean  Is it XML?
  * @author Johnathan Pulos
  */
-function isXML($string)
+function isXML(string $string): bool
 {
     return simplexml_load_string($string) !== false;
 }

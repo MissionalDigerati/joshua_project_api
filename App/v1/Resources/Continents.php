@@ -24,6 +24,7 @@
 
 declare(strict_types=1);
 
+use Doctrine\DBAL\Exception;
 use QueryGenerators\Continent;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -112,9 +113,10 @@ $app->get(
         try {
             $continent = new Continent(['id' => $continentId]);
             $continent->findById();
-            $statement = $this->get('db')->prepare($continent->preparedStatement);
-            $statement->execute($continent->preparedVariables);
-            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $data = $this->get('db')->fetchAllAssociative(
+                $continent->preparedStatement,
+                $continent->preparedVariables
+            );
             if (empty($data)) {
                 return $this->get('errorResponder')->get(
                     404,
@@ -125,9 +127,10 @@ $app->get(
                 );
             }
         } catch (Exception $e) {
+            error_log("Database error in Continents: " . $e->getMessage());
             return $this->get('errorResponder')->get(
                 500,
-                $e->getMessage(),
+                'An error occurred while retrieving the continent.',
                 $format,
                 'Internal Server Error',
                 $response

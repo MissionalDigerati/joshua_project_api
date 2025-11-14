@@ -25,7 +25,8 @@ declare(strict_types=1);
 namespace Tests\v1\Integration;
 
 use Tests\Support\GuzzleHttpClient;
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -42,11 +43,11 @@ class ContinentsTest extends TestCase
      */
     public $httpClient;
     /**
-     * The PDO database connection object
+     * The DBAL database connection object
      *
-     * @var PDODatabaseConnect
+     * @var Connection
      */
-    private $db;
+    private Connection $db;
     /**
      * The current API version number
      *
@@ -117,7 +118,10 @@ class ContinentsTest extends TestCase
      **/
     public function testShowRequestShouldRefuseAccessWithoutActiveAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = :status WHERE `api_key` = :api_key",
+            ['status' => 0, 'api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/3.json",
             array('api_key' => $this->APIKey),
@@ -138,7 +142,10 @@ class ContinentsTest extends TestCase
      **/
     public function testShowRequestShouldRefuseAccessToSuspendedAPIKeys(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = :status WHERE `api_key` = :api_key",
+            ['status' => 2, 'api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/3.json",
             array('api_key' => $this->APIKey),
