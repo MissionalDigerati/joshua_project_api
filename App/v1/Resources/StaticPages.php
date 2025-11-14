@@ -24,6 +24,7 @@
 
 declare(strict_types=1);
 
+use Doctrine\DBAL\Exception as DBALException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -87,39 +88,38 @@ $app->get(
             $error = "Unable to locate your API key.";
         } else {
             try {
-                $statement = $this
-                    ->get('db')
-                    ->prepare(
-                        "SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token LIMIT 1"
+                $row = $this->get('db')->fetchAssociative(
+                        "SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token LIMIT 1",
+                        ['authorize_token' => $params['authorize_token']]
                     );
-                $statement->execute(['authorize_token' => $params['authorize_token']]);
-                $data = $statement->fetch(PDO::FETCH_ASSOC);
-            } catch (Exception $e) {
+            } catch (DBALException $e) {
+                error_log("DB error in get_my_api_key: {$e->getMessage()}");
                 $error = "Unable to locate your API key.";
+                $row = null;
             }
         }
-        if ($error == '') {
+        if ($error == '' && $row !== null) {
             try {
-                switch ($data['status']) {
+                switch ($row['status']) {
                     case 0:
                         $status = 1;
                         $message = "Your API Key has been activated.";
-                        $APIKey = $data['api_key'];
+                        $APIKey = $row['api_key'];
                         break;
                     case 1:
                         $status = 1;
                         $message = "Your API Key was already activated.";
-                        $APIKey = $data['api_key'];
+                        $APIKey = $row['api_key'];
                         break;
                     case 2:
                         $status = 2;
                         $error = "Your API Key was suspended!";
                         break;
                 }
-                $statement = $this->get('db')->prepare(
-                    "UPDATE `md_api_keys` SET status = :status WHERE id = :id"
+                $this->get('db')->executeStatement(
+                    "UPDATE `md_api_keys` SET status = :status WHERE id = :id",
+                    ['id' => $row['id'], 'status' => $status]
                 );
-                $statement->execute(['id' => $data['id'], 'status' => $status]);
             } catch (Exception $e) {
                 $error = "Unable to update your API Key.";
             }
@@ -170,18 +170,18 @@ $app->post(
         $invalidFields = validatePresenceOf(["email"], $formData);
         if (empty($invalidFields)) {
             try {
-                $statement = $this
-                    ->get('db')
-                    ->prepare("SELECT * FROM `md_api_keys` WHERE email = :email AND status = 0");
-                $statement->execute(['email' => $formData['email']]);
-                $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $data = $this->get('db')->fetchAllAssociative(
+                        "SELECT * FROM `md_api_keys` WHERE email = :email AND status = 0",
+                        ['email' => $formData['email']]
+                );
                 if (empty($data)) {
                     $errors['find_keys'] = "We were unable to locate your pending API keys.";
                 } else {
                     $this->get('mailer')->sendAuthorizationLinks($formData['email'], $data, $siteURL);
                     $message = "Your activation links have been emailed to you.";
                 }
-            } catch (Exception $e) {
+            } catch (DBALException $e) {
+                error_log("DB error in resend_activation_links: {$e->getMessage()}");
                 $errors['find_keys'] = "We were unable to locate your pending API keys.";
             }
         } else {
