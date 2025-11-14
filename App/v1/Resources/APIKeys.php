@@ -24,7 +24,6 @@
 
 declare(strict_types=1);
 
-use Utilities\Validator;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -118,11 +117,12 @@ $app->post(
         /**
          * Validate the recaptcha
          */
-        $validator = new Validator();
+        $validator = $this->get('recaptchaValidator');
         if (
             (!$isLocal) &&
-            (!$validator->isValidRecaptcha($_ENV['RECAPTCHA_SECRET_KEY'], $formData['g-recaptcha-response']))
+            (!$validator->isValid($formData['g-recaptcha-response'], 0.5))
         ) {
+            unset($formData['g-recaptcha-response']);
             $redirectURL = generateRedirectURL("/", $formData, ['recaptcha_error']);
             return $response
                 ->withHeader('Location', $redirectURL)

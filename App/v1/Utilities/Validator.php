@@ -26,8 +26,6 @@ declare(strict_types=1);
 
 namespace Utilities;
 
-use PHPToolbox\CachedRequest\CurlUtility;
-
 /**
  * A class that handles validation of supplied GET parameters.
  *
@@ -164,29 +162,6 @@ class Validator
                 "Invalid sort direction: $direction. Allowed values are 'ASC' or 'DESC'."
             );
         }
-    }
-    /**
-     * Validate the recaptcha response
-     *
-     * @param string $secret The recaptcha secret
-     * @param string $response The recaptcha response
-     *
-     * @return bool True if the recaptcha is valid
-     */
-    public function isValidRecaptcha(string $secret, string $response): bool
-    {
-        if (!$response) {
-            return false;
-        }
-
-        $curlUtility = new CurlUtility();
-        $reply = $curlUtility->makeRequest(
-            "https://www.google.com/recaptcha/api/siteverify",
-            "GET",
-            ['secret' => $secret, 'response' => $response]
-        );
-        $data = json_decode($reply, true);
-        return ($data['success'] === true);
     }
     /**
      * Validate the provided value is in the whitelist

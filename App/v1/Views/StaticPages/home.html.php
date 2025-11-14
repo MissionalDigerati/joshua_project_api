@@ -284,7 +284,7 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
 <?php } ?>
                         </div>
 
-                        <div class="g-recaptcha" data-sitekey="<?php echo $recaptchaSiteKey; ?>"></div>
+                        <div class="g-recaptcha" data-action="verify" data-sitekey="<?php echo $recaptchaSiteKey; ?>"></div>
 
                         <div class="form-group">
                             <div class="controls col-lg-12">
@@ -363,5 +363,6 @@ if ((!empty($errors)) && (in_array('email', $errors))) {
                 });
             };
         </script>
+        <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
     </body>
 </html>
