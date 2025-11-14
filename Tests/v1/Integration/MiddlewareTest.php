@@ -24,8 +24,8 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Integration;
 
-use \PHPToolbox\CachedRequest\CachedRequest;
-use \PHPToolbox\PDODatabase\PDODatabaseConnect;
+use Tests\Support\GuzzleHttpClient;
+use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -36,11 +36,11 @@ use PHPUnit\Framework\TestCase;
 class MiddlewareTest extends TestCase
 {
     /**
-     * The CachedRequest Object
+     * The HTTP Client Object
      *
-     * @var CachedRequest
+     * @var GuzzleHttpClient
      */
-    public $cachedRequest;
+    public $httpClient;
     /**
      * The PDO database connection object
      *
@@ -79,14 +79,7 @@ class MiddlewareTest extends TestCase
     {
         $this->APIVersion = $_ENV['api_version'];
         $this->siteURL = $_ENV['site_url'];
-        $this->cachedRequest = new CachedRequest();
-        $this->cachedRequest->cacheDirectory =
-            __DIR__ .
-            DIRECTORY_SEPARATOR . ".." .
-            DIRECTORY_SEPARATOR . ".." .
-            DIRECTORY_SEPARATOR . "Support" .
-            DIRECTORY_SEPARATOR . "cache" .
-            DIRECTORY_SEPARATOR;
+        $this->httpClient = new GuzzleHttpClient();
         $this->db = getDatabaseInstance();
         $this->APIKey = createApiKey();
     }
@@ -98,19 +91,19 @@ class MiddlewareTest extends TestCase
      */
     public function tearDown(): void
     {
-        $this->cachedRequest->clearCache();
+        $this->httpClient->clearCache();
         deleteApiKey($this->APIKey);
     }
 
     public function testItShouldRecordTheLastRequestDateOnEveryRequest(): void
     {
         $this->db->query("UPDATE `md_api_keys` SET last_request = '2012-10-21 10:05:00' WHERE  `api_key` = '" . $this->APIKey . "'");
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/asi.json",
             array('api_key' => $this->APIKey),
             "show_accessible_in_json"
         );
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertEquals(200, $this->httpClient->responseCode);
         $query = $this->db->query("SELECT * FROM `md_api_keys` WHERE  `api_key` = '" . $this->APIKey . "'");
         $data = $query->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertFalse(empty($data[0]['last_request']));

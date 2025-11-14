@@ -24,7 +24,7 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Integration;
 
-use PHPToolbox\CachedRequest\CachedRequest;
+use Tests\Support\GuzzleHttpClient;
 use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use PHPUnit\Framework\TestCase;
 
@@ -36,12 +36,12 @@ use PHPUnit\Framework\TestCase;
 class APIKeysTest extends TestCase
 {
     /**
-     * The CachedRequest Object
+     * The HTTP Client Object
      *
-     * @var CachedRequest
+     * @var GuzzleHttpClient
      * @access public
      */
-    public $cachedRequest;
+    public $httpClient;
     /**
      * The PDO database connection object
      *
@@ -75,14 +75,7 @@ class APIKeysTest extends TestCase
     {
         $this->APIVersion = $_ENV['api_version'];
         $this->siteURL = $_ENV['site_url'];
-        $this->cachedRequest = new CachedRequest();
-        $this->cachedRequest->cacheDirectory =
-            __DIR__ .
-            DIRECTORY_SEPARATOR . ".." .
-            DIRECTORY_SEPARATOR . ".." .
-            DIRECTORY_SEPARATOR . "Support" .
-            DIRECTORY_SEPARATOR . "cache" .
-            DIRECTORY_SEPARATOR;
+        $this->httpClient = new GuzzleHttpClient();
         $this->db = getDatabaseInstance();
     }
     /**
@@ -93,7 +86,7 @@ class APIKeysTest extends TestCase
      */
     public function tearDown(): void
     {
-        $this->cachedRequest->clearCache();
+        $this->httpClient->clearCache();
         $this->db->query("DELETE FROM `md_api_keys`");
     }
 
@@ -106,7 +99,7 @@ class APIKeysTest extends TestCase
      **/
     public function testAPIKeyRequestWithMissingPOSTParamsShouldSetAllRequiredFieldsInURL(): void
     {
-        $this->cachedRequest->post(
+        $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
             [
                 'name' => '',
@@ -116,8 +109,10 @@ class APIKeysTest extends TestCase
             ],
             "api_keys_required_fields"
         );
-        $actualURL = $this->cachedRequest->lastVisitedURL;
-        $this->assertStringContainsString('required_fields=name|email|usage', $actualURL);
+        $actualURL = $this->httpClient->lastVisitedURL;
+        // URL decode to handle encoded characters like %7C (pipe)
+        $decodedURL = urldecode($actualURL);
+        $this->assertStringContainsString('required_fields=name|email|usage', $decodedURL);
     }
 
     /**
@@ -129,7 +124,7 @@ class APIKeysTest extends TestCase
      **/
     public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredNameFieldInURL(): void
     {
-        $this->cachedRequest->post(
+        $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
             array(
                 'name' => '',
@@ -139,7 +134,7 @@ class APIKeysTest extends TestCase
             ),
             "api_keys_required_fields"
         );
-        $actualURL = $this->cachedRequest->lastVisitedURL;
+        $actualURL = $this->httpClient->lastVisitedURL;
         $this->assertStringContainsString('required_fields=name&email=joe%40yahoo.com&usage=testing', $actualURL);
     }
 
@@ -152,7 +147,7 @@ class APIKeysTest extends TestCase
      **/
     public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredEmailFieldInURL(): void
     {
-        $this->cachedRequest->post(
+        $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
             array(
                 'name' => 'joe',
@@ -162,7 +157,7 @@ class APIKeysTest extends TestCase
             ),
             "api_keys_required_fields"
         );
-        $actualURL = $this->cachedRequest->lastVisitedURL;
+        $actualURL = $this->httpClient->lastVisitedURL;
         $this->assertStringContainsString('required_fields=email&name=joe&usage=testing', $actualURL);
     }
 
@@ -175,7 +170,7 @@ class APIKeysTest extends TestCase
      **/
     public function testAPIKeyRequestWithMissingPOSTParamsShouldSetRequiredUsageFieldInURL(): void
     {
-        $this->cachedRequest->post(
+        $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
             array(
                 'name' => 'joe',
@@ -185,7 +180,7 @@ class APIKeysTest extends TestCase
             ),
             "api_keys_required_fields"
         );
-        $actualURL = $this->cachedRequest->lastVisitedURL;
+        $actualURL = $this->httpClient->lastVisitedURL;
         $this->assertStringContainsString('required_fields=usage&name=joe&email=joe%40yahoo.com', $actualURL);
     }
 
@@ -199,7 +194,7 @@ class APIKeysTest extends TestCase
     public function testAPIKeyRequestShouldReturnIfAllPOSTParamsSupplied(): void
     {
         $name = 'testAPIKeyRequestShouldReturnIfAllPOSTParamsSupplied';
-        $this->cachedRequest->post(
+        $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
             array(
                 'name' => $name,
@@ -209,7 +204,7 @@ class APIKeysTest extends TestCase
             ),
             "api_keys_required_fields"
         );
-        $lastVisitedURL = $this->cachedRequest->lastVisitedURL;
+        $lastVisitedURL = $this->httpClient->lastVisitedURL;
         preg_match('/api_key=(.*)/', $lastVisitedURL, $matches);
         $this->assertFalse(empty($matches));
         $this->assertTrue(isset($matches[1]));
@@ -228,7 +223,7 @@ class APIKeysTest extends TestCase
         $name = "testAPIKeyRequestShouldCreateCorrectUsageString";
         $usage = ["Api development", "Testing", "Research project"];
         $expectedUsage = "api development,testing,research project";
-        $this->cachedRequest->post(
+        $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
             array(
                 'name' => $name,
@@ -252,7 +247,7 @@ class APIKeysTest extends TestCase
      **/
     public function testAPIKeyRequestShouldStoreWebsiteIfForWebsiteUsage(): void
     {
-        $this->cachedRequest->post(
+        $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
             [
                 'name' => 'store-website-on-website-usage',
@@ -278,7 +273,7 @@ class APIKeysTest extends TestCase
      **/
     public function testAPIKeyRequestShouldRequireOtherDescIfOtherUsage(): void
     {
-        $this->cachedRequest->post(
+        $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
             [
                 'name' => 'require-other-purpose-on-other-usage',
@@ -289,7 +284,7 @@ class APIKeysTest extends TestCase
             ],
             "require_other_purpose_on_other_usage"
         );
-        $lastVisitedURL = $this->cachedRequest->lastVisitedURL;
+        $lastVisitedURL = $this->httpClient->lastVisitedURL;
         $this->assertStringContainsString("required_fields=other_purpose", $lastVisitedURL);
     }
 
@@ -302,7 +297,7 @@ class APIKeysTest extends TestCase
      **/
     public function testAPIKeyRequestShouldStoreOtherPurposeIfForOtherUsage(): void
     {
-        $this->cachedRequest->post(
+        $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
             [
                 'name' => 'store-other-purpose-on-other-usage',
@@ -329,7 +324,7 @@ class APIKeysTest extends TestCase
      **/
     public function testAPIKeyRequestShouldStoreGoogleAppStoreIfForMobileAppUsage(): void
     {
-        $this->cachedRequest->post(
+        $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
             [
                 'name' => 'store-google-store-on-mobile-app-usage',
@@ -356,7 +351,7 @@ class APIKeysTest extends TestCase
      **/
     public function testAPIKeyRequestShouldRequireTermsOfUseChecked(): void
     {
-        $this->cachedRequest->post(
+        $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
             [
                 'name' => 'require-other-purpose-on-other-usage',
@@ -366,7 +361,7 @@ class APIKeysTest extends TestCase
             ],
             "require_other_purpose_on_other_usage"
         );
-        $lastVisitedURL = $this->cachedRequest->lastVisitedURL;
+        $lastVisitedURL = $this->httpClient->lastVisitedURL;
         $this->assertStringContainsString("required_fields=terms_of_use", $lastVisitedURL);
     }
 
@@ -380,7 +375,7 @@ class APIKeysTest extends TestCase
     public function testAPIKeyRequestShouldSetStatusToZeroIntially(): void
     {
         $usage = generateRandomKey(12);
-        $content = $this->cachedRequest->post(
+        $content = $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
             array(
                 'name' => 'status_should_be_zero',
@@ -405,7 +400,7 @@ class APIKeysTest extends TestCase
     public function testAPIKeyRequestShouldCreateAnAuthorizeToken(): void
     {
         $usage = generateRandomKey(12);
-        $this->cachedRequest->post(
+        $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
             array(
                 'name' => 'should_set_authorize_token',
@@ -434,7 +429,7 @@ class APIKeysTest extends TestCase
     {
         $usage = generateRandomKey(12);
         $expectedStatus = 1;
-        $this->cachedRequest->post(
+        $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
             array(
                 'name' => 'i_should_become_active',
@@ -448,7 +443,7 @@ class APIKeysTest extends TestCase
             "SELECT authorize_token from `md_api_keys` WHERE `api_usage` = '" . $usage . "'"
         );
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->cachedRequest->get(
+        $this->httpClient->get(
             $this->siteURL . "/get_my_api_key",
             array('authorize_token' => $data[0]['authorize_token']),
             "i_should_become_active_authorize"
@@ -469,7 +464,7 @@ class APIKeysTest extends TestCase
     {
         $usage = generateRandomKey(12);
         $expectedStatus = 2;
-        $this->cachedRequest->post(
+        $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
             array(
                 'name' => 'i_should_stay_suspended',
@@ -484,7 +479,7 @@ class APIKeysTest extends TestCase
             "SELECT authorize_token from `md_api_keys` WHERE  `api_usage` = '" . $usage . "'"
         );
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        $this->cachedRequest->get(
+        $this->httpClient->get(
             $this->siteURL . "/get_my_api_key",
             array('authorize_token' => $data[0]['authorize_token']),
             "i_should_stay_suspended_authorize"
