@@ -24,6 +24,8 @@
 
 declare(strict_types=1);
 
+namespace App\v1\Resources;
+
 use Doctrine\DBAL\Exception as DBALException;
 use QueryGenerators\Country;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -114,7 +116,7 @@ $app->get(
                     $response
                 );
             }
-        } catch (DBALException | Exception $e) {
+        } catch (DBALException | \Exception $e) {
             error_log("Database error in Country.show: " . $e->getMessage());
             return $this->get('errorResponder')->get(
                 500,
@@ -453,7 +455,7 @@ $app->get(
                 $country->preparedVariables,
                 $country->preparedVariableTypes
             );
-        } catch (DBALException | Exception $e) {
+        } catch (DBALException | \Exception $e) {
             error_log("Database error in Countries: " . $e->getMessage());
             return $this->get('errorResponder')->get(
                 500,

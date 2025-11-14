@@ -24,6 +24,8 @@
 
 declare(strict_types=1);
 
+namespace App\v1\Resources;
+
 use Doctrine\DBAL\Exception as DBALException;
 use QueryGenerators\Language;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -114,7 +116,7 @@ $app->get(
                     $response
                 );
             }
-        } catch (DBALException | Exception $e) {
+        } catch (DBALException | \Exception $e) {
             error_log("Database error fetching language by ID: {$e->getMessage()}");
             return $this->get('errorResponder')->get(
                 500,
@@ -326,7 +328,7 @@ $app->get(
                 $lang->preparedVariables,
                 $lang->preparedVariableTypes
             );
-        } catch (DBALException | Exception $e) {
+        } catch (DBALException | \Exception $e) {
             error_log("Database error fetching languages with filters: {$e->getMessage()}");
             return $this->get('errorResponder')->get(
                 500,

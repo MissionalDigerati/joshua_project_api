@@ -24,6 +24,8 @@
 
 declare(strict_types=1);
 
+namespace App\v1\Resources;
+
 use Doctrine\DBAL\Exception as DBALException;
 use QueryGenerators\Continent;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -127,7 +129,7 @@ $app->get(
                     $response
                 );
             }
-        } catch (DBALException | Exception $e) {
+        } catch (DBALException | \Exception $e) {
             error_log("Database error in Continents: " . $e->getMessage());
             return $this->get('errorResponder')->get(
                 500,
