@@ -23,7 +23,7 @@ declare(strict_types=1);
  *
  */
 namespace Tests\v1\Unit\QueryGenerators;
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
+
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -34,23 +34,6 @@ use PHPUnit\Framework\TestCase;
 class QueryGeneratorTest extends TestCase
 {
     /**
-     * The PDO database connection object
-     *
-     * @var PDODatabaseConnect
-     */
-    private $db;
-    /**
-     * Setup the test methods
-     *
-     * @return void
-     * @access public
-     * @author Johnathan Pulos
-     */
-    public function setUp(): void
-    {
-        $this->db = getDatabaseInstance();
-    }
-    /**
      * Test that the provided params are sanitized upon intializing the class
      *
      * @return void
@@ -59,8 +42,8 @@ class QueryGeneratorTest extends TestCase
      */
     public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
-        $data = array('country' => 'AZX#%', 'state' => 'AZ%$');
-        $expected = array('country' => 'AZX', 'state' => 'AZ');
+        $data = ['country' => 'AZX#%', 'state' => 'AZ%$'];
+        $expected = ['country' => 'AZX', 'state' => 'AZ'];
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $providedParams = $reflectionOfQueryGenerator->getProperty('providedParams');
         $providedParams->setAccessible(true);
@@ -76,7 +59,7 @@ class QueryGeneratorTest extends TestCase
      **/
     public function testParamExistsShouldReturnTrueIfItExists(): void
     {
-        $params = array('id'  =>  'BE');
+        $params = ['id'  =>  'BE'];
         $queryGenerator = new \QueryGenerators\QueryGenerator($params);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('paramExists');
@@ -92,7 +75,7 @@ class QueryGeneratorTest extends TestCase
      **/
     public function testParamExistsShouldReturnFalseIfItDoesNotExists(): void
     {
-        $params = array('id'  =>  'BE');
+        $params = ['id'  =>  'BE'];
         $queryGenerator = new \QueryGenerators\QueryGenerator($params);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('paramExists');
@@ -128,7 +111,7 @@ class QueryGeneratorTest extends TestCase
     public function testAddLimitFilterShouldSetTheLimitPreparedVariablesToGivenLimit(): void
     {
         $expectedLimit = 10;
-        $params = array('limit' => $expectedLimit);
+        $params = ['limit' => $expectedLimit];
         $queryGenerator = new \QueryGenerators\QueryGenerator($params);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('addLimitFilter');
@@ -145,7 +128,7 @@ class QueryGeneratorTest extends TestCase
      **/
     public function testAddLimitFilterShouldSetTheStartingPreparedVariablesForPageOne(): void
     {
-        $params = array('limit' => 10, 'page' => 1);
+        $params = ['limit' => 10, 'page' => 1];
         $queryGenerator = new \QueryGenerators\QueryGenerator($params);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('addLimitFilter');
@@ -163,7 +146,7 @@ class QueryGeneratorTest extends TestCase
      **/
     public function testAddLimitFilterShouldSetTheStartingPreparedVariablesBasedOnGivenLimitAndPageParams(): void
     {
-        $params = array('limit' => 10, 'page' => 3);
+        $params = ['limit' => 10, 'page' => 3];
         $queryGenerator = new \QueryGenerators\QueryGenerator($params);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('addLimitFilter');
@@ -182,9 +165,9 @@ class QueryGeneratorTest extends TestCase
     public function testGenerateInStatementFromPipedStringShouldReturnCorrectStatement(): void
     {
         $expectedString = "PeopleId1 IN (:peopleid1_0, :peopleid1_1, :peopleid1_2)";
-        $expectedKeys = array('peopleid1_0', 'peopleid1_1', 'peopleid1_2');
-        $expectedValues = array(1, 2, 3);
-        $queryGenerator = new \QueryGenerators\QueryGenerator(array());
+        $expectedKeys = ['peopleid1_0', 'peopleid1_1', 'peopleid1_2'];
+        $expectedValues = [1, 2, 3];
+        $queryGenerator = new \QueryGenerators\QueryGenerator([]);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('generateInStatementFromPipedString');
         $method->setAccessible(true);
@@ -204,9 +187,9 @@ class QueryGeneratorTest extends TestCase
     public function testGenerateBetweenStatementFromDashSeperatedStringShouldReturnCorrectStatementWithAMaxAndMin(): void
     {
         $expectedString = "Population BETWEEN :min_pop AND :max_pop";
-        $expectedKeys = array('min_pop', 'max_pop');
-        $expectedValues = array(10, 20);
-        $queryGenerator = new \QueryGenerators\QueryGenerator(array());
+        $expectedKeys = ['min_pop', 'max_pop'];
+        $expectedValues = [10, 20];
+        $queryGenerator = new \QueryGenerators\QueryGenerator([]);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('generateBetweenStatementFromDashSeperatedString');
         $method->setAccessible(true);
@@ -225,9 +208,9 @@ class QueryGeneratorTest extends TestCase
     public function testGenerateBetweenStatementFromDashSeperatedStringShouldReturnCorrectStatementWithMinOnly(): void
     {
         $expectedString = "Population = :total_population";
-        $expectedKeys = array('total_population');
-        $expectedValues = array(10);
-        $queryGenerator = new \QueryGenerators\QueryGenerator(array());
+        $expectedKeys = ['total_population'];
+        $expectedValues = [10];
+        $queryGenerator = new \QueryGenerators\QueryGenerator([]);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('generateBetweenStatementFromDashSeperatedString');
         $method->setAccessible(true);
@@ -248,7 +231,7 @@ class QueryGeneratorTest extends TestCase
     public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMoreMinThanMaxGiven(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $queryGenerator = new \QueryGenerators\QueryGenerator(array());
+        $queryGenerator = new \QueryGenerators\QueryGenerator([]);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('generateBetweenStatementFromDashSeperatedString');
         $method->setAccessible(true);
@@ -266,7 +249,7 @@ class QueryGeneratorTest extends TestCase
     public function testGenerateBetweenStatementFromDashSeperatedStringShouldThrowErrorIfMinGreaterThanMax(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $queryGenerator = new \QueryGenerators\QueryGenerator(array());
+        $queryGenerator = new \QueryGenerators\QueryGenerator([]);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('generateBetweenStatementFromDashSeperatedString');
         $method->setAccessible(true);
@@ -282,9 +265,9 @@ class QueryGeneratorTest extends TestCase
     public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForYes(): void
     {
         $expectedStatement = "IndigenousCode = :indigenous";
-        $expectedKeys = array('indigenous');
-        $expectedValues = array('Y');
-        $queryGenerator = new \QueryGenerators\QueryGenerator(array());
+        $expectedKeys = ['indigenous'];
+        $expectedValues = ['Y'];
+        $queryGenerator = new \QueryGenerators\QueryGenerator([]);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('generateWhereStatementForBoolean');
         $method->setAccessible(true);
@@ -303,7 +286,7 @@ class QueryGeneratorTest extends TestCase
     public function testGenerateWhereStatementFromBooleanShouldReturnTheCorrectStatementForNo(): void
     {
         $expectedStatement = "(10_40Window IS NULL OR 10_40Window = '' OR 10_40Window = 'N')";
-        $queryGenerator = new \QueryGenerators\QueryGenerator(array());
+        $queryGenerator = new \QueryGenerators\QueryGenerator([]);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('generateWhereStatementForBoolean');
         $method->setAccessible(true);
@@ -323,7 +306,7 @@ class QueryGeneratorTest extends TestCase
     public function testGenerateWhereStatementFromBooleanShouldThrowErrorIfParamInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $queryGenerator = new \QueryGenerators\QueryGenerator(array());
+        $queryGenerator = new \QueryGenerators\QueryGenerator([]);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('generateWhereStatementForBoolean');
         $method->setAccessible(true);
@@ -338,9 +321,9 @@ class QueryGeneratorTest extends TestCase
      **/
     public function testGenerateAliasSelectStatementShouldGenerateTheCorrectStatement(): void
     {
-        $aliasFieldsData = array('bob' => 'tom', 'sue' => 'sam');
+        $aliasFieldsData = ['bob' => 'tom', 'sue' => 'sam'];
         $expectedStatement = "bob AS tom, sue AS sam";
-        $queryGenerator = new \QueryGenerators\QueryGenerator(array());
+        $queryGenerator = new \QueryGenerators\QueryGenerator([]);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $aliasFields = $reflectionOfQueryGenerator->getProperty('aliasFields');
         $aliasFields->setAccessible(true);
