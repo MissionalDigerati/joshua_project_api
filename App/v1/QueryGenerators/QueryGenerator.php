@@ -95,6 +95,12 @@ class QueryGenerator
         'starting' => ParameterType::INTEGER,
     ];
     /**
+     * The languages supported on this endpoint
+     *
+     * @var array
+     */
+    public static $supportedLangs = ['cmn', 'deu', 'eng', 'fra', 'ita', 'kor', 'por', 'spa', 'vie'];
+    /**
      * An array of table columns (key) and their alias (value).
      *
      * @var     array

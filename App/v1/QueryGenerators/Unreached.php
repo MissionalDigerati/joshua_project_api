@@ -54,12 +54,6 @@ namespace QueryGenerators;
 class Unreached extends PeopleGroup
 {
     /**
-     * The languages supported on this endpoint
-     *
-     * @var array
-     */
-    public static $supportedLangs = ['cmn', 'deu', 'eng', 'fra', 'ita', 'kor', 'por', 'spa', 'vie'];
-    /**
      * An array of column names for this database table that we want to select in searches.  Simply remove fields you
      * do not want to expose.
      *
@@ -185,8 +179,8 @@ class Unreached extends PeopleGroup
         $this->validator->providedRequiredParams($this->providedParams, ['month', 'day']);
         $month = intval($this->providedParams['month']);
         $day = intval($this->providedParams['day']);
-        $lang = strtolower($this->providedParams['lang']) ?? 'eng';
-        if (!in_array($lang, self::$supportedLangs)) {
+        $lang = strtolower($this->providedParams['lang'] ?? 'eng');
+        if (!in_array($lang, QueryGenerator::$supportedLangs)) {
             throw new \InvalidArgumentException("The 'lang' parameter you provided is not supported.");
         }
         $this->validator->integerInRange($month, 1, 12);

@@ -167,8 +167,8 @@ class PeopleGroupsTest extends TestCase
 
     public function testShouldGetDailyUnreachedForSpecificLanguage(): void
     {
-        $expectedMonth = Date('n');
-        $expectedDay = Date('j');
+        $expectedMonth = '01';
+        $expectedDay = '05';
         $expectedLang = 'spa';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
@@ -179,6 +179,8 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals($expectedMonth, $decodedResponse[0]['LRofTheDayMonth']);
         $this->assertEquals($expectedDay, $decodedResponse[0]['LRofTheDayDay']);
         $this->assertEquals($expectedLang, $decodedResponse[0]['ROL3Profile']);
+        $this->assertStringNotContainsString('The Alawites believe themselves to be the chosen people', $decodedResponse[0]['Summary']);
+        $this->assertStringContainsString('Los fulani son la mayor sociedad nómada del mundo', $decodedResponse[0]['Summary']);
     }
 
     public function testShouldGetDailyUnreachedSinceLangIsCaseInsensitive(): void

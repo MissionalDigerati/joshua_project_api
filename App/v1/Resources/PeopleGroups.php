@@ -29,6 +29,7 @@ namespace App\v1\Resources;
 use Doctrine\DBAL\Exception as DBALException;
 use QueryGenerators\PeopleGroup;
 use QueryGenerators\ProfileText;
+use QueryGenerators\QueryGenerator;
 use QueryGenerators\Resource;
 use QueryGenerators\Unreached;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -123,8 +124,9 @@ $app->get(
         } else {
             $day = Date('j');
         }
+        $lang = 'eng';
         if (array_key_exists('lang', $params)) {
-            if (!in_array(strtolower($params['lang']), Unreached::$supportedLangs)) {
+            if (!in_array(strtolower($params['lang']), QueryGenerator::$supportedLangs)) {
                 return $this->get('errorResponder')->get(
                     400,
                     "The 'lang' parameter you provided is not supported.",
@@ -134,8 +136,6 @@ $app->get(
                 );
             }
             $lang = strtolower($params['lang']);
-        } else {
-            $lang = 'eng';
         }
         try {
             $peopleGroup = new Unreached(
@@ -182,6 +182,7 @@ $app->get(
                     [
                         'id'        => $peopleGroupData['PeopleID3'],
                         'country'   => $peopleGroupData['ROG3'],
+                        'lang'      => $lang,
                         'format'    => 'M'
                     ]
                 );
