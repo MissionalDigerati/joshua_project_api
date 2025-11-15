@@ -24,6 +24,7 @@ declare(strict_types=1);
  */
 namespace Tests\v1\Unit\QueryGenerators;
 
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 use QueryGenerators\PeopleGroup;
 
@@ -34,7 +35,7 @@ use QueryGenerators\PeopleGroup;
  */
 class PeopleGroupTest extends TestCase
 {
-    private $db;
+    private Connection $db;
 
     public function setUp(): void
     {
@@ -43,8 +44,8 @@ class PeopleGroupTest extends TestCase
 
     public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
-        $data = array('country' => 'AZX#%', 'state' => 'AZ%$');
-        $expected = array('country' => 'AZX', 'state' => 'AZ');
+        $data = ['country' => 'AZX#%', 'state' => 'AZ%$'];
+        $expected = ['country' => 'AZX', 'state' => 'AZ'];
         $reflectionOfPeopleGroup = new \ReflectionClass('QueryGenerators\PeopleGroup');
         $providedParams = $reflectionOfPeopleGroup->getProperty('providedParams');
         $providedParams->setAccessible(true);
@@ -54,13 +55,15 @@ class PeopleGroupTest extends TestCase
 
     public function testFindByIdAndCountryShouldReturnTheCorrectPeopleGroup(): void
     {
-        $expected = array('id' => '12662', 'country' => 'CB');
+        $expected = ['id' => '12662', 'country' => 'CB'];
         $expectedName = "Khmer";
         $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($expected['id'], $data[0]['PeopleID3']);
         $this->assertEquals($expected['country'], $data[0]['ROG3']);
         $this->assertEquals($expectedName, $data[0]['PeopNameInCountry']);
@@ -68,49 +71,57 @@ class PeopleGroupTest extends TestCase
 
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupURL(): void
     {
-        $expected = array('id' => '12662', 'country' => 'CB');
+        $expected = ['id' => '12662', 'country' => 'CB'];
         $expectedURL = "https://joshuaproject.net/people_groups/12662/cb";
         $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($expectedURL, strtolower($data[0]['PeopleGroupURL']));
     }
 
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectPeopleGroupPhotoURL(): void
     {
-        $expected = array('id' => '12662', 'country' => 'CB');
+        $expected = ['id' => '12662', 'country' => 'CB'];
         $expectedURL = "https://joshuaproject.net/assets/media/profiles/photos/";
         $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $expectedURL .= strtolower($data[0]['PhotoAddress']);
         $this->assertEquals($expectedURL, strtolower($data[0]['PeopleGroupPhotoURL']));
     }
 
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectCountryURL(): void
     {
-        $expected = array('id' => '12662', 'country' => 'CB');
+        $expected = ['id' => '12662', 'country' => 'CB'];
         $expectedURL = "https://joshuaproject.net/countries/cb";
         $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($expectedURL, strtolower($data[0]['CountryURL']));
     }
 
     public function testPeopleGroupQueryGeneratorShouldReturnCorrectJPScaleImageURL(): void
     {
-        $paramData = array('id' => '10350', 'country' => 'AA');
+        $paramData = ['id' => '10350', 'country' => 'AA'];
         $peopleGroup = new PeopleGroup($paramData);
         $peopleGroup->findByIdAndCountry();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $expectedImageURL = "https://joshuaproject.net/assets/img/gauge/gauge-".round(intval($data[0]['JPScale'])).".png";
         $this->assertEquals($expectedImageURL, $data[0]['JPScaleImageURL']);
     }
@@ -118,7 +129,7 @@ class PeopleGroupTest extends TestCase
     public function testFindByIdAndCountryShouldErrorIfNoIdProvided(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $expected = array('country' => 'CB');
+        $expected = ['country' => 'CB'];
         $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
     }
@@ -126,20 +137,22 @@ class PeopleGroupTest extends TestCase
     public function testFindByIdAndCountryShouldErrorIfNoCountryProvided(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $expected = array('id' => '12662');
+        $expected = ['id' => '12662'];
         $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findByIdAndCountry();
     }
 
     public function testFindByIdShouldReturnTheCorrectPeopleGroups(): void
     {
-        $expected = array('id' => '12662');
+        $expected = ['id' => '12662'];
         $expectedPeopleGroups = 13;
         $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findById();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($expected['id'], $data[0]['PeopleID3']);
         $this->assertEquals($expectedPeopleGroups, count($data));
     }
@@ -147,7 +160,7 @@ class PeopleGroupTest extends TestCase
     public function testFindByIdShouldErrorIfNoIDProvided(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $expected = array();
+        $expected = [];
         $peopleGroup = new PeopleGroup($expected);
         $peopleGroup->findById();
     }
@@ -155,22 +168,26 @@ class PeopleGroupTest extends TestCase
     public function testFindAllWithFiltersReturnsLimitedResultsWithNoFiltersByDefault(): void
     {
         $expectedNumberOfResults = 250;
-        $peopleGroup = new PeopleGroup(array());
+        $peopleGroup = new PeopleGroup([]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($expectedNumberOfResults, count($data));
     }
 
     public function testFindAllWithFiltersShouldFilterByPeopleID1(): void
     {
-        $expectedPeopleIds = array(17, 23);
-        $peopleGroup = new PeopleGroup(array('people_id1' => join("|", $expectedPeopleIds)));
+        $expectedPeopleIds = [17, 23];
+        $peopleGroup = new PeopleGroup(['people_id1' => join("|", $expectedPeopleIds)]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array(intval($peopleGroup['PeopleID1']), $expectedPeopleIds));
@@ -179,12 +196,14 @@ class PeopleGroupTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByROP1(): void
     {
-        $expectedROP = array('A014', 'A010');
-        $peopleGroup = new PeopleGroup(array('rop1' => join("|", $expectedROP)));
+        $expectedROP = ['A014', 'A010'];
+        $peopleGroup = new PeopleGroup(['rop1' => join("|", $expectedROP)]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array($peopleGroup['ROP1'], $expectedROP));
@@ -196,14 +215,16 @@ class PeopleGroupTest extends TestCase
         $expectedROP = 'A014';
         $expectedPeopleID = 23;
         $peopleGroup = new PeopleGroup(
-            array(
+            [
                 'rop1' => $expectedROP, 'people_id1' => $expectedPeopleID
-            )
+            ]
         );
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertEquals($expectedROP, $peopleGroup['ROP1']);
@@ -213,12 +234,14 @@ class PeopleGroupTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByPeopleID2(): void
     {
-        $expectedPeopleIDs = array(117, 115);
-        $peopleGroup = new PeopleGroup(array('people_id2' => join("|", $expectedPeopleIDs)));
+        $expectedPeopleIDs = [117, 115];
+        $peopleGroup = new PeopleGroup(['people_id2' => join("|", $expectedPeopleIDs)]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array(intval($peopleGroup['PeopleID2']), $expectedPeopleIDs));
@@ -227,12 +250,14 @@ class PeopleGroupTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByROP2(): void
     {
-        $expectedROP = array('C0013', 'C0067');
-        $peopleGroup = new PeopleGroup(array('rop2' => join("|", $expectedROP)));
+        $expectedROP = ['C0013', 'C0067'];
+        $peopleGroup = new PeopleGroup(['rop2' => join("|", $expectedROP)]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array($peopleGroup['ROP2'], $expectedROP));
@@ -241,12 +266,14 @@ class PeopleGroupTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByPeopleID3(): void
     {
-        $expectedPeopleIDs = array(11722, 19204);
-        $peopleGroup = new PeopleGroup(array('people_id3' => join("|", $expectedPeopleIDs)));
+        $expectedPeopleIDs = [11722, 19204];
+        $peopleGroup = new PeopleGroup(['people_id3' => join("|", $expectedPeopleIDs)]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array(intval($peopleGroup['PeopleID3']), $expectedPeopleIDs));
@@ -255,12 +282,15 @@ class PeopleGroupTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByROP3(): void
     {
-        $expectedROP = array(115485, 115409);
-        $peopleGroup = new PeopleGroup(array('rop3' => join("|", $expectedROP)));
+        $expectedROP = [115485, 115409];
+        $peopleGroup = new PeopleGroup(['rop3' => join("|", $expectedROP)]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
+
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array(intval($peopleGroup['ROP3']), $expectedROP));
@@ -269,12 +299,14 @@ class PeopleGroupTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByContinents(): void
     {
-        $expectedContinents = array('AFR', 'NAR');
-        $peopleGroup = new PeopleGroup(array('continents' => join("|", $expectedContinents)));
+        $expectedContinents = ['AFR', 'NAR'];
+        $peopleGroup = new PeopleGroup(['continents' => join("|", $expectedContinents)]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array($peopleGroup['ROG2'], $expectedContinents));
@@ -283,12 +315,14 @@ class PeopleGroupTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByCountries(): void
     {
-        $expectedCountries = array('AN', 'BG');
-        $peopleGroup = new PeopleGroup(array('countries' => join("|", $expectedCountries)));
+        $expectedCountries = ['AN', 'BG'];
+        $peopleGroup = new PeopleGroup(['countries' => join("|", $expectedCountries)]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array($peopleGroup['ROG3'], $expectedCountries));
@@ -298,27 +332,29 @@ class PeopleGroupTest extends TestCase
     public function testFindAllWithFilterShouldErrorIfIncorrectContinent(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $expectedCountries = array('BBC', 'DED');
-        $peopleGroup = new PeopleGroup(array('continents' => join("|", $expectedCountries)));
+        $expectedCountries = ['BBC', 'DED'];
+        $peopleGroup = new PeopleGroup(['continents' => join("|", $expectedCountries)]);
         $peopleGroup->findAllWithFilters();
     }
 
     public function testFindAllWithFilterShouldErrorIfIncorrectRegionCode(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $regionCodes = array(0, 13);
-        $peopleGroup = new PeopleGroup(array('regions' => join("|", $regionCodes)));
+        $regionCodes = [0, 13];
+        $peopleGroup = new PeopleGroup(['regions' => join("|", $regionCodes)]);
         $peopleGroup->findAllWithFilters();
     }
 
     public function testFindAllWithFiltersShouldFilterByRegions(): void
     {
-        $expectedRegions = array(3 => 'asia, northeast', 4 => 'asia, south');
-        $peopleGroup = new PeopleGroup(array('regions' => join("|", array_keys($expectedRegions))));
+        $expectedRegions = [3 => 'asia, northeast', 4 => 'asia, south'];
+        $peopleGroup = new PeopleGroup(['regions' => join("|", array_keys($expectedRegions))]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array(intval($peopleGroup['RegionCode']), array_keys($expectedRegions)));
@@ -329,11 +365,13 @@ class PeopleGroupTest extends TestCase
     public function testFindAllWithFiltersShouldFilterBy1040Window(): void
     {
         $expected1040Window = 'N';
-        $peopleGroup = new PeopleGroup(array('window1040' => $expected1040Window));
+        $peopleGroup = new PeopleGroup(['window1040' => $expected1040Window]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertEquals('N', $peopleGroup['Window1040']);
@@ -342,12 +380,14 @@ class PeopleGroupTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByLanguages(): void
     {
-        $expectedLanguages = array('AKA', 'ALE');
-        $peopleGroup = new PeopleGroup(array('languages' => join("|", $expectedLanguages)));
+        $expectedLanguages = ['AKA', 'ALE'];
+        $peopleGroup = new PeopleGroup(['languages' => join("|", $expectedLanguages)]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array(strtoupper($peopleGroup['ROL3']), $expectedLanguages));
@@ -358,11 +398,13 @@ class PeopleGroupTest extends TestCase
     {
         $expectedMin = 10000;
         $expectedMax = 20000;
-        $peopleGroup = new PeopleGroup(array('population' => $expectedMin."-".$expectedMax));
+        $peopleGroup = new PeopleGroup(['population' => $expectedMin."-".$expectedMax]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertLessThanOrEqual($expectedMax, intval($peopleGroup['Population']));
@@ -372,16 +414,18 @@ class PeopleGroupTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByPrimaryReligions(): void
     {
-        $expectedReligions = array(2 => 'buddhism', 6 => 'islam');
+        $expectedReligions = [2 => 'buddhism', 6 => 'islam'];
         $peopleGroup = new PeopleGroup(
-            array(
+        [
                 'primary_religions' => join('|', array_keys($expectedReligions))
-            )
+            ]
         );
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array(strtolower($peopleGroup['PrimaryReligion']), array_values($expectedReligions)));
@@ -392,11 +436,13 @@ class PeopleGroupTest extends TestCase
     public function testFindAllWithFiltersShouldFilterBySinglePopulation(): void
     {
         $expectedPop = 3900;
-        $peopleGroup = new PeopleGroup(array('population' => $expectedPop));
+        $peopleGroup = new PeopleGroup(['population' => $expectedPop]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertEquals($expectedPop, intval($peopleGroup['Population']));
@@ -406,14 +452,14 @@ class PeopleGroupTest extends TestCase
     public function testFindAllWithFiltersShouldThrowErrorWithIncorrectPopulation(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $peopleGroup = new PeopleGroup(array('population' => '1900-23000-3400'));
+        $peopleGroup = new PeopleGroup(['population' => '1900-23000-3400']);
         $peopleGroup->findAllWithFilters();
     }
 
     public function testFindAllWithFiltersShouldThrowErrorWithMinPopulationGreaterThanMaxPopulation(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $peopleGroup = new PeopleGroup(array('population' => '30000-1000'));
+        $peopleGroup = new PeopleGroup(['population' => '30000-1000']);
         $peopleGroup->findAllWithFilters();
     }
 
@@ -422,14 +468,16 @@ class PeopleGroupTest extends TestCase
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
         $peopleGroup = new PeopleGroup(
-            array(
+            [
                 'pc_adherent' => $expectedPercentMin."-".$expectedPercentMax
-            )
+            ]
         );
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PercentAdherents']));
@@ -440,11 +488,13 @@ class PeopleGroupTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByPercentOfAdherentsWithOnlyOneDecimalParameter(): void
     {
         $expectedPercent = 1.6;
-        $peopleGroup = new PeopleGroup(array('pc_adherent' => $expectedPercent));
+        $peopleGroup = new PeopleGroup(['pc_adherent' => $expectedPercent]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertEquals($expectedPercent, floatval($peopleGroup['PercentAdherents']));
@@ -456,14 +506,16 @@ class PeopleGroupTest extends TestCase
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
         $peopleGroup = new PeopleGroup(
-            array(
+            [
                 'pc_evangelical' => $expectedPercentMin."-".$expectedPercentMax
-            )
+            ]
         );
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PercentEvangelical']));
@@ -476,14 +528,17 @@ class PeopleGroupTest extends TestCase
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
         $peopleGroup = new PeopleGroup(
-            array(
+            [
                 'pc_buddhist' => $expectedPercentMin."-".$expectedPercentMax
-            )
+            ]
         );
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
+
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCBuddhism']));
@@ -496,14 +551,16 @@ class PeopleGroupTest extends TestCase
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
         $peopleGroup = new PeopleGroup(
-            array(
+            [
                 'pc_ethnic_religion' => $expectedPercentMin."-".$expectedPercentMax
-            )
+            ]
         );
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCEthnicReligions']));
@@ -516,14 +573,16 @@ class PeopleGroupTest extends TestCase
         $expectedPercentMin = 50.0;
         $expectedPercentMax = 60.1;
         $peopleGroup = new PeopleGroup(
-            array(
+            [
                 'pc_hindu' => $expectedPercentMin."-".$expectedPercentMax
-            )
+            ]
         );
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCHinduism']));
@@ -536,14 +595,16 @@ class PeopleGroupTest extends TestCase
         $expectedPercentMin = 20.0;
         $expectedPercentMax = 30.1;
         $peopleGroup = new PeopleGroup(
-            array(
+            [
                 'pc_islam' => $expectedPercentMin."-".$expectedPercentMax
-            )
+            ]
         );
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCIslam']));
@@ -556,14 +617,16 @@ class PeopleGroupTest extends TestCase
         $expectedPercentMin = 22.0;
         $expectedPercentMax = 40.1;
         $peopleGroup = new PeopleGroup(
-            array(
+            [
                 'pc_non_religious' => $expectedPercentMin."-".$expectedPercentMax
-            )
+            ]
         );
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCNonReligious']));
@@ -576,14 +639,16 @@ class PeopleGroupTest extends TestCase
         $expectedPercentMin = 2.0;
         $expectedPercentMax = 10.3;
         $peopleGroup = new PeopleGroup(
-            array(
+            [
                 'pc_other_religion' => $expectedPercentMin."-".$expectedPercentMax
-            )
+            ]
         );
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCOtherSmall']));
@@ -596,14 +661,16 @@ class PeopleGroupTest extends TestCase
         $expectedPercentMin = 2.0;
         $expectedPercentMax = 10.3;
         $peopleGroup = new PeopleGroup(
-            array(
+            [
                 'pc_unknown' => $expectedPercentMin."-".$expectedPercentMax
-            )
+            ]
         );
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertLessThanOrEqual($expectedPercentMax, floatval($peopleGroup['PCUnknown']));
@@ -614,11 +681,13 @@ class PeopleGroupTest extends TestCase
     public function testFindAllWithFiltersShouldFilterOutIndigenousPeopleGroups(): void
     {
         $expectedIndigenousStatus = 'n';
-        $peopleGroup = new PeopleGroup(array('indigenous' => $expectedIndigenousStatus));
+        $peopleGroup = new PeopleGroup(['indigenous' => $expectedIndigenousStatus]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertEquals('N', $peopleGroup['IndigenousCode']);
@@ -628,11 +697,13 @@ class PeopleGroupTest extends TestCase
     public function testFindAllWithFiltersShouldFilterOutLeastReachedPeopleGroups(): void
     {
         $expectedLeastReachedStatus = 'n';
-        $peopleGroup = new PeopleGroup(array('least_reached' => $expectedLeastReachedStatus));
+        $peopleGroup = new PeopleGroup(['least_reached' => $expectedLeastReachedStatus]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertEquals('N', $peopleGroup['LeastReached']);
@@ -642,12 +713,14 @@ class PeopleGroupTest extends TestCase
     public function testFindAllWithFiltersShouldFiltersByJPScale(): void
     {
         $expectedJPScales = "1|2";
-        $expectedJPScalesArray = array(1, 2);
-        $peopleGroup = new PeopleGroup(array('jpscale' => $expectedJPScales));
+        $expectedJPScalesArray = [1, 2];
+        $peopleGroup = new PeopleGroup(['jpscale' => $expectedJPScales]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array(floatval($peopleGroup['JPScale']), $expectedJPScalesArray));
@@ -658,24 +731,27 @@ class PeopleGroupTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $expectedJPScales = "1.5|2.6";
-        $peopleGroup = new PeopleGroup(array('jpscale' => $expectedJPScales));
+        $peopleGroup = new PeopleGroup(['jpscale' => $expectedJPScales]);
         $peopleGroup->findAllWithFilters();
     }
 
     public function testFindAllWithFilterShouldErrorIfIncorrectWindow1040(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $peopleGroup = new PeopleGroup(array('window1040' => 'b'));
+        $peopleGroup = new PeopleGroup(['window1040' => 'b']);
         $peopleGroup->findAllWithFilters();
     }
 
     public function testFindAllWithFilterShouldFilterByFrontier(): void
     {
-        $peopleGroup = new PeopleGroup(array('is_frontier' => 'N'));
+        $peopleGroup = new PeopleGroup(['is_frontier' => 'N']);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
+
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertEquals('N', strtoupper($peopleGroup['Frontier']));
@@ -686,11 +762,13 @@ class PeopleGroupTest extends TestCase
     {
         $min = 10000;
         $max = 11000;
-        $peopleGroup = new PeopleGroup(array('population_pgac' => $min . '-' . $max));
+        $peopleGroup = new PeopleGroup(['population_pgac' => $min . '-' . $max]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertGreaterThanOrEqual($min, $peopleGroup['PopulationPGAC']);
@@ -701,11 +779,13 @@ class PeopleGroupTest extends TestCase
     public function testFindAllWithFilterShouldFilterByAllCountryPopulationSingleValue(): void
     {
         $expected = 12000;
-        $peopleGroup = new PeopleGroup(array('population_pgac' => $expected));
+        $peopleGroup = new PeopleGroup(['population_pgac' => $expected]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertEquals($expected, $peopleGroup['PopulationPGAC']);
@@ -715,11 +795,13 @@ class PeopleGroupTest extends TestCase
     public function testFindAllWithFliterShouldFilterByBibleStatus(): void
     {
         $expected = 2;
-        $peopleGroup = new PeopleGroup(array('bible_status' => $expected));
+        $peopleGroup = new PeopleGroup(['bible_status' => $expected]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertEquals($expected, $peopleGroup['BibleStatus']);
@@ -729,11 +811,13 @@ class PeopleGroupTest extends TestCase
     public function testFindAllWithFliterShouldFilterByMultipleBibleStatus(): void
     {
         $expected = [2, 3];
-        $peopleGroup = new PeopleGroup(array('bible_status' => join('|', $expected)));
+        $peopleGroup = new PeopleGroup(['bible_status' => join('|', $expected)]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(in_array((int) $peopleGroup['BibleStatus'], $expected));
@@ -744,9 +828,11 @@ class PeopleGroupTest extends TestCase
     {
         $queryOne = new PeopleGroup(['people_id3' => 11722, 'countries' => 'YM']);
         $queryOne->findAllWithFilters();
-        $statement = $this->db->prepare($queryOne->preparedStatement);
-        $statement->execute($queryOne->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $queryOne->preparedStatement,
+            $queryOne->preparedVariables,
+            $queryOne->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertTrue(isset($peopleGroup['PeopleID3ROG3']));
@@ -759,9 +845,11 @@ class PeopleGroupTest extends TestCase
         $expected = 'Y';
         $peopleGroup = new PeopleGroup(['has_jesus_film' => $expected]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertEquals($expected, $peopleGroup['HasJesusFilm']);
@@ -773,9 +861,11 @@ class PeopleGroupTest extends TestCase
         $expected = 'Y';
         $peopleGroup = new PeopleGroup(['has_audio' => $expected]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertEquals($expected, $peopleGroup['HasAudioRecordings']);
@@ -787,9 +877,11 @@ class PeopleGroupTest extends TestCase
         $expected = 'Y';
         $peopleGroup = new PeopleGroup(['nomadic' => $expected]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertEquals($expected, $peopleGroup['Nomadic']);
@@ -801,9 +893,11 @@ class PeopleGroupTest extends TestCase
         $expected = 'N';
         $peopleGroup = new PeopleGroup(['nomadic' => $expected]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $peopleGroup) {
             $this->assertEquals($expected, $peopleGroup['Nomadic']);
@@ -814,9 +908,11 @@ class PeopleGroupTest extends TestCase
     {
         $peopleGroup = new PeopleGroup(['limit' => 5]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $sorted = $data;
         usort($sorted, fn ($a, $b) => $a['PeopleID1'] - $b['PeopleID1']);
         $this->assertEquals($sorted, $data);
@@ -826,10 +922,11 @@ class PeopleGroupTest extends TestCase
     {
         $peopleGroup = new PeopleGroup(['limit' => 5, 'sort_field' => 'Population', 'sort_direction' => 'DESC']);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
-
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $sorted = $data;
         usort($sorted, fn ($a, $b) => $b['Population'] - $a['Population']);
         $this->assertEquals($sorted, $data);
@@ -851,12 +948,14 @@ class PeopleGroupTest extends TestCase
 
     public function testFindByIdAndCountryShouldAddPeopleID3Rog3Field(): void
     {
-        $params = array('id' => 11722, 'country' => 'AE');
+        $params = ['id' => 11722, 'country' => 'AE'];
         $peopleGroup = new PeopleGroup($params);
         $peopleGroup->findByIdAndCountry();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         $this->assertTrue(isset($data[0]['PeopleID3ROG3']));
         $this->assertEquals('11722AE', $data[0]['PeopleID3ROG3']);
@@ -871,9 +970,11 @@ class PeopleGroupTest extends TestCase
         ];
         $peopleGroup = new PeopleGroup([]);
         $peopleGroup->findCountryList(10960);
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         $this->assertEquals(3, count($data));
         $this->assertEqualsCanonicalizing($expected, $data);
