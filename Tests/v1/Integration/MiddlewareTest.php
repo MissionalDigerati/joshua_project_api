@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,6 +23,7 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Integration;
 
 use Doctrine\DBAL\Connection;
@@ -103,12 +105,12 @@ class MiddlewareTest extends TestCase
         );
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/asi.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_accessible_in_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
         $data = $this->db->fetchAssociative(
-            "SELECT * FROM `md_api_keys` WHERE  `api_key` = :api_key", 
+            "SELECT * FROM `md_api_keys` WHERE  `api_key` = :api_key",
             ['api_key' => $this->APIKey]
         );
         $this->assertFalse(empty($data['last_request']));

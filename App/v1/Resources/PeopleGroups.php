@@ -27,7 +27,6 @@ declare(strict_types=1);
 namespace App\v1\Resources;
 
 use Doctrine\DBAL\Exception as DBALException;
-
 use QueryGenerators\PeopleGroup;
 use QueryGenerators\ProfileText;
 use QueryGenerators\Resource;

@@ -89,9 +89,9 @@ $app->get(
         } else {
             try {
                 $row = $this->get('db')->fetchAssociative(
-                        "SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token LIMIT 1",
-                        ['authorize_token' => $params['authorize_token']]
-                    );
+                    "SELECT * FROM `md_api_keys` WHERE authorize_token = :authorize_token LIMIT 1",
+                    ['authorize_token' => $params['authorize_token']]
+                );
             } catch (DBALException $e) {
                 error_log("DB error in get_my_api_key: {$e->getMessage()}");
                 $error = "Unable to locate your API key.";
@@ -171,8 +171,8 @@ $app->post(
         if (empty($invalidFields)) {
             try {
                 $data = $this->get('db')->fetchAllAssociative(
-                        "SELECT * FROM `md_api_keys` WHERE email = :email AND status = 0",
-                        ['email' => $formData['email']]
+                    "SELECT * FROM `md_api_keys` WHERE email = :email AND status = 0",
+                    ['email' => $formData['email']]
                 );
                 if (empty($data)) {
                     $errors['find_keys'] = "We were unable to locate your pending API keys.";

@@ -89,7 +89,7 @@ class PeopleGroupGlobal extends QueryGenerator
      * @access  protected
      */
     protected $sortingFieldWhitelist = [];
-        /**
+    /**
      * Construct the People Group Global class.
      *
      * During construction,  the $getParams are checked and inserted in the $providedParams class variable.

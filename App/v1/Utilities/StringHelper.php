@@ -39,7 +39,7 @@ class StringHelper
      */
     public static function ensureTrailingSpace(string $string): string
     {
-        return (substr($string, -1) === ' ') ? $string :  "{$string} ";
+        return (substr($string, -1) === ' ') ? $string : "{$string} ";
     }
     /**
      * If a string is null, returns an empty string

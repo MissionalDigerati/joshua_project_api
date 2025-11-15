@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,10 +23,11 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Unit\QueryGenerators;
 
 use Doctrine\DBAL\Connection;
-use \QueryGenerators\Country;
+use QueryGenerators\Country;
 use PHPUnit\Framework\TestCase;
 
 /**

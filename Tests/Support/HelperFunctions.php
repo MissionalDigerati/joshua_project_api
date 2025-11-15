@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -75,7 +76,7 @@ function deleteApiKey(string $apiKey): void
 }
 /**
  * Get an instance of the database.
- * 
+ *
  * @return Connection The database connection
  */
 function getDatabaseInstance(): Connection

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,6 +23,7 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Unit\QueryGenerators;
 
 use Doctrine\DBAL\Connection;
@@ -416,7 +418,7 @@ class PeopleGroupTest extends TestCase
     {
         $expectedReligions = [2 => 'buddhism', 6 => 'islam'];
         $peopleGroup = new PeopleGroup(
-        [
+            [
                 'primary_religions' => join('|', array_keys($expectedReligions))
             ]
         );

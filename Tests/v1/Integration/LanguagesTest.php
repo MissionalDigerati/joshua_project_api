@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,6 +23,7 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Integration;
 
 use Doctrine\DBAL\Connection;
@@ -36,7 +38,6 @@ use PHPUnit\Framework\TestCase;
  */
 class LanguagesTest extends TestCase
 {
-
     public GuzzleHttpClient $httpClient;
 
     private Connection $db;
@@ -80,7 +81,7 @@ class LanguagesTest extends TestCase
         );
         $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages/aar.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "non_active_key_json"
         );
         $this->assertEquals(401, $this->httpClient->responseCode);
@@ -94,7 +95,7 @@ class LanguagesTest extends TestCase
         );
         $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages/aar.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "suspended_key_json"
         );
         $this->assertEquals(401, $this->httpClient->responseCode);
@@ -511,7 +512,7 @@ class LanguagesTest extends TestCase
 
     public function testIndexRequestsShouldReturnLanguagesBasedOnCountries(): void
     {
-        $expectedCountries = array('af', 'cn');
+        $expectedCountries = ['af', 'cn'];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/languages.json",
             [
@@ -542,7 +543,7 @@ class LanguagesTest extends TestCase
         $this->assertTrue(isJSON($response));
         $decodedResponse = json_decode($response, true);
         foreach ($decodedResponse as $lang) {
-            $this->assertTrue(in_array(strtolower($lang['PrimaryReligion']), array('islam', 'ethnic religions')));
+            $this->assertTrue(in_array(strtolower($lang['PrimaryReligion']), ['islam', 'ethnic religions']));
         }
     }
 
@@ -576,7 +577,7 @@ class LanguagesTest extends TestCase
         $this->assertTrue(isJSON($response));
         $decodedResponse = json_decode($response, true);
         foreach ($decodedResponse as $lang) {
-            $this->assertTrue(in_array(floatval($lang['JPScale']), array(2, 3)));
+            $this->assertTrue(in_array(floatval($lang['JPScale']), [2, 3]));
         }
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -21,6 +22,7 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Integration;
 
 use Doctrine\DBAL\Connection;
@@ -1114,7 +1116,7 @@ class PeopleGroupsTest extends TestCase
         $decoded = json_decode($response, true);
         $this->assertEquals(200, $this->httpClient->responseCode);
         $this->assertFalse(empty($decoded));
-        foreach ($decoded as $peopleGroup) { 
+        foreach ($decoded as $peopleGroup) {
             $this->assertFalse(array_key_exists('Summary', $peopleGroup));
             $this->assertFalse(array_key_exists('Obstacles', $peopleGroup));
             $this->assertFalse(array_key_exists('HowReach', $peopleGroup));

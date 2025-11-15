@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -21,15 +22,13 @@
  *
  */
 
- declare(strict_types=1);
+declare(strict_types=1);
 
 namespace Tests\v1\Unit\QueryGenerators;
 
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 use QueryGenerators\PeopleGroupGlobal;
-
-
 
 /**
  * Test the Query Generator for the People Group Global Data
@@ -38,7 +37,6 @@ use QueryGenerators\PeopleGroupGlobal;
  */
 class PeopleGroupGlobalTest extends TestCase
 {
-
     private Connection $db;
 
     public function setUp(): void

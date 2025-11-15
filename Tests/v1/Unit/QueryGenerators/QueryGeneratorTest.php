@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,6 +23,7 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Unit\QueryGenerators;
 
 use PHPUnit\Framework\TestCase;
@@ -93,7 +95,7 @@ class QueryGeneratorTest extends TestCase
     {
         $expectedLimit = 250;
         $expectedStarting = 0;
-        $queryGenerator = new \QueryGenerators\QueryGenerator(array());
+        $queryGenerator = new \QueryGenerators\QueryGenerator([]);
         $reflectionOfQueryGenerator = new \ReflectionClass('\QueryGenerators\QueryGenerator');
         $method = $reflectionOfQueryGenerator->getMethod('addLimitFilter');
         $method->setAccessible(true);

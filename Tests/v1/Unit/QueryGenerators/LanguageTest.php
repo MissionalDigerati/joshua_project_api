@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,6 +23,7 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Unit\QueryGenerators;
 
 use Doctrine\DBAL\Connection;
@@ -35,7 +37,6 @@ use QueryGenerators\Language;
  */
 class LanguageTest extends TestCase
 {
-
     private Connection $db;
 
     public function setUp(): void

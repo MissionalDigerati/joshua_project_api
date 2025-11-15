@@ -29,11 +29,13 @@
     "require-dev": {
         "zircote/swagger-php": "^3.0",
         "squizlabs/php_codesniffer": "^4.0",
-        "phpunit/phpunit": "^10.4"
+        "phpunit/phpunit": "^10.4",
+        "friendsofphp/php-cs-fixer": "^3.89"
     },
     "scripts": {
         "docs": "openapi -o ./Public/api-docs.json ./App/v1/OpenAPI/Components.php ./App/v1/OpenAPI/Schemas/ ./App/v1/Resources/",
         "lint": "phpcs",
+        "lint:fix": "php-cs-fixer fix --using-cache=no",
         "test": "phpunit Tests/"
     },
     "autoload": {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 /**
  * This file is part of Joshua Project API.
@@ -28,12 +29,12 @@ use Slim\Views\PhpRenderer;
 use Utilities\Mailer;
 use Utilities\APIErrorResponder;
 
- /**
-  * Add the dependencies to the container
-  */
-return function(ContainerBuilder $containerBuilder, string $viewDirectory) {
+/**
+ * Add the dependencies to the container
+ */
+return function (ContainerBuilder $containerBuilder, string $viewDirectory) {
     $containerBuilder->addDefinitions([
-        'db'    =>  function(ContainerInterface $interface) {
+        'db'    =>  function (ContainerInterface $interface) {
             return DriverManager::getConnection([
                 'driver' => 'pdo_mysql',
                 'host' => $_ENV['DB_HOST'],
@@ -43,9 +44,9 @@ return function(ContainerBuilder $containerBuilder, string $viewDirectory) {
                 'charset' => 'utf8'
             ]);
         },
-        'errorResponder'    => fn(ContainerInterface $interface) => new APIErrorResponder(),
-        'httpClient' => fn(ContainerInterface $interface) => new Client(),
-        'mailer'    =>  function(ContainerInterface $interface) {
+        'errorResponder'    => fn (ContainerInterface $interface) => new APIErrorResponder(),
+        'httpClient' => fn (ContainerInterface $interface) => new Client(),
+        'mailer'    =>  function (ContainerInterface $interface) {
             $useSMTP = ($_ENV['EMAIL_USE_SMTP'] === 'true');
             return new Mailer(
                 $_ENV['EMAIL_HOST'],
@@ -55,7 +56,7 @@ return function(ContainerBuilder $containerBuilder, string $viewDirectory) {
                 $useSMTP
             );
         },
-        'recaptchaValidator' => function(ContainerInterface $interface) {
+        'recaptchaValidator' => function (ContainerInterface $interface) {
             return new \Utilities\RecaptchaValidator(
                 $_ENV['RECAPTCHA_API_KEY'] ?? '',
                 $interface->get('httpClient'),
@@ -63,7 +64,7 @@ return function(ContainerBuilder $containerBuilder, string $viewDirectory) {
                 $_ENV['RECAPTCHA_SITE_KEY'] ?? ''
             );
         },
-        'view'  =>  function(ContainerInterface $interface) use ($viewDirectory) {
+        'view'  =>  function (ContainerInterface $interface) use ($viewDirectory) {
             return new PhpRenderer(
                 $viewDirectory,
                 ['viewDirectory' => $viewDirectory]

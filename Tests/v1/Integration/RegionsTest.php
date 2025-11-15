@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,6 +23,7 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Integration;
 
 use Doctrine\DBAL\Connection;
@@ -124,8 +126,8 @@ class RegionsTest extends TestCase
     public function testShowRequestsShouldRefuseAccessWithoutActiveAPIKey(): void
     {
         $this->db->executeStatement(
-            "UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = :api_key", 
-        ['api_key' => $this->APIKey]
+            "UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
         );
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/3.json",
@@ -148,8 +150,8 @@ class RegionsTest extends TestCase
     public function testShowRequestsShouldRefuseAccessWithSuspendedAPIKey(): void
     {
         $this->db->executeStatement(
-            "UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = :api_key", 
-        ['api_key' => $this->APIKey]
+            "UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
         );
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/2.json",

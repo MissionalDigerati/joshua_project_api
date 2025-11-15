@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,6 +23,7 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Integration;
 
 use Tests\Support\GuzzleHttpClient;
@@ -126,12 +128,12 @@ class APIKeysTest extends TestCase
     {
         $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
-            array(
+            [
                 'name' => '',
                 'email' => 'joe@yahoo.com',
                 'usage' => ['testing'],
                 'terms_of_use' => 'true',
-            ),
+            ],
             "api_keys_required_fields"
         );
         $actualURL = $this->httpClient->lastVisitedURL;
@@ -149,12 +151,12 @@ class APIKeysTest extends TestCase
     {
         $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
-            array(
+            [
                 'name' => 'joe',
                 'email' => '',
                 'usage' => ['testing'],
                 'terms_of_use' => 'true',
-            ),
+            ],
             "api_keys_required_fields"
         );
         $actualURL = $this->httpClient->lastVisitedURL;
@@ -172,12 +174,12 @@ class APIKeysTest extends TestCase
     {
         $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
-            array(
+            [
                 'name' => 'joe',
                 'email' => 'joe@yahoo.com',
                 'usage' => [],
                 'terms_of_use' => 'true',
-            ),
+            ],
             "api_keys_required_fields"
         );
         $actualURL = $this->httpClient->lastVisitedURL;
@@ -196,12 +198,12 @@ class APIKeysTest extends TestCase
         $name = 'testAPIKeyRequestShouldReturnIfAllPOSTParamsSupplied';
         $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
-            array(
+            [
                 'name' => $name,
                 'email' => 'joe@yahoo.com',
                 'usage' => ['api development'],
                 'terms_of_use' => 'true',
-            ),
+            ],
             "api_keys_required_fields"
         );
         $lastVisitedURL = $this->httpClient->lastVisitedURL;
@@ -225,16 +227,16 @@ class APIKeysTest extends TestCase
         $expectedUsage = "api development,testing,research project";
         $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
-            array(
+            [
                 'name' => $name,
                 'email' => 'joe@yahoo.com',
                 'usage' => $usage,
                 'terms_of_use' => 'true',
-            ),
+            ],
             "api_key_request_correct_usage"
         );
         $data = $this->db->fetchAllAssociative(
-            "SELECT api_usage from `md_api_keys` WHERE `name` = :name", 
+            "SELECT api_usage from `md_api_keys` WHERE `name` = :name",
             ['name' => $name]
         );
         $this->assertEquals($expectedUsage, $data[0]['api_usage']);
@@ -282,7 +284,7 @@ class APIKeysTest extends TestCase
                 'name' => 'require-other-purpose-on-other-usage',
                 'email' => 'joe@yahoo.com',
                 'usage' => ['other'],
-                'other_purpose'=> '',
+                'other_purpose' => '',
                 'terms_of_use' => 'true',
             ],
             "require_other_purpose_on_other_usage"
@@ -362,7 +364,7 @@ class APIKeysTest extends TestCase
                 'name' => 'require-other-purpose-on-other-usage',
                 'email' => 'joe@yahoo.com',
                 'usage' => ['other'],
-                'other_purpose'=> '',
+                'other_purpose' => '',
             ],
             "require_other_purpose_on_other_usage"
         );
@@ -382,12 +384,12 @@ class APIKeysTest extends TestCase
         $usage = generateRandomKey(12);
         $content = $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
-            array(
+            [
                 'name' => 'status_should_be_zero',
                 'email' => 'joe@yahoo.com',
                 'usage' => [$usage],
                 'terms_of_use' => 'true',
-            ),
+            ],
             "status_should_be_zero"
         );
         $data = $this->db->fetchAllAssociative(
@@ -408,12 +410,12 @@ class APIKeysTest extends TestCase
         $usage = generateRandomKey(12);
         $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
-            array(
+            [
                 'name' => 'should_set_authorize_token',
                 'email' => 'joe@gmail.com',
                 'usage' => [$usage],
                 'terms_of_use' => 'true',
-            ),
+            ],
             "should_set_authorize_token"
         );
         $data = $this->db->fetchAllAssociative(
@@ -436,12 +438,12 @@ class APIKeysTest extends TestCase
         $expectedStatus = 1;
         $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
-            array(
+            [
                 'name' => 'i_should_become_active',
                 'email' => 'joe@gmail.com',
                 'usage' => [$usage],
                 'terms_of_use' => 'true',
-            ),
+            ],
             "i_should_become_active"
         );
         $data = $this->db->fetchAllAssociative(
@@ -450,11 +452,11 @@ class APIKeysTest extends TestCase
         );
         $this->httpClient->get(
             $this->siteURL . "/get_my_api_key",
-            array('authorize_token' => $data[0]['authorize_token']),
+            ['authorize_token' => $data[0]['authorize_token']],
             "i_should_become_active_authorize"
         );
         $results = $this->db->fetchAllAssociative(
-            "SELECT * from `md_api_keys` WHERE `api_usage` = :usage", 
+            "SELECT * from `md_api_keys` WHERE `api_usage` = :usage",
             ['usage' => $usage]
         );
         $this->assertEquals($expectedStatus, $results[0]['status']);
@@ -473,16 +475,16 @@ class APIKeysTest extends TestCase
         $expectedStatus = 2;
         $this->httpClient->post(
             $this->siteURL . "/api_keys/new",
-            array(
+            [
                 'name' => 'i_should_stay_suspended',
                 'email' => 'joe@gmail.com',
                 'usage' => [$usage],
                 'terms_of_use' => 'true',
-            ),
+            ],
             "i_should_stay_suspended"
         );
         $this->db->executeStatement(
-            "UPDATE `md_api_keys` SET status = 2 WHERE  `api_usage` = :usage", 
+            "UPDATE `md_api_keys` SET status = 2 WHERE  `api_usage` = :usage",
             ['usage' => $usage]
         );
         $data = $this->db->fetchAllAssociative(
@@ -491,7 +493,7 @@ class APIKeysTest extends TestCase
         );
         $this->httpClient->get(
             $this->siteURL . "/get_my_api_key",
-            array('authorize_token' => $data[0]['authorize_token']),
+            ['authorize_token' => $data[0]['authorize_token']],
             "i_should_stay_suspended_authorize"
         );
         $result = $this->db->fetchAllAssociative(
