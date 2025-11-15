@@ -187,7 +187,8 @@ class Unreached extends PeopleGroup
         $this->validator->integerInRange($day, 1, 31);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jpupgotd AS jpupgotd JOIN " .
             "jppeoples AS jppeoples ON jpupgotd.PeopleID3 = jppeoples.PeopleID3 WHERE " .
-            "jpupgotd.LRofTheDayMonth = :month AND jpupgotd.LRofTheDayDay = :day AND jpupgotd.ROL3Profile = :lang LIMIT 1";
+            "jpupgotd.LRofTheDayMonth = :month AND jpupgotd.LRofTheDayDay = :day AND " .
+            "jpupgotd.ROL3Profile = :lang LIMIT 1";
         $this->preparedVariables = ['month' => $month, 'day' => $day, 'lang' => $lang];
     }
 }
