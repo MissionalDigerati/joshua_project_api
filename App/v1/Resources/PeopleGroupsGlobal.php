@@ -150,14 +150,15 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
+        $body = $response->getBody();
         if ($args['format'] == 'json') {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-type', 'text/xml')
-                ->write(arrayToXML($data, "people_groups_global", "people_group"));
+            $xml = arrayToXML($data, "people_groups_global", "people_group");
+            $body->write($xml);
+            return $response->withHeader('Content-type', 'text/xml');
         }
     }
 );
@@ -400,14 +401,15 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
+        $body = $response->getBody();
         if ($args['format'] == 'json') {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-type', 'text/xml')
-                ->write(arrayToXML($data, "people_groups", "people_group"));
+            $xml = arrayToXML($data, "people_groups_global", "people_group");
+            $body->write($xml);
+            return $response->withHeader('Content-type', 'text/xml');
         }
     }
 );

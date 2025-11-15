@@ -131,14 +131,15 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
+        $body = $response->getBody();
         if ($format === 'json') {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-type', 'text/xml')
-                ->write(arrayToXML($data, "countries", "country"));
+            $xml = arrayToXML($data, "countries", "country");
+            $body->write($xml);
+            return $response->withHeader('Content-type', 'text/xml');
         }
     }
 );
@@ -470,14 +471,15 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
+        $body = $response->getBody();
         if ($format === 'json') {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-type', 'text/xml')
-                ->write(arrayToXML($data, "countries", "country"));
+            $xml = arrayToXML($data, "countries", "country");
+            $body->write($xml);
+            return $response->withHeader('Content-type', 'text/xml');
         }
     }
 );

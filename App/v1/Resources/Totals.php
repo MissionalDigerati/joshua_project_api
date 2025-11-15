@@ -106,14 +106,15 @@ $app->get(
         /**
          * Render the final data
          */
+        $body = $response->getBody();
         if ($args['format'] == 'json') {
-            return $response
-            ->withHeader('Content-Type', 'application/json')
-            ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-type', 'text/xml')
-                ->write(arrayToXML($data, "totals", "total"));
+            $xml = arrayToXML($data, "totals", "total");
+            $body->write($xml);
+            return $response->withHeader('Content-type', 'text/xml');
         }
     }
 );
@@ -184,14 +185,15 @@ $app->get(
         /**
          * Render the final data
          */
+        $body = $response->getBody();
         if ($args['format'] == 'json') {
-            return $response
-            ->withHeader('Content-Type', 'application/json')
-            ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-type', 'text/xml')
-                ->write(arrayToXML($data, "totals", "total"));
+            $xml = arrayToXML($data, "totals", "total");
+            $body->write($xml);
+            return $response->withHeader('Content-type', 'text/xml');
         }
     }
 );

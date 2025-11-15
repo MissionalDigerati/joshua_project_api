@@ -82,9 +82,10 @@ $app->get(
             'people_groups_global', 'regions', 'totals'
         ];
         if (!in_array($resourceType, $allowed)) {
+            $body = $response->getBody();
+            $body->write('Page not found');
             return $response->withStatus(404)
-                ->withHeader('Content-Type', 'text/html')
-                ->write('Page not found');
+                ->withHeader('Content-Type', 'text/html');
         }
         return $this->get('view')->render(
             $response,
