@@ -144,14 +144,15 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
+        $body = $response->getBody();
         if ($format == 'json') {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-Type', 'text/xml')
-                ->write(arrayToXML($data, "continents", "continent"));
+            $xml = arrayToXML($data, "continents", "continent");
+            $body->write($xml);
+            return $response->withHeader('Content-Type', 'text/xml');
         }
     }
 );

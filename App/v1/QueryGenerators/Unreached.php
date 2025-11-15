@@ -68,7 +68,7 @@ class Unreached extends PeopleGroup
         'jpupgotd.PortionsYear', 'jpupgotd.JPScale', 'jpupgotd.LeastReached', 'jpupgotd.JF AS HasJesusFilm',
         'jpupgotd.AudioRecordings AS HasAudioRecordings', 'jpupgotd.NTOnline', 'jpupgotd.RLG3',
         'jpupgotd.PrimaryReligion', 'jpupgotd.LRofTheDayMonth', 'jpupgotd.LRofTheDaySet', 'jpupgotd.LRofTheDayDay',
-        'jpupgotd.PhotoAddress', 'jpupgotd.PhotoCredits', 'jpupgotd.PhotoCreditURL',
+        'jpupgotd.PhotoAddress', 'jpupgotd.PhotoCredits', 'jpupgotd.PhotoCreditURL', 'jpupgotd.ROL3Profile',
         'jpupgotd.PhotoCreativeCommons', 'jpupgotd.PhotoCopyright', 'jpupgotd.PhotoPermission',
         'jpupgotd.CountOfCountries', 'jpupgotd.Longitude', 'jpupgotd.Latitude', 'jpupgotd.Ctry', 'jpupgotd.ROL3',
         'jpupgotd.PercentAdherents', 'jpupgotd.PercentEvangelical', 'jpupgotd.RegionCode', 'jppeoples.ROP3',
@@ -165,24 +165,30 @@ class Unreached extends PeopleGroup
      * Find the daily unreached people Group based on the month and day that you specify.
      * <br><br><strong>Requires $providedParams['month']:</strong> The specific month of the unreached.
      * <br><strong>Requires $providedParams['day']:</strong> The specific month of the unreached.
+     * <br><strong>Optiona $providedParams['lang']:</strong> The language to return.
      *
      * @return  void
      * @access  public
      * @throws  \InvalidArgumentException   If the 'month' key is not set or it is not between 1-12.
      * @throws  \InvalidArgumentException   If the 'day' key is not set or it is not between 1-31.
+     * @throws  \InvalidArgumentException   If the 'lang' key is set to an unsupported language.
      * @author  Johnathan Pulos
      */
     public function daily(): void
     {
         $this->validator->providedRequiredParams($this->providedParams, ['month', 'day']);
-        $set = 1;
         $month = intval($this->providedParams['month']);
         $day = intval($this->providedParams['day']);
+        $lang = strtolower($this->providedParams['lang'] ?? 'eng');
+        if (!in_array($lang, QueryGenerator::$supportedLangs)) {
+            throw new \InvalidArgumentException("The 'lang' parameter you provided is not supported.");
+        }
         $this->validator->integerInRange($month, 1, 12);
         $this->validator->integerInRange($day, 1, 31);
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement . " FROM jpupgotd AS jpupgotd JOIN " .
             "jppeoples AS jppeoples ON jpupgotd.PeopleID3 = jppeoples.PeopleID3 WHERE " .
-            "jpupgotd.LRofTheDayMonth = :month AND jpupgotd.LRofTheDayDay = :day AND ROL3Profile = 'eng' LIMIT 1";
-        $this->preparedVariables = ['month' => $month, 'day' => $day];
+            "jpupgotd.LRofTheDayMonth = :month AND jpupgotd.LRofTheDayDay = :day AND " .
+            "jpupgotd.ROL3Profile = :lang LIMIT 1";
+        $this->preparedVariables = ['month' => $month, 'day' => $day, 'lang' => $lang];
     }
 }

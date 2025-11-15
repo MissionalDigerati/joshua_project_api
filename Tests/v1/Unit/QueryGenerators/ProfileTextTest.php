@@ -147,4 +147,34 @@ class ProfileTextTest extends TestCase
         $this->assertTrue(array_key_exists('PrayForPG', $data[0]));
         $this->assertTrue((strpos($data[0]['PrayForPG'], 'drawing people to himself') !== false));
     }
+
+    public function testFindAllByIdAndCountryShouldReturnASpecifiedLanguage(): void
+    {
+        $getVars = ['id' => '18432', 'country' => 'CH', 'lang' => 'spa'];
+        $profileText = new \QueryGenerators\ProfileText($getVars);
+        $profileText->findAllByIdAndCountry();
+        $data = $this->db->fetchAllAssociative(
+            $profileText->preparedStatement,
+            $profileText->preparedVariables,
+            $profileText->preparedVariableTypes
+        );
+        $this->assertFalse(empty($data));
+        $this->assertTrue(array_key_exists('Summary', $data[0]));
+        $this->assertTrue((strpos($data[0]['Summary'], 'Antiguamente, cuando una pareja daizhan') !== false));
+        $this->assertTrue(array_key_exists('Obstacles', $data[0]));
+        $this->assertTrue((strpos($data[0]['Obstacles'], 'Los daizhan viven en la provincia de Yunnan') !== false));
+        $this->assertTrue(array_key_exists('HowReach', $data[0]));
+        $this->assertTrue((strpos($data[0]['HowReach'], 'los creyentes chinos puedan') !== false));
+        $this->assertTrue(array_key_exists('PrayForChurch', $data[0]));
+        $this->assertTrue(array_key_exists('PrayForPG', $data[0]));
+        $this->assertTrue((strpos($data[0]['PrayForPG'], 'en las familias daizhan, atrayendo') !== false));
+    }
+
+    public function testFindAllByIdAndCountryShouldThrowErrorIfUnsupportedLanguageProvided(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $getVars = ['id' => '18432', 'country' => 'CH', 'lang' => 'zzz'];
+        $profileText = new \QueryGenerators\ProfileText($getVars);
+        $profileText->findAllByIdAndCountry();
+    }
 }

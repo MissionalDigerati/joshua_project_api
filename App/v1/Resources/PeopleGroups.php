@@ -29,6 +29,7 @@ namespace App\v1\Resources;
 use Doctrine\DBAL\Exception as DBALException;
 use QueryGenerators\PeopleGroup;
 use QueryGenerators\ProfileText;
+use QueryGenerators\QueryGenerator;
 use QueryGenerators\Resource;
 use QueryGenerators\Unreached;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -61,6 +62,16 @@ use Utilities\StringHelper;
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="lang",
+ *         description="The three letter ROLProfile language code you want the people group information returned in. Supported languages are: cmn, deu, eng, fra, ita, kor, por, spa, vie. Defaults to eng.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(
+ *             type="string",
+ *             default="eng"
+ *        )
  *     ),
  *     @OA\Response(
  *         response="200",
@@ -113,11 +124,25 @@ $app->get(
         } else {
             $day = Date('j');
         }
+        $lang = 'eng';
+        if (array_key_exists('lang', $params)) {
+            if (!in_array(strtolower($params['lang']), QueryGenerator::$supportedLangs)) {
+                return $this->get('errorResponder')->get(
+                    400,
+                    "The 'lang' parameter you provided is not supported.",
+                    $args['format'],
+                    'Bad Request',
+                    $response
+                );
+            }
+            $lang = strtolower($params['lang']);
+        }
         try {
             $peopleGroup = new Unreached(
                 [
                     'month' => $month,
-                    'day'   => $day
+                    'day'   => $day,
+                    'lang'  => $lang
                 ]
             );
             $peopleGroup->daily();
@@ -157,6 +182,7 @@ $app->get(
                     [
                         'id'        => $peopleGroupData['PeopleID3'],
                         'country'   => $peopleGroupData['ROG3'],
+                        'lang'      => $lang,
                         'format'    => 'M'
                     ]
                 );
@@ -187,14 +213,15 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
+        $body = $response->getBody();
         if ($args['format'] == 'json') {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-type', 'text/xml')
-                ->write(arrayToXML($data, "people_groups", "people_group"));
+            $xml = arrayToXML($data, "people_groups", "people_group");
+            $body->write($xml);
+            return $response->withHeader('Content-type', 'text/xml');
         }
     }
 );
@@ -370,14 +397,15 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
+        $body = $response->getBody();
         if ($args['format'] == 'json') {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-type', 'text/xml')
-                ->write(arrayToXML($data, "people_groups", "people_group"));
+            $xml = arrayToXML($data, "people_groups", "people_group");
+            $body->write($xml);
+            return $response->withHeader('Content-type', 'text/xml');
         }
     }
 );
@@ -825,14 +853,15 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
+        $body = $response->getBody();
         if ($args['format'] == 'json') {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-type', 'text/xml')
-                ->write(arrayToXML($data, "people_groups", "people_group"));
+            $xml = arrayToXML($data, "people_groups", "people_group");
+            $body->write($xml);
+            return $response->withHeader('Content-type', 'text/xml');
         }
     }
 );
