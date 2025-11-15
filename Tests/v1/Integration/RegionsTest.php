@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,10 +23,11 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Integration;
 
+use Doctrine\DBAL\Connection;
 use Tests\Support\GuzzleHttpClient;
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -41,34 +43,34 @@ class RegionsTest extends TestCase
      *
      * @var GuzzleHttpClient
      */
-    public $httpClient;
+    public GuzzleHttpClient $httpClient;
     /**
      * The PDO database connection object
      *
-     * @var PDODatabaseConnect
+     * @var Connection
      */
-    private $db;
+    private Connection $db;
     /**
      * The APIKey to access the API
      *
      * @var string
      * @access private
      **/
-    private $APIKey = '';
+    private string $APIKey = '';
     /**
      * The current API version number
      *
      * @var string
      * @access private
      **/
-    private $APIVersion;
+    private string $APIVersion;
     /**
      * The URL for the testing server
      *
      * @var string
      * @access private
      **/
-    private $siteURL;
+    private string $siteURL;
     /**
      * Set up the test class
      *
@@ -105,7 +107,7 @@ class RegionsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/2.json",
-            array(),
+            [],
             "region_show_up_json"
         );
         $decoded = json_decode($response, true);
@@ -123,10 +125,13 @@ class RegionsTest extends TestCase
      **/
     public function testShowRequestsShouldRefuseAccessWithoutActiveAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/3.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "non_active_key_json"
         );
         $decoded = json_decode($response, true);
@@ -144,10 +149,13 @@ class RegionsTest extends TestCase
      **/
     public function testShowRequestsShouldRefuseAccessWithSuspendedAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/2.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "suspended_key_json"
         );
         $decoded = json_decode($response, true);
@@ -167,7 +175,7 @@ class RegionsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/1.json",
-            array('api_key' => 'BADKEY'),
+            ['api_key' => 'BADKEY'],
             "bad_key_json"
         );
         $decoded = json_decode($response, true);
@@ -188,7 +196,7 @@ class RegionsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/3.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_accessible_in_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -205,7 +213,7 @@ class RegionsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/3.xml",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_accessible_in_xml"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -225,7 +233,7 @@ class RegionsTest extends TestCase
         $expectedRegion = 'europe, western';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/" . $regionId . ".json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_returns_appropriate_region"
         );
         $decodedResponse = json_decode($response, true);
@@ -245,7 +253,7 @@ class RegionsTest extends TestCase
         $regionId = 10;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/" . $regionId . ".json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_returns_appropriate_region"
         );
         $decoded = json_decode($response, true);

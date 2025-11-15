@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 /**
  * This file is part of Joshua Project API.
@@ -37,7 +38,7 @@ use Slim\Exception\HttpNotFoundException;
  *
  * @param App $app  The Slim application
  */
-return function(App $app) {
+return function (App $app) {
     $container = $app->getContainer();
     /**
      * Setup Middleware.
@@ -113,7 +114,7 @@ return function(App $app) {
      */
     $errorMiddleware->setErrorHandler(
         HttpNotFoundException::class,
-        function(
+        function (
             Request $request,
             Throwable $exception,
             bool $displayErrorDetails,
@@ -135,5 +136,6 @@ return function(App $app) {
                 'Not Found',
                 $response
             );
-    });
+        }
+    );
 };

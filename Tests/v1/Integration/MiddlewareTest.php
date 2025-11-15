@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,10 +23,11 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Integration;
 
+use Doctrine\DBAL\Connection;
 use Tests\Support\GuzzleHttpClient;
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -40,34 +42,34 @@ class MiddlewareTest extends TestCase
      *
      * @var GuzzleHttpClient
      */
-    public $httpClient;
+    public GuzzleHttpClient $httpClient;
     /**
      * The PDO database connection object
      *
-     * @var PDODatabaseConnect
+     * @var Connection
      */
-    private $db;
+    private Connection $db;
     /**
      * The current API version number
      *
      * @var string
      * @access private
      **/
-    private $APIVersion;
+    private string $APIVersion;
     /**
      * The URL for the testing server
      *
      * @var string
      * @access private
      **/
-    private $siteURL;
+    private string $siteURL;
     /**
      * The APIKey to access the API
      *
      * @var string
      * @access private
      **/
-    private $APIKey = '';
+    private string $APIKey = '';
     /**
      * Set up the test class
      *
@@ -97,16 +99,21 @@ class MiddlewareTest extends TestCase
 
     public function testItShouldRecordTheLastRequestDateOnEveryRequest(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET last_request = '2012-10-21 10:05:00' WHERE  `api_key` = '" . $this->APIKey . "'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET last_request = '2012-10-21 10:05:00' WHERE  `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/asi.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_accessible_in_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
-        $query = $this->db->query("SELECT * FROM `md_api_keys` WHERE  `api_key` = '" . $this->APIKey . "'");
-        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data[0]['last_request']));
-        $this->assertNotEquals('2012-10-21 10:05:00', $data[0]['last_request']);
+        $data = $this->db->fetchAssociative(
+            "SELECT * FROM `md_api_keys` WHERE  `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
+        $this->assertFalse(empty($data['last_request']));
+        $this->assertNotEquals('2012-10-21 10:05:00', $data['last_request']);
     }
 }

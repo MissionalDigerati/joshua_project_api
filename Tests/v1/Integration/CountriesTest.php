@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,6 +23,7 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Integration;
 
 use Tests\Support\GuzzleHttpClient;
@@ -34,22 +36,19 @@ use PHPUnit\Framework\TestCase;
  */
 class CountriesTest extends TestCase
 {
-    public $httpClient;
+    public GuzzleHttpClient $httpClient;
 
-    private $db;
+    private string $APIKey = '';
 
-    private $APIKey = '';
+    private string $APIVersion;
 
-    private $APIVersion;
-
-    private $siteURL;
+    private string $siteURL;
 
     public function setUp(): void
     {
         $this->APIVersion = $_ENV['api_version'];
         $this->siteURL = $_ENV['site_url'];
         $this->httpClient = new GuzzleHttpClient();
-        $this->db = getDatabaseInstance();
         $this->APIKey = createApiKey();
     }
 
@@ -63,7 +62,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries/1234.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "country_show_without_id"
         );
         $decoded = json_decode($response, true);
@@ -77,7 +76,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array(),
+            [],
             "index_country_up_test_json"
         );
         $decoded = json_decode($response, true);
@@ -91,7 +90,7 @@ class CountriesTest extends TestCase
         $expectedCountry = "US";
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries/" . $expectedCountry . ".json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "should_return_country_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -103,7 +102,7 @@ class CountriesTest extends TestCase
         $expectedCountry = "US";
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries/" . $expectedCountry . ".xml",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "should_return_country_xml"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -115,7 +114,7 @@ class CountriesTest extends TestCase
         $expectedCountry = "US";
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries/" . $expectedCountry . ".json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "should_return_country_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -131,7 +130,7 @@ class CountriesTest extends TestCase
         $expectedCountry = "AE";
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries/" . $expectedCountry . ".json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "should_return_country_pop_status_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -150,7 +149,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "should_return_country_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -161,7 +160,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.xml",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "should_return_country_index_xml"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -175,7 +174,7 @@ class CountriesTest extends TestCase
         $expectedFirstCountry = 'Afghanistan';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "should_return_country_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -191,7 +190,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "should_return_country_index_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -211,7 +210,7 @@ class CountriesTest extends TestCase
         $expectedCountryCount = 10;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'limit' => $expectedCountryCount),
+            ['api_key' => $this->APIKey, 'limit' => $expectedCountryCount],
             "should_return_country_index_with_limit_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -220,10 +219,10 @@ class CountriesTest extends TestCase
 
     public function testIndexRequestsShouldReturnCountriesFilteredByIds(): void
     {
-        $expectedIDs = array('us', 'af', 'al');
+        $expectedIDs = ['us', 'af', 'al'];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'ids' => join('|', $expectedIDs)),
+            ['api_key' => $this->APIKey, 'ids' => join('|', $expectedIDs)],
             "should_return_country_index_with_ids_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -234,10 +233,10 @@ class CountriesTest extends TestCase
 
     public function testIndexRequestsShouldReturnCountriesFilteredByContinents(): void
     {
-        $expectedContinents = array('eur', 'nar');
+        $expectedContinents = ['eur', 'nar'];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'continents' => join('|', $expectedContinents)),
+            ['api_key' => $this->APIKey, 'continents' => join('|', $expectedContinents)],
             "should_return_country_index_with_continents_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -248,10 +247,10 @@ class CountriesTest extends TestCase
 
     public function testIndexRequestsShouldReturnCountriesFilteredByRegions(): void
     {
-        $expectedRegions = array(1, 5);
+        $expectedRegions = [1, 5];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'regions' => join('|', $expectedRegions)),
+            ['api_key' => $this->APIKey, 'regions' => join('|', $expectedRegions)],
             "should_return_country_index_with_regions_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -265,7 +264,7 @@ class CountriesTest extends TestCase
         $expectedWindow1040 = 'y';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'window1040' => $expectedWindow1040),
+            ['api_key' => $this->APIKey, 'window1040' => $expectedWindow1040],
             "should_return_country_index_with_window_1040_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -276,10 +275,10 @@ class CountriesTest extends TestCase
 
     public function testIndexRequestsShouldReturnCountriesFilteredByPrimaryLanguages(): void
     {
-        $expectedPrimaryLanguages = array('por');
+        $expectedPrimaryLanguages = ['por'];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'primary_languages' => join('|', $expectedPrimaryLanguages)),
+            ['api_key' => $this->APIKey, 'primary_languages' => join('|', $expectedPrimaryLanguages)],
             "should_return_country_index_with_primary_languages_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -294,7 +293,7 @@ class CountriesTest extends TestCase
         $expectedMax = 20000;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'population' => $expectedMin."-".$expectedMax),
+            ['api_key' => $this->APIKey, 'population' => $expectedMin."-".$expectedMax],
             "filter_by_pop_in_range_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -311,7 +310,7 @@ class CountriesTest extends TestCase
         $expectedPopulation = 600;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'population' => $expectedPopulation),
+            ['api_key' => $this->APIKey, 'population' => $expectedPopulation],
             "filter_by_pop_exact_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -324,10 +323,10 @@ class CountriesTest extends TestCase
 
     public function testIndexRequestsShouldReturnCountriesFilteredByPrimaryReligions(): void
     {
-        $expectedReligions = array(1 => 'christianity', 7 => 'non-religious');
+        $expectedReligions = [1 => 'christianity', 7 => 'non-religious'];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'primary_religions' => join('|', array_keys($expectedReligions))),
+            ['api_key' => $this->APIKey, 'primary_religions' => join('|', array_keys($expectedReligions))],
             "filter_by_primary_religion_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -341,10 +340,10 @@ class CountriesTest extends TestCase
 
     public function testIndexRequestsShouldReturnCountriesFilteredByASinglePrimaryReligion(): void
     {
-        $expectedReligions = array(7 => 'non-religious');
+        $expectedReligions = [7 => 'non-religious'];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'primary_religions' => join('|', array_keys($expectedReligions))),
+            ['api_key' => $this->APIKey, 'primary_religions' => join('|', array_keys($expectedReligions))],
             "filter_by_exact_primary_religion_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -359,10 +358,10 @@ class CountriesTest extends TestCase
     public function testIndexRequestsShouldReturnCountriesFilteredByJPScale(): void
     {
         $expectedJPScale = "2";
-        $expectedJPScalesArray = array(2);
+        $expectedJPScalesArray = [2];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'jpscale' => $expectedJPScale),
+            ['api_key' => $this->APIKey, 'jpscale' => $expectedJPScale],
             "filter_by_jpscale_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -377,7 +376,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_anglican' => '20-25'),
+            ['api_key' => $this->APIKey, 'pc_anglican' => '20-25'],
             "filter_by_range_pc_anglican_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -396,7 +395,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_independent' => '20-25'),
+            ['api_key' => $this->APIKey, 'pc_independent' => '20-25'],
             "filter_by_range_pc_independent_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -416,7 +415,7 @@ class CountriesTest extends TestCase
         $expectedMax = 15;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_protestant' => '10-15'),
+            ['api_key' => $this->APIKey, 'pc_protestant' => '10-15'],
             "filter_by_range_pc_protestant_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -434,7 +433,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_orthodox' => '70-74'),
+            ['api_key' => $this->APIKey, 'pc_orthodox' => '70-74'],
             "filter_by_range_pc_orthodox_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -452,7 +451,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_rcatholic' => '20-25'),
+            ['api_key' => $this->APIKey, 'pc_rcatholic' => '20-25'],
             "filter_by_range_pc_rcatholic_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -470,7 +469,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_other_christian' => '11-14'),
+            ['api_key' => $this->APIKey, 'pc_other_christian' => '11-14'],
             "filter_by_range_pc_other_christian_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -488,7 +487,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "no_removed_fields_on_index_json"
         );
         $decoded = json_decode($response, true);
@@ -516,7 +515,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries/US.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "no_removed_fields_country_show_json"
         );
         $decoded = json_decode($response, true);
@@ -545,7 +544,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'limit' => 1),
+            ['api_key' => $this->APIKey, 'limit' => 1],
             "provide_new_fields_country_index_json"
         );
         $decoded = json_decode($response, true);
@@ -564,7 +563,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'limit' => 5),
+            ['api_key' => $this->APIKey, 'limit' => 5],
             "should_return_country_index_default_sort_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -579,7 +578,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'limit' => 5, 'sort_field' => 'Population', 'sort_direction' => 'ASC'),
+            ['api_key' => $this->APIKey, 'limit' => 5, 'sort_field' => 'Population', 'sort_direction' => 'ASC'],
             "should_return_country_index_sort_by_population_asc_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -594,7 +593,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'limit' => 5, 'sort_field' => 'ILLEGAL', 'sort_direction' => 'ASC'),
+            ['api_key' => $this->APIKey, 'limit' => 5, 'sort_field' => 'ILLEGAL', 'sort_direction' => 'ASC'],
             "should_return_country_index_sort_by_non_whitelisted_column_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -609,7 +608,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'limit' => 5, 'sort_field' => 'Population', 'sort_direction' => 'ILLEGAL'),
+            ['api_key' => $this->APIKey, 'limit' => 5, 'sort_field' => 'Population', 'sort_direction' => 'ILLEGAL'],
             "should_return_country_index_sort_by_illegal_direction_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -624,7 +623,7 @@ class CountriesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries/AF.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "provide_new_fields_country_show_json"
         );
         $decoded = json_decode($response, true);
@@ -652,11 +651,11 @@ class CountriesTest extends TestCase
         $max = 4;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array(
+            [
                 'api_key' => $this->APIKey,
                 'limit' => 5,
                 'cnt_primary_languages' => $min . '-' . $max,
-            ),
+            ],
             "filter_by_cnt_languages_range_index_json"
         );
         $decoded = json_decode($response, true);
@@ -673,11 +672,11 @@ class CountriesTest extends TestCase
         $value = 3;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array(
+            [
                 'api_key' => $this->APIKey,
                 'limit' => 5,
                 'cnt_primary_languages' => $value,
-            ),
+            ],
             "filter_by_cnt_languages_at_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -694,11 +693,11 @@ class CountriesTest extends TestCase
         $max = 2;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array(
+            [
                 'api_key' => $this->APIKey,
                 'limit' => 5,
                 'translation_unspecified' => $min . '-' . $max,
-            ),
+            ],
             "filter_by_translation_unspecified_range_index_json"
         );
         $decoded = json_decode($response, true);
@@ -715,11 +714,11 @@ class CountriesTest extends TestCase
         $value = 3;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array(
+            [
                 'api_key' => $this->APIKey,
                 'limit' => 5,
                 'translation_unspecified' => $value,
-            ),
+            ],
             "filter_by_translation_unspecified_at_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -736,11 +735,11 @@ class CountriesTest extends TestCase
         $max = 2;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array(
+            [
                 'api_key' => $this->APIKey,
                 'limit' => 5,
                 'translation_needed' => $min . '-' . $max,
-            ),
+            ],
             "filter_by_translation_needed_range_index_json"
         );
         $decoded = json_decode($response, true);
@@ -757,11 +756,11 @@ class CountriesTest extends TestCase
         $value = 3;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array(
+            [
                 'api_key' => $this->APIKey,
                 'limit' => 5,
                 'translation_needed' => $value,
-            ),
+            ],
             "filter_by_translation_needed_at_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -778,11 +777,11 @@ class CountriesTest extends TestCase
         $max = 5;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array(
+            [
                 'api_key' => $this->APIKey,
                 'limit' => 5,
                 'translation_started' => $min . '-' . $max,
-            ),
+            ],
             "filter_by_translation_started_range_index_json"
         );
         $decoded = json_decode($response, true);
@@ -799,11 +798,11 @@ class CountriesTest extends TestCase
         $value = 1;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array(
+            [
                 'api_key' => $this->APIKey,
                 'limit' => 5,
                 'translation_started' => $value,
-            ),
+            ],
             "filter_by_translation_started_at_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -820,11 +819,11 @@ class CountriesTest extends TestCase
         $max = 5;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array(
+            [
                 'api_key' => $this->APIKey,
                 'limit' => 5,
                 'bible_portions' => $min . '-' . $max,
-            ),
+            ],
             "filter_by_bible_portions_range_index_json"
         );
         $decoded = json_decode($response, true);
@@ -841,11 +840,11 @@ class CountriesTest extends TestCase
         $value = 0;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array(
+            [
                 'api_key' => $this->APIKey,
                 'limit' => 5,
                 'bible_portions' => $value,
-            ),
+            ],
             "filter_by_bible_portions_at_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -862,11 +861,11 @@ class CountriesTest extends TestCase
         $max = 2;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array(
+            [
                 'api_key' => $this->APIKey,
                 'limit' => 5,
                 'bible_new_testament' => $min . '-' . $max,
-            ),
+            ],
             "filter_by_bible_new_testament_range_index_json"
         );
         $decoded = json_decode($response, true);
@@ -883,11 +882,11 @@ class CountriesTest extends TestCase
         $value = 1;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array(
+            [
                 'api_key' => $this->APIKey,
                 'limit' => 5,
                 'bible_new_testament' => $value,
-            ),
+            ],
             "filter_by_bible_new_testament_at_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -904,11 +903,11 @@ class CountriesTest extends TestCase
         $max = 2;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array(
+            [
                 'api_key' => $this->APIKey,
                 'limit' => 5,
                 'bible_complete' => $min . '-' . $max,
-            ),
+            ],
             "filter_by_bible_complete_range_index_json"
         );
         $decoded = json_decode($response, true);
@@ -925,11 +924,11 @@ class CountriesTest extends TestCase
         $value = 10;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array(
+            [
                 'api_key' => $this->APIKey,
                 'limit' => 5,
                 'bible_complete' => $value,
-            ),
+            ],
             "filter_by_bible_complete_at_value_index_json"
         );
         $decoded = json_decode($response, true);
@@ -946,7 +945,7 @@ class CountriesTest extends TestCase
         $expectedMax = 20000;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pop_in_unreached' => $expectedMin."-".$expectedMax),
+            ['api_key' => $this->APIKey, 'pop_in_unreached' => $expectedMin."-".$expectedMax],
             "filter_by_pop_in_unreached_in_range_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -963,7 +962,7 @@ class CountriesTest extends TestCase
         $expected = 800;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pop_in_unreached' => $expected),
+            ['api_key' => $this->APIKey, 'pop_in_unreached' => $expected],
             "filter_by_pop_in_unreached_exact_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -980,7 +979,7 @@ class CountriesTest extends TestCase
         $expectedMax = 2000;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pop_in_frontier' => $expectedMin."-".$expectedMax),
+            ['api_key' => $this->APIKey, 'pop_in_frontier' => $expectedMin."-".$expectedMax],
             "filter_by_pop_in_frontier_in_range_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -997,7 +996,7 @@ class CountriesTest extends TestCase
         $expected = 600;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pop_in_frontier' => $expected),
+            ['api_key' => $this->APIKey, 'pop_in_frontier' => $expected],
             "filter_by_pop_in_frontier_exact_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -1014,7 +1013,7 @@ class CountriesTest extends TestCase
         $expectedMax = 25;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_buddhist' => $expectedMin . '-' . $expectedMax),
+            ['api_key' => $this->APIKey, 'pc_buddhist' => $expectedMin . '-' . $expectedMax],
             "filter_by_range_pc_buddhist_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -1033,7 +1032,7 @@ class CountriesTest extends TestCase
         $expectedMax = 20;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_christianity' => $expectedMin . '-' . $expectedMax),
+            ['api_key' => $this->APIKey, 'pc_christianity' => $expectedMin . '-' . $expectedMax],
             "filter_by_range_percent_christianity_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -1052,7 +1051,7 @@ class CountriesTest extends TestCase
         $expectedMax = 10;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_ethnic_religion' => $expectedMin . '-' . $expectedMax),
+            ['api_key' => $this->APIKey, 'pc_ethnic_religion' => $expectedMin . '-' . $expectedMax],
             "filter_by_range_pc_ethnic_religion_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -1071,7 +1070,7 @@ class CountriesTest extends TestCase
         $expectedMax = 20;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_evangelical' => $expectedMin . '-' . $expectedMax),
+            ['api_key' => $this->APIKey, 'pc_evangelical' => $expectedMin . '-' . $expectedMax],
             "filter_by_range_percent_evangelical_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -1090,7 +1089,7 @@ class CountriesTest extends TestCase
         $expectedMax = 35;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_hindu' => $expectedMin . '-' . $expectedMax),
+            ['api_key' => $this->APIKey, 'pc_hindu' => $expectedMin . '-' . $expectedMax],
             "filter_by_range_pc_hindu_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -1109,7 +1108,7 @@ class CountriesTest extends TestCase
         $expectedMax = 100;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_islam' => $expectedMin . '-' . $expectedMax),
+            ['api_key' => $this->APIKey, 'pc_islam' => $expectedMin . '-' . $expectedMax],
             "filter_by_range_pc_islam_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -1128,7 +1127,7 @@ class CountriesTest extends TestCase
         $expectedMax = 10;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_non_religious' => $expectedMin . '-' . $expectedMax),
+            ['api_key' => $this->APIKey, 'pc_non_religious' => $expectedMin . '-' . $expectedMax],
             "filter_by_range_pc_non_religious_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -1147,7 +1146,7 @@ class CountriesTest extends TestCase
         $expectedMax = 3;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_other_religion' => $expectedMin . '-' . $expectedMax),
+            ['api_key' => $this->APIKey, 'pc_other_religion' => $expectedMin . '-' . $expectedMax],
             "filter_by_range_pc_other_religion_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -1166,7 +1165,7 @@ class CountriesTest extends TestCase
         $expectedMax = 0.14;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/countries.json",
-            array('api_key' => $this->APIKey, 'pc_unknown' => $expectedMin . '-' . $expectedMax),
+            ['api_key' => $this->APIKey, 'pc_unknown' => $expectedMin . '-' . $expectedMax],
             "filter_by_range_pc_unknown_on_index_json"
         );
         $decodedResponse = json_decode($response, true);

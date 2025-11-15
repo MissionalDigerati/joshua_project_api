@@ -1,27 +1,29 @@
 <?php
+
 declare(strict_types=1);
 
 /**
  * This file is part of Joshua Project API.
- * 
+ *
  * Joshua Project API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Joshua Project API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see 
+ * along with this program.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * 
+ *
  */
+
 namespace Tests\v1\Unit;
 
 use PHPUnit\Framework\TestCase;
@@ -33,7 +35,6 @@ use PHPUnit\Framework\TestCase;
  */
 class CommonFunctionsTest extends TestCase
 {
-    
     /**
      * arrayToXML must return a valid XML structure
      *
@@ -44,10 +45,10 @@ class CommonFunctionsTest extends TestCase
     public function testArrayToXMLShouldCreateCorrectXML(): void
     {
         $expected = "<?xml version=\"1.0\"?><api><tests><test><name>test arrayToXML</name></test></tests></api>";
-        $actual = arrayToXML(array("data" => array("name" => "test arrayToXML")), "tests", "test");
+        $actual = arrayToXML(["data" => ["name" => "test arrayToXML"]], "tests", "test");
         $this->assertEquals($expected, $actual);
     }
-    
+
     /**
      * arrayToXML should default the wrappers accordingly
      *
@@ -58,7 +59,7 @@ class CommonFunctionsTest extends TestCase
     public function testArrayToXMLShouldDefaultWrappers(): void
     {
         $expected = "<?xml version=\"1.0\"?><api><items><item><name>test arrayToXML</name></item></items></api>";
-        $actual = arrayToXML(array("data" => array("name" => "test arrayToXML")));
+        $actual = arrayToXML(["data" => ["name" => "test arrayToXML"]]);
         $this->assertEquals($expected, $actual);
     }
 
@@ -75,7 +76,7 @@ class CommonFunctionsTest extends TestCase
             "</title></item_0></item></items></api>";
         $xml = new \SimpleXMLElement('<api/>');
         $parentElement = $xml->addChild('items');
-        addChildXMLElement($parentElement, 'item', array(0 => array('name' => 'frog', 'title' => 'Prince and Frog')));
+        addChildXMLElement($parentElement, 'item', [0 => ['name' => 'frog', 'title' => 'Prince and Frog']]);
         $this->assertEquals($expected, stripReturns($xml->asXML()));
     }
 
@@ -120,9 +121,9 @@ class CommonFunctionsTest extends TestCase
      **/
     public function testValidatePresenceShouldReturnAllFieldsIfEmpty(): void
     {
-        $expected = array("name", "email", "usage");
-        $requiredFields = array("name", "email", "usage");
-        $formData = array("name" => "", "email" => "", "usage" => "");
+        $expected = ["name", "email", "usage"];
+        $requiredFields = ["name", "email", "usage"];
+        $formData = ["name" => "", "email" => "", "usage" => ""];
         $actual = validatePresenceOf($requiredFields, $formData);
         $this->assertEquals($expected, $actual);
     }
@@ -134,19 +135,20 @@ class CommonFunctionsTest extends TestCase
      * @access public
      * @author Johnathan Pulos
      **/
-    public function testValidatePresenceShouldReturnAFieldMissingInFormData(): void {
-        $expected = array("usage");
-        $requiredFields = array("name", "email", "usage");
-        $formData = array("name" => "Bob", "email" => "bob@yahoo.com");
+    public function testValidatePresenceShouldReturnAFieldMissingInFormData(): void
+    {
+        $expected = ["usage"];
+        $requiredFields = ["name", "email", "usage"];
+        $formData = ["name" => "Bob", "email" => "bob@yahoo.com"];
         $actual = validatePresenceOf($requiredFields, $formData);
         $this->assertEquals($expected, $actual);
     }
 
     public function testValidatePresenceShouldReturnnEmptyCheckboxArray(): void
     {
-        $expected = array("usage");
-        $requiredFields = array("name", "email", "usage");
-        $formData = array("name" => "Bob", "email" => "bob@yahoo.com", "usage" => []);
+        $expected = ["usage"];
+        $requiredFields = ["name", "email", "usage"];
+        $formData = ["name" => "Bob", "email" => "bob@yahoo.com", "usage" => []];
         $actual = validatePresenceOf($requiredFields, $formData);
         $this->assertEquals($expected, $actual);
     }
@@ -161,9 +163,9 @@ class CommonFunctionsTest extends TestCase
      **/
     public function testValidatePresenceOfShouldReturnOnlyEmptyFields(): void
     {
-        $expected = array("name");
-        $requiredFields = array("name", "email", "usage");
-        $formData = array("name" => "", "email" => "joe@yahoo.com", "usage" => "My website.");
+        $expected = ["name"];
+        $requiredFields = ["name", "email", "usage"];
+        $formData = ["name" => "", "email" => "joe@yahoo.com", "usage" => "My website."];
         $actual = validatePresenceOf($requiredFields, $formData);
         $this->assertEquals($expected, $actual);
     }
@@ -177,8 +179,8 @@ class CommonFunctionsTest extends TestCase
     public function testGenerateRedirectURLCreatesCorrectURLWithInvalidParams(): void
     {
         $expected = "/?required_fields=name|email|usage";
-        $formData = array("name" => "", "email" => "", "usage" => "");
-        $invalidFields = array("name", "email", "usage");
+        $formData = ["name" => "", "email" => "", "usage" => ""];
+        $invalidFields = ["name", "email", "usage"];
         $redirectUrl = "/";
         $actual = generateRedirectURL($redirectUrl, $formData, $invalidFields);
         $this->assertEquals($expected, $actual);
@@ -195,8 +197,8 @@ class CommonFunctionsTest extends TestCase
     public function testGenerateRedirectURLCreatesCorrectURLWithArrayValues(): void
     {
         $expected = "/?name=Joe&email=joe%40yahoo.com&usage=website|app+development|research";
-        $formData = array("name" => "Joe", "email" => "joe@yahoo.com", "usage" => ["website", "app development", "research"]);
-        $invalidFields = array();
+        $formData = ["name" => "Joe", "email" => "joe@yahoo.com", "usage" => ["website", "app development", "research"]];
+        $invalidFields = [];
         $redirectUrl = "/";
         $actual = generateRedirectURL($redirectUrl, $formData, $invalidFields);
         $this->assertEquals($expected, $actual);
@@ -211,8 +213,8 @@ class CommonFunctionsTest extends TestCase
     public function testGenerateRedirectURLCreatesCorrectURLWithValidParams(): void
     {
         $expected = "/?name=Joe&email=joe%40yahoo.com&usage=Free+Willie";
-        $formData = array("name" => "Joe", "email" => "joe@yahoo.com", "usage" => "Free Willie");
-        $invalidFields = array();
+        $formData = ["name" => "Joe", "email" => "joe@yahoo.com", "usage" => "Free Willie"];
+        $invalidFields = [];
         $redirectUrl = "/";
         $actual = generateRedirectURL($redirectUrl, $formData, $invalidFields);
         $this->assertEquals($expected, $actual);

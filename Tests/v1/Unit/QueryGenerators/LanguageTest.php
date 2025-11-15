@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,8 +23,10 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Unit\QueryGenerators;
 
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 use QueryGenerators\Language;
 
@@ -34,8 +37,7 @@ use QueryGenerators\Language;
  */
 class LanguageTest extends TestCase
 {
-
-    private $db;
+    private Connection $db;
 
     public function setUp(): void
     {
@@ -44,8 +46,8 @@ class LanguageTest extends TestCase
 
     public function testShouldSanitizeProvidedDataOnInitializing(): void
     {
-        $data = array('language' => 'HORSE#%', 'test' => 'CA%$');
-        $expected = array('language' => 'HORSE', 'test' => 'CA');
+        $data = ['language' => 'HORSE#%', 'test' => 'CA%$'];
+        $expected = ['language' => 'HORSE', 'test' => 'CA'];
         $reflectionOfCountry = new \ReflectionClass('\QueryGenerators\Language');
         $providedParams = $reflectionOfCountry->getProperty('providedParams');
         $providedParams->setAccessible(true);
@@ -55,14 +57,16 @@ class LanguageTest extends TestCase
 
     public function testFindByIdShouldReturnCorrectLanguage(): void
     {
-        $expected = array('id'  =>  'amx');
+        $expected = ['id'  =>  'amx'];
         $expectedLanguage = 'anmatyerr';
         $expectedHubCountry = 'australia';
         $language = new Language($expected);
         $language->findById();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertEquals($expected['id'], strtolower($data[0]['ROL3']));
         $this->assertEquals($expectedLanguage, strtolower($data[0]['Language']));
         $this->assertEquals($expectedHubCountry, strtolower($data[0]['HubCountry']));
@@ -72,11 +76,13 @@ class LanguageTest extends TestCase
     {
         $expectedCount = 250;
         $expectedFirstLanguage = "a'ou";
-        $language = new Language(array());
+        $language = new Language([]);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         $this->assertEquals($expectedCount, count($data));
         $this->assertEquals($expectedFirstLanguage, strtolower($data[0]['Language']));
@@ -84,24 +90,28 @@ class LanguageTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterTheResult(): void
     {
-        $expected = array('limit'   =>  5);
+        $expected = ['limit'   =>  5];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         $this->assertEquals($expected['limit'], count($data));
     }
 
     public function testFindAllWithFiltersShouldFilterByASetOfIds(): void
     {
-        $expected = array('ids'   =>  'ace|boj|smf');
+        $expected = ['ids'   =>  'ace|boj|smf'];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
             $this->assertTrue(in_array(strtolower($lang['ROL3']), explode("|", $expected['ids'])));
@@ -110,12 +120,14 @@ class LanguageTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByNotHavingANewTestament(): void
     {
-        $expected = array('has_new_testament'   =>  'N');
+        $expected = ['has_new_testament'   =>  'N'];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
             $this->assertNull($lang['NTYear']);
@@ -124,12 +136,14 @@ class LanguageTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByNotHavingPortions(): void
     {
-        $expected = array('has_portions'   =>  'N');
+        $expected = ['has_portions'   =>  'N'];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
             $this->assertNull($lang['PortionsYear']);
@@ -138,12 +152,14 @@ class LanguageTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByNotHavingCompletedBible(): void
     {
-        $expected = array('has_completed_bible'   =>  'N');
+        $expected = ['has_completed_bible'   =>  'N'];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
             $this->assertNull($lang['BibleYear']);
@@ -152,12 +168,14 @@ class LanguageTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByNotHavingQuestionableTranslationNeed(): void
     {
-        $expected = array('needs_translation_questionable'   =>  'N');
+        $expected = ['needs_translation_questionable'   =>  'N'];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
             $this->assertContains($lang['TranslationNeedQuestionable'], ['N', '', null]);
@@ -166,12 +184,14 @@ class LanguageTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByNotHavingAudioResources(): void
     {
-        $expected = array('has_audio'   =>  'N');
+        $expected = ['has_audio'   =>  'N'];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
             $this->assertEquals('N', $lang['HasAudioRecordings']);
@@ -180,12 +200,14 @@ class LanguageTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByNotHavingJesusFilm(): void
     {
-        $expected = array('has_jesus_film'   =>  'N');
+        $expected = ['has_jesus_film'   =>  'N'];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
             $this->assertEquals('N', $lang['HasJesusFilm']);
@@ -194,12 +216,14 @@ class LanguageTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByCountry(): void
     {
-        $expected = array('countries'   =>  'af|ni');
+        $expected = ['countries'   =>  'af|ni'];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         $countries = explode("|", $expected['countries']);
         foreach ($data as $lang) {
@@ -209,12 +233,14 @@ class LanguageTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByPrimaryReligion(): void
     {
-        $expected = array('primary_religions'   =>  '6');
+        $expected = ['primary_religions'   =>  '6'];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
             $this->assertEquals('islam', strtolower($lang['PrimaryReligion']));
@@ -223,12 +249,14 @@ class LanguageTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByJPScale(): void
     {
-        $expected = array('jpscale'   =>  '3');
+        $expected = ['jpscale'   =>  '3'];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
             $this->assertEquals(3, floatval($lang['JPScale']));
@@ -237,12 +265,14 @@ class LanguageTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByLeastReached(): void
     {
-        $expected = array('least_reached'   =>  'y');
+        $expected = ['least_reached'   =>  'y'];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
             $this->assertEquals('y', strtolower($lang['LeastReached']));
@@ -251,12 +281,14 @@ class LanguageTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByAdherent(): void
     {
-        $expected = array('pc_adherent'   =>  '60');
+        $expected = ['pc_adherent'   =>  '60'];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
             $this->assertEquals(60, floatval($lang['PercentAdherents']));
@@ -265,12 +297,14 @@ class LanguageTest extends TestCase
 
     public function testFindAllWithFiltersShouldFilterByEvangelical(): void
     {
-        $expected = array('pc_evangelical'   =>  '10');
+        $expected = ['pc_evangelical'   =>  '10'];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $this->assertFalse(empty($data));
         foreach ($data as $lang) {
             $this->assertEquals(10, floatval($lang['PercentEvangelical']));
@@ -282,9 +316,11 @@ class LanguageTest extends TestCase
         $expected = ['limit'   =>   5];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $sorted = $data;
         usort($sorted, fn ($a, $b) => strcmp($a['Language'], $b['Language']));
         $this->assertEquals($sorted, $data);
@@ -295,9 +331,11 @@ class LanguageTest extends TestCase
         $expected = ['limit'   =>   5, 'sort_field' => 'ROL3', 'sort_direction' => 'DESC'];
         $language = new Language($expected);
         $language->findAllWithFilters();
-        $statement = $this->db->prepare($language->preparedStatement);
-        $statement->execute($language->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $language->preparedStatement,
+            $language->preparedVariables,
+            $language->preparedVariableTypes
+        );
         $sorted = $data;
         usort($sorted, fn ($a, $b) => strcmp($b['ROL3'], $a['ROL3']));
         $this->assertEquals($sorted, $data);

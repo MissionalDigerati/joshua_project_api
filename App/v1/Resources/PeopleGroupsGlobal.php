@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace App\v1\Resources;
 
+use Doctrine\DBAL\Exception as DBALException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use QueryGenerators\PeopleGroupGlobal;
@@ -108,9 +109,11 @@ $app->get(
         try {
             $generator = new PeopleGroupGlobal(['id' => $peopleId]);
             $generator->findById();
-            $statement = $this->get('db')->prepare($generator->preparedStatement);
-            $statement->execute($generator->preparedVariables);
-            $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            $data = $this->get('db')->fetchAllAssociative(
+                $generator->preparedStatement,
+                $generator->preparedVariables,
+                $generator->preparedVariableTypes
+            );
             if (empty($data)) {
                 return $this->get('errorResponder')->get(
                     404,
@@ -123,14 +126,17 @@ $app->get(
             if (strtoupper($includeCountryList) === 'Y') {
                 $pgGenerator = new PeopleGroup([]);
                 $pgGenerator->findCountryList($peopleId);
-                $statementTwo = $this->get('db')->prepare($pgGenerator->preparedStatement);
-                $statementTwo->execute($pgGenerator->preparedVariables);
-                $countries = $statementTwo->fetchAll(\PDO::FETCH_ASSOC);
+                $countries = $this->get('db')->fetchAllAssociative(
+                    $pgGenerator->preparedStatement,
+                    $pgGenerator->preparedVariables,
+                    $pgGenerator->preparedVariableTypes
+                );
                 foreach ($data as $key => $value) {
                     $data[$key]['Countries'] = $countries;
                 }
             }
-        } catch (\Exception $e) {
+        } catch (DBALException | \Exception $e) {
+            error_log("Database error in PeopleGroupsGlobal: {$e->getMessage()}");
             return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),
@@ -363,19 +369,24 @@ $app->get(
         try {
             $generator = new PeopleGroupGlobal($params);
             $generator->findAllWithFilters();
-            $statement = $this->get('db')->prepare($generator->preparedStatement);
-            $statement->execute($generator->preparedVariables);
-            $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            $data = $this->get('db')->fetchAllAssociative(
+                $generator->preparedStatement,
+                $generator->preparedVariables,
+                $generator->preparedVariableTypes
+            );
             if (strtoupper($includeCountryList) === 'Y') {
                 $pgGenerator = new PeopleGroup([]);
                 foreach ($data as $key => $value) {
                     $pgGenerator->findCountryList($data[$key]['PeopleID3']);
-                    $statementTwo = $this->get('db')->prepare($pgGenerator->preparedStatement);
-                    $statementTwo->execute($pgGenerator->preparedVariables);
-                    $data[$key]['Countries'] = $statementTwo->fetchAll(\PDO::FETCH_ASSOC);
+                    $data[$key]['Countries'] = $this->get('db')->fetchAllAssociative(
+                        $pgGenerator->preparedStatement,
+                        $pgGenerator->preparedVariables,
+                        $pgGenerator->preparedVariableTypes
+                    );
                 }
             }
-        } catch (\Exception $e) {
+        } catch (DBALException | \Exception $e) {
+            error_log("Database error in PeopleGroupsGlobal: {$e->getMessage()}");
             return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -21,18 +22,20 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Integration;
 
+use Doctrine\DBAL\Connection;
 use Tests\Support\GuzzleHttpClient;
 use PHPUnit\Framework\TestCase;
 
 class PeopleGroupsTest extends TestCase
 {
-    public $httpClient;
-    private $db;
-    private $APIKey = '';
-    private $APIVersion;
-    private $siteURL;
+    public GuzzleHttpClient $httpClient;
+    private Connection $db;
+    private string $APIKey = '';
+    private string $APIVersion;
+    private string $siteURL;
 
     public function setUp(): void
     {
@@ -53,7 +56,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
-            array(),
+            [],
             "up_json"
         );
         $this->assertEquals(401, $this->httpClient->responseCode);
@@ -61,10 +64,13 @@ class PeopleGroupsTest extends TestCase
 
     public function testShouldRefuseAccessWithoutActiveAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "versioning_json"
         );
         $decoded = json_decode($response, true);
@@ -77,10 +83,13 @@ class PeopleGroupsTest extends TestCase
 
     public function testShouldRefuseAccessWithSuspendedAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "versioning_json"
         );
         $decoded = json_decode($response, true);
@@ -95,7 +104,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json?api_key=BADKEY",
-            array(),
+            [],
             "up_json"
         );
         $decoded = json_decode($response, true);
@@ -110,7 +119,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "up_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -121,7 +130,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.xml",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "up_xml"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -134,7 +143,7 @@ class PeopleGroupsTest extends TestCase
         $expectedDay = Date('j');
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
-            array('api_key' => $this->APIKey, 'month' => $expectedMonth, 'day' => $expectedDay),
+            ['api_key' => $this->APIKey, 'month' => $expectedMonth, 'day' => $expectedDay],
             "up_month"
         );
         $decodedResponse = json_decode($response, true);
@@ -148,7 +157,7 @@ class PeopleGroupsTest extends TestCase
         $expectedDay = '23';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
-            array('api_key' => $this->APIKey, 'day' => $expectedDay),
+            ['api_key' => $this->APIKey, 'day' => $expectedDay],
             "up_day"
         );
         $decodedResponse = json_decode($response, true);
@@ -162,7 +171,7 @@ class PeopleGroupsTest extends TestCase
         $expectedDay = '21';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
-            array('api_key' => $this->APIKey, 'day' => $expectedDay, 'month' => $expectedMonth),
+            ['api_key' => $this->APIKey, 'day' => $expectedDay, 'month' => $expectedMonth],
             "up_day_and_month"
         );
         $decodedResponse = json_decode($response, true);
@@ -174,7 +183,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/a.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "wrong_id_request"
         );
         $decoded = json_decode($response, true);
@@ -192,7 +201,7 @@ class PeopleGroupsTest extends TestCase
         $expectedName = "Khmer";
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/12662.json",
-            array('api_key' => $this->APIKey, 'country' => 'CB'),
+            ['api_key' => $this->APIKey, 'country' => 'CB'],
             "show_in_country_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -209,7 +218,7 @@ class PeopleGroupsTest extends TestCase
         $expectedCountry = "BA";
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/" . $expectedId . ".json",
-            array('api_key' => $this->APIKey, 'country' => $expectedCountry),
+            ['api_key' => $this->APIKey, 'country' => $expectedCountry],
             "show_in_country_gets_resources_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -222,7 +231,7 @@ class PeopleGroupsTest extends TestCase
         $expectedID = "10572";
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/" . $expectedID . ".json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_get_proper_resources_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -238,7 +247,7 @@ class PeopleGroupsTest extends TestCase
         $expectedPeopleGroups = 13;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/" . $expectedID . ".json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_in_country_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -251,7 +260,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/2292828272736363511516.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_in_country_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -263,7 +272,7 @@ class PeopleGroupsTest extends TestCase
         $expectedNumberOfResults = 250;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "all_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -275,7 +284,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "resources_for_all_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -287,10 +296,10 @@ class PeopleGroupsTest extends TestCase
 
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPeopleId1(): void
     {
-        $expectedPeopleIds = array(17, 23);
+        $expectedPeopleIds = [17, 23];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'people_id1' => join("|", $expectedPeopleIds)),
+            ['api_key' => $this->APIKey, 'people_id1' => join("|", $expectedPeopleIds)],
             "filter_by_people_id_1_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -303,10 +312,10 @@ class PeopleGroupsTest extends TestCase
 
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByROP1(): void
     {
-        $expectedROP = array('A014', 'A010');
+        $expectedROP = ['A014', 'A010'];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'rop1' => join("|", $expectedROP)),
+            ['api_key' => $this->APIKey, 'rop1' => join("|", $expectedROP)],
             "filter_by_rop_1_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -323,7 +332,7 @@ class PeopleGroupsTest extends TestCase
         $expectedPeopleID = 23;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'rop1' => $expectedROP, 'people_id1' => $expectedPeopleID),
+            ['api_key' => $this->APIKey, 'rop1' => $expectedROP, 'people_id1' => $expectedPeopleID],
             "filter_by_rop_1_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -337,10 +346,10 @@ class PeopleGroupsTest extends TestCase
 
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPeopleId2(): void
     {
-        $expectedPeopleIds = array(117, 115);
+        $expectedPeopleIds = [117, 115];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'people_id2' => join("|", $expectedPeopleIds)),
+            ['api_key' => $this->APIKey, 'people_id2' => join("|", $expectedPeopleIds)],
             "filter_by_people_id_2_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -353,10 +362,10 @@ class PeopleGroupsTest extends TestCase
 
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByROP2(): void
     {
-        $expectedROP = array('C0013', 'C0067');
+        $expectedROP = ['C0013', 'C0067'];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'rop2' => join("|", $expectedROP)),
+            ['api_key' => $this->APIKey, 'rop2' => join("|", $expectedROP)],
             "filter_by_rop_2_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -369,10 +378,10 @@ class PeopleGroupsTest extends TestCase
 
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPeopleId3(): void
     {
-        $expectedPeopleIds = array(11722, 19204);
+        $expectedPeopleIds = [11722, 19204];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'people_id3' => join("|", $expectedPeopleIds)),
+            ['api_key' => $this->APIKey, 'people_id3' => join("|", $expectedPeopleIds)],
             "filter_by_people_id_3_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -385,10 +394,10 @@ class PeopleGroupsTest extends TestCase
 
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByROP3(): void
     {
-        $expectedROP = array(115485, 115409);
+        $expectedROP = [115485, 115409];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'rop3' => join("|", $expectedROP)),
+            ['api_key' => $this->APIKey, 'rop3' => join("|", $expectedROP)],
             "filter_by_rop_3_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -401,10 +410,10 @@ class PeopleGroupsTest extends TestCase
 
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByContinents(): void
     {
-        $expectedCountries = array('AFR', 'NAR');
+        $expectedCountries = ['AFR', 'NAR'];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'continents' => join("|", $expectedCountries)),
+            ['api_key' => $this->APIKey, 'continents' => join("|", $expectedCountries)],
             "filter_by_continents_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -417,10 +426,10 @@ class PeopleGroupsTest extends TestCase
 
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByRegions(): void
     {
-        $expectedRegions = array(3 => 'asia, northeast', 4 => 'asia, south');
+        $expectedRegions = [3 => 'asia, northeast', 4 => 'asia, south'];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'regions' => join("|", array_keys($expectedRegions))),
+            ['api_key' => $this->APIKey, 'regions' => join("|", array_keys($expectedRegions))],
             "filter_by_regions_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -434,10 +443,10 @@ class PeopleGroupsTest extends TestCase
 
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByCountries(): void
     {
-        $expectedCountries = array('AN', 'BG');
+        $expectedCountries = ['AN', 'BG'];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'countries' => join("|", $expectedCountries)),
+            ['api_key' => $this->APIKey, 'countries' => join("|", $expectedCountries)],
             "filter_by_countries_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -453,7 +462,7 @@ class PeopleGroupsTest extends TestCase
         $expected1040Window = 'Y';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'window1040' => $expected1040Window),
+            ['api_key' => $this->APIKey, 'window1040' => $expected1040Window],
             "filter_by_1040_window_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -466,10 +475,10 @@ class PeopleGroupsTest extends TestCase
 
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByLanguages(): void
     {
-        $expectedLanguages = array('AKA', 'ALE');
+        $expectedLanguages = ['AKA', 'ALE'];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'languages' => join("|", $expectedLanguages)),
+            ['api_key' => $this->APIKey, 'languages' => join("|", $expectedLanguages)],
             "filter_by_languages_aka_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -486,7 +495,7 @@ class PeopleGroupsTest extends TestCase
         $expectedMax = 20000;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'population' => $expectedMin."-".$expectedMax),
+            ['api_key' => $this->APIKey, 'population' => $expectedMin."-".$expectedMax],
             "filter_by_pop_in_range_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -503,7 +512,7 @@ class PeopleGroupsTest extends TestCase
         $expectedPop = 156000;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'population' => $expectedPop),
+            ['api_key' => $this->APIKey, 'population' => $expectedPop],
             "filter_by_set_pop_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -516,10 +525,10 @@ class PeopleGroupsTest extends TestCase
 
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByPrimaryReligions(): void
     {
-        $expectedReligions = array(2 => 'buddhism');
+        $expectedReligions = [2 => 'buddhism'];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'primary_religions' => join('|', array_keys($expectedReligions))),
+            ['api_key' => $this->APIKey, 'primary_religions' => join('|', array_keys($expectedReligions))],
             "filter_by_primary_religions_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -537,7 +546,7 @@ class PeopleGroupsTest extends TestCase
         $expectedPercentMax = 6.9;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_adherent' => $expectedPercentMin . "-" . $expectedPercentMax),
+            ['api_key' => $this->APIKey, 'pc_adherent' => $expectedPercentMin . "-" . $expectedPercentMax],
             "filter_by_percent_adherents_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -555,7 +564,7 @@ class PeopleGroupsTest extends TestCase
         $expectedPercentMax = 20.8;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_evangelical' => $expectedPercentMin . "-" . $expectedPercentMax),
+            ['api_key' => $this->APIKey, 'pc_evangelical' => $expectedPercentMin . "-" . $expectedPercentMax],
             "filter_by_percent_evangelicals_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -573,7 +582,7 @@ class PeopleGroupsTest extends TestCase
         $expectedPercentMax = 40.9;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_buddhist' => $expectedPercentMin . "-" . $expectedPercentMax),
+            ['api_key' => $this->APIKey, 'pc_buddhist' => $expectedPercentMin . "-" . $expectedPercentMax],
             "filter_by_percent_buddhist_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -591,7 +600,7 @@ class PeopleGroupsTest extends TestCase
         $expectedPercentMax = 3.9;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_ethnic_religion' => $expectedPercentMin . "-" . $expectedPercentMax),
+            ['api_key' => $this->APIKey, 'pc_ethnic_religion' => $expectedPercentMin . "-" . $expectedPercentMax],
             "filter_by_percent_ethnic_religions_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -609,7 +618,7 @@ class PeopleGroupsTest extends TestCase
         $expectedPercentMax = 30.2;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_hindu' => $expectedPercentMin . "-" . $expectedPercentMax),
+            ['api_key' => $this->APIKey, 'pc_hindu' => $expectedPercentMin . "-" . $expectedPercentMax],
             "filter_by_percent_hindus_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -627,7 +636,7 @@ class PeopleGroupsTest extends TestCase
         $expectedPercentMax = 40.3;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_islam' => $expectedPercentMin . "-" . $expectedPercentMax),
+            ['api_key' => $this->APIKey, 'pc_islam' => $expectedPercentMin . "-" . $expectedPercentMax],
             "filter_by_percent_islam_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -645,7 +654,7 @@ class PeopleGroupsTest extends TestCase
         $expectedPercentMax = 55.3;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_non_religious' => $expectedPercentMin . "-" . $expectedPercentMax),
+            ['api_key' => $this->APIKey, 'pc_non_religious' => $expectedPercentMin . "-" . $expectedPercentMax],
             "filter_by_percent_non_religious_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -663,7 +672,7 @@ class PeopleGroupsTest extends TestCase
         $expectedPercentMax = 12.6;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_other_religion' => $expectedPercentMin . "-" . $expectedPercentMax),
+            ['api_key' => $this->APIKey, 'pc_other_religion' => $expectedPercentMin . "-" . $expectedPercentMax],
             "filter_by_percent_other_religions_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -681,7 +690,7 @@ class PeopleGroupsTest extends TestCase
         $expectedPercentMax = 35.67;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_unknown' => $expectedPercentMin . "-" . $expectedPercentMax),
+            ['api_key' => $this->APIKey, 'pc_unknown' => $expectedPercentMin . "-" . $expectedPercentMax],
             "filter_by_percent_unknown_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -697,7 +706,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_anglican' => "8.7-40.1"),
+            ['api_key' => $this->APIKey, 'pc_anglican' => "8.7-40.1"],
             "filter_by_percent_anglican_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -715,7 +724,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_independent' => "8.7-40.1"),
+            ['api_key' => $this->APIKey, 'pc_independent' => '8.7-40.1'],
             "filter_by_percent_independent_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -733,7 +742,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_protestant' => "55.5-87.7"),
+            ['api_key' => $this->APIKey, 'pc_protestant' => '55.5-87.7'],
             "filter_by_percent_protestant_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -751,7 +760,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_orthodox' => "31.4-56.7"),
+            ['api_key' => $this->APIKey, 'pc_orthodox' => '31.4-56.7'],
             "filter_by_percent_orthodox_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -769,7 +778,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_rcatholic' => "2.34-56.7"),
+            ['api_key' => $this->APIKey, 'pc_rcatholic' => '2.34-56.7'],
             "filter_by_percent_orthodox_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -789,7 +798,7 @@ class PeopleGroupsTest extends TestCase
         $expectedPercentMax = 27.2;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'pc_other_christian' => "1.1-27.2"),
+            ['api_key' => $this->APIKey, 'pc_other_christian' => '1.1-27.2'],
             "filter_by_percent_other_christians_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -806,10 +815,10 @@ class PeopleGroupsTest extends TestCase
     public function testIndexRequestsShouldReturnPeopleGroupsFilteredByJPScale(): void
     {
         $expectedJPScales = "1|2|3";
-        $expectedJPScalesArray = array(1, 2, 3);
+        $expectedJPScalesArray = [1, 2, 3];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'jpscale' => $expectedJPScales),
+            ['api_key' => $this->APIKey, 'jpscale' => $expectedJPScales],
             "filter_by_jp_scale_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -825,7 +834,7 @@ class PeopleGroupsTest extends TestCase
         $expectedIndigenousStatus = 'y';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'indigenous' => $expectedIndigenousStatus),
+            ['api_key' => $this->APIKey, 'indigenous' => $expectedIndigenousStatus],
             "filter_by_indigenous_status_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -841,7 +850,7 @@ class PeopleGroupsTest extends TestCase
         $expectedLeastReachedStatus = 'y';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'least_reached' => $expectedLeastReachedStatus),
+            ['api_key' => $this->APIKey, 'least_reached' => $expectedLeastReachedStatus],
             "filter_by_least_reached_status_on_index_json"
         );
         $decodedResponse = json_decode($response, true);
@@ -857,7 +866,7 @@ class PeopleGroupsTest extends TestCase
         $expectedUnengagedStatus = 'y';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'unengaged' => $expectedUnengagedStatus),
+            ['api_key' => $this->APIKey, 'unengaged' => $expectedUnengagedStatus],
             "filter_by_unengaged_status_on_index_json"
         );
         $decoded = json_decode($response, true);
@@ -876,7 +885,7 @@ class PeopleGroupsTest extends TestCase
         $expectedFrontier = "N";
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'is_frontier' => $expectedFrontier),
+            ['api_key' => $this->APIKey, 'is_frontier' => $expectedFrontier],
             "filter_by_is_frontier_on_index_json"
         );
         $decoded = json_decode($response, true);
@@ -893,7 +902,7 @@ class PeopleGroupsTest extends TestCase
         $max = 130000;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'population_pgac' => $min . '-' . $max),
+            ['api_key' => $this->APIKey, 'population_pgac' => $min . '-' . $max],
             "filter_by_population_pgac_on_index_json"
         );
         $decoded = json_decode($response, true);
@@ -910,7 +919,7 @@ class PeopleGroupsTest extends TestCase
         $value = 120000;
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'population_pgac' => $value),
+            ['api_key' => $this->APIKey, 'population_pgac' => $value],
             "filter_by_population_pgac_at_value_on_index_json"
         );
         $decoded = json_decode($response, true);
@@ -926,7 +935,7 @@ class PeopleGroupsTest extends TestCase
         $expected = [0, 5];
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey, 'bible_status' => join('|', $expected)),
+            ['api_key' => $this->APIKey, 'bible_status' => join('|', $expected)],
             "filter_by_bible_status_on_index_json"
         );
         $decoded = json_decode($response, true);
@@ -941,7 +950,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "unreached_no_old_fields"
         );
         $decoded = json_decode($response, true);
@@ -972,7 +981,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/12662.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_old_fields_json"
         );
         $decoded = json_decode($response, true);
@@ -1003,7 +1012,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "index_old_fields_json"
         );
         $decoded = json_decode($response, true);
@@ -1107,7 +1116,7 @@ class PeopleGroupsTest extends TestCase
         $decoded = json_decode($response, true);
         $this->assertEquals(200, $this->httpClient->responseCode);
         $this->assertFalse(empty($decoded));
-        foreach ($decoded as $peopleGroup) { 
+        foreach ($decoded as $peopleGroup) {
             $this->assertFalse(array_key_exists('Summary', $peopleGroup));
             $this->assertFalse(array_key_exists('Obstacles', $peopleGroup));
             $this->assertFalse(array_key_exists('HowReach', $peopleGroup));
@@ -1216,7 +1225,7 @@ class PeopleGroupsTest extends TestCase
         $expectedMapCopyright = 'N';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
-            array('api_key' => $this->APIKey, 'month' => '05', 'day'    =>  '31'),
+            ['api_key' => $this->APIKey, 'month' => '05', 'day'    =>  '31'],
             "unreached_no_new_fields"
         );
         $decoded = json_decode($response, true);
@@ -1259,7 +1268,7 @@ class PeopleGroupsTest extends TestCase
         $expectedMapCopyright = 'N';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/11317.json",
-            array('api_key' => $this->APIKey, 'country' =>  'AJ'),
+            ['api_key' => $this->APIKey, 'country' =>  'AJ'],
             "show_new_fields_json"
         );
         $decoded = json_decode($response, true);
@@ -1296,7 +1305,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "index_new_fields_json"
         );
         $decoded = json_decode($response, true);
@@ -1320,7 +1329,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/12662.json",
-            array('api_key' => $this->APIKey, 'country' =>  'US'),
+            ['api_key' => $this->APIKey, 'country' =>  'US'],
             "show_map_address_send_empty_url_json"
         );
         $decoded = json_decode($response, true);
@@ -1339,7 +1348,7 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/10123.json",
-            array('api_key' => $this->APIKey, 'country' =>  'PP'),
+            ['api_key' => $this->APIKey, 'country' =>  'PP'],
             "show_photo_url_send_empty_string_json"
         );
         $decoded = json_decode($response, true);
@@ -1354,11 +1363,11 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
-            array(
+            [
                 'api_key'   => $this->APIKey,
                 'month'     =>  '04',
                 'day'       =>  '05'
-            ),
+            ],
             "unreached_replace_profile_text_json"
         );
         $decoded = json_decode($response, true);
@@ -1373,10 +1382,10 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/15642.json",
-            array(
+            [
                 'api_key'       => $this->APIKey,
                 'country'       =>  'IS'
-            ),
+            ],
             "show_replace_profile_text_json"
         );
         $decoded = json_decode($response, true);
@@ -1391,10 +1400,10 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array(
+            [
                 'api_key'       => $this->APIKey,
                 'limit'         =>  5
-            ),
+            ],
             "index_replace_profile_text_json"
         );
         $decoded = json_decode($response, true);
@@ -1410,11 +1419,11 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
-            array(
+            [
                 'api_key'   => $this->APIKey,
                 'month'     =>  '05',
                 'day'       =>  '25'
-            ),
+            ],
             "unreached_with_prayer_details_json"
         );
         $decoded = json_decode($response, true);
@@ -1435,10 +1444,10 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups/16180.json",
-            array(
+            [
                 'api_key'       =>  $this->APIKey,
                 'country'       =>  'IN'
-            ),
+            ],
             "show_provide_prayer_details_json"
         );
         $decoded = json_decode($response, true);
@@ -1458,10 +1467,10 @@ class PeopleGroupsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/people_groups.json",
-            array(
+            [
                 'api_key'       => $this->APIKey,
                 'limit'         =>  5
-            ),
+            ],
             "index_provide_prayer-details_json"
         );
         $decoded = json_decode($response, true);

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -91,7 +92,7 @@ class GuzzleHttpClient
 
             $response = $this->client->get($url, $options);
             $this->processResponse($response, $url, $params);
-            
+
             return (string) $response->getBody();
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
@@ -120,7 +121,7 @@ class GuzzleHttpClient
 
             $response = $this->client->post($url, $options);
             $this->processResponse($response, $url, []);
-            
+
             return (string) $response->getBody();
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
@@ -143,7 +144,7 @@ class GuzzleHttpClient
     private function processResponse(ResponseInterface $response, string $url, array $params = []): void
     {
         $this->responseCode = $response->getStatusCode();
-        
+
         // Check if there was a redirect
         if ($response->hasHeader('X-Guzzle-Redirect-History')) {
             $redirects = $response->getHeader('X-Guzzle-Redirect-History');

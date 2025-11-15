@@ -24,6 +24,7 @@
 
 declare(strict_types=1);
 
+use Doctrine\DBAL\Exception as DBALException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -41,11 +42,9 @@ $app->get(
         $data = $request->getQueryParams();
         $query = "SELECT * FROM md_api_keys ORDER BY created DESC";
         try {
-            $statement = $this->get('db')->prepare($query);
-            $statement->execute([]);
-            $api_keys = $statement->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo $e;
+            $api_keys = $this->get('db')->fetchAllAssociative($query);
+        } catch (DBALException | Exception $e) {
+            error_log("Exception in /api_keys: " . $e->getMessage());
             exit;
         }
         return $this->get('view')->render(
@@ -79,14 +78,15 @@ $app->put(
         }
         $query = "UPDATE md_api_keys SET status = :state WHERE id = :id";
         try {
-            $statement = $this->get('db')->prepare($query);
-            $statement->execute(
+            $this->get('db')->executeStatement(
+                $query,
                 [
                     'id' => $id,
                     'state' => $state
                 ]
             );
-        } catch (PDOException $e) {
+        } catch (DBALException | Exception $e) {
+            error_log("Exception in /api_keys/{id}: " . $e->getMessage());
             return $response
                 ->withHeader('Location', "/api_keys?saving_error=true")
                 ->withStatus(302);
@@ -179,9 +179,9 @@ $app->post(
         "VALUES (:name, :email, :api_usage, :api_key, :authorize_token, " .
         ":status, :website_url, :google_play_store, :apple_app_store, NOW())";
         try {
-            $statement = $this->get('db')->prepare($query);
-            $statement->execute($apiKeyValues);
-        } catch (PDOException $e) {
+            $this->get('db')->executeStatement($query, $apiKeyValues);
+        } catch (DBALException | Exception $e) {
+            error_log("Exception in /api_keys/new: " . $e->getMessage());
             return $response
                 ->withHeader('Location', "/?saving_error=true")
                 ->withStatus(302);

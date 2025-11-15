@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,10 +23,11 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Integration;
 
+use Doctrine\DBAL\Connection;
 use Tests\Support\GuzzleHttpClient;
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -41,27 +43,27 @@ class StaticPagesTest extends TestCase
      *
      * @var GuzzleHttpClient
      */
-    public $httpClient;
+    public GuzzleHttpClient $httpClient;
     /**
      * The PDO database connection object
      *
-     * @var PDODatabaseConnect
+     * @var Connection
      */
-    private $db;
+    private Connection $db;
     /**
      * The current API version number
      *
      * @var string
      * @access private
      **/
-    private $APIVersion;
+    private string $APIVersion;
     /**
      * The URL for the testing server
      *
      * @var string
      * @access private
      **/
-    private $siteURL;
+    private string $siteURL;
 
     /**
      * Set up the test class
@@ -91,7 +93,7 @@ class StaticPagesTest extends TestCase
          *
          * @author Johnathan Pulos
          */
-        $this->db->query("DELETE FROM `md_api_keys` WHERE `api_usage` = 'testing'");
+        $this->db->executeStatement("DELETE FROM `md_api_keys` WHERE `api_usage` = 'testing'");
     }
     /**
      * Users should be able to access the Home Page
@@ -103,7 +105,7 @@ class StaticPagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/",
-            array(),
+            [],
             "show_home"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -118,7 +120,7 @@ class StaticPagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/terms_of_use",
-            array(),
+            [],
             "show_terms_of_use"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -134,9 +136,9 @@ class StaticPagesTest extends TestCase
     {
         $authorizationToken = 'l543g3$4';
         $expectedAPIKey = generateRandomKey(12);
-        $this->db->query(
-            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', '" .
-            $expectedAPIKey . "', '" . $authorizationToken . "', 0, NOW())"
+        $this->db->executeStatement(
+            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', :api_key, :token, 0, NOW())",
+            ['api_key' => $expectedAPIKey, 'token' => $authorizationToken]
         );
         $response = $this->httpClient->get(
             $this->siteURL . "/get_my_api_key",
@@ -157,13 +159,14 @@ class StaticPagesTest extends TestCase
     {
         $authorizationToken = 'l543g3$4Ac';
         $expectedAPIKey = generateRandomKey(12);
-        $this->db->query(
+        $this->db->executeStatement(
             "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created)" .
-            " VALUES ('testing', '" . $expectedAPIKey . "', '" . $authorizationToken . "', 1, NOW())"
+            " VALUES ('testing', :api_key, :token, 1, NOW())",
+            ['api_key' => $expectedAPIKey, 'token' => $authorizationToken]
         );
         $response = $this->httpClient->get(
             $this->siteURL . "/get_my_api_key",
-            array('authorize_token' => $authorizationToken),
+            ['authorize_token' => $authorizationToken],
             "get_my_api_key_active_key"
         );
         deleteApiKey($expectedAPIKey);
@@ -180,13 +183,13 @@ class StaticPagesTest extends TestCase
     {
         $authorizationToken = 'l543g3$4Ac';
         $expectedAPIKey = generateRandomKey(12);
-        $this->db->query(
-            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) " .
-            "VALUES ('testing', '" . $expectedAPIKey . "', '" . $authorizationToken . "', 2, NOW())"
+        $this->db->executeStatement(
+            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', :api_key, :token, 2, NOW())",
+            ['api_key' => $expectedAPIKey, 'token' => $authorizationToken]
         );
         $response = $this->httpClient->get(
             $this->siteURL . "/get_my_api_key",
-            array('authorize_token' => $authorizationToken),
+            ['authorize_token' => $authorizationToken],
             "get_my_api_key_suspended_key"
         );
         deleteApiKey($expectedAPIKey);
@@ -203,13 +206,13 @@ class StaticPagesTest extends TestCase
     {
         $authorizationToken = 'l543g3$4Ac';
         $expectedAPIKey = 'AKey$43Ac';
-        $this->db->query(
-            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) " .
-            "VALUES ('testing', '" . $expectedAPIKey . "', '" . $authorizationToken . "', 2, NOW())"
+        $this->db->executeStatement(
+            "INSERT INTO md_api_keys (api_usage, api_key, authorize_token, status, created) VALUES ('testing', :api_key, :token, 2, NOW())",
+            ['api_key' => $expectedAPIKey, 'token' => $authorizationToken]
         );
         $response = $this->httpClient->get(
             $this->siteURL . "/get_my_api_key",
-            array('authorize_token' => ''),
+            ['authorize_token' => ''],
             "get_my_api_key_missing_token"
         );
         deleteApiKey($expectedAPIKey);
@@ -226,7 +229,7 @@ class StaticPagesTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/resend_activation_links",
-            array(),
+            [],
             "show_resend_activation_links"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);

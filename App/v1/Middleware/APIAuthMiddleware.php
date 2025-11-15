@@ -22,10 +22,11 @@
  *
  */
 
- declare(strict_types=1);
+declare(strict_types=1);
 
 namespace Middleware;
 
+use Doctrine\DBAL\Connection;
 use Middleware\Traits\PathBasedTrait;
 use Middleware\Traits\ReturnsErrorsTrait;
 use Psr\Http\Message\ServerRequestInterface;
@@ -51,17 +52,17 @@ class APIAuthMiddleware implements MiddlewareInterface
     /**
      * Our database
      *
-     * @var \PDO
+     * @var Connection
      */
-    private $db;
+    private Connection $db;
 
     /**
      * Set up the middleware
      *
-     * @param \PDO      $db         The database
-     * @param array     $options    The options
+     * @param Connection    $db         The database
+     * @param array         $options    The options
      */
-    public function __construct(\PDO $db, $options = [])
+    public function __construct(Connection $db, $options = [])
     {
         $this->db = $db;
         $this->options = array_merge($this->options, $options);
@@ -125,16 +126,15 @@ class APIAuthMiddleware implements MiddlewareInterface
     private function isValidKey(string $apiKey): bool
     {
         $query = "SELECT * FROM md_api_keys where api_key = :api_key LIMIT 1";
-        $statement = $this->db->prepare($query);
-        $statement->execute(['api_key' => $apiKey]);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAssociative($query, ['api_key' => $apiKey]);
+
         if (empty($data)) {
             return false;
         }
         /**
          * Pending (0) or Suspended (2)
          */
-        if ((intval($data[0]['status']) === 0) || (intval($data[0]['status']) === 2)) {
+        if ((intval($data['status']) === 0) || (intval($data['status']) === 2)) {
             return false;
         }
         return true;
@@ -150,7 +150,6 @@ class APIAuthMiddleware implements MiddlewareInterface
     private function setLastRequest(string $apiKey): void
     {
         $query = "UPDATE md_api_keys SET last_request = NOW() where api_key = :api_key";
-        $statement = $this->db->prepare($query);
-        $statement->execute(['api_key' => $apiKey]);
+        $statement = $this->db->executeStatement($query, ['api_key' => $apiKey]);
     }
 }

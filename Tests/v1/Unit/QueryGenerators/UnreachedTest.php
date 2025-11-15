@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,13 +23,15 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Unit\QueryGenerators;
 
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
 class UnreachedTest extends TestCase
 {
-    private $db;
+    private Connection $db;
 
     public function setUp(): void
     {
@@ -37,12 +40,14 @@ class UnreachedTest extends TestCase
 
     public function testDailyUnreachedRequestsShouldReturnCorrectResults(): void
     {
-        $expected = array('month' => 1, 'day' => 11);
+        $expected = ['month' => 1, 'day' => 11];
         $unreached = new \QueryGenerators\Unreached($expected);
         $unreached->daily();
-        $statement = $this->db->prepare($unreached->preparedStatement);
-        $statement->execute($unreached->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $unreached->preparedStatement,
+            $unreached->preparedVariables,
+            $unreached->preparedVariableTypes
+        );
         $this->assertEquals($expected['month'], $data[0]['LRofTheDayMonth']);
         $this->assertEquals($expected['day'], $data[0]['LRofTheDayDay']);
     }
@@ -50,7 +55,7 @@ class UnreachedTest extends TestCase
     public function testDailyUnreachedRequestsShouldThrowErrorIfMissingMonth(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $getVars = array('day' => 11);
+        $getVars = ['day' => 11];
         $unreached = new \QueryGenerators\Unreached($getVars);
         $unreached->daily();
     }
@@ -58,7 +63,7 @@ class UnreachedTest extends TestCase
     public function testDailyUnreachedRequestsShouldThrowErrorIfMissingDay(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $getVars = array('month' => 11);
+        $getVars = ['month' => 11];
         $unreached = new \QueryGenerators\Unreached($getVars);
         $unreached->daily();
     }
@@ -66,7 +71,7 @@ class UnreachedTest extends TestCase
     public function testDailyUnreachedRequestsShouldThrowErrorIfMonthIsOutOfRange(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $getVars = array('month' => 13, 'day' => 1);
+        $getVars = ['month' => 13, 'day' => 1];
         $unreached = new \QueryGenerators\Unreached($getVars);
         $unreached->daily();
     }
@@ -74,19 +79,21 @@ class UnreachedTest extends TestCase
     public function testDailyUnreachedRequestsShouldThrowErrorIfDayIsOutOfRange(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $getVars = array('month' => 12, 'day' => 32);
+        $getVars = ['month' => 12, 'day' => 32];
         $unreached = new \QueryGenerators\Unreached($getVars);
         $unreached->daily();
     }
 
     public function testDailyUnreachedRequestsShouldContainPeopleID3ROG3Field(): void
     {
-        $expected = array('month' => 1, 'day' => 11);
+        $expected = ['month' => 1, 'day' => 11];
         $unreached = new \QueryGenerators\Unreached($expected);
         $unreached->daily();
-        $statement = $this->db->prepare($unreached->preparedStatement);
-        $statement->execute($unreached->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $unreached->preparedStatement,
+            $unreached->preparedVariables,
+            $unreached->preparedVariableTypes
+        );
         $this->assertArrayHasKey('PeopleID3', $data[0]);
         $this->assertArrayHasKey('ROG3', $data[0]);
         $expected = $data[0]['PeopleID3'] . $data[0]['ROG3'];

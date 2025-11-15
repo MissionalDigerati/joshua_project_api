@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,10 +23,12 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Integration;
 
 use Tests\Support\GuzzleHttpClient;
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -40,34 +43,34 @@ class ContinentsTest extends TestCase
      *
      * @var GuzzleHttpClient
      */
-    public $httpClient;
+    public GuzzleHttpClient $httpClient;
     /**
-     * The PDO database connection object
+     * The DBAL database connection object
      *
-     * @var PDODatabaseConnect
+     * @var Connection
      */
-    private $db;
+    private Connection $db;
     /**
      * The current API version number
      *
      * @var string
      * @access private
      **/
-    private $APIVersion;
+    private string $APIVersion;
     /**
      * The URL for the testing server
      *
      * @var string
      * @access private
      **/
-    private $siteURL;
+    private string $siteURL;
     /**
      * The APIKey to access the API
      *
      * @var string
      * @access private
      **/
-    private $APIKey = '';
+    private string $APIKey = '';
     /**
      * Set up the test class
      *
@@ -101,10 +104,10 @@ class ContinentsTest extends TestCase
      * @author Johnathan Pulos
      **/
     public function testShowRequestShouldRefuseAccessWithoutAnAPIKey(): void
-    { 
+    {
         $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/4.json",
-            array(),
+            [],
             "continent_show_up_json"
         );
         $this->assertEquals(401, $this->httpClient->responseCode);
@@ -117,10 +120,13 @@ class ContinentsTest extends TestCase
      **/
     public function testShowRequestShouldRefuseAccessWithoutActiveAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = :status WHERE `api_key` = :api_key",
+            ['status' => 0, 'api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/3.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "non_active_key_json"
         );
         $decoded = json_decode($response, true);
@@ -138,10 +144,13 @@ class ContinentsTest extends TestCase
      **/
     public function testShowRequestShouldRefuseAccessToSuspendedAPIKeys(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = :status WHERE `api_key` = :api_key",
+            ['status' => 2, 'api_key' => $this->APIKey]
+        );
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/3.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "suspended_key_json"
         );
         $decoded = json_decode($response, true);
@@ -161,7 +170,7 @@ class ContinentsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/1.json",
-            array('api_key' => 'BADKEY'),
+            ['api_key' => 'BADKEY'],
             "bad_key_json"
         );
         $decoded = json_decode($response, true);
@@ -182,7 +191,7 @@ class ContinentsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/asi.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_accessible_in_json"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -199,7 +208,7 @@ class ContinentsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/asi.xml",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_accessible_in_xml"
         );
         $this->assertEquals(200, $this->httpClient->responseCode);
@@ -217,7 +226,7 @@ class ContinentsTest extends TestCase
     {
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/bad_id.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_with_bad_id"
         );
         $this->assertEquals(400, $this->httpClient->responseCode);
@@ -237,7 +246,7 @@ class ContinentsTest extends TestCase
         $expectedContinent = 'asia';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/" . $continentId . ".json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_returns_appropriate_continent"
         );
         $decodedResponse = json_decode($response, true);
@@ -256,7 +265,7 @@ class ContinentsTest extends TestCase
         $continentId = 'asi';
         $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/" . $continentId . ".json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_returns_appropriate_continent"
         );
         $decoded = json_decode($response, true);

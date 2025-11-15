@@ -15,7 +15,6 @@
         }
     ],
     "require": {
-        "phptoolbox/phptoolbox": "^2.0",
         "slim/slim": "4.*",
         "phpmailer/phpmailer": "^7.0",
         "slim/php-view": "^3.0",
@@ -24,16 +23,19 @@
         "slim/psr7": "^1.6",
         "slim/http": "^1.3",
         "php-di/php-di": "^7.0",
-        "guzzlehttp/guzzle": "^7.10"
+        "guzzlehttp/guzzle": "^7.10",
+        "doctrine/dbal": "^4.2"
     },
     "require-dev": {
         "zircote/swagger-php": "^3.0",
         "squizlabs/php_codesniffer": "^4.0",
-        "phpunit/phpunit": "^10.4"
+        "phpunit/phpunit": "^10.4",
+        "friendsofphp/php-cs-fixer": "^3.89"
     },
     "scripts": {
         "docs": "openapi -o ./Public/api-docs.json ./App/v1/OpenAPI/Components.php ./App/v1/OpenAPI/Schemas/ ./App/v1/Resources/",
         "lint": "phpcs",
+        "lint:fix": "php-cs-fixer fix --using-cache=no",
         "test": "phpunit Tests/"
     },
     "autoload": {
