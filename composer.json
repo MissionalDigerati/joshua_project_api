@@ -15,7 +15,6 @@
         }
     ],
     "require": {
-        "phptoolbox/phptoolbox": "^2.0",
         "slim/slim": "4.*",
         "phpmailer/phpmailer": "^7.0",
         "slim/php-view": "^3.0",
