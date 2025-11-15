@@ -134,4 +134,17 @@ class UnreachedTest extends TestCase
         $unreached = new \QueryGenerators\Unreached($expected);
         $unreached->daily();
     }
+
+    public function testUnreachedRequestsShouldReturnCorrectResultsDespiteCaseOfLanguage(): void
+    {
+        $expected = ['month' => 1, 'day' => 11, 'lang' => 'SpA'];
+        $unreached = new \QueryGenerators\Unreached($expected);
+        $unreached->daily();
+        $data = $this->db->fetchAssociative(
+            $unreached->preparedStatement,
+            $unreached->preparedVariables,
+            $unreached->preparedVariableTypes
+        );
+        $this->assertEquals('spa', $data['ROL3Profile']);
+    }
 }

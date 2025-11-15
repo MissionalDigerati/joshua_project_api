@@ -185,7 +185,7 @@ class Unreached extends PeopleGroup
         $this->validator->providedRequiredParams($this->providedParams, ['month', 'day']);
         $month = intval($this->providedParams['month']);
         $day = intval($this->providedParams['day']);
-        $lang = $this->providedParams['lang'] ?? 'eng';
+        $lang = strtolower($this->providedParams['lang']) ?? 'eng';
         if (!in_array($lang, self::$supportedLangs)) {
             throw new \InvalidArgumentException("The 'lang' parameter you provided is not supported.");
         }

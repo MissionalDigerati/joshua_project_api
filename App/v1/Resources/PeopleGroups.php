@@ -124,7 +124,7 @@ $app->get(
             $day = Date('j');
         }
         if (array_key_exists('lang', $params)) {
-            if (!in_array($params['lang'], Unreached::$supportedLangs)) {
+            if (!in_array(strtolower($params['lang']), Unreached::$supportedLangs)) {
                 return $this->get('errorResponder')->get(
                     400,
                     "The 'lang' parameter you provided is not supported.",
@@ -133,7 +133,7 @@ $app->get(
                     $response
                 );
             }
-            $lang = $params['lang'];
+            $lang = strtolower($params['lang']);
         } else {
             $lang = 'eng';
         }
