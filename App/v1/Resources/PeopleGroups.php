@@ -62,6 +62,16 @@ use Utilities\StringHelper;
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
+ *     @OA\Parameter(
+ *         name="lang",
+ *         description="The three letter ROLProfile language code you want the people group information returned in. Supported languages are: cmn, deu, eng, fra, ita, kor, por, spa, vie. Defaults to eng.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(
+ *             type="string",
+ *             default="eng"
+ *        )
+ *     ),
  *     @OA\Response(
  *         response="200",
  *         description="The unreached people group based on your request.",
@@ -113,11 +123,26 @@ $app->get(
         } else {
             $day = Date('j');
         }
+        if (array_key_exists('lang', $params)) {
+            if (!in_array($params['lang'], Unreached::$supportedLangs)) {
+                return $this->get('errorResponder')->get(
+                    400,
+                    "The 'lang' parameter you provided is not supported.",
+                    $args['format'],
+                    'Bad Request',
+                    $response
+                );
+            }
+            $lang = $params['lang'];
+        } else {
+            $lang = 'eng';
+        }
         try {
             $peopleGroup = new Unreached(
                 [
                     'month' => $month,
-                    'day'   => $day
+                    'day'   => $day,
+                    'lang'  => $lang
                 ]
             );
             $peopleGroup->daily();

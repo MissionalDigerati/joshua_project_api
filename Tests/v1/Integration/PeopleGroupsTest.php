@@ -165,6 +165,40 @@ class PeopleGroupsTest extends TestCase
         $this->assertEquals($expectedDay, $decodedResponse[0]['LRofTheDayDay']);
     }
 
+    public function testShouldGetDailyUnreachedForSpecificLanguage(): void
+    {
+        $expectedMonth = Date('n');
+        $expectedDay = Date('j');
+        $expectedLang = 'spa';
+        $response = $this->httpClient->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
+            ['api_key' => $this->APIKey, 'day' => $expectedDay, 'month' => $expectedMonth, 'lang' => $expectedLang],
+            "up_specific_language"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals($expectedMonth, $decodedResponse[0]['LRofTheDayMonth']);
+        $this->assertEquals($expectedDay, $decodedResponse[0]['LRofTheDayDay']);
+        $this->assertEquals($expectedLang, $decodedResponse[0]['ROL3Profile']);
+    }
+
+    public function testShouldReturnErrorIfUnreachedReceivesUnsupportedLanguage(): void
+    {
+        $expectedMonth = Date('n');
+        $expectedDay = Date('j');
+        $expectedLang = 'xyz';
+        $response = $this->httpClient->get(
+            $this->siteURL . "/" . $this->APIVersion . "/people_groups/daily_unreached.json",
+            ['api_key' => $this->APIKey, 'day' => $expectedDay, 'month' => $expectedMonth, 'lang' => $expectedLang],
+            "up_unsupported_language"
+        );
+        $decodedResponse = json_decode($response, true);
+        $this->assertEquals(400, $this->httpClient->responseCode);
+        $this->assertTrue(!empty($decodedResponse['api']));
+        $this->assertTrue(!empty($decodedResponse['api']['error']));
+        $this->assertEquals('Bad Request', $decodedResponse['api']['error']['message']);
+        $this->assertEquals('The \'lang\' parameter you provided is not supported.', $decodedResponse['api']['error']['details']);
+    }
+
     public function testShouldGetDailyUnreachedWithSetDayAndMonth(): void
     {
         $expectedMonth = '3';

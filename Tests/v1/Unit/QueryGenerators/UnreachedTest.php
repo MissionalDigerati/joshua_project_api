@@ -100,4 +100,38 @@ class UnreachedTest extends TestCase
         $this->assertArrayHasKey('PeopleID3ROG3', $data[0]);
         $this->assertEquals($expected, $data[0]['PeopleID3ROG3']);
     }
+
+    public function testUnreachedRequestsShouldReturnCorrectLanguage(): void
+    {
+        $expected = ['month' => 1, 'day' => 11, 'lang' => 'spa'];
+        $unreached = new \QueryGenerators\Unreached($expected);
+        $unreached->daily();
+        $data = $this->db->fetchAssociative(
+            $unreached->preparedStatement,
+            $unreached->preparedVariables,
+            $unreached->preparedVariableTypes
+        );
+        $this->assertEquals('spa', $data['ROL3Profile']);
+    }
+
+    public function testUnreachedRequestsShouldDefaultToEnglishLanguage(): void
+    {
+        $expected = ['month' => 1, 'day' => 11];
+        $unreached = new \QueryGenerators\Unreached($expected);
+        $unreached->daily();
+        $data = $this->db->fetchAssociative(
+            $unreached->preparedStatement,
+            $unreached->preparedVariables,
+            $unreached->preparedVariableTypes
+        );
+        $this->assertEquals('eng', $data['ROL3Profile']);
+    }
+
+    public function testUnreachedRequestsShouldThrowErrorIfUnsupportedLanguageProvided(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $expected = ['month' => 1, 'day' => 11, 'lang' => 'xxx'];
+        $unreached = new \QueryGenerators\Unreached($expected);
+        $unreached->daily();
+    }
 }
