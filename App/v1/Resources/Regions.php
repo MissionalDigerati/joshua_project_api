@@ -24,6 +24,9 @@
 
 declare(strict_types=1);
 
+namespace App\v1\Resources;
+
+use Doctrine\DBAL\Exception as DBALException;
 use QueryGenerators\Region;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -110,9 +113,11 @@ $app->get(
         try {
             $region = new Region(['id' => $regionId]);
             $region->findById();
-            $statement = $this->get('db')->prepare($region->preparedStatement);
-            $statement->execute($region->preparedVariables);
-            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $data = $this->get('db')->fetchAllAssociative(
+                $region->preparedStatement,
+                $region->preparedVariables,
+                $region->preparedVariableTypes
+            );
             if (empty($data)) {
                 return $this->get('errorResponder')->get(
                     404,
@@ -122,7 +127,8 @@ $app->get(
                     $response
                 );
             }
-        } catch (Exception $e) {
+        } catch (DBALException | \Exception $e) {
+            error_log("Database error in Region show: {$e->getMessage()}");
             return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),
@@ -136,14 +142,15 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
+        $body = $response->getBody();
         if ($args['format'] == 'json') {
-            return $response
-            ->withHeader('Content-Type', 'application/json')
-            ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-type', 'text/xml')
-                ->write(arrayToXML($data, "regions", "region"));
+            $xml = arrayToXML($data, "regions", "region");
+            $body->write($xml);
+            return $response->withHeader('Content-type', 'text/xml');
         }
     }
 );

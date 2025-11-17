@@ -101,12 +101,16 @@ class ProfileText extends QueryGenerator
         $this->validator->providedRequiredParams($this->providedParams, ['id', 'country']);
         $id = intval($this->providedParams['id']);
         $country = strtoupper($this->providedParams['country']);
+        $lang = strtolower($this->providedParams['lang'] ?? 'eng');
+        if (!in_array($lang, QueryGenerator::$supportedLangs)) {
+            throw new \InvalidArgumentException("The 'lang' parameter you provided is not supported.");
+        }
         $this->preparedStatement = "SELECT " . $this->selectFieldsStatement .
             " FROM jpprofiletopeople JOIN jpprofiletext ON jpprofiletopeople.ProfileID = jpprofiletext.ProfileID " .
             "WHERE jpprofiletopeople.PeopleID3 = :id AND jpprofiletopeople.ROG3 = :country " .
-            "AND jpprofiletopeople.ROL3Profile = 'eng' AND jpprofiletext.ROL3Profile = 'eng' " .
+            "AND jpprofiletopeople.ROL3Profile = :lang AND jpprofiletext.ROL3Profile = :lang " .
             "AND jpprofiletext.Format = 'M' ORDER BY jpprofiletopeople.EditDate DESC LIMIT 1";
 
-        $this->preparedVariables = ['id' => $id, 'country' => $country];
+        $this->preparedVariables = ['id' => $id, 'country' => $country, 'lang' => $lang];
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 /**
  * This file is part of Joshua Project API.
@@ -21,33 +22,31 @@ declare(strict_types=1);
  *
  */
 use DI\ContainerBuilder;
+use Doctrine\DBAL\DriverManager;
+use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 use Slim\Views\PhpRenderer;
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
 use Utilities\Mailer;
 use Utilities\APIErrorResponder;
 
- /**
-  * Add the dependencies to the container
-  */
-return function(ContainerBuilder $containerBuilder, string $viewDirectory) {
+/**
+ * Add the dependencies to the container
+ */
+return function (ContainerBuilder $containerBuilder, string $viewDirectory) {
     $containerBuilder->addDefinitions([
-        'db'    =>  function(ContainerInterface $interface) {
-            $dbSettings = new \stdClass();
-            $dbSettings->default = [
-                'host'      =>  $_ENV['DB_HOST'],
-                'name'      =>  $_ENV['DB_NAME'],
-                'username'  =>  $_ENV['DB_USERNAME'],
-                'password'  =>  $_ENV['DB_PASSWORD']
-            ];
-            $pdoDb = PDODatabaseConnect::getInstance();
-            $pdoDb->setDatabaseSettings($dbSettings);
-            return $pdoDb->getDatabaseInstance();
+        'db'    =>  function (ContainerInterface $interface) {
+            return DriverManager::getConnection([
+                'driver' => 'pdo_mysql',
+                'host' => $_ENV['DB_HOST'],
+                'dbname' => $_ENV['DB_NAME'],
+                'user' => $_ENV['DB_USERNAME'],
+                'password' => $_ENV['DB_PASSWORD'],
+                'charset' => 'utf8'
+            ]);
         },
-        'errorResponder'    => function(ContainerInterface $interface) {
-            return new APIErrorResponder();
-        },
-        'mailer'    =>  function(ContainerInterface $interface) {
+        'errorResponder'    => fn (ContainerInterface $interface) => new APIErrorResponder(),
+        'httpClient' => fn (ContainerInterface $interface) => new Client(),
+        'mailer'    =>  function (ContainerInterface $interface) {
             $useSMTP = ($_ENV['EMAIL_USE_SMTP'] === 'true');
             return new Mailer(
                 $_ENV['EMAIL_HOST'],
@@ -57,7 +56,15 @@ return function(ContainerBuilder $containerBuilder, string $viewDirectory) {
                 $useSMTP
             );
         },
-        'view'  =>  function(ContainerInterface $interface) use ($viewDirectory) {
+        'recaptchaValidator' => function (ContainerInterface $interface) {
+            return new \Utilities\RecaptchaValidator(
+                $_ENV['RECAPTCHA_API_KEY'] ?? '',
+                $interface->get('httpClient'),
+                $_ENV['RECAPTCHA_PROJECT'] ?? '',
+                $_ENV['RECAPTCHA_SITE_KEY'] ?? ''
+            );
+        },
+        'view'  =>  function (ContainerInterface $interface) use ($viewDirectory) {
             return new PhpRenderer(
                 $viewDirectory,
                 ['viewDirectory' => $viewDirectory]

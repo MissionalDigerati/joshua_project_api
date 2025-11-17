@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,10 +23,11 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Integration;
 
-use PHPToolbox\CachedRequest\CachedRequest;
-use PHPToolbox\PDODatabase\PDODatabaseConnect;
+use Doctrine\DBAL\Connection;
+use Tests\Support\GuzzleHttpClient;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,38 +39,38 @@ use PHPUnit\Framework\TestCase;
 class RegionsTest extends TestCase
 {
     /**
-     * The CachedRequest Object
+     * The HTTP Client Object
      *
-     * @var CachedRequest
+     * @var GuzzleHttpClient
      */
-    public $cachedRequest;
+    public GuzzleHttpClient $httpClient;
     /**
      * The PDO database connection object
      *
-     * @var PDODatabaseConnect
+     * @var Connection
      */
-    private $db;
+    private Connection $db;
     /**
      * The APIKey to access the API
      *
      * @var string
      * @access private
      **/
-    private $APIKey = '';
+    private string $APIKey = '';
     /**
      * The current API version number
      *
      * @var string
      * @access private
      **/
-    private $APIVersion;
+    private string $APIVersion;
     /**
      * The URL for the testing server
      *
      * @var string
      * @access private
      **/
-    private $siteURL;
+    private string $siteURL;
     /**
      * Set up the test class
      *
@@ -80,14 +82,7 @@ class RegionsTest extends TestCase
     {
         $this->APIVersion = $_ENV['api_version'];
         $this->siteURL = $_ENV['site_url'];
-        $this->cachedRequest = new CachedRequest();
-        $this->cachedRequest->cacheDirectory =
-            __DIR__ .
-            DIRECTORY_SEPARATOR . ".." .
-            DIRECTORY_SEPARATOR . ".." .
-            DIRECTORY_SEPARATOR . "Support" .
-            DIRECTORY_SEPARATOR . "cache" .
-            DIRECTORY_SEPARATOR;
+        $this->httpClient = new GuzzleHttpClient();
         $this->db = getDatabaseInstance();
         $this->APIKey = createApiKey();
     }
@@ -99,7 +94,7 @@ class RegionsTest extends TestCase
      */
     public function tearDown(): void
     {
-        $this->cachedRequest->clearCache();
+        $this->httpClient->clearCache();
         deleteApiKey($this->APIKey);
     }
     /**
@@ -110,13 +105,13 @@ class RegionsTest extends TestCase
      **/
     public function testShowRequestsShouldRefuseAccessWithoutAnAPIKey(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/2.json",
-            array(),
+            [],
             "region_show_up_json"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
         $this->assertTrue(!empty($decoded['api']));
         $this->assertTrue(!empty($decoded['api']['error']));
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
@@ -130,14 +125,17 @@ class RegionsTest extends TestCase
      **/
     public function testShowRequestsShouldRefuseAccessWithoutActiveAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = '" . $this->APIKey . "'");
-        $response = $this->cachedRequest->get(
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 0 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/3.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "non_active_key_json"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
         $this->assertTrue(!empty($decoded['api']));
         $this->assertTrue(!empty($decoded['api']['error']));
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
@@ -151,14 +149,17 @@ class RegionsTest extends TestCase
      **/
     public function testShowRequestsShouldRefuseAccessWithSuspendedAPIKey(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = '" . $this->APIKey . "'");
-        $response = $this->cachedRequest->get(
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET status = 2 WHERE `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/2.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "suspended_key_json"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
         $this->assertTrue(!empty($decoded['api']));
         $this->assertTrue(!empty($decoded['api']['error']));
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
@@ -172,13 +173,13 @@ class RegionsTest extends TestCase
      **/
     public function testShowRequestsShouldRefuseAccessWithABadAPIKey(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/1.json",
-            array('api_key' => 'BADKEY'),
+            ['api_key' => 'BADKEY'],
             "bad_key_json"
         );
         $decoded = json_decode($response, true);
-        $this->assertEquals(401, $this->cachedRequest->responseCode);
+        $this->assertEquals(401, $this->httpClient->responseCode);
         $this->assertTrue(!empty($decoded['api']));
         $this->assertTrue(!empty($decoded['api']['error']));
         $this->assertEquals('Unauthorized', $decoded['api']['error']['message']);
@@ -193,12 +194,12 @@ class RegionsTest extends TestCase
       */
     public function testShowRequestsShouldReturnARegionInJSON(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/3.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_accessible_in_json"
         );
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertEquals(200, $this->httpClient->responseCode);
         $this->assertTrue(isJSON($response));
     }
     /**
@@ -210,12 +211,12 @@ class RegionsTest extends TestCase
       */
     public function testShowRequestsShouldReturnARegionInXML(): void
     {
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/3.xml",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_accessible_in_xml"
         );
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
+        $this->assertEquals(200, $this->httpClient->responseCode);
         $this->assertTrue(isXML($response));
     }
     /**
@@ -230,9 +231,9 @@ class RegionsTest extends TestCase
     {
         $regionId = 10;
         $expectedRegion = 'europe, western';
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/" . $regionId . ".json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_returns_appropriate_region"
         );
         $decodedResponse = json_decode($response, true);
@@ -250,9 +251,9 @@ class RegionsTest extends TestCase
     public function testShowRequestsShouldNotReturnRemovedFields(): void
     {
         $regionId = 10;
-        $response = $this->cachedRequest->get(
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/regions/" . $regionId . ".json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_returns_appropriate_region"
         );
         $decoded = json_decode($response, true);

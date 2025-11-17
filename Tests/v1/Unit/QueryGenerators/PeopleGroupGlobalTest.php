@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Joshua Project API.
  *
@@ -21,14 +22,13 @@
  *
  */
 
- declare(strict_types=1);
+declare(strict_types=1);
 
 namespace Tests\v1\Unit\QueryGenerators;
 
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 use QueryGenerators\PeopleGroupGlobal;
-
-
 
 /**
  * Test the Query Generator for the People Group Global Data
@@ -37,8 +37,7 @@ use QueryGenerators\PeopleGroupGlobal;
  */
 class PeopleGroupGlobalTest extends TestCase
 {
-
-    private $db;
+    private Connection $db;
 
     public function setUp(): void
     {
@@ -60,9 +59,11 @@ class PeopleGroupGlobalTest extends TestCase
     {
         $peopleGroup = new PeopleGroupGlobal(['id' => 22279]);
         $peopleGroup->findById();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals(1, count($data));
         $this->assertEquals(22279, $data[0]['PeopleID3']);
         $this->assertEquals('Pashtun Tirahi', $data[0]['PeopName']);
@@ -101,16 +102,16 @@ class PeopleGroupGlobalTest extends TestCase
 
     public function testFindAllWithFiltersShouldReturnAllResultsWithoutFilters(): void
     {
-        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal");
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = $result['count'];
+        $count = (int) $this->db->fetchOne('SELECT COUNT(*) FROM jppeoplesglobal');
         $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
         // Let's bypass the limit of 250 to verify we get all the results
         $peopleGroup = new PeopleGroupGlobal(['limit' => $count + 100]);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($count, count($data));
     }
 
@@ -120,9 +121,11 @@ class PeopleGroupGlobalTest extends TestCase
         $params = ['people_id3' => implode('|', $ids)];
         $peopleGroup = new PeopleGroupGlobal($params);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals(count($ids), count($data));
         foreach ($data as $row) {
             $this->assertTrue(in_array($row['PeopleID3'], $ids));
@@ -133,17 +136,17 @@ class PeopleGroupGlobalTest extends TestCase
     {
         $ids = [16, 23];
         $params = ['people_id1' => implode('|', $ids)];
-        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE PeopleID1 IN (16, 23)");
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = $result['count'];
+        $count = (int) $this->db->fetchOne("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE PeopleID1 IN (16, 23)");
         $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
         // Let's bypass the limit of 250 to verify we get all the results
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($count, count($data));
         foreach ($data as $row) {
             $this->assertTrue(in_array($row['PeopleID1'], $ids));
@@ -154,17 +157,17 @@ class PeopleGroupGlobalTest extends TestCase
     {
         $ids = [298, 273, 133];
         $params = ['people_id2' => implode('|', $ids)];
-        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE PeopleID2 IN (298, 273, 133)");
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = $result['count'];
+        $count = (int) $this->db->fetchOne("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE PeopleID2 IN (298, 273, 133)");
         $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
         // Let's bypass the limit of 250 to verify we get all the results
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($count, count($data));
         foreach ($data as $row) {
             $this->assertTrue(in_array($row['PeopleID2'], $ids));
@@ -175,17 +178,17 @@ class PeopleGroupGlobalTest extends TestCase
     {
         $ropIds = [111012, 100246];
         $params = ['rop3' => implode('|', $ropIds)];
-        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE ROP3 IN (111012, 100246)");
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = $result['count'];
+        $count = (int) $this->db->fetchOne("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE ROP3 IN (111012, 100246)");
         $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
         // Let's bypass the limit of 250 to verify we get all the results
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($count, count($data));
         foreach ($data as $row) {
             $this->assertTrue(in_array($row['ROP3'], $ropIds));
@@ -196,17 +199,17 @@ class PeopleGroupGlobalTest extends TestCase
     {
         $scales = [1, 2];
         $params = ['jpscale' => implode('|', $scales)];
-        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE JPScalePGAC IN (1, 2)");
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = $result['count'];
+        $count = (int) $this->db->fetchOne("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE JPScalePGAC IN (1, 2)");
         $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
         // Let's bypass the limit of 250 to verify we get all the results
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($count, count($data));
         foreach ($data as $row) {
             $this->assertTrue(in_array($row['JPScalePGAC'], $scales));
@@ -223,17 +226,17 @@ class PeopleGroupGlobalTest extends TestCase
     public function testFindAllWithFiltersShouldReturnResultsFilteredByPopulation(): void
     {
         $params = ['population' => '8000-9000'];
-        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE PopulationPGAC BETWEEN 8000 AND 9000");
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = $result['count'];
+        $count = (int) $this->db->fetchOne("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE PopulationPGAC BETWEEN 8000 AND 9000");
         $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
         // Let's bypass the limit of 250 to verify we get all the results
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($count, count($data));
         foreach ($data as $row) {
             $this->assertGreaterThanOrEqual(8000, $row['PopulationPGAC']);
@@ -244,17 +247,17 @@ class PeopleGroupGlobalTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByUneachedBoolean(): void
     {
         $params = ['unreached' => 'N'];
-        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE LeastReachedPGAC = 'N' OR LeastReachedPGAC IS NULL");
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = $result['count'];
+        $count = (int) $this->db->fetchOne("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE LeastReachedPGAC = 'N' OR LeastReachedPGAC IS NULL");
         $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
         // Let's bypass the limit of 250 to verify we get all the results
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($count, count($data));
         foreach ($data as $row) {
             $this->assertTrue(in_array($row['LeastReachedPGAC'], ['N', null]));
@@ -271,17 +274,17 @@ class PeopleGroupGlobalTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByIsFrontierBoolean(): void
     {
         $params = ['is_frontier' => 'Y'];
-        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE FrontierPGAC = 'Y'");
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = $result['count'];
+        $count = (int) $this->db->fetchOne("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE FrontierPGAC = 'Y'");
         $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
         // Let's bypass the limit of 250 to verify we get all the results
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($count, count($data));
         foreach ($data as $row) {
             $this->assertEquals('Y', strtoupper($row['FrontierPGAC']));
@@ -298,17 +301,17 @@ class PeopleGroupGlobalTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByNumberOfCountriesRange(): void
     {
         $params = ['number_of_countries' => '4-5'];
-        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE CntPGIC BETWEEN 4 AND 5");
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = $result['count'];
+        $count = (int) $this->db->fetchOne("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE CntPGIC BETWEEN 4 AND 5");
         $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
         // Let's bypass the limit of 250 to verify we get all the results
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($count, count($data));
         foreach ($data as $row) {
             $this->assertGreaterThanOrEqual(4, $row['CntPGIC']);
@@ -319,17 +322,17 @@ class PeopleGroupGlobalTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByNumberOfUnreachedRange(): void
     {
         $params = ['number_of_unreached' => '5-6'];
-        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE CntUPG BETWEEN 5 AND 6");
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = $result['count'];
+        $count = (int) $this->db->fetchOne("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE CntUPG BETWEEN 5 AND 6");
         $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
         // Let's bypass the limit of 250 to verify we get all the results
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($count, count($data));
         foreach ($data as $row) {
             $this->assertGreaterThanOrEqual(5, $row['CntUPG']);
@@ -340,17 +343,17 @@ class PeopleGroupGlobalTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByNumberOfFrontierRange(): void
     {
         $params = ['number_of_frontier' => '5-6'];
-        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE CntFPG BETWEEN 5 AND 6");
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = $result['count'];
+        $count = (int) $this->db->fetchOne("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE CntFPG BETWEEN 5 AND 6");
         $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
         // Let's bypass the limit of 250 to verify we get all the results
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($count, count($data));
         foreach ($data as $row) {
             $this->assertGreaterThanOrEqual(5, $row['CntFPG']);
@@ -361,17 +364,17 @@ class PeopleGroupGlobalTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByPrimaryLanguageOfTheGroup(): void
     {
         $params = ['languages' => 'sad|kqp'];
-        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE ROL3PGAC IN ('sad', 'kqp', 'SAD', 'KQP')");
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = $result['count'];
+        $count = (int) $this->db->fetchOne("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE ROL3PGAC IN ('sad', 'kqp', 'SAD', 'KQP')");
         $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
         // Let's bypass the limit of 250 to verify we get all the results
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($count, count($data));
         foreach ($data as $row) {
             $this->assertTrue(in_array(strtoupper(strtoupper($row['ROL3PGAC'])), ['SAD', 'KQP']));
@@ -388,17 +391,17 @@ class PeopleGroupGlobalTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByThePrimaryReligions(): void
     {
         $params = ['primary_religions' => '7|9'];
-        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE RLG3PGAC IN (7, 9)");
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = $result['count'];
+        $count = (int) $this->db->fetchOne("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE RLG3PGAC IN (7, 9)");
         $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
         // Let's bypass the limit of 250 to verify we get all the results
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($count, count($data));
         foreach ($data as $row) {
             $this->assertTrue(in_array($row['RLG3PGAC'], [7, 9]));
@@ -415,17 +418,17 @@ class PeopleGroupGlobalTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByPercentChristianRange(): void
     {
         $params = ['pc_christian' => '0.001-0.003'];
-        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE PercentChristianPGAC BETWEEN 0.001 AND 0.003");
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = $result['count'];
+        $count = (int) $this->db->fetchOne("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE PercentChristianPGAC BETWEEN 0.001 AND 0.003");
         $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
         // Let's bypass the limit of 250 to verify we get all the results
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($count, count($data));
         foreach ($data as $row) {
             $this->assertGreaterThanOrEqual(0.001, $row['PercentChristianPGAC']);
@@ -436,17 +439,17 @@ class PeopleGroupGlobalTest extends TestCase
     public function testFindAllWithFiltersShouldFilterByPercentEvangelicalRange(): void
     {
         $params = ['pc_evangelical' => '0.001-0.003'];
-        $query = $this->db->query("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE PercentEvangelicalPGAC BETWEEN 0.001 AND 0.003");
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $count = $result['count'];
+        $count = (int) $this->db->fetchOne("SELECT COUNT(*) as count FROM jppeoplesglobal WHERE PercentEvangelicalPGAC BETWEEN 0.001 AND 0.003");
         $this->assertGreaterThan(0, $count, "Bad test. The results should be greater than 0.");
         // Let's bypass the limit of 250 to verify we get all the results
         $params['limit'] = $count + 100;
         $peopleGroup = new PeopleGroupGlobal($params);
         $peopleGroup->findAllWithFilters();
-        $statement = $this->db->prepare($peopleGroup->preparedStatement);
-        $statement->execute($peopleGroup->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $peopleGroup->preparedStatement,
+            $peopleGroup->preparedVariables,
+            $peopleGroup->preparedVariableTypes
+        );
         $this->assertEquals($count, count($data));
         foreach ($data as $row) {
             $this->assertGreaterThanOrEqual(0.001, $row['PercentEvangelicalPGAC']);
@@ -458,9 +461,11 @@ class PeopleGroupGlobalTest extends TestCase
     {
         $pg = new PeopleGroupGlobal(['limit' => 10]);
         $pg->findAllWithFilters();
-        $statement = $this->db->prepare($pg->preparedStatement);
-        $statement->execute($pg->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $pg->preparedStatement,
+            $pg->preparedVariables,
+            $pg->preparedVariableTypes
+        );
         $sorted = $data;
         usort($sorted, fn ($a, $b) => $a['PeopleID3'] - $b['PeopleID3']);
         $this->assertEquals($sorted, $data);
@@ -470,9 +475,11 @@ class PeopleGroupGlobalTest extends TestCase
     {
         $pg = new PeopleGroupGlobal(['limit' => 10, 'sort_field' => 'PopulationPGAC', 'sort_direction' => 'desc']);
         $pg->findAllWithFilters();
-        $statement = $this->db->prepare($pg->preparedStatement);
-        $statement->execute($pg->preparedVariables);
-        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->db->fetchAllAssociative(
+            $pg->preparedStatement,
+            $pg->preparedVariables,
+            $pg->preparedVariableTypes
+        );
         $sorted = $data;
         usort($sorted, fn ($a, $b) => $b['PopulationPGAC'] - $a['PopulationPGAC']);
         $this->assertEquals($sorted, $data);

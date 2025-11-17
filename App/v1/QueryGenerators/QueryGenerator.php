@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace QueryGenerators;
 
+use OpenApi\Annotations\Parameter;
+use Doctrine\DBAL\ParameterType;
 use Utilities\Sanitizer;
 use Utilities\StringHelper;
 use Utilities\Validator;
@@ -82,6 +84,22 @@ class QueryGenerator
      * @access  public
      */
     public $preparedVariables = [];
+    /**
+     * The prepared variable types for the PDO prepared statement.
+     *
+     * @var     array
+     * @access  public
+     */
+    public array $preparedVariableTypes = [
+        'limit' => ParameterType::INTEGER,
+        'starting' => ParameterType::INTEGER,
+    ];
+    /**
+     * The languages supported on this endpoint
+     *
+     * @var array
+     */
+    public static $supportedLangs = ['cmn', 'deu', 'eng', 'fra', 'ita', 'kor', 'por', 'spa', 'vie'];
     /**
      * An array of table columns (key) and their alias (value).
      *

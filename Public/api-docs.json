@@ -720,6 +720,16 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "The three letter ROLProfile language code you want the people group information returned in. Supported languages are: cmn, deu, eng, fra, ita, kor, por, spa, vie. Defaults to eng.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "eng"
+                        }
                     }
                 ],
                 "responses": {

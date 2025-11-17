@@ -24,8 +24,12 @@
 
 declare(strict_types=1);
 
+namespace App\v1\Resources;
+
+use Doctrine\DBAL\Exception as DBALException;
 use QueryGenerators\PeopleGroup;
 use QueryGenerators\ProfileText;
+use QueryGenerators\QueryGenerator;
 use QueryGenerators\Resource;
 use QueryGenerators\Unreached;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -58,6 +62,16 @@ use Utilities\StringHelper;
  *         in="query",
  *         required=false,
  *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="lang",
+ *         description="The three letter ROLProfile language code you want the people group information returned in. Supported languages are: cmn, deu, eng, fra, ita, kor, por, spa, vie. Defaults to eng.",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(
+ *             type="string",
+ *             default="eng"
+ *        )
  *     ),
  *     @OA\Response(
  *         response="200",
@@ -110,17 +124,33 @@ $app->get(
         } else {
             $day = Date('j');
         }
+        $lang = 'eng';
+        if (array_key_exists('lang', $params)) {
+            if (!in_array(strtolower($params['lang']), QueryGenerator::$supportedLangs)) {
+                return $this->get('errorResponder')->get(
+                    400,
+                    "The 'lang' parameter you provided is not supported.",
+                    $args['format'],
+                    'Bad Request',
+                    $response
+                );
+            }
+            $lang = strtolower($params['lang']);
+        }
         try {
             $peopleGroup = new Unreached(
                 [
                     'month' => $month,
-                    'day'   => $day
+                    'day'   => $day,
+                    'lang'  => $lang
                 ]
             );
             $peopleGroup->daily();
-            $statement = $this->get('db')->prepare($peopleGroup->preparedStatement);
-            $statement->execute($peopleGroup->preparedVariables);
-            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $data = $this->get('db')->fetchAllAssociative(
+                $peopleGroup->preparedStatement,
+                $peopleGroup->preparedVariables,
+                $peopleGroup->preparedVariableTypes
+            );
             if (empty($data)) {
                 return $this->get('errorResponder')->get(
                     404,
@@ -130,7 +160,8 @@ $app->get(
                     $response
                 );
             }
-        } catch (Exception $e) {
+        } catch (DBALException | \Exception $e) {
+            error_log("Database error in PeopleGroups Daily Unreached: {$e->getMessage()}");
             return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),
@@ -151,22 +182,25 @@ $app->get(
                     [
                         'id'        => $peopleGroupData['PeopleID3'],
                         'country'   => $peopleGroupData['ROG3'],
+                        'lang'      => $lang,
                         'format'    => 'M'
                     ]
                 );
                 $profileText->findAllByIdAndCountry();
-                $statement = $this->get('db')->prepare($profileText->preparedStatement);
-                $statement->execute($profileText->preparedVariables);
-                $profileData = $statement->fetch(PDO::FETCH_ASSOC);
+                $profileData = $this->get('db')->fetchAssociative(
+                    $profileText->preparedStatement,
+                    $profileText->preparedVariables,
+                    $profileText->preparedVariableTypes
+                );
                 if (!$profileData) {
-                    throw new Exception('No profile data available.');
+                    throw new \Exception('No profile data available.');
                 }
                 $data[$key]['Summary'] = StringHelper::nullToEmpty($profileData['Summary']);
                 $data[$key]['Obstacles'] = StringHelper::nullToEmpty($profileData['Obstacles']);
                 $data[$key]['HowReach'] = StringHelper::nullToEmpty($profileData['HowReach']);
                 $data[$key]['PrayForChurch'] = StringHelper::nullToEmpty($profileData['PrayForChurch']);
                 $data[$key]['PrayForPG'] = StringHelper::nullToEmpty($profileData['PrayForPG']);
-            } catch (Exception $e) {
+            } catch (DBALException | \Exception $e) {
                 $data[$key]['Summary'] = '';
                 $data[$key]['Obstacles'] = '';
                 $data[$key]['HowReach'] = '';
@@ -179,14 +213,15 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
+        $body = $response->getBody();
         if ($args['format'] == 'json') {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-type', 'text/xml')
-                ->write(arrayToXML($data, "people_groups", "people_group"));
+            $xml = arrayToXML($data, "people_groups", "people_group");
+            $body->write($xml);
+            return $response->withHeader('Content-type', 'text/xml');
         }
     }
 );
@@ -285,9 +320,11 @@ $app->get(
                 $peopleGroup = new PeopleGroup(['id' => $peopleId]);
                 $peopleGroup->findById();
             }
-            $statement = $this->get('db')->prepare($peopleGroup->preparedStatement);
-            $statement->execute($peopleGroup->preparedVariables);
-            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $data = $this->get('db')->fetchAllAssociative(
+                $peopleGroup->preparedStatement,
+                $peopleGroup->preparedVariables,
+                $peopleGroup->preparedVariableTypes
+            );
             if (empty($data)) {
                 return $this->get('errorResponder')->get(
                     404,
@@ -297,7 +334,8 @@ $app->get(
                     $response
                 );
             }
-        } catch (Exception $e) {
+        } catch (DBALException | \Exception $e) {
+            error_log("Database error in PeopleGroups: {$e->getMessage()}");
             return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),
@@ -322,18 +360,20 @@ $app->get(
                     ]
                 );
                 $profileText->findAllByIdAndCountry();
-                $statement = $this->get('db')->prepare($profileText->preparedStatement);
-                $statement->execute($profileText->preparedVariables);
-                $profileData = $statement->fetch(PDO::FETCH_ASSOC);
+                $profileData = $this->get('db')->fetchAssociative(
+                    $profileText->preparedStatement,
+                    $profileText->preparedVariables,
+                    $profileText->preparedVariableTypes
+                );
                 if (!$profileData) {
-                    throw new Exception('No profile data available.');
+                    throw new \Exception('No profile data available.');
                 }
                 $data[$key]['Summary'] = StringHelper::nullToEmpty($profileData['Summary']);
                 $data[$key]['Obstacles'] = StringHelper::nullToEmpty($profileData['Obstacles']);
                 $data[$key]['HowReach'] = StringHelper::nullToEmpty($profileData['HowReach']);
                 $data[$key]['PrayForChurch'] = StringHelper::nullToEmpty($profileData['PrayForChurch']);
                 $data[$key]['PrayForPG'] = StringHelper::nullToEmpty($profileData['PrayForPG']);
-            } catch (Exception $e) {
+            } catch (DBALException | \Exception $e) {
                 $data[$key]['Summary'] = '';
                 $data[$key]['Obstacles'] = '';
                 $data[$key]['HowReach'] = '';
@@ -343,10 +383,12 @@ $app->get(
             try {
                 $resource = new Resource(['id' => $peopleGroupData['ROL3']]);
                 $resource->findAllByLanguageId();
-                $statement = $this->get('db')->prepare($resource->preparedStatement);
-                $statement->execute($resource->preparedVariables);
-                $data[$key]['Resources'] = $statement->fetchAll(PDO::FETCH_ASSOC);
-            } catch (Exception $e) {
+                $data[$key]['Resources'] = $this->get('db')->fetchAllAssociative(
+                    $resource->preparedStatement,
+                    $resource->preparedVariables,
+                    $resource->preparedVariableTypes
+                );
+            } catch (DBALException | \Exception $e) {
                 $data[$key]['Resources'] = [];
             }
         }
@@ -355,14 +397,15 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
+        $body = $response->getBody();
         if ($args['format'] == 'json') {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-type', 'text/xml')
-                ->write(arrayToXML($data, "people_groups", "people_group"));
+            $xml = arrayToXML($data, "people_groups", "people_group");
+            $body->write($xml);
+            return $response->withHeader('Content-type', 'text/xml');
         }
     }
 );
@@ -734,10 +777,13 @@ $app->get(
         try {
             $peopleGroup = new PeopleGroup($params);
             $peopleGroup->findAllWithFilters();
-            $statement = $this->get('db')->prepare($peopleGroup->preparedStatement);
-            $statement->execute($peopleGroup->preparedVariables);
-            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
+            $data = $this->get('db')->fetchAllAssociative(
+                $peopleGroup->preparedStatement,
+                $peopleGroup->preparedVariables,
+                $peopleGroup->preparedVariableTypes
+            );
+        } catch (DBALException | \Exception $e) {
+            error_log("Database error in PeopleGroups with filters: {$e->getMessage()}");
             return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),
@@ -766,18 +812,20 @@ $app->get(
                             ]
                         );
                         $profileText->findAllByIdAndCountry();
-                        $statement = $this->get('db')->prepare($profileText->preparedStatement);
-                        $statement->execute($profileText->preparedVariables);
-                        $profileData = $statement->fetch(PDO::FETCH_ASSOC);
+                        $profileData = $this->get('db')->fetchAssociative(
+                            $profileText->preparedStatement,
+                            $profileText->preparedVariables,
+                            $profileText->preparedVariableTypes
+                        );
                         if (!$profileData) {
-                            throw new Exception('No profile data available.');
+                            throw new \Exception('No profile data available.');
                         }
                         $data[$key]['Summary'] = StringHelper::nullToEmpty($profileData['Summary']);
                         $data[$key]['Obstacles'] = StringHelper::nullToEmpty($profileData['Obstacles']);
                         $data[$key]['HowReach'] = StringHelper::nullToEmpty($profileData['HowReach']);
                         $data[$key]['PrayForChurch'] = StringHelper::nullToEmpty($profileData['PrayForChurch']);
                         $data[$key]['PrayForPG'] = StringHelper::nullToEmpty($profileData['PrayForPG']);
-                    } catch (Exception $e) {
+                    } catch (DBALException | \Exception $e) {
                         $data[$key]['Summary'] = '';
                         $data[$key]['Obstacles'] = '';
                         $data[$key]['HowReach'] = '';
@@ -789,10 +837,12 @@ $app->get(
                     try {
                         $resource = new Resource(['id' => $peopleGroupData['ROL3']]);
                         $resource->findAllByLanguageId();
-                        $statement = $this->get('db')->prepare($resource->preparedStatement);
-                        $statement->execute($resource->preparedVariables);
-                        $data[$key]['Resources'] = $statement->fetchAll(PDO::FETCH_ASSOC);
-                    } catch (Exception $e) {
+                        $data[$key]['Resources'] = $this->get('db')->fetchAllAssociative(
+                            $resource->preparedStatement,
+                            $resource->preparedVariables,
+                            $resource->preparedVariableTypes
+                        );
+                    } catch (DBALException | \Exception $e) {
                         $data[$key]['Resources'] = [];
                     }
                 }
@@ -803,14 +853,15 @@ $app->get(
          *
          * @author Johnathan Pulos
          */
+        $body = $response->getBody();
         if ($args['format'] == 'json') {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-type', 'text/xml')
-                ->write(arrayToXML($data, "people_groups", "people_group"));
+            $xml = arrayToXML($data, "people_groups", "people_group");
+            $body->write($xml);
+            return $response->withHeader('Content-type', 'text/xml');
         }
     }
 );

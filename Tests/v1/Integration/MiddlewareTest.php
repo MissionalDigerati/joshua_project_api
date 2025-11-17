@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -22,10 +23,11 @@ declare(strict_types=1);
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
+
 namespace Tests\v1\Integration;
 
-use \PHPToolbox\CachedRequest\CachedRequest;
-use \PHPToolbox\PDODatabase\PDODatabaseConnect;
+use Doctrine\DBAL\Connection;
+use Tests\Support\GuzzleHttpClient;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -36,38 +38,38 @@ use PHPUnit\Framework\TestCase;
 class MiddlewareTest extends TestCase
 {
     /**
-     * The CachedRequest Object
+     * The HTTP Client Object
      *
-     * @var CachedRequest
+     * @var GuzzleHttpClient
      */
-    public $cachedRequest;
+    public GuzzleHttpClient $httpClient;
     /**
      * The PDO database connection object
      *
-     * @var PDODatabaseConnect
+     * @var Connection
      */
-    private $db;
+    private Connection $db;
     /**
      * The current API version number
      *
      * @var string
      * @access private
      **/
-    private $APIVersion;
+    private string $APIVersion;
     /**
      * The URL for the testing server
      *
      * @var string
      * @access private
      **/
-    private $siteURL;
+    private string $siteURL;
     /**
      * The APIKey to access the API
      *
      * @var string
      * @access private
      **/
-    private $APIKey = '';
+    private string $APIKey = '';
     /**
      * Set up the test class
      *
@@ -79,14 +81,7 @@ class MiddlewareTest extends TestCase
     {
         $this->APIVersion = $_ENV['api_version'];
         $this->siteURL = $_ENV['site_url'];
-        $this->cachedRequest = new CachedRequest();
-        $this->cachedRequest->cacheDirectory =
-            __DIR__ .
-            DIRECTORY_SEPARATOR . ".." .
-            DIRECTORY_SEPARATOR . ".." .
-            DIRECTORY_SEPARATOR . "Support" .
-            DIRECTORY_SEPARATOR . "cache" .
-            DIRECTORY_SEPARATOR;
+        $this->httpClient = new GuzzleHttpClient();
         $this->db = getDatabaseInstance();
         $this->APIKey = createApiKey();
     }
@@ -98,22 +93,27 @@ class MiddlewareTest extends TestCase
      */
     public function tearDown(): void
     {
-        $this->cachedRequest->clearCache();
+        $this->httpClient->clearCache();
         deleteApiKey($this->APIKey);
     }
 
     public function testItShouldRecordTheLastRequestDateOnEveryRequest(): void
     {
-        $this->db->query("UPDATE `md_api_keys` SET last_request = '2012-10-21 10:05:00' WHERE  `api_key` = '" . $this->APIKey . "'");
-        $response = $this->cachedRequest->get(
+        $this->db->executeStatement(
+            "UPDATE `md_api_keys` SET last_request = '2012-10-21 10:05:00' WHERE  `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
+        $response = $this->httpClient->get(
             $this->siteURL . "/" . $this->APIVersion . "/continents/asi.json",
-            array('api_key' => $this->APIKey),
+            ['api_key' => $this->APIKey],
             "show_accessible_in_json"
         );
-        $this->assertEquals(200, $this->cachedRequest->responseCode);
-        $query = $this->db->query("SELECT * FROM `md_api_keys` WHERE  `api_key` = '" . $this->APIKey . "'");
-        $data = $query->fetchAll(\PDO::FETCH_ASSOC);
-        $this->assertFalse(empty($data[0]['last_request']));
-        $this->assertNotEquals('2012-10-21 10:05:00', $data[0]['last_request']);
+        $this->assertEquals(200, $this->httpClient->responseCode);
+        $data = $this->db->fetchAssociative(
+            "SELECT * FROM `md_api_keys` WHERE  `api_key` = :api_key",
+            ['api_key' => $this->APIKey]
+        );
+        $this->assertFalse(empty($data['last_request']));
+        $this->assertNotEquals('2012-10-21 10:05:00', $data['last_request']);
     }
 }

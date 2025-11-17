@@ -24,6 +24,9 @@
 
 declare(strict_types=1);
 
+namespace App\v1\Resources;
+
+use Doctrine\DBAL\Exception as DBALException;
 use QueryGenerators\Total;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -85,10 +88,13 @@ $app->get(
         try {
             $total = new Total(['id' => $id]);
             $total->findById();
-            $statement = $this->get('db')->prepare($total->preparedStatement);
-            $statement->execute($total->preparedVariables);
-            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
+            $data = $this->get('db')->fetchAllAssociative(
+                $total->preparedStatement,
+                $total->preparedVariables,
+                $total->preparedVariableTypes
+            );
+        } catch (DBALException | \Exception $e) {
+            error_log("Error totals show: {$e->getMessage()}");
             return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),
@@ -100,14 +106,15 @@ $app->get(
         /**
          * Render the final data
          */
+        $body = $response->getBody();
         if ($args['format'] == 'json') {
-            return $response
-            ->withHeader('Content-Type', 'application/json')
-            ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-type', 'text/xml')
-                ->write(arrayToXML($data, "totals", "total"));
+            $xml = arrayToXML($data, "totals", "total");
+            $body->write($xml);
+            return $response->withHeader('Content-type', 'text/xml');
         }
     }
 );
@@ -160,10 +167,13 @@ $app->get(
         try {
             $total = new Total([]);
             $total->all();
-            $statement = $this->get('db')->prepare($total->preparedStatement);
-            $statement->execute($total->preparedVariables);
-            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
+            $data = $this->get('db')->fetchAllAssociative(
+                $total->preparedStatement,
+                $total->preparedVariables,
+                $total->preparedVariableTypes
+            );
+        } catch (DBALException | \Exception $e) {
+            error_log("Error totals index: {$e->getMessage()}");
             return $this->get('errorResponder')->get(
                 500,
                 $e->getMessage(),
@@ -175,14 +185,15 @@ $app->get(
         /**
          * Render the final data
          */
+        $body = $response->getBody();
         if ($args['format'] == 'json') {
-            return $response
-            ->withHeader('Content-Type', 'application/json')
-            ->write(json_encode($data));
+            $json = json_encode($data);
+            $body->write($json);
+            return $response->withHeader('Content-Type', 'application/json');
         } else {
-            return $response
-                ->withHeader('Content-type', 'text/xml')
-                ->write(arrayToXML($data, "totals", "total"));
+            $xml = arrayToXML($data, "totals", "total");
+            $body->write($xml);
+            return $response->withHeader('Content-type', 'text/xml');
         }
     }
 );
