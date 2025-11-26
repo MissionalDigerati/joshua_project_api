@@ -43,8 +43,12 @@
                     <td>Name of Capital City</td>
                 </tr>
                 <tr>
-                    <td>CntPeoples</td>
-                    <td>Total Number of People Groups</td>
+                    <td>CntPeoplesFPG</td>
+                    <td>Total Number of Frontier People Groups</td>
+                </tr>
+                <tr>
+                    <td>CntPeoplesLR</td>
+                    <td>Total Number of Unreached People Groups</td>
                 </tr>
                 <tr>
                     <td>CntPeoplesLR</td>
@@ -67,9 +71,12 @@
                     <td>ISO 3 character code for country</td>
                 </tr>
                 <tr>
-                    <td>JPScaleCtry</td>
-                    <td>Joshua Project Progress Scale for this country, derived from the people group data in
-                        this country.</td>
+                    <td>OfficialLang</td>
+                    <td>The official language of the people group.</td>
+                </tr>
+                <tr>
+                    <td>PctChristianDoublyProfessing</td>
+                    <td>Percent of people in this country who are Doubly Professing Christians</td>
                 </tr>
                 <tr>
                     <td>PctChristianDoublyProfessing</td>
