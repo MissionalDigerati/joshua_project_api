@@ -56,7 +56,7 @@
                 </tr>
                 <tr>
                     <td>CntPrimaryLanguages</td>
-                    <td>The total number of primary languages in the country.</td>
+                    <td>The total number of primary languages in the country</td>
                 </tr>
                 <tr>
                     <td>Ctry</td>
@@ -69,10 +69,6 @@
                 <tr>
                     <td>ISO3</td>
                     <td>ISO 3 character code for country</td>
-                </tr>
-                <tr>
-                    <td>OfficialLang</td>
-                    <td>The official language of the people group.</td>
                 </tr>
                 <tr>
                     <td>PctChristianDoublyProfessing</td>
@@ -131,8 +127,14 @@
                     <td>Total population living in unreached people groups of the country.</td>
                 </tr>
                 <tr>
+                    <td>RLG3Primary</td>
+                    <td>Primary religion code of the people group in this country [1 - Christianity, 2 - Buddhism,
+                        4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small,
+                        9 - Unknown]</td>
+                </tr>                    
+                <tr>
                     <td>PrimaryReligion</td>
-                    <td>Primary religion for this country [1 - Christianity, 2 - Buddhism, 4 - Ethnic Religions,
+                    <td>Primary religion name for this country [1 - Christianity, 2 - Buddhism, 4 - Ethnic Religions,
                         5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small, 9 - Unknown]</td>
                 </tr>
                 <tr>
@@ -144,18 +146,13 @@
                 </tr>
                 <tr>
                     <td>RegionName</td>
-                    <td>The Region's Name</td>
+                    <td>Region name of country location</td>
                 </tr>
                 <tr>
                     <td>ReligionPrimary</td>
-                    <td>The text of the primary religion</td>
+                    <td>Primary religion in this country</td>
                 </tr>
-                <tr>
-                    <td>RLG3Primary</td>
-                    <td>Primary religion of the people group in this country [1 - Christianity, 2 - Buddhism,
-                        4 - Ethnic Religions, 5 - Hinduism, 6 - Islam, 7 - Non-Religious, 8 - Other/Small,
-                        9 - Unknown]</td>
-                </tr>
+
                 <tr>
                     <td>ROG2</td>
                     <td>HIS Registry of Geography (ROG) continent code</td>
@@ -165,8 +162,12 @@
                     <td>HIS Registry of Geography (ROG) country code, similar to 2 letter ISO country code</td>
                 </tr>
                 <tr>
+                    <td>OfficialLang</td>
+                    <td>The official language of the country</td>
+                </tr>                
+                <tr>
                     <td>ROL3OfficialLanguage</td>
-                    <td>The ISO 3 Letter Code for the Official language of country</td>
+                    <td>ISO 3 Letter Code for the official language of country</td>
                 </tr>
                 <tr>
                     <td>SecurityLevel</td>
