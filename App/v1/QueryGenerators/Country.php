@@ -69,8 +69,15 @@ class Country extends QueryGenerator
      * @var     array
      * @access  protected
      */
-    protected $fieldsToSelectArray = ['JPScaleCtry', 'Ctry', 'PercentBuddhism', 'PercentChristianity',
-        'PercentEthnicReligions', 'PercentEvangelical', 'PercentHinduism', 'PercentIslam', 'PercentNonReligious', 'PercentOtherSmall', 'PercentUnknown', 'ReligionPrimary', 'RLG3Primary', 'ROG2', 'ROG3', 'SecurityLevel', 'ROL3OfficialLanguage', 'OfficialLang' 'RLG3Primary', 'RegionCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'Capital', 'Population', , 'PoplPeoplesLR', 'PoplPeoplesFPG', 'CntPeoples', 'CntPeoplesLR', 'CntPeoplesFPG', 'CntPrimaryLanguages', 'TranslationUnspecified', 'TranslationNeeded', 'TranslationStarted', 'BiblePortions', 'BibleNewTestament', 'BibleComplete'
+    protected $fieldsToSelectArray = [
+        'JPScaleCtry', 'Ctry', 'PercentBuddhism', 'PercentChristianity', 'PercentEthnicReligions',
+        'PercentEvangelical', 'PercentHinduism', 'PercentIslam', 'PercentNonReligious',
+        'PercentOtherSmall', 'PercentUnknown', 'ReligionPrimary', 'RLG3Primary', 'ROG2',
+        'ROG3', 'SecurityLevel', 'ROL3OfficialLanguage', 'OfficialLang', 'RLG3Primary',
+        'RegionCode', 'ROG3', 'ISO3', 'ISO2', 'ROG2', 'RegionName', 'Capital', 'Population',
+        'PoplPeoplesLR', 'PoplPeoplesFPG', 'CntPeoples', 'CntPeoplesLR', 'CntPeoplesFPG',
+        'CntPrimaryLanguages', 'TranslationUnspecified', 'TranslationNeeded', 'TranslationStarted',
+        'BiblePortions', 'BibleNewTestament', 'BibleComplete'
     ];
     /**
      * An array of fields that are allowed to be sorted by.
